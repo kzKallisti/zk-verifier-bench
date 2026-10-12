@@ -6,9 +6,10 @@
 // Five positive/nine negative fixtures pass the frozen Libauth current/spec transaction gates; native/resource evidence remains separate.
 // Four binding seams tested; supplied-corpus checks do not establish universal soundness.
 // Official score 33,003, script 32,768, modeled operation cost 19,478,472.
-// Native base-100 consensus 19,492,370 / standard 19,558,674; DEFINE storage 13,898 bytes.
-// Absolute cached VerifyScript and VMLA-relative verification wall times remain unmeasured;
-// any native whole-process diagnostic is not verification timing.
+// Native base-100 consensus 19,492,370 / standard 19,558,674; DEFINE body-storage charge 13,898.
+// Selected canonical native base-100 cached VerifyScript wall medians on shared M4: standard 3.589056 ms / consensus 3.588507 ms.
+// Paired 33,003/33,016 ranges cross 1 in both modes; no consistent speedup or regression established.
+// PR36 reports matched VMLA-relative metrics, absolute reference denominators and separate setup/process times.
 // Vector SHA256: c8aff2ee74b03940b5fa165ca95d66dc0862f81f6d0e6db0bfe3350f72a108be.
 // Input 0 locking SHA256: 94439093c59aafef037700966b5b2bcf4d4ef5283bea013616861c3c4e0b65b7
 // Input 1 locking SHA256: 94439093c59aafef037700966b5b2bcf4d4ef5283bea013616861c3c4e0b65b7
