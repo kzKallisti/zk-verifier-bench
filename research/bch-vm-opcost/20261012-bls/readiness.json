@@ -1,0 +1,16 @@
+{
+  "schema": "derived-public-host-metadata.v1",
+  "status": "PASS_FRESH_BLS_MATCHED_TIMING_READINESS",
+  "hostname": "local M4 research host",
+  "chip": "Apple M4 Max",
+  "capturedUtc": "2026-10-12T04:54:54.513134+00:00",
+  "hardware": {
+    "model": "Mac16,6",
+    "logicalCPUs": 14,
+    "physicalMemoryBytes": 38654705664
+  },
+  "os": "macOS27.0 build26A428/Darwin27 arm64",
+  "compiler": "Apple clang21.0.0 clang-2100.3.34.2",
+  "nice": 15,
+  "qualification": "Public metadata derived from actual snapshots; private hostname/UID/absolute local paths omitted. Shared-host snapshots, no CPU affinity or continuous thermal/clock/exclusivity proof. This is not runnable readiness authorization."
+}
