@@ -1,0 +1,3172 @@
+{
+  "status": "PASS_PARSED_CACHED_TIMING",
+  "timingRows": 160,
+  "timedWholeTransactionLoops": 1600,
+  "processes": [
+    {
+      "process": 1,
+      "name": "process-1",
+      "startedUtc": "2026-10-12T11:22:47.367798+00:00",
+      "finishedUtc": "2026-10-12T11:22:57.522848+00:00",
+      "nativeStartedUtc": "2026-10-12T11:22:47.753428+00:00",
+      "nativeFinishedUtc": "2026-10-12T11:22:57.099535+00:00",
+      "cases": {
+        "trxhzt:standard": {
+          "txBytes": 366,
+          "inputs": 2,
+          "flags": 535906287,
+          "sigchecks": 2,
+          "meanVerifyMs": 0.05111747999999999,
+          "nsPerActualByte": 139.66524590163934,
+          "evaluationMs": [
+            0.0512166,
+            0.0505125,
+            0.050675,
+            0.0510375,
+            0.052145800000000006
+          ],
+          "evaluationNs": [
+            51216.6,
+            50512.5,
+            50675.0,
+            51037.5,
+            52145.8
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 90833,
+            "admission_control_nanoseconds": 155459,
+            "cache_total_nanoseconds": 4500,
+            "coins_context_nanoseconds": 542,
+            "precompute_checker_nanoseconds": 1834
+          },
+          "annualRelativeTime": 1.0,
+          "annualRelativePerByte": 1.0,
+          "bareRelativeTime": 0.000662993033293847,
+          "bareRelativePerByte": 0.18112390003547865,
+          "candidateRelativeTime": 0.013638786779714087,
+          "candidateRelativePerByte": 1.2233171923618964,
+          "annualDenominatorMs": 0.05111747999999999,
+          "bareDenominatorMs": 77.10108165999999,
+          "baselineDenominatorMs": 3.7479492000000003,
+          "annualDenominatorNsPerByte": 139.66524590163934,
+          "bareDenominatorNsPerByte": 771.1033490018801,
+          "baselineDenominatorNsPerByte": 114.16928231997076
+        },
+        "trxhzt:consensus": {
+          "txBytes": 366,
+          "inputs": 2,
+          "flags": 396445551,
+          "sigchecks": 2,
+          "meanVerifyMs": 0.053094180000000005,
+          "nsPerActualByte": 145.06606557377052,
+          "evaluationMs": [
+            0.0523542,
+            0.0521,
+            0.0531417,
+            0.053975,
+            0.0539
+          ],
+          "evaluationNs": [
+            52354.2,
+            52100.0,
+            53141.7,
+            53975.0,
+            53900.0
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 7250,
+            "admission_control_nanoseconds": 62333,
+            "cache_total_nanoseconds": 3791,
+            "coins_context_nanoseconds": 416,
+            "precompute_checker_nanoseconds": 1625
+          },
+          "annualRelativeTime": 1.0,
+          "annualRelativePerByte": 1.0,
+          "bareRelativeTime": 0.0006875431473494963,
+          "bareRelativePerByte": 0.1878307765496761,
+          "candidateRelativeTime": 0.014459022152506303,
+          "candidateRelativePerByte": 1.2968873749248004,
+          "annualDenominatorMs": 0.053094180000000005,
+          "bareDenominatorMs": 77.22305168,
+          "baselineDenominatorMs": 3.672045,
+          "annualDenominatorNsPerByte": 145.06606557377052,
+          "bareDenominatorNsPerByte": 772.3231955834699,
+          "baselineDenominatorNsPerByte": 111.85710369197027
+        },
+        "l0fhm3:standard": {
+          "txBytes": 99988,
+          "inputs": 873,
+          "flags": 535906287,
+          "sigchecks": 2619,
+          "meanVerifyMs": 77.10108165999999,
+          "nsPerActualByte": 771.1033490018801,
+          "evaluationMs": [
+            76.766,
+            76.777275,
+            77.2287875,
+            77.3406,
+            77.3927458
+          ],
+          "evaluationNs": [
+            76766000.0,
+            76777275.0,
+            77228787.5,
+            77340600.0,
+            77392745.8
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 1272084,
+            "admission_control_nanoseconds": 323689917,
+            "cache_total_nanoseconds": 718417,
+            "coins_context_nanoseconds": 136083,
+            "precompute_checker_nanoseconds": 329917
+          },
+          "annualRelativeTime": 1508.3114750570646,
+          "annualRelativePerByte": 5.52108252861229,
+          "bareRelativeTime": 1.0,
+          "bareRelativePerByte": 1.0,
+          "candidateRelativeTime": 20.57153860569935,
+          "candidateRelativePerByte": 6.754035177700306,
+          "annualDenominatorMs": 0.05111747999999999,
+          "bareDenominatorMs": 77.10108165999999,
+          "baselineDenominatorMs": 3.7479492000000003,
+          "annualDenominatorNsPerByte": 139.66524590163934,
+          "bareDenominatorNsPerByte": 771.1033490018801,
+          "baselineDenominatorNsPerByte": 114.16928231997076
+        },
+        "l0fhm3:consensus": {
+          "txBytes": 99988,
+          "inputs": 873,
+          "flags": 396445551,
+          "sigchecks": 2619,
+          "meanVerifyMs": 77.22305168,
+          "nsPerActualByte": 772.3231955834699,
+          "evaluationMs": [
+            77.2564917,
+            76.7635125,
+            77.561575,
+            77.4092625,
+            77.1244167
+          ],
+          "evaluationNs": [
+            77256491.7,
+            76763512.5,
+            77561575.0,
+            77409262.5,
+            77124416.7
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 1347833,
+            "admission_control_nanoseconds": 322091625,
+            "cache_total_nanoseconds": 662417,
+            "coins_context_nanoseconds": 124333,
+            "precompute_checker_nanoseconds": 294292
+          },
+          "annualRelativeTime": 1454.454173319938,
+          "annualRelativePerByte": 5.323941147288647,
+          "bareRelativeTime": 1.0,
+          "bareRelativePerByte": 1.0,
+          "candidateRelativeTime": 21.029985111838226,
+          "candidateRelativePerByte": 6.904552058761303,
+          "annualDenominatorMs": 0.053094180000000005,
+          "bareDenominatorMs": 77.22305168,
+          "baselineDenominatorMs": 3.672045,
+          "annualDenominatorNsPerByte": 145.06606557377052,
+          "bareDenominatorNsPerByte": 772.3231955834699,
+          "baselineDenominatorNsPerByte": 111.85710369197027
+        },
+        "bn254-33003:standard": {
+          "txBytes": 32828,
+          "inputs": 5,
+          "flags": 535906287,
+          "sigchecks": 0,
+          "meanVerifyMs": 3.7479492000000003,
+          "nsPerActualByte": 114.16928231997076,
+          "evaluationMs": [
+            3.8234667,
+            3.7012084,
+            3.763,
+            3.7621333999999997,
+            3.6899375
+          ],
+          "evaluationNs": [
+            3823466.7,
+            3701208.4,
+            3763000.0,
+            3762133.4,
+            3689937.5
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 250916,
+            "admission_control_nanoseconds": 4700459,
+            "cache_total_nanoseconds": 82291,
+            "coins_context_nanoseconds": 3583,
+            "precompute_checker_nanoseconds": 2416
+          },
+          "annualRelativeTime": 73.32030452205392,
+          "annualRelativePerByte": 0.8174494777346086,
+          "bareRelativeTime": 0.0486108510971051,
+          "bareRelativePerByte": 0.14805963748925746,
+          "candidateRelativeTime": 1.0,
+          "candidateRelativePerByte": 1.0,
+          "annualDenominatorMs": 0.05111747999999999,
+          "bareDenominatorMs": 77.10108165999999,
+          "baselineDenominatorMs": 3.7479492000000003,
+          "annualDenominatorNsPerByte": 139.66524590163934,
+          "bareDenominatorNsPerByte": 771.1033490018801,
+          "baselineDenominatorNsPerByte": 114.16928231997076
+        },
+        "bn254-33003:consensus": {
+          "txBytes": 32828,
+          "inputs": 5,
+          "flags": 396445551,
+          "sigchecks": 0,
+          "meanVerifyMs": 3.672045,
+          "nsPerActualByte": 111.85710369197027,
+          "evaluationMs": [
+            3.6775417000000004,
+            3.6367666,
+            3.6258625,
+            3.7057708,
+            3.7142834
+          ],
+          "evaluationNs": [
+            3677541.7,
+            3636766.6,
+            3625862.5,
+            3705770.8,
+            3714283.4
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 214333,
+            "admission_control_nanoseconds": 3834208,
+            "cache_total_nanoseconds": 72667,
+            "coins_context_nanoseconds": 1583,
+            "precompute_checker_nanoseconds": 2125
+          },
+          "annualRelativeTime": 69.16097018543275,
+          "annualRelativePerByte": 0.7710769796475077,
+          "bareRelativeTime": 0.047551151115037105,
+          "bareRelativePerByte": 0.14483198786677015,
+          "candidateRelativeTime": 1.0,
+          "candidateRelativePerByte": 1.0,
+          "annualDenominatorMs": 0.053094180000000005,
+          "bareDenominatorMs": 77.22305168,
+          "baselineDenominatorMs": 3.672045,
+          "annualDenominatorNsPerByte": 145.06606557377052,
+          "bareDenominatorNsPerByte": 772.3231955834699,
+          "baselineDenominatorNsPerByte": 111.85710369197027
+        },
+        "bn254-32774:standard": {
+          "txBytes": 32599,
+          "inputs": 5,
+          "flags": 535906287,
+          "sigchecks": 0,
+          "meanVerifyMs": 3.6360308399999997,
+          "nsPerActualByte": 111.53810975796803,
+          "evaluationMs": [
+            3.6811042,
+            3.6568582999999997,
+            3.6129667000000003,
+            3.6276957999999997,
+            3.6015292000000003
+          ],
+          "evaluationNs": [
+            3681104.2,
+            3656858.3,
+            3612966.7,
+            3627695.8,
+            3601529.2
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 217041,
+            "admission_control_nanoseconds": 3846041,
+            "cache_total_nanoseconds": 72292,
+            "coins_context_nanoseconds": 1292,
+            "precompute_checker_nanoseconds": 2208
+          },
+          "annualRelativeTime": 71.13087030111814,
+          "annualRelativePerByte": 0.7986103417346924,
+          "bareRelativeTime": 0.04715927146176953,
+          "bareRelativePerByte": 0.14464741970365386,
+          "candidateRelativeTime": 0.9701387734924474,
+          "candidateRelativePerByte": 0.9769537610420586,
+          "annualDenominatorMs": 0.05111747999999999,
+          "bareDenominatorMs": 77.10108165999999,
+          "baselineDenominatorMs": 3.7479492000000003,
+          "annualDenominatorNsPerByte": 139.66524590163934,
+          "bareDenominatorNsPerByte": 771.1033490018801,
+          "baselineDenominatorNsPerByte": 114.16928231997076
+        },
+        "bn254-32774:consensus": {
+          "txBytes": 32599,
+          "inputs": 5,
+          "flags": 396445551,
+          "sigchecks": 0,
+          "meanVerifyMs": 3.651965,
+          "nsPerActualByte": 112.02690266572594,
+          "evaluationMs": [
+            3.6307834,
+            3.5979457999999997,
+            3.6361666,
+            3.7024375,
+            3.6924917
+          ],
+          "evaluationNs": [
+            3630783.4,
+            3597945.8,
+            3636166.6,
+            3702437.5,
+            3692491.7
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 198500,
+            "admission_control_nanoseconds": 3729250,
+            "cache_total_nanoseconds": 71000,
+            "coins_context_nanoseconds": 1042,
+            "precompute_checker_nanoseconds": 2208
+          },
+          "annualRelativeTime": 68.78277430784316,
+          "annualRelativePerByte": 0.7722474737467588,
+          "bareRelativeTime": 0.047291125131044554,
+          "bareRelativePerByte": 0.1450518426823793,
+          "candidateRelativeTime": 0.9945316574279456,
+          "candidateRelativePerByte": 1.0015179990197427,
+          "annualDenominatorMs": 0.053094180000000005,
+          "bareDenominatorMs": 77.22305168,
+          "baselineDenominatorMs": 3.672045,
+          "annualDenominatorNsPerByte": 145.06606557377052,
+          "bareDenominatorNsPerByte": 772.3231955834699,
+          "baselineDenominatorNsPerByte": 111.85710369197027
+        }
+      },
+      "corpusReadNanosecondsOncePerProcess": 2971708,
+      "processWallSeconds": 9.345917457999999,
+      "lifecycleWallSeconds": 10.154842292
+    },
+    {
+      "process": 2,
+      "name": "process-2",
+      "startedUtc": "2026-10-12T11:22:57.523964+00:00",
+      "finishedUtc": "2026-10-12T11:23:07.586842+00:00",
+      "nativeStartedUtc": "2026-10-12T11:22:57.908103+00:00",
+      "nativeFinishedUtc": "2026-10-12T11:23:07.174474+00:00",
+      "cases": {
+        "trxhzt:standard": {
+          "txBytes": 366,
+          "inputs": 2,
+          "flags": 535906287,
+          "sigchecks": 2,
+          "meanVerifyMs": 0.0543575,
+          "nsPerActualByte": 148.51775956284152,
+          "evaluationMs": [
+            0.0551709,
+            0.054370800000000004,
+            0.054275,
+            0.0539875,
+            0.053983300000000005
+          ],
+          "evaluationNs": [
+            55170.9,
+            54370.8,
+            54275.0,
+            53987.5,
+            53983.3
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 22542,
+            "admission_control_nanoseconds": 98875,
+            "cache_total_nanoseconds": 4583,
+            "coins_context_nanoseconds": 500,
+            "precompute_checker_nanoseconds": 2000
+          },
+          "annualRelativeTime": 1.0,
+          "annualRelativePerByte": 1.0,
+          "bareRelativeTime": 0.0007052247786007542,
+          "bareRelativePerByte": 0.1926612436140224,
+          "candidateRelativeTime": 0.01640886607099663,
+          "candidateRelativePerByte": 1.4717766540401018,
+          "annualDenominatorMs": 0.0543575,
+          "bareDenominatorMs": 77.07826164,
+          "baselineDenominatorMs": 3.31269082,
+          "annualDenominatorNsPerByte": 148.51775956284152,
+          "bareDenominatorNsPerByte": 770.8751214145698,
+          "baselineDenominatorNsPerByte": 100.91052820762764
+        },
+        "trxhzt:consensus": {
+          "txBytes": 366,
+          "inputs": 2,
+          "flags": 396445551,
+          "sigchecks": 2,
+          "meanVerifyMs": 0.0539175,
+          "nsPerActualByte": 147.3155737704918,
+          "evaluationMs": [
+            0.0538875,
+            0.0538459,
+            0.0540125,
+            0.0539541,
+            0.0538875
+          ],
+          "evaluationNs": [
+            53887.5,
+            53845.9,
+            54012.5,
+            53954.1,
+            53887.5
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 6334,
+            "admission_control_nanoseconds": 66292,
+            "cache_total_nanoseconds": 3875,
+            "coins_context_nanoseconds": 417,
+            "precompute_checker_nanoseconds": 1708
+          },
+          "annualRelativeTime": 1.0,
+          "annualRelativePerByte": 1.0,
+          "bareRelativeTime": 0.0006972249947353323,
+          "bareRelativePerByte": 0.19047577260545462,
+          "candidateRelativeTime": 0.01599718925371978,
+          "candidateRelativePerByte": 1.4348517180904725,
+          "annualDenominatorMs": 0.0539175,
+          "bareDenominatorMs": 77.331565,
+          "baselineDenominatorMs": 3.37043584,
+          "annualDenominatorNsPerByte": 147.3155737704918,
+          "bareDenominatorNsPerByte": 773.4084590150818,
+          "baselineDenominatorNsPerByte": 102.66954550993054
+        },
+        "l0fhm3:standard": {
+          "txBytes": 99988,
+          "inputs": 873,
+          "flags": 535906287,
+          "sigchecks": 2619,
+          "meanVerifyMs": 77.07826164,
+          "nsPerActualByte": 770.8751214145698,
+          "evaluationMs": [
+            77.15619579999999,
+            77.19610829999999,
+            76.9186375,
+            76.9723708,
+            77.1479958
+          ],
+          "evaluationNs": [
+            77156195.8,
+            77196108.3,
+            76918637.5,
+            76972370.8,
+            77147995.8
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 1224542,
+            "admission_control_nanoseconds": 325474917,
+            "cache_total_nanoseconds": 707208,
+            "coins_context_nanoseconds": 148750,
+            "precompute_checker_nanoseconds": 307875
+          },
+          "annualRelativeTime": 1417.987612380996,
+          "annualRelativePerByte": 5.190457516216393,
+          "bareRelativeTime": 1.0,
+          "bareRelativePerByte": 1.0,
+          "candidateRelativeTime": 23.26756882189205,
+          "candidateRelativePerByte": 7.63919419615426,
+          "annualDenominatorMs": 0.0543575,
+          "bareDenominatorMs": 77.07826164,
+          "baselineDenominatorMs": 3.31269082,
+          "annualDenominatorNsPerByte": 148.51775956284152,
+          "bareDenominatorNsPerByte": 770.8751214145698,
+          "baselineDenominatorNsPerByte": 100.91052820762764
+        },
+        "l0fhm3:consensus": {
+          "txBytes": 99988,
+          "inputs": 873,
+          "flags": 396445551,
+          "sigchecks": 2619,
+          "meanVerifyMs": 77.331565,
+          "nsPerActualByte": 773.4084590150818,
+          "evaluationMs": [
+            76.8225166,
+            77.1132375,
+            77.7774375,
+            77.43425,
+            77.51038340000001
+          ],
+          "evaluationNs": [
+            76822516.6,
+            77113237.5,
+            77777437.5,
+            77434250.0,
+            77510383.4
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 1131709,
+            "admission_control_nanoseconds": 322841667,
+            "cache_total_nanoseconds": 697791,
+            "coins_context_nanoseconds": 126500,
+            "precompute_checker_nanoseconds": 316000
+          },
+          "annualRelativeTime": 1434.2572448648398,
+          "annualRelativePerByte": 5.250011517587424,
+          "bareRelativeTime": 1.0,
+          "bareRelativePerByte": 1.0,
+          "candidateRelativeTime": 22.944084584621553,
+          "candidateRelativePerByte": 7.532988046005085,
+          "annualDenominatorMs": 0.0539175,
+          "bareDenominatorMs": 77.331565,
+          "baselineDenominatorMs": 3.37043584,
+          "annualDenominatorNsPerByte": 147.3155737704918,
+          "bareDenominatorNsPerByte": 773.4084590150818,
+          "baselineDenominatorNsPerByte": 102.66954550993054
+        },
+        "bn254-33003:standard": {
+          "txBytes": 32828,
+          "inputs": 5,
+          "flags": 535906287,
+          "sigchecks": 0,
+          "meanVerifyMs": 3.31269082,
+          "nsPerActualByte": 100.91052820762764,
+          "evaluationMs": [
+            3.2684957999999997,
+            3.3139833,
+            3.30525,
+            3.3706042000000003,
+            3.3051207999999996
+          ],
+          "evaluationNs": [
+            3268495.8,
+            3313983.3,
+            3305250.0,
+            3370604.2,
+            3305120.8
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 214291,
+            "admission_control_nanoseconds": 3414458,
+            "cache_total_nanoseconds": 65000,
+            "coins_context_nanoseconds": 1208,
+            "precompute_checker_nanoseconds": 1959
+          },
+          "annualRelativeTime": 60.94266329393367,
+          "annualRelativePerByte": 0.6794509188978838,
+          "bareRelativeTime": 0.042978276228804686,
+          "bareRelativePerByte": 0.13090385900955656,
+          "candidateRelativeTime": 1.0,
+          "candidateRelativePerByte": 1.0,
+          "annualDenominatorMs": 0.0543575,
+          "bareDenominatorMs": 77.07826164,
+          "baselineDenominatorMs": 3.31269082,
+          "annualDenominatorNsPerByte": 148.51775956284152,
+          "bareDenominatorNsPerByte": 770.8751214145698,
+          "baselineDenominatorNsPerByte": 100.91052820762764
+        },
+        "bn254-33003:consensus": {
+          "txBytes": 32828,
+          "inputs": 5,
+          "flags": 396445551,
+          "sigchecks": 0,
+          "meanVerifyMs": 3.37043584,
+          "nsPerActualByte": 102.66954550993054,
+          "evaluationMs": [
+            3.3476375,
+            3.3892832999999998,
+            3.3716167,
+            3.3593875,
+            3.3842542
+          ],
+          "evaluationNs": [
+            3347637.5,
+            3389283.3,
+            3371616.7,
+            3359387.5,
+            3384254.2
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 194542,
+            "admission_control_nanoseconds": 3408166,
+            "cache_total_nanoseconds": 64667,
+            "coins_context_nanoseconds": 1042,
+            "precompute_checker_nanoseconds": 2166
+          },
+          "annualRelativeTime": 62.510981406778875,
+          "annualRelativePerByte": 0.6969361275399375,
+          "bareRelativeTime": 0.04358421868224185,
+          "bareRelativePerByte": 0.13274944734982327,
+          "candidateRelativeTime": 1.0,
+          "candidateRelativePerByte": 1.0,
+          "annualDenominatorMs": 0.0539175,
+          "bareDenominatorMs": 77.331565,
+          "baselineDenominatorMs": 3.37043584,
+          "annualDenominatorNsPerByte": 147.3155737704918,
+          "bareDenominatorNsPerByte": 773.4084590150818,
+          "baselineDenominatorNsPerByte": 102.66954550993054
+        },
+        "bn254-32774:standard": {
+          "txBytes": 32599,
+          "inputs": 5,
+          "flags": 535906287,
+          "sigchecks": 0,
+          "meanVerifyMs": 3.68010416,
+          "nsPerActualByte": 112.89009356115218,
+          "evaluationMs": [
+            3.8213125,
+            3.7419375,
+            3.7255083,
+            3.5992792000000002,
+            3.5124833
+          ],
+          "evaluationNs": [
+            3821312.5,
+            3741937.5,
+            3725508.3,
+            3599279.2,
+            3512483.3
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 234209,
+            "admission_control_nanoseconds": 4590875,
+            "cache_total_nanoseconds": 74375,
+            "coins_context_nanoseconds": 3500,
+            "precompute_checker_nanoseconds": 2334
+          },
+          "annualRelativeTime": 67.70186561192108,
+          "annualRelativePerByte": 0.760111746187402,
+          "bareRelativeTime": 0.047745033187025054,
+          "bareRelativePerByte": 0.14644407430609102,
+          "candidateRelativeTime": 1.1109108455826253,
+          "candidateRelativePerByte": 1.1187147225002736,
+          "annualDenominatorMs": 0.0543575,
+          "bareDenominatorMs": 77.07826164,
+          "baselineDenominatorMs": 3.31269082,
+          "annualDenominatorNsPerByte": 148.51775956284152,
+          "bareDenominatorNsPerByte": 770.8751214145698,
+          "baselineDenominatorNsPerByte": 100.91052820762764
+        },
+        "bn254-32774:consensus": {
+          "txBytes": 32599,
+          "inputs": 5,
+          "flags": 396445551,
+          "sigchecks": 0,
+          "meanVerifyMs": 3.3368325200000006,
+          "nsPerActualByte": 102.3599656431179,
+          "evaluationMs": [
+            3.3421542000000004,
+            3.3111125,
+            3.3130042000000004,
+            3.3208375,
+            3.3970542000000004
+          ],
+          "evaluationNs": [
+            3342154.2,
+            3311112.5,
+            3313004.2,
+            3320837.5,
+            3397054.2
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 220917,
+            "admission_control_nanoseconds": 3641125,
+            "cache_total_nanoseconds": 71084,
+            "coins_context_nanoseconds": 1166,
+            "precompute_checker_nanoseconds": 2042
+          },
+          "annualRelativeTime": 61.88774553716327,
+          "annualRelativePerByte": 0.6948346534127353,
+          "bareRelativeTime": 0.04314968305633024,
+          "bareRelativePerByte": 0.13234916744183403,
+          "candidateRelativeTime": 0.9900299778440526,
+          "candidateRelativePerByte": 0.9969846962380612,
+          "annualDenominatorMs": 0.0539175,
+          "bareDenominatorMs": 77.331565,
+          "baselineDenominatorMs": 3.37043584,
+          "annualDenominatorNsPerByte": 147.3155737704918,
+          "bareDenominatorNsPerByte": 773.4084590150818,
+          "baselineDenominatorNsPerByte": 102.66954550993054
+        }
+      },
+      "corpusReadNanosecondsOncePerProcess": 3075375,
+      "processWallSeconds": 9.266166249999998,
+      "lifecycleWallSeconds": 10.062250916
+    },
+    {
+      "process": 3,
+      "name": "process-3",
+      "startedUtc": "2026-10-12T11:23:07.588543+00:00",
+      "finishedUtc": "2026-10-12T11:23:17.727726+00:00",
+      "nativeStartedUtc": "2026-10-12T11:23:07.966282+00:00",
+      "nativeFinishedUtc": "2026-10-12T11:23:17.304607+00:00",
+      "cases": {
+        "trxhzt:standard": {
+          "txBytes": 366,
+          "inputs": 2,
+          "flags": 535906287,
+          "sigchecks": 2,
+          "meanVerifyMs": 0.052595,
+          "nsPerActualByte": 143.70218579234972,
+          "evaluationMs": [
+            0.052595800000000005,
+            0.0528084,
+            0.0530791,
+            0.0525209,
+            0.051970800000000004
+          ],
+          "evaluationNs": [
+            52595.8,
+            52808.4,
+            53079.1,
+            52520.9,
+            51970.8
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 25500,
+            "admission_control_nanoseconds": 83083,
+            "cache_total_nanoseconds": 4041,
+            "coins_context_nanoseconds": 459,
+            "precompute_checker_nanoseconds": 1709
+          },
+          "annualRelativeTime": 1.0,
+          "annualRelativePerByte": 1.0,
+          "bareRelativeTime": 0.0006828763512759057,
+          "bareRelativePerByte": 0.18655584866495972,
+          "candidateRelativeTime": 0.014452017869074463,
+          "candidateRelativePerByte": 1.2962591328032145,
+          "annualDenominatorMs": 0.052595,
+          "bareDenominatorMs": 77.0198,
+          "baselineDenominatorMs": 3.6392841799999998,
+          "annualDenominatorNsPerByte": 143.70218579234972,
+          "bareDenominatorNsPerByte": 770.2904348521822,
+          "baselineDenominatorNsPerByte": 110.85915011575483
+        },
+        "trxhzt:consensus": {
+          "txBytes": 366,
+          "inputs": 2,
+          "flags": 396445551,
+          "sigchecks": 2,
+          "meanVerifyMs": 0.0520125,
+          "nsPerActualByte": 142.11065573770492,
+          "evaluationMs": [
+            0.0518917,
+            0.0518917,
+            0.0518833,
+            0.0524625,
+            0.0519333
+          ],
+          "evaluationNs": [
+            51891.7,
+            51891.7,
+            51883.3,
+            52462.5,
+            51933.3
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 9542,
+            "admission_control_nanoseconds": 60417,
+            "cache_total_nanoseconds": 3666,
+            "coins_context_nanoseconds": 417,
+            "precompute_checker_nanoseconds": 1583
+          },
+          "annualRelativeTime": 1.0,
+          "annualRelativePerByte": 1.0,
+          "bareRelativeTime": 0.0006727025557538473,
+          "bareRelativePerByte": 0.183776456679551,
+          "candidateRelativeTime": 0.014136504550360415,
+          "candidateRelativePerByte": 1.2679594846427094,
+          "annualDenominatorMs": 0.0520125,
+          "bareDenominatorMs": 77.31871917999999,
+          "baselineDenominatorMs": 3.67930416,
+          "annualDenominatorNsPerByte": 142.11065573770492,
+          "bareDenominatorNsPerByte": 773.2799853982477,
+          "baselineDenominatorNsPerByte": 112.07823077860364
+        },
+        "l0fhm3:standard": {
+          "txBytes": 99988,
+          "inputs": 873,
+          "flags": 535906287,
+          "sigchecks": 2619,
+          "meanVerifyMs": 77.0198,
+          "nsPerActualByte": 770.2904348521822,
+          "evaluationMs": [
+            76.4100583,
+            77.0735959,
+            77.0780583,
+            77.0460708,
+            77.49121670000001
+          ],
+          "evaluationNs": [
+            76410058.3,
+            77073595.9,
+            77078058.3,
+            77046070.8,
+            77491216.7
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 1263959,
+            "admission_control_nanoseconds": 327686750,
+            "cache_total_nanoseconds": 672125,
+            "coins_context_nanoseconds": 140417,
+            "precompute_checker_nanoseconds": 294167
+          },
+          "annualRelativeTime": 1464.3939537978895,
+          "annualRelativePerByte": 5.3603251099134654,
+          "bareRelativeTime": 1.0,
+          "bareRelativePerByte": 1.0,
+          "candidateRelativeTime": 21.163447587651703,
+          "candidateRelativePerByte": 6.948370378519724,
+          "annualDenominatorMs": 0.052595,
+          "bareDenominatorMs": 77.0198,
+          "baselineDenominatorMs": 3.6392841799999998,
+          "annualDenominatorNsPerByte": 143.70218579234972,
+          "bareDenominatorNsPerByte": 770.2904348521822,
+          "baselineDenominatorNsPerByte": 110.85915011575483
+        },
+        "l0fhm3:consensus": {
+          "txBytes": 99988,
+          "inputs": 873,
+          "flags": 396445551,
+          "sigchecks": 2619,
+          "meanVerifyMs": 77.31871917999999,
+          "nsPerActualByte": 773.2799853982477,
+          "evaluationMs": [
+            77.12816670000001,
+            77.0770834,
+            77.536125,
+            77.3580458,
+            77.494175
+          ],
+          "evaluationNs": [
+            77128166.7,
+            77077083.4,
+            77536125.0,
+            77358045.8,
+            77494175.0
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 1212959,
+            "admission_control_nanoseconds": 322359541,
+            "cache_total_nanoseconds": 652542,
+            "coins_context_nanoseconds": 127584,
+            "precompute_checker_nanoseconds": 288333
+          },
+          "annualRelativeTime": 1486.541104157654,
+          "annualRelativePerByte": 5.441393408426026,
+          "bareRelativeTime": 1.0,
+          "bareRelativePerByte": 1.0,
+          "candidateRelativeTime": 21.01449508322247,
+          "candidateRelativePerByte": 6.899466381886099,
+          "annualDenominatorMs": 0.0520125,
+          "bareDenominatorMs": 77.31871917999999,
+          "baselineDenominatorMs": 3.67930416,
+          "annualDenominatorNsPerByte": 142.11065573770492,
+          "bareDenominatorNsPerByte": 773.2799853982477,
+          "baselineDenominatorNsPerByte": 112.07823077860364
+        },
+        "bn254-33003:standard": {
+          "txBytes": 32828,
+          "inputs": 5,
+          "flags": 535906287,
+          "sigchecks": 0,
+          "meanVerifyMs": 3.6392841799999998,
+          "nsPerActualByte": 110.85915011575483,
+          "evaluationMs": [
+            3.6857167000000004,
+            3.6645084,
+            3.6385875,
+            3.6237833,
+            3.583825
+          ],
+          "evaluationNs": [
+            3685716.7,
+            3664508.4,
+            3638587.5,
+            3623783.3,
+            3583825.0
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 248625,
+            "admission_control_nanoseconds": 4713541,
+            "cache_total_nanoseconds": 76625,
+            "coins_context_nanoseconds": 2500,
+            "precompute_checker_nanoseconds": 2208
+          },
+          "annualRelativeTime": 69.19448959026522,
+          "annualRelativePerByte": 0.7714506881332117,
+          "bareRelativeTime": 0.04725128057979896,
+          "bareRelativePerByte": 0.1439186378278585,
+          "candidateRelativeTime": 1.0,
+          "candidateRelativePerByte": 1.0,
+          "annualDenominatorMs": 0.052595,
+          "bareDenominatorMs": 77.0198,
+          "baselineDenominatorMs": 3.6392841799999998,
+          "annualDenominatorNsPerByte": 143.70218579234972,
+          "bareDenominatorNsPerByte": 770.2904348521822,
+          "baselineDenominatorNsPerByte": 110.85915011575483
+        },
+        "bn254-33003:consensus": {
+          "txBytes": 32828,
+          "inputs": 5,
+          "flags": 396445551,
+          "sigchecks": 0,
+          "meanVerifyMs": 3.67930416,
+          "nsPerActualByte": 112.07823077860364,
+          "evaluationMs": [
+            3.7136833,
+            3.6832291,
+            3.6843667,
+            3.6390917000000003,
+            3.67615
+          ],
+          "evaluationNs": [
+            3713683.3,
+            3683229.1,
+            3684366.7,
+            3639091.7,
+            3676150.0
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 219041,
+            "admission_control_nanoseconds": 3732000,
+            "cache_total_nanoseconds": 72750,
+            "coins_context_nanoseconds": 1542,
+            "precompute_checker_nanoseconds": 2125
+          },
+          "annualRelativeTime": 70.73884470079308,
+          "annualRelativePerByte": 0.788668732804017,
+          "bareRelativeTime": 0.047586201621298,
+          "bareRelativePerByte": 0.1449387452086738,
+          "candidateRelativeTime": 1.0,
+          "candidateRelativePerByte": 1.0,
+          "annualDenominatorMs": 0.0520125,
+          "bareDenominatorMs": 77.31871917999999,
+          "baselineDenominatorMs": 3.67930416,
+          "annualDenominatorNsPerByte": 142.11065573770492,
+          "bareDenominatorNsPerByte": 773.2799853982477,
+          "baselineDenominatorNsPerByte": 112.07823077860364
+        },
+        "bn254-32774:standard": {
+          "txBytes": 32599,
+          "inputs": 5,
+          "flags": 535906287,
+          "sigchecks": 0,
+          "meanVerifyMs": 3.68590664,
+          "nsPerActualByte": 113.06808920519033,
+          "evaluationMs": [
+            3.667425,
+            3.6499416,
+            3.6938375,
+            3.7414832999999996,
+            3.6768457999999997
+          ],
+          "evaluationNs": [
+            3667425.0,
+            3649941.6,
+            3693837.5,
+            3741483.3,
+            3676845.8
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 218792,
+            "admission_control_nanoseconds": 3888000,
+            "cache_total_nanoseconds": 75875,
+            "coins_context_nanoseconds": 2375,
+            "precompute_checker_nanoseconds": 2125
+          },
+          "annualRelativeTime": 70.08093240802357,
+          "annualRelativePerByte": 0.7868223338549227,
+          "bareRelativeTime": 0.04785661141680451,
+          "bareRelativePerByte": 0.1467863082408494,
+          "candidateRelativeTime": 1.0128108874421562,
+          "candidateRelativePerByte": 1.0199256361529834,
+          "annualDenominatorMs": 0.052595,
+          "bareDenominatorMs": 77.0198,
+          "baselineDenominatorMs": 3.6392841799999998,
+          "annualDenominatorNsPerByte": 143.70218579234972,
+          "bareDenominatorNsPerByte": 770.2904348521822,
+          "baselineDenominatorNsPerByte": 110.85915011575483
+        },
+        "bn254-32774:consensus": {
+          "txBytes": 32599,
+          "inputs": 5,
+          "flags": 396445551,
+          "sigchecks": 0,
+          "meanVerifyMs": 3.6989950200000004,
+          "nsPerActualByte": 113.46958557010953,
+          "evaluationMs": [
+            3.6411084,
+            3.7322917,
+            3.7179709,
+            3.7275457999999997,
+            3.6760583
+          ],
+          "evaluationNs": [
+            3641108.4,
+            3732291.7,
+            3717970.9,
+            3727545.8,
+            3676058.3
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 219000,
+            "admission_control_nanoseconds": 3840625,
+            "cache_total_nanoseconds": 69000,
+            "coins_context_nanoseconds": 1542,
+            "precompute_checker_nanoseconds": 2083
+          },
+          "annualRelativeTime": 71.11742408074983,
+          "annualRelativePerByte": 0.7984593764702733,
+          "bareRelativeTime": 0.047840872937750606,
+          "bareRelativePerByte": 0.1467380350102705,
+          "candidateRelativeTime": 1.0053517891274313,
+          "candidateRelativePerByte": 1.0124141394973867,
+          "annualDenominatorMs": 0.0520125,
+          "bareDenominatorMs": 77.31871917999999,
+          "baselineDenominatorMs": 3.67930416,
+          "annualDenominatorNsPerByte": 142.11065573770492,
+          "bareDenominatorNsPerByte": 773.2799853982477,
+          "baselineDenominatorNsPerByte": 112.07823077860364
+        }
+      },
+      "corpusReadNanosecondsOncePerProcess": 3067916,
+      "processWallSeconds": 9.338112458000001,
+      "lifecycleWallSeconds": 10.138118959
+    },
+    {
+      "process": 4,
+      "name": "process-4",
+      "startedUtc": "2026-10-12T11:23:17.729946+00:00",
+      "finishedUtc": "2026-10-12T11:23:27.920995+00:00",
+      "nativeStartedUtc": "2026-10-12T11:23:18.120709+00:00",
+      "nativeFinishedUtc": "2026-10-12T11:23:27.496348+00:00",
+      "cases": {
+        "trxhzt:standard": {
+          "txBytes": 366,
+          "inputs": 2,
+          "flags": 535906287,
+          "sigchecks": 2,
+          "meanVerifyMs": 0.05427586,
+          "nsPerActualByte": 148.2946994535519,
+          "evaluationMs": [
+            0.054825,
+            0.0545417,
+            0.0540709,
+            0.0539042,
+            0.0540375
+          ],
+          "evaluationNs": [
+            54825.0,
+            54541.7,
+            54070.9,
+            53904.2,
+            54037.5
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 22833,
+            "admission_control_nanoseconds": 86250,
+            "cache_total_nanoseconds": 4042,
+            "coins_context_nanoseconds": 500,
+            "precompute_checker_nanoseconds": 1625
+          },
+          "annualRelativeTime": 1.0,
+          "annualRelativePerByte": 1.0,
+          "bareRelativeTime": 0.0007007891227116641,
+          "bareRelativePerByte": 0.19144946120681386,
+          "candidateRelativeTime": 0.015215237918986952,
+          "candidateRelativePerByte": 1.3647153836188626,
+          "annualDenominatorMs": 0.05427586,
+          "bareDenominatorMs": 77.44963247999999,
+          "baselineDenominatorMs": 3.56720416,
+          "annualDenominatorNsPerByte": 148.2946994535519,
+          "bareDenominatorNsPerByte": 774.5892755130615,
+          "baselineDenominatorNsPerByte": 108.6634628975265
+        },
+        "trxhzt:consensus": {
+          "txBytes": 366,
+          "inputs": 2,
+          "flags": 396445551,
+          "sigchecks": 2,
+          "meanVerifyMs": 0.0539917,
+          "nsPerActualByte": 147.51830601092897,
+          "evaluationMs": [
+            0.0543,
+            0.0539334,
+            0.0539334,
+            0.0539,
+            0.053891699999999994
+          ],
+          "evaluationNs": [
+            54300.0,
+            53933.4,
+            53933.4,
+            53900.0,
+            53891.7
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 10458,
+            "admission_control_nanoseconds": 64125,
+            "cache_total_nanoseconds": 3625,
+            "coins_context_nanoseconds": 292,
+            "precompute_checker_nanoseconds": 1584
+          },
+          "annualRelativeTime": 1.0,
+          "annualRelativePerByte": 1.0,
+          "bareRelativeTime": 0.0006952484757211207,
+          "bareRelativePerByte": 0.18993580489181264,
+          "candidateRelativeTime": 0.014300306321510008,
+          "candidateRelativePerByte": 1.282651518914018,
+          "annualDenominatorMs": 0.0539917,
+          "bareDenominatorMs": 77.65813502000002,
+          "baselineDenominatorMs": 3.7755624799999996,
+          "annualDenominatorNsPerByte": 147.51830601092897,
+          "bareDenominatorNsPerByte": 776.6745511461377,
+          "baselineDenominatorNsPerByte": 115.01043255757278
+        },
+        "l0fhm3:standard": {
+          "txBytes": 99988,
+          "inputs": 873,
+          "flags": 535906287,
+          "sigchecks": 2619,
+          "meanVerifyMs": 77.44963247999999,
+          "nsPerActualByte": 774.5892755130615,
+          "evaluationMs": [
+            77.1022708,
+            77.2018916,
+            77.47329590000001,
+            77.9388333,
+            77.5318708
+          ],
+          "evaluationNs": [
+            77102270.8,
+            77201891.6,
+            77473295.9,
+            77938833.3,
+            77531870.8
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 1251667,
+            "admission_control_nanoseconds": 324830791,
+            "cache_total_nanoseconds": 680125,
+            "coins_context_nanoseconds": 145500,
+            "precompute_checker_nanoseconds": 295042
+          },
+          "annualRelativeTime": 1426.9627875081112,
+          "annualRelativePerByte": 5.223310599551633,
+          "bareRelativeTime": 1.0,
+          "bareRelativePerByte": 1.0,
+          "candidateRelativeTime": 21.711578313476732,
+          "candidateRelativePerByte": 7.128332328627578,
+          "annualDenominatorMs": 0.05427586,
+          "bareDenominatorMs": 77.44963247999999,
+          "baselineDenominatorMs": 3.56720416,
+          "annualDenominatorNsPerByte": 148.2946994535519,
+          "bareDenominatorNsPerByte": 774.5892755130615,
+          "baselineDenominatorNsPerByte": 108.6634628975265
+        },
+        "l0fhm3:consensus": {
+          "txBytes": 99988,
+          "inputs": 873,
+          "flags": 396445551,
+          "sigchecks": 2619,
+          "meanVerifyMs": 77.65813502000002,
+          "nsPerActualByte": 776.6745511461377,
+          "evaluationMs": [
+            77.6993416,
+            78.39862090000001,
+            77.467225,
+            77.4080584,
+            77.3174292
+          ],
+          "evaluationNs": [
+            77699341.6,
+            78398620.9,
+            77467225.0,
+            77408058.4,
+            77317429.2
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 1248375,
+            "admission_control_nanoseconds": 327729000,
+            "cache_total_nanoseconds": 651292,
+            "coins_context_nanoseconds": 124375,
+            "precompute_checker_nanoseconds": 289500
+          },
+          "annualRelativeTime": 1438.3346888503238,
+          "annualRelativePerByte": 5.264936753602616,
+          "bareRelativeTime": 1.0,
+          "bareRelativePerByte": 1.0,
+          "candidateRelativeTime": 20.568626643413413,
+          "candidateRelativePerByte": 6.7530791239946355,
+          "annualDenominatorMs": 0.0539917,
+          "bareDenominatorMs": 77.65813502000002,
+          "baselineDenominatorMs": 3.7755624799999996,
+          "annualDenominatorNsPerByte": 147.51830601092897,
+          "bareDenominatorNsPerByte": 776.6745511461377,
+          "baselineDenominatorNsPerByte": 115.01043255757278
+        },
+        "bn254-33003:standard": {
+          "txBytes": 32828,
+          "inputs": 5,
+          "flags": 535906287,
+          "sigchecks": 0,
+          "meanVerifyMs": 3.56720416,
+          "nsPerActualByte": 108.6634628975265,
+          "evaluationMs": [
+            3.5719417,
+            3.5633292,
+            3.589175,
+            3.5637416,
+            3.5478332999999997
+          ],
+          "evaluationNs": [
+            3571941.7,
+            3563329.2,
+            3589175.0,
+            3563741.6,
+            3547833.3
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 228958,
+            "admission_control_nanoseconds": 3740333,
+            "cache_total_nanoseconds": 69583,
+            "coins_context_nanoseconds": 1333,
+            "precompute_checker_nanoseconds": 2041
+          },
+          "annualRelativeTime": 65.72358613939973,
+          "annualRelativePerByte": 0.7327535191610911,
+          "bareRelativeTime": 0.04605837427209442,
+          "bareRelativePerByte": 0.14028526644078765,
+          "candidateRelativeTime": 1.0,
+          "candidateRelativePerByte": 1.0,
+          "annualDenominatorMs": 0.05427586,
+          "bareDenominatorMs": 77.44963247999999,
+          "baselineDenominatorMs": 3.56720416,
+          "annualDenominatorNsPerByte": 148.2946994535519,
+          "bareDenominatorNsPerByte": 774.5892755130615,
+          "baselineDenominatorNsPerByte": 108.6634628975265
+        },
+        "bn254-33003:consensus": {
+          "txBytes": 32828,
+          "inputs": 5,
+          "flags": 396445551,
+          "sigchecks": 0,
+          "meanVerifyMs": 3.7755624799999996,
+          "nsPerActualByte": 115.01043255757278,
+          "evaluationMs": [
+            3.7605375,
+            3.8060958,
+            3.7881375,
+            3.7560666,
+            3.766975
+          ],
+          "evaluationNs": [
+            3760537.5,
+            3806095.8,
+            3788137.5,
+            3756066.6,
+            3766975.0
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 210208,
+            "admission_control_nanoseconds": 3728958,
+            "cache_total_nanoseconds": 72708,
+            "coins_context_nanoseconds": 1208,
+            "precompute_checker_nanoseconds": 2209
+          },
+          "annualRelativeTime": 69.92857198421238,
+          "annualRelativePerByte": 0.7796349867863327,
+          "bareRelativeTime": 0.048617733081378324,
+          "bareRelativePerByte": 0.14808059873707982,
+          "candidateRelativeTime": 1.0,
+          "candidateRelativePerByte": 1.0,
+          "annualDenominatorMs": 0.0539917,
+          "bareDenominatorMs": 77.65813502000002,
+          "baselineDenominatorMs": 3.7755624799999996,
+          "annualDenominatorNsPerByte": 147.51830601092897,
+          "bareDenominatorNsPerByte": 776.6745511461377,
+          "baselineDenominatorNsPerByte": 115.01043255757278
+        },
+        "bn254-32774:standard": {
+          "txBytes": 32599,
+          "inputs": 5,
+          "flags": 535906287,
+          "sigchecks": 0,
+          "meanVerifyMs": 3.74364166,
+          "nsPerActualByte": 114.83915641584098,
+          "evaluationMs": [
+            3.7778375,
+            3.738425,
+            3.7401042,
+            3.7082541,
+            3.7535875
+          ],
+          "evaluationNs": [
+            3777837.5,
+            3738425.0,
+            3740104.2,
+            3708254.1,
+            3753587.5
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 233333,
+            "admission_control_nanoseconds": 4673333,
+            "cache_total_nanoseconds": 76166,
+            "coins_context_nanoseconds": 2042,
+            "precompute_checker_nanoseconds": 2291
+          },
+          "annualRelativeTime": 68.97434071058478,
+          "annualRelativePerByte": 0.7743982545499564,
+          "bareRelativeTime": 0.04833646771618613,
+          "bareRelativePerByte": 0.14825812859308624,
+          "candidateRelativeTime": 1.049461004216815,
+          "candidateRelativePerByte": 1.0568332110319214,
+          "annualDenominatorMs": 0.05427586,
+          "bareDenominatorMs": 77.44963247999999,
+          "baselineDenominatorMs": 3.56720416,
+          "annualDenominatorNsPerByte": 148.2946994535519,
+          "bareDenominatorNsPerByte": 774.5892755130615,
+          "baselineDenominatorNsPerByte": 108.6634628975265
+        },
+        "bn254-32774:consensus": {
+          "txBytes": 32599,
+          "inputs": 5,
+          "flags": 396445551,
+          "sigchecks": 0,
+          "meanVerifyMs": 3.730565,
+          "nsPerActualByte": 114.4380195711525,
+          "evaluationMs": [
+            3.779525,
+            3.7460459,
+            3.6949707999999997,
+            3.7600458,
+            3.6722375
+          ],
+          "evaluationNs": [
+            3779525.0,
+            3746045.9,
+            3694970.8,
+            3760045.8,
+            3672237.5
+          ],
+          "setupNanosecondsOncePerContext": {
+            "json_hex_decode_nanoseconds": 212208,
+            "admission_control_nanoseconds": 3960959,
+            "cache_total_nanoseconds": 75417,
+            "coins_context_nanoseconds": 1583,
+            "precompute_checker_nanoseconds": 2292
+          },
+          "annualRelativeTime": 69.09515721860953,
+          "annualRelativePerByte": 0.775754702353173,
+          "bareRelativeTime": 0.048038302735949466,
+          "bareRelativePerByte": 0.14734359379005846,
+          "candidateRelativeTime": 0.9880819135590097,
+          "candidateRelativePerByte": 0.9950229472779893,
+          "annualDenominatorMs": 0.0539917,
+          "bareDenominatorMs": 77.65813502000002,
+          "baselineDenominatorMs": 3.7755624799999996,
+          "annualDenominatorNsPerByte": 147.51830601092897,
+          "bareDenominatorNsPerByte": 776.6745511461377,
+          "baselineDenominatorNsPerByte": 115.01043255757278
+        }
+      },
+      "corpusReadNanosecondsOncePerProcess": 2917084,
+      "processWallSeconds": 9.375430834000003,
+      "lifecycleWallSeconds": 10.189391290999996
+    }
+  ],
+  "aggregate": {
+    "trxhzt:standard": {
+      "txBytes": 366,
+      "inputs": 2,
+      "flags": 535906287,
+      "sigchecks": 2,
+      "meanVerifyMs": {
+        "median": 0.053435430000000006,
+        "minimum": 0.05111747999999999,
+        "maximum": 0.0543575,
+        "all": [
+          0.05111747999999999,
+          0.0543575,
+          0.052595,
+          0.05427586
+        ]
+      },
+      "nsPerActualByte": {
+        "median": 145.99844262295082,
+        "minimum": 139.66524590163934,
+        "maximum": 148.51775956284152,
+        "all": [
+          139.66524590163934,
+          148.51775956284152,
+          143.70218579234972,
+          148.2946994535519
+        ]
+      },
+      "annualRelativeTime": {
+        "median": 1.0,
+        "minimum": 1.0,
+        "maximum": 1.0,
+        "all": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "annualRelativePerByte": {
+        "median": 1.0,
+        "minimum": 1.0,
+        "maximum": 1.0,
+        "all": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "bareRelativeTime": {
+        "median": 0.0006918327369937849,
+        "minimum": 0.000662993033293847,
+        "maximum": 0.0007052247786007542,
+        "all": [
+          0.000662993033293847,
+          0.0007052247786007542,
+          0.0006828763512759057,
+          0.0007007891227116641
+        ]
+      },
+      "bareRelativePerByte": {
+        "median": 0.1890026549358868,
+        "minimum": 0.18112390003547865,
+        "maximum": 0.1926612436140224,
+        "all": [
+          0.18112390003547865,
+          0.1926612436140224,
+          0.18655584866495972,
+          0.19144946120681386
+        ]
+      },
+      "candidateRelativeTime": {
+        "median": 0.014833627894030707,
+        "minimum": 0.013638786779714087,
+        "maximum": 0.01640886607099663,
+        "all": [
+          0.013638786779714087,
+          0.01640886607099663,
+          0.014452017869074463,
+          0.015215237918986952
+        ]
+      },
+      "candidateRelativePerByte": {
+        "median": 1.3304872582110385,
+        "minimum": 1.2233171923618964,
+        "maximum": 1.4717766540401018,
+        "all": [
+          1.2233171923618964,
+          1.4717766540401018,
+          1.2962591328032145,
+          1.3647153836188626
+        ]
+      },
+      "annualDenominatorMs": {
+        "median": 0.053435430000000006,
+        "minimum": 0.05111747999999999,
+        "maximum": 0.0543575,
+        "all": [
+          0.05111747999999999,
+          0.0543575,
+          0.052595,
+          0.05427586
+        ]
+      },
+      "bareDenominatorMs": {
+        "median": 77.08967164999999,
+        "minimum": 77.0198,
+        "maximum": 77.44963247999999,
+        "all": [
+          77.10108165999999,
+          77.07826164,
+          77.0198,
+          77.44963247999999
+        ]
+      },
+      "baselineDenominatorMs": {
+        "median": 3.60324417,
+        "minimum": 3.31269082,
+        "maximum": 3.7479492000000003,
+        "all": [
+          3.7479492000000003,
+          3.31269082,
+          3.6392841799999998,
+          3.56720416
+        ]
+      },
+      "annualDenominatorNsPerByte": {
+        "median": 145.99844262295082,
+        "minimum": 139.66524590163934,
+        "maximum": 148.51775956284152,
+        "all": [
+          139.66524590163934,
+          148.51775956284152,
+          143.70218579234972,
+          148.2946994535519
+        ]
+      },
+      "bareDenominatorNsPerByte": {
+        "median": 770.989235208225,
+        "minimum": 770.2904348521822,
+        "maximum": 774.5892755130615,
+        "all": [
+          771.1033490018801,
+          770.8751214145698,
+          770.2904348521822,
+          774.5892755130615
+        ]
+      },
+      "baselineDenominatorNsPerByte": {
+        "median": 109.76130650664066,
+        "minimum": 100.91052820762764,
+        "maximum": 114.16928231997076,
+        "all": [
+          114.16928231997076,
+          100.91052820762764,
+          110.85915011575483,
+          108.6634628975265
+        ]
+      },
+      "evaluationSamplesMs": [
+        [
+          0.0512166,
+          0.0505125,
+          0.050675,
+          0.0510375,
+          0.052145800000000006
+        ],
+        [
+          0.0551709,
+          0.054370800000000004,
+          0.054275,
+          0.0539875,
+          0.053983300000000005
+        ],
+        [
+          0.052595800000000005,
+          0.0528084,
+          0.0530791,
+          0.0525209,
+          0.051970800000000004
+        ],
+        [
+          0.054825,
+          0.0545417,
+          0.0540709,
+          0.0539042,
+          0.0540375
+        ]
+      ],
+      "setupNanosecondsOncePerContext": [
+        {
+          "json_hex_decode_nanoseconds": 90833,
+          "admission_control_nanoseconds": 155459,
+          "cache_total_nanoseconds": 4500,
+          "coins_context_nanoseconds": 542,
+          "precompute_checker_nanoseconds": 1834
+        },
+        {
+          "json_hex_decode_nanoseconds": 22542,
+          "admission_control_nanoseconds": 98875,
+          "cache_total_nanoseconds": 4583,
+          "coins_context_nanoseconds": 500,
+          "precompute_checker_nanoseconds": 2000
+        },
+        {
+          "json_hex_decode_nanoseconds": 25500,
+          "admission_control_nanoseconds": 83083,
+          "cache_total_nanoseconds": 4041,
+          "coins_context_nanoseconds": 459,
+          "precompute_checker_nanoseconds": 1709
+        },
+        {
+          "json_hex_decode_nanoseconds": 22833,
+          "admission_control_nanoseconds": 86250,
+          "cache_total_nanoseconds": 4042,
+          "coins_context_nanoseconds": 500,
+          "precompute_checker_nanoseconds": 1625
+        }
+      ]
+    },
+    "trxhzt:consensus": {
+      "txBytes": 366,
+      "inputs": 2,
+      "flags": 396445551,
+      "sigchecks": 2,
+      "meanVerifyMs": {
+        "median": 0.05350584,
+        "minimum": 0.0520125,
+        "maximum": 0.0539917,
+        "all": [
+          0.053094180000000005,
+          0.0539175,
+          0.0520125,
+          0.0539917
+        ]
+      },
+      "nsPerActualByte": {
+        "median": 146.19081967213117,
+        "minimum": 142.11065573770492,
+        "maximum": 147.51830601092897,
+        "all": [
+          145.06606557377052,
+          147.3155737704918,
+          142.11065573770492,
+          147.51830601092897
+        ]
+      },
+      "annualRelativeTime": {
+        "median": 1.0,
+        "minimum": 1.0,
+        "maximum": 1.0,
+        "all": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "annualRelativePerByte": {
+        "median": 1.0,
+        "minimum": 1.0,
+        "maximum": 1.0,
+        "all": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "bareRelativeTime": {
+        "median": 0.0006913958115353085,
+        "minimum": 0.0006727025557538473,
+        "maximum": 0.0006972249947353323,
+        "all": [
+          0.0006875431473494963,
+          0.0006972249947353323,
+          0.0006727025557538473,
+          0.0006952484757211207
+        ]
+      },
+      "bareRelativePerByte": {
+        "median": 0.18888329072074436,
+        "minimum": 0.183776456679551,
+        "maximum": 0.19047577260545462,
+        "all": [
+          0.1878307765496761,
+          0.19047577260545462,
+          0.183776456679551,
+          0.18993580489181264
+        ]
+      },
+      "candidateRelativeTime": {
+        "median": 0.014379664237008156,
+        "minimum": 0.014136504550360415,
+        "maximum": 0.01599718925371978,
+        "all": [
+          0.014459022152506303,
+          0.01599718925371978,
+          0.014136504550360415,
+          0.014300306321510008
+        ]
+      },
+      "candidateRelativePerByte": {
+        "median": 1.2897694469194092,
+        "minimum": 1.2679594846427094,
+        "maximum": 1.4348517180904725,
+        "all": [
+          1.2968873749248004,
+          1.4348517180904725,
+          1.2679594846427094,
+          1.282651518914018
+        ]
+      },
+      "annualDenominatorMs": {
+        "median": 0.05350584,
+        "minimum": 0.0520125,
+        "maximum": 0.0539917,
+        "all": [
+          0.053094180000000005,
+          0.0539175,
+          0.0520125,
+          0.0539917
+        ]
+      },
+      "bareDenominatorMs": {
+        "median": 77.32514208999999,
+        "minimum": 77.22305168,
+        "maximum": 77.65813502000002,
+        "all": [
+          77.22305168,
+          77.331565,
+          77.31871917999999,
+          77.65813502000002
+        ]
+      },
+      "baselineDenominatorMs": {
+        "median": 3.67567458,
+        "minimum": 3.37043584,
+        "maximum": 3.7755624799999996,
+        "all": [
+          3.672045,
+          3.37043584,
+          3.67930416,
+          3.7755624799999996
+        ]
+      },
+      "annualDenominatorNsPerByte": {
+        "median": 146.19081967213117,
+        "minimum": 142.11065573770492,
+        "maximum": 147.51830601092897,
+        "all": [
+          145.06606557377052,
+          147.3155737704918,
+          142.11065573770492,
+          147.51830601092897
+        ]
+      },
+      "bareDenominatorNsPerByte": {
+        "median": 773.3442222066648,
+        "minimum": 772.3231955834699,
+        "maximum": 776.6745511461377,
+        "all": [
+          772.3231955834699,
+          773.4084590150818,
+          773.2799853982477,
+          776.6745511461377
+        ]
+      },
+      "baselineDenominatorNsPerByte": {
+        "median": 111.96766723528695,
+        "minimum": 102.66954550993054,
+        "maximum": 115.01043255757278,
+        "all": [
+          111.85710369197027,
+          102.66954550993054,
+          112.07823077860364,
+          115.01043255757278
+        ]
+      },
+      "evaluationSamplesMs": [
+        [
+          0.0523542,
+          0.0521,
+          0.0531417,
+          0.053975,
+          0.0539
+        ],
+        [
+          0.0538875,
+          0.0538459,
+          0.0540125,
+          0.0539541,
+          0.0538875
+        ],
+        [
+          0.0518917,
+          0.0518917,
+          0.0518833,
+          0.0524625,
+          0.0519333
+        ],
+        [
+          0.0543,
+          0.0539334,
+          0.0539334,
+          0.0539,
+          0.053891699999999994
+        ]
+      ],
+      "setupNanosecondsOncePerContext": [
+        {
+          "json_hex_decode_nanoseconds": 7250,
+          "admission_control_nanoseconds": 62333,
+          "cache_total_nanoseconds": 3791,
+          "coins_context_nanoseconds": 416,
+          "precompute_checker_nanoseconds": 1625
+        },
+        {
+          "json_hex_decode_nanoseconds": 6334,
+          "admission_control_nanoseconds": 66292,
+          "cache_total_nanoseconds": 3875,
+          "coins_context_nanoseconds": 417,
+          "precompute_checker_nanoseconds": 1708
+        },
+        {
+          "json_hex_decode_nanoseconds": 9542,
+          "admission_control_nanoseconds": 60417,
+          "cache_total_nanoseconds": 3666,
+          "coins_context_nanoseconds": 417,
+          "precompute_checker_nanoseconds": 1583
+        },
+        {
+          "json_hex_decode_nanoseconds": 10458,
+          "admission_control_nanoseconds": 64125,
+          "cache_total_nanoseconds": 3625,
+          "coins_context_nanoseconds": 292,
+          "precompute_checker_nanoseconds": 1584
+        }
+      ]
+    },
+    "l0fhm3:standard": {
+      "txBytes": 99988,
+      "inputs": 873,
+      "flags": 535906287,
+      "sigchecks": 2619,
+      "meanVerifyMs": {
+        "median": 77.08967164999999,
+        "minimum": 77.0198,
+        "maximum": 77.44963247999999,
+        "all": [
+          77.10108165999999,
+          77.07826164,
+          77.0198,
+          77.44963247999999
+        ]
+      },
+      "nsPerActualByte": {
+        "median": 770.989235208225,
+        "minimum": 770.2904348521822,
+        "maximum": 774.5892755130615,
+        "all": [
+          771.1033490018801,
+          770.8751214145698,
+          770.2904348521822,
+          774.5892755130615
+        ]
+      },
+      "annualRelativeTime": {
+        "median": 1445.6783706530005,
+        "minimum": 1417.987612380996,
+        "maximum": 1508.3114750570646,
+        "all": [
+          1508.3114750570646,
+          1417.987612380996,
+          1464.3939537978895,
+          1426.9627875081112
+        ]
+      },
+      "annualRelativePerByte": {
+        "median": 5.29181785473255,
+        "minimum": 5.190457516216393,
+        "maximum": 5.52108252861229,
+        "all": [
+          5.52108252861229,
+          5.190457516216393,
+          5.3603251099134654,
+          5.223310599551633
+        ]
+      },
+      "bareRelativeTime": {
+        "median": 1.0,
+        "minimum": 1.0,
+        "maximum": 1.0,
+        "all": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "bareRelativePerByte": {
+        "median": 1.0,
+        "minimum": 1.0,
+        "maximum": 1.0,
+        "all": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "candidateRelativeTime": {
+        "median": 21.43751295056422,
+        "minimum": 20.57153860569935,
+        "maximum": 23.26756882189205,
+        "all": [
+          20.57153860569935,
+          23.26756882189205,
+          21.163447587651703,
+          21.711578313476732
+        ]
+      },
+      "candidateRelativePerByte": {
+        "median": 7.038351353573651,
+        "minimum": 6.754035177700306,
+        "maximum": 7.63919419615426,
+        "all": [
+          6.754035177700306,
+          7.63919419615426,
+          6.948370378519724,
+          7.128332328627578
+        ]
+      },
+      "annualDenominatorMs": {
+        "median": 0.053435430000000006,
+        "minimum": 0.05111747999999999,
+        "maximum": 0.0543575,
+        "all": [
+          0.05111747999999999,
+          0.0543575,
+          0.052595,
+          0.05427586
+        ]
+      },
+      "bareDenominatorMs": {
+        "median": 77.08967164999999,
+        "minimum": 77.0198,
+        "maximum": 77.44963247999999,
+        "all": [
+          77.10108165999999,
+          77.07826164,
+          77.0198,
+          77.44963247999999
+        ]
+      },
+      "baselineDenominatorMs": {
+        "median": 3.60324417,
+        "minimum": 3.31269082,
+        "maximum": 3.7479492000000003,
+        "all": [
+          3.7479492000000003,
+          3.31269082,
+          3.6392841799999998,
+          3.56720416
+        ]
+      },
+      "annualDenominatorNsPerByte": {
+        "median": 145.99844262295082,
+        "minimum": 139.66524590163934,
+        "maximum": 148.51775956284152,
+        "all": [
+          139.66524590163934,
+          148.51775956284152,
+          143.70218579234972,
+          148.2946994535519
+        ]
+      },
+      "bareDenominatorNsPerByte": {
+        "median": 770.989235208225,
+        "minimum": 770.2904348521822,
+        "maximum": 774.5892755130615,
+        "all": [
+          771.1033490018801,
+          770.8751214145698,
+          770.2904348521822,
+          774.5892755130615
+        ]
+      },
+      "baselineDenominatorNsPerByte": {
+        "median": 109.76130650664066,
+        "minimum": 100.91052820762764,
+        "maximum": 114.16928231997076,
+        "all": [
+          114.16928231997076,
+          100.91052820762764,
+          110.85915011575483,
+          108.6634628975265
+        ]
+      },
+      "evaluationSamplesMs": [
+        [
+          76.766,
+          76.777275,
+          77.2287875,
+          77.3406,
+          77.3927458
+        ],
+        [
+          77.15619579999999,
+          77.19610829999999,
+          76.9186375,
+          76.9723708,
+          77.1479958
+        ],
+        [
+          76.4100583,
+          77.0735959,
+          77.0780583,
+          77.0460708,
+          77.49121670000001
+        ],
+        [
+          77.1022708,
+          77.2018916,
+          77.47329590000001,
+          77.9388333,
+          77.5318708
+        ]
+      ],
+      "setupNanosecondsOncePerContext": [
+        {
+          "json_hex_decode_nanoseconds": 1272084,
+          "admission_control_nanoseconds": 323689917,
+          "cache_total_nanoseconds": 718417,
+          "coins_context_nanoseconds": 136083,
+          "precompute_checker_nanoseconds": 329917
+        },
+        {
+          "json_hex_decode_nanoseconds": 1224542,
+          "admission_control_nanoseconds": 325474917,
+          "cache_total_nanoseconds": 707208,
+          "coins_context_nanoseconds": 148750,
+          "precompute_checker_nanoseconds": 307875
+        },
+        {
+          "json_hex_decode_nanoseconds": 1263959,
+          "admission_control_nanoseconds": 327686750,
+          "cache_total_nanoseconds": 672125,
+          "coins_context_nanoseconds": 140417,
+          "precompute_checker_nanoseconds": 294167
+        },
+        {
+          "json_hex_decode_nanoseconds": 1251667,
+          "admission_control_nanoseconds": 324830791,
+          "cache_total_nanoseconds": 680125,
+          "coins_context_nanoseconds": 145500,
+          "precompute_checker_nanoseconds": 295042
+        }
+      ]
+    },
+    "l0fhm3:consensus": {
+      "txBytes": 99988,
+      "inputs": 873,
+      "flags": 396445551,
+      "sigchecks": 2619,
+      "meanVerifyMs": {
+        "median": 77.32514208999999,
+        "minimum": 77.22305168,
+        "maximum": 77.65813502000002,
+        "all": [
+          77.22305168,
+          77.331565,
+          77.31871917999999,
+          77.65813502000002
+        ]
+      },
+      "nsPerActualByte": {
+        "median": 773.3442222066648,
+        "minimum": 772.3231955834699,
+        "maximum": 776.6745511461377,
+        "all": [
+          772.3231955834699,
+          773.4084590150818,
+          773.2799853982477,
+          776.6745511461377
+        ]
+      },
+      "annualRelativeTime": {
+        "median": 1446.394431085131,
+        "minimum": 1434.2572448648398,
+        "maximum": 1486.541104157654,
+        "all": [
+          1454.454173319938,
+          1434.2572448648398,
+          1486.541104157654,
+          1438.3346888503238
+        ]
+      },
+      "annualRelativePerByte": {
+        "median": 5.294438950445631,
+        "minimum": 5.250011517587424,
+        "maximum": 5.441393408426026,
+        "all": [
+          5.323941147288647,
+          5.250011517587424,
+          5.441393408426026,
+          5.264936753602616
+        ]
+      },
+      "bareRelativeTime": {
+        "median": 1.0,
+        "minimum": 1.0,
+        "maximum": 1.0,
+        "all": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "bareRelativePerByte": {
+        "median": 1.0,
+        "minimum": 1.0,
+        "maximum": 1.0,
+        "all": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "candidateRelativeTime": {
+        "median": 21.02224009753035,
+        "minimum": 20.568626643413413,
+        "maximum": 22.944084584621553,
+        "all": [
+          21.029985111838226,
+          22.944084584621553,
+          21.01449508322247,
+          20.568626643413413
+        ]
+      },
+      "candidateRelativePerByte": {
+        "median": 6.902009220323701,
+        "minimum": 6.7530791239946355,
+        "maximum": 7.532988046005085,
+        "all": [
+          6.904552058761303,
+          7.532988046005085,
+          6.899466381886099,
+          6.7530791239946355
+        ]
+      },
+      "annualDenominatorMs": {
+        "median": 0.05350584,
+        "minimum": 0.0520125,
+        "maximum": 0.0539917,
+        "all": [
+          0.053094180000000005,
+          0.0539175,
+          0.0520125,
+          0.0539917
+        ]
+      },
+      "bareDenominatorMs": {
+        "median": 77.32514208999999,
+        "minimum": 77.22305168,
+        "maximum": 77.65813502000002,
+        "all": [
+          77.22305168,
+          77.331565,
+          77.31871917999999,
+          77.65813502000002
+        ]
+      },
+      "baselineDenominatorMs": {
+        "median": 3.67567458,
+        "minimum": 3.37043584,
+        "maximum": 3.7755624799999996,
+        "all": [
+          3.672045,
+          3.37043584,
+          3.67930416,
+          3.7755624799999996
+        ]
+      },
+      "annualDenominatorNsPerByte": {
+        "median": 146.19081967213117,
+        "minimum": 142.11065573770492,
+        "maximum": 147.51830601092897,
+        "all": [
+          145.06606557377052,
+          147.3155737704918,
+          142.11065573770492,
+          147.51830601092897
+        ]
+      },
+      "bareDenominatorNsPerByte": {
+        "median": 773.3442222066648,
+        "minimum": 772.3231955834699,
+        "maximum": 776.6745511461377,
+        "all": [
+          772.3231955834699,
+          773.4084590150818,
+          773.2799853982477,
+          776.6745511461377
+        ]
+      },
+      "baselineDenominatorNsPerByte": {
+        "median": 111.96766723528695,
+        "minimum": 102.66954550993054,
+        "maximum": 115.01043255757278,
+        "all": [
+          111.85710369197027,
+          102.66954550993054,
+          112.07823077860364,
+          115.01043255757278
+        ]
+      },
+      "evaluationSamplesMs": [
+        [
+          77.2564917,
+          76.7635125,
+          77.561575,
+          77.4092625,
+          77.1244167
+        ],
+        [
+          76.8225166,
+          77.1132375,
+          77.7774375,
+          77.43425,
+          77.51038340000001
+        ],
+        [
+          77.12816670000001,
+          77.0770834,
+          77.536125,
+          77.3580458,
+          77.494175
+        ],
+        [
+          77.6993416,
+          78.39862090000001,
+          77.467225,
+          77.4080584,
+          77.3174292
+        ]
+      ],
+      "setupNanosecondsOncePerContext": [
+        {
+          "json_hex_decode_nanoseconds": 1347833,
+          "admission_control_nanoseconds": 322091625,
+          "cache_total_nanoseconds": 662417,
+          "coins_context_nanoseconds": 124333,
+          "precompute_checker_nanoseconds": 294292
+        },
+        {
+          "json_hex_decode_nanoseconds": 1131709,
+          "admission_control_nanoseconds": 322841667,
+          "cache_total_nanoseconds": 697791,
+          "coins_context_nanoseconds": 126500,
+          "precompute_checker_nanoseconds": 316000
+        },
+        {
+          "json_hex_decode_nanoseconds": 1212959,
+          "admission_control_nanoseconds": 322359541,
+          "cache_total_nanoseconds": 652542,
+          "coins_context_nanoseconds": 127584,
+          "precompute_checker_nanoseconds": 288333
+        },
+        {
+          "json_hex_decode_nanoseconds": 1248375,
+          "admission_control_nanoseconds": 327729000,
+          "cache_total_nanoseconds": 651292,
+          "coins_context_nanoseconds": 124375,
+          "precompute_checker_nanoseconds": 289500
+        }
+      ]
+    },
+    "bn254-33003:standard": {
+      "txBytes": 32828,
+      "inputs": 5,
+      "flags": 535906287,
+      "sigchecks": 0,
+      "meanVerifyMs": {
+        "median": 3.60324417,
+        "minimum": 3.31269082,
+        "maximum": 3.7479492000000003,
+        "all": [
+          3.7479492000000003,
+          3.31269082,
+          3.6392841799999998,
+          3.56720416
+        ]
+      },
+      "nsPerActualByte": {
+        "median": 109.76130650664066,
+        "minimum": 100.91052820762764,
+        "maximum": 114.16928231997076,
+        "all": [
+          114.16928231997076,
+          100.91052820762764,
+          110.85915011575483,
+          108.6634628975265
+        ]
+      },
+      "annualRelativeTime": {
+        "median": 67.45903786483248,
+        "minimum": 60.94266329393367,
+        "maximum": 73.32030452205392,
+        "all": [
+          73.32030452205392,
+          60.94266329393367,
+          69.19448959026522,
+          65.72358613939973
+        ]
+      },
+      "annualRelativePerByte": {
+        "median": 0.7521021036471514,
+        "minimum": 0.6794509188978838,
+        "maximum": 0.8174494777346086,
+        "all": [
+          0.8174494777346086,
+          0.6794509188978838,
+          0.7714506881332117,
+          0.7327535191610911
+        ]
+      },
+      "bareRelativeTime": {
+        "median": 0.04665482742594669,
+        "minimum": 0.042978276228804686,
+        "maximum": 0.0486108510971051,
+        "all": [
+          0.0486108510971051,
+          0.042978276228804686,
+          0.04725128057979896,
+          0.04605837427209442
+        ]
+      },
+      "bareRelativePerByte": {
+        "median": 0.14210195213432308,
+        "minimum": 0.13090385900955656,
+        "maximum": 0.14805963748925746,
+        "all": [
+          0.14805963748925746,
+          0.13090385900955656,
+          0.1439186378278585,
+          0.14028526644078765
+        ]
+      },
+      "candidateRelativeTime": {
+        "median": 1.0,
+        "minimum": 1.0,
+        "maximum": 1.0,
+        "all": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "candidateRelativePerByte": {
+        "median": 1.0,
+        "minimum": 1.0,
+        "maximum": 1.0,
+        "all": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "annualDenominatorMs": {
+        "median": 0.053435430000000006,
+        "minimum": 0.05111747999999999,
+        "maximum": 0.0543575,
+        "all": [
+          0.05111747999999999,
+          0.0543575,
+          0.052595,
+          0.05427586
+        ]
+      },
+      "bareDenominatorMs": {
+        "median": 77.08967164999999,
+        "minimum": 77.0198,
+        "maximum": 77.44963247999999,
+        "all": [
+          77.10108165999999,
+          77.07826164,
+          77.0198,
+          77.44963247999999
+        ]
+      },
+      "baselineDenominatorMs": {
+        "median": 3.60324417,
+        "minimum": 3.31269082,
+        "maximum": 3.7479492000000003,
+        "all": [
+          3.7479492000000003,
+          3.31269082,
+          3.6392841799999998,
+          3.56720416
+        ]
+      },
+      "annualDenominatorNsPerByte": {
+        "median": 145.99844262295082,
+        "minimum": 139.66524590163934,
+        "maximum": 148.51775956284152,
+        "all": [
+          139.66524590163934,
+          148.51775956284152,
+          143.70218579234972,
+          148.2946994535519
+        ]
+      },
+      "bareDenominatorNsPerByte": {
+        "median": 770.989235208225,
+        "minimum": 770.2904348521822,
+        "maximum": 774.5892755130615,
+        "all": [
+          771.1033490018801,
+          770.8751214145698,
+          770.2904348521822,
+          774.5892755130615
+        ]
+      },
+      "baselineDenominatorNsPerByte": {
+        "median": 109.76130650664066,
+        "minimum": 100.91052820762764,
+        "maximum": 114.16928231997076,
+        "all": [
+          114.16928231997076,
+          100.91052820762764,
+          110.85915011575483,
+          108.6634628975265
+        ]
+      },
+      "evaluationSamplesMs": [
+        [
+          3.8234667,
+          3.7012084,
+          3.763,
+          3.7621333999999997,
+          3.6899375
+        ],
+        [
+          3.2684957999999997,
+          3.3139833,
+          3.30525,
+          3.3706042000000003,
+          3.3051207999999996
+        ],
+        [
+          3.6857167000000004,
+          3.6645084,
+          3.6385875,
+          3.6237833,
+          3.583825
+        ],
+        [
+          3.5719417,
+          3.5633292,
+          3.589175,
+          3.5637416,
+          3.5478332999999997
+        ]
+      ],
+      "setupNanosecondsOncePerContext": [
+        {
+          "json_hex_decode_nanoseconds": 250916,
+          "admission_control_nanoseconds": 4700459,
+          "cache_total_nanoseconds": 82291,
+          "coins_context_nanoseconds": 3583,
+          "precompute_checker_nanoseconds": 2416
+        },
+        {
+          "json_hex_decode_nanoseconds": 214291,
+          "admission_control_nanoseconds": 3414458,
+          "cache_total_nanoseconds": 65000,
+          "coins_context_nanoseconds": 1208,
+          "precompute_checker_nanoseconds": 1959
+        },
+        {
+          "json_hex_decode_nanoseconds": 248625,
+          "admission_control_nanoseconds": 4713541,
+          "cache_total_nanoseconds": 76625,
+          "coins_context_nanoseconds": 2500,
+          "precompute_checker_nanoseconds": 2208
+        },
+        {
+          "json_hex_decode_nanoseconds": 228958,
+          "admission_control_nanoseconds": 3740333,
+          "cache_total_nanoseconds": 69583,
+          "coins_context_nanoseconds": 1333,
+          "precompute_checker_nanoseconds": 2041
+        }
+      ]
+    },
+    "bn254-33003:consensus": {
+      "txBytes": 32828,
+      "inputs": 5,
+      "flags": 396445551,
+      "sigchecks": 0,
+      "meanVerifyMs": {
+        "median": 3.67567458,
+        "minimum": 3.37043584,
+        "maximum": 3.7755624799999996,
+        "all": [
+          3.672045,
+          3.37043584,
+          3.67930416,
+          3.7755624799999996
+        ]
+      },
+      "nsPerActualByte": {
+        "median": 111.96766723528695,
+        "minimum": 102.66954550993054,
+        "maximum": 115.01043255757278,
+        "all": [
+          111.85710369197027,
+          102.66954550993054,
+          112.07823077860364,
+          115.01043255757278
+        ]
+      },
+      "annualRelativeTime": {
+        "median": 69.54477108482257,
+        "minimum": 62.510981406778875,
+        "maximum": 70.73884470079308,
+        "all": [
+          69.16097018543275,
+          62.510981406778875,
+          70.73884470079308,
+          69.92857198421238
+        ]
+      },
+      "annualRelativePerByte": {
+        "median": 0.7753559832169201,
+        "minimum": 0.6969361275399375,
+        "maximum": 0.788668732804017,
+        "all": [
+          0.7710769796475077,
+          0.6969361275399375,
+          0.788668732804017,
+          0.7796349867863327
+        ]
+      },
+      "bareRelativeTime": {
+        "median": 0.047568676368167556,
+        "minimum": 0.04358421868224185,
+        "maximum": 0.048617733081378324,
+        "all": [
+          0.047551151115037105,
+          0.04358421868224185,
+          0.047586201621298,
+          0.048617733081378324
+        ]
+      },
+      "bareRelativePerByte": {
+        "median": 0.144885366537722,
+        "minimum": 0.13274944734982327,
+        "maximum": 0.14808059873707982,
+        "all": [
+          0.14483198786677015,
+          0.13274944734982327,
+          0.1449387452086738,
+          0.14808059873707982
+        ]
+      },
+      "candidateRelativeTime": {
+        "median": 1.0,
+        "minimum": 1.0,
+        "maximum": 1.0,
+        "all": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "candidateRelativePerByte": {
+        "median": 1.0,
+        "minimum": 1.0,
+        "maximum": 1.0,
+        "all": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "annualDenominatorMs": {
+        "median": 0.05350584,
+        "minimum": 0.0520125,
+        "maximum": 0.0539917,
+        "all": [
+          0.053094180000000005,
+          0.0539175,
+          0.0520125,
+          0.0539917
+        ]
+      },
+      "bareDenominatorMs": {
+        "median": 77.32514208999999,
+        "minimum": 77.22305168,
+        "maximum": 77.65813502000002,
+        "all": [
+          77.22305168,
+          77.331565,
+          77.31871917999999,
+          77.65813502000002
+        ]
+      },
+      "baselineDenominatorMs": {
+        "median": 3.67567458,
+        "minimum": 3.37043584,
+        "maximum": 3.7755624799999996,
+        "all": [
+          3.672045,
+          3.37043584,
+          3.67930416,
+          3.7755624799999996
+        ]
+      },
+      "annualDenominatorNsPerByte": {
+        "median": 146.19081967213117,
+        "minimum": 142.11065573770492,
+        "maximum": 147.51830601092897,
+        "all": [
+          145.06606557377052,
+          147.3155737704918,
+          142.11065573770492,
+          147.51830601092897
+        ]
+      },
+      "bareDenominatorNsPerByte": {
+        "median": 773.3442222066648,
+        "minimum": 772.3231955834699,
+        "maximum": 776.6745511461377,
+        "all": [
+          772.3231955834699,
+          773.4084590150818,
+          773.2799853982477,
+          776.6745511461377
+        ]
+      },
+      "baselineDenominatorNsPerByte": {
+        "median": 111.96766723528695,
+        "minimum": 102.66954550993054,
+        "maximum": 115.01043255757278,
+        "all": [
+          111.85710369197027,
+          102.66954550993054,
+          112.07823077860364,
+          115.01043255757278
+        ]
+      },
+      "evaluationSamplesMs": [
+        [
+          3.6775417000000004,
+          3.6367666,
+          3.6258625,
+          3.7057708,
+          3.7142834
+        ],
+        [
+          3.3476375,
+          3.3892832999999998,
+          3.3716167,
+          3.3593875,
+          3.3842542
+        ],
+        [
+          3.7136833,
+          3.6832291,
+          3.6843667,
+          3.6390917000000003,
+          3.67615
+        ],
+        [
+          3.7605375,
+          3.8060958,
+          3.7881375,
+          3.7560666,
+          3.766975
+        ]
+      ],
+      "setupNanosecondsOncePerContext": [
+        {
+          "json_hex_decode_nanoseconds": 214333,
+          "admission_control_nanoseconds": 3834208,
+          "cache_total_nanoseconds": 72667,
+          "coins_context_nanoseconds": 1583,
+          "precompute_checker_nanoseconds": 2125
+        },
+        {
+          "json_hex_decode_nanoseconds": 194542,
+          "admission_control_nanoseconds": 3408166,
+          "cache_total_nanoseconds": 64667,
+          "coins_context_nanoseconds": 1042,
+          "precompute_checker_nanoseconds": 2166
+        },
+        {
+          "json_hex_decode_nanoseconds": 219041,
+          "admission_control_nanoseconds": 3732000,
+          "cache_total_nanoseconds": 72750,
+          "coins_context_nanoseconds": 1542,
+          "precompute_checker_nanoseconds": 2125
+        },
+        {
+          "json_hex_decode_nanoseconds": 210208,
+          "admission_control_nanoseconds": 3728958,
+          "cache_total_nanoseconds": 72708,
+          "coins_context_nanoseconds": 1208,
+          "precompute_checker_nanoseconds": 2209
+        }
+      ]
+    },
+    "bn254-32774:standard": {
+      "txBytes": 32599,
+      "inputs": 5,
+      "flags": 535906287,
+      "sigchecks": 0,
+      "meanVerifyMs": {
+        "median": 3.6830054,
+        "minimum": 3.6360308399999997,
+        "maximum": 3.74364166,
+        "all": [
+          3.6360308399999997,
+          3.68010416,
+          3.68590664,
+          3.74364166
+        ]
+      },
+      "nsPerActualByte": {
+        "median": 112.97909138317127,
+        "minimum": 111.53810975796803,
+        "maximum": 114.83915641584098,
+        "all": [
+          111.53810975796803,
+          112.89009356115218,
+          113.06808920519033,
+          114.83915641584098
+        ]
+      },
+      "annualRelativeTime": {
+        "median": 69.52763655930417,
+        "minimum": 67.70186561192108,
+        "maximum": 71.13087030111814,
+        "all": [
+          71.13087030111814,
+          67.70186561192108,
+          70.08093240802357,
+          68.97434071058478
+        ]
+      },
+      "annualRelativePerByte": {
+        "median": 0.7806102942024395,
+        "minimum": 0.760111746187402,
+        "maximum": 0.7986103417346924,
+        "all": [
+          0.7986103417346924,
+          0.760111746187402,
+          0.7868223338549227,
+          0.7743982545499564
+        ]
+      },
+      "bareRelativeTime": {
+        "median": 0.04780082230191478,
+        "minimum": 0.04715927146176953,
+        "maximum": 0.04833646771618613,
+        "all": [
+          0.04715927146176953,
+          0.047745033187025054,
+          0.04785661141680451,
+          0.04833646771618613
+        ]
+      },
+      "bareRelativePerByte": {
+        "median": 0.14661519127347022,
+        "minimum": 0.14464741970365386,
+        "maximum": 0.14825812859308624,
+        "all": [
+          0.14464741970365386,
+          0.14644407430609102,
+          0.1467863082408494,
+          0.14825812859308624
+        ]
+      },
+      "candidateRelativeTime": {
+        "median": 1.0311359458294858,
+        "minimum": 0.9701387734924474,
+        "maximum": 1.1109108455826253,
+        "all": [
+          0.9701387734924474,
+          1.1109108455826253,
+          1.0128108874421562,
+          1.049461004216815
+        ]
+      },
+      "candidateRelativePerByte": {
+        "median": 1.0383794235924524,
+        "minimum": 0.9769537610420586,
+        "maximum": 1.1187147225002736,
+        "all": [
+          0.9769537610420586,
+          1.1187147225002736,
+          1.0199256361529834,
+          1.0568332110319214
+        ]
+      },
+      "annualDenominatorMs": {
+        "median": 0.053435430000000006,
+        "minimum": 0.05111747999999999,
+        "maximum": 0.0543575,
+        "all": [
+          0.05111747999999999,
+          0.0543575,
+          0.052595,
+          0.05427586
+        ]
+      },
+      "bareDenominatorMs": {
+        "median": 77.08967164999999,
+        "minimum": 77.0198,
+        "maximum": 77.44963247999999,
+        "all": [
+          77.10108165999999,
+          77.07826164,
+          77.0198,
+          77.44963247999999
+        ]
+      },
+      "baselineDenominatorMs": {
+        "median": 3.60324417,
+        "minimum": 3.31269082,
+        "maximum": 3.7479492000000003,
+        "all": [
+          3.7479492000000003,
+          3.31269082,
+          3.6392841799999998,
+          3.56720416
+        ]
+      },
+      "annualDenominatorNsPerByte": {
+        "median": 145.99844262295082,
+        "minimum": 139.66524590163934,
+        "maximum": 148.51775956284152,
+        "all": [
+          139.66524590163934,
+          148.51775956284152,
+          143.70218579234972,
+          148.2946994535519
+        ]
+      },
+      "bareDenominatorNsPerByte": {
+        "median": 770.989235208225,
+        "minimum": 770.2904348521822,
+        "maximum": 774.5892755130615,
+        "all": [
+          771.1033490018801,
+          770.8751214145698,
+          770.2904348521822,
+          774.5892755130615
+        ]
+      },
+      "baselineDenominatorNsPerByte": {
+        "median": 109.76130650664066,
+        "minimum": 100.91052820762764,
+        "maximum": 114.16928231997076,
+        "all": [
+          114.16928231997076,
+          100.91052820762764,
+          110.85915011575483,
+          108.6634628975265
+        ]
+      },
+      "evaluationSamplesMs": [
+        [
+          3.6811042,
+          3.6568582999999997,
+          3.6129667000000003,
+          3.6276957999999997,
+          3.6015292000000003
+        ],
+        [
+          3.8213125,
+          3.7419375,
+          3.7255083,
+          3.5992792000000002,
+          3.5124833
+        ],
+        [
+          3.667425,
+          3.6499416,
+          3.6938375,
+          3.7414832999999996,
+          3.6768457999999997
+        ],
+        [
+          3.7778375,
+          3.738425,
+          3.7401042,
+          3.7082541,
+          3.7535875
+        ]
+      ],
+      "setupNanosecondsOncePerContext": [
+        {
+          "json_hex_decode_nanoseconds": 217041,
+          "admission_control_nanoseconds": 3846041,
+          "cache_total_nanoseconds": 72292,
+          "coins_context_nanoseconds": 1292,
+          "precompute_checker_nanoseconds": 2208
+        },
+        {
+          "json_hex_decode_nanoseconds": 234209,
+          "admission_control_nanoseconds": 4590875,
+          "cache_total_nanoseconds": 74375,
+          "coins_context_nanoseconds": 3500,
+          "precompute_checker_nanoseconds": 2334
+        },
+        {
+          "json_hex_decode_nanoseconds": 218792,
+          "admission_control_nanoseconds": 3888000,
+          "cache_total_nanoseconds": 75875,
+          "coins_context_nanoseconds": 2375,
+          "precompute_checker_nanoseconds": 2125
+        },
+        {
+          "json_hex_decode_nanoseconds": 233333,
+          "admission_control_nanoseconds": 4673333,
+          "cache_total_nanoseconds": 76166,
+          "coins_context_nanoseconds": 2042,
+          "precompute_checker_nanoseconds": 2291
+        }
+      ]
+    },
+    "bn254-32774:consensus": {
+      "txBytes": 32599,
+      "inputs": 5,
+      "flags": 396445551,
+      "sigchecks": 0,
+      "meanVerifyMs": {
+        "median": 3.6754800100000002,
+        "minimum": 3.3368325200000006,
+        "maximum": 3.730565,
+        "all": [
+          3.651965,
+          3.3368325200000006,
+          3.6989950200000004,
+          3.730565
+        ]
+      },
+      "nsPerActualByte": {
+        "median": 112.74824411791774,
+        "minimum": 102.3599656431179,
+        "maximum": 114.4380195711525,
+        "all": [
+          112.02690266572594,
+          102.3599656431179,
+          113.46958557010953,
+          114.4380195711525
+        ]
+      },
+      "annualRelativeTime": {
+        "median": 68.93896576322635,
+        "minimum": 61.88774553716327,
+        "maximum": 71.11742408074983,
+        "all": [
+          68.78277430784316,
+          61.88774553716327,
+          71.11742408074983,
+          69.09515721860953
+        ]
+      },
+      "annualRelativePerByte": {
+        "median": 0.7740010880499659,
+        "minimum": 0.6948346534127353,
+        "maximum": 0.7984593764702733,
+        "all": [
+          0.7722474737467588,
+          0.6948346534127353,
+          0.7984593764702733,
+          0.775754702353173
+        ]
+      },
+      "bareRelativeTime": {
+        "median": 0.04756599903439758,
+        "minimum": 0.04314968305633024,
+        "maximum": 0.048038302735949466,
+        "all": [
+          0.047291125131044554,
+          0.04314968305633024,
+          0.047840872937750606,
+          0.048038302735949466
+        ]
+      },
+      "bareRelativePerByte": {
+        "median": 0.1458949388463249,
+        "minimum": 0.13234916744183403,
+        "maximum": 0.14734359379005846,
+        "all": [
+          0.1450518426823793,
+          0.13234916744183403,
+          0.1467380350102705,
+          0.14734359379005846
+        ]
+      },
+      "candidateRelativeTime": {
+        "median": 0.9922808176359991,
+        "minimum": 0.9880819135590097,
+        "maximum": 1.0053517891274313,
+        "all": [
+          0.9945316574279456,
+          0.9900299778440526,
+          1.0053517891274313,
+          0.9880819135590097
+        ]
+      },
+      "candidateRelativePerByte": {
+        "median": 0.999251347628902,
+        "minimum": 0.9950229472779893,
+        "maximum": 1.0124141394973867,
+        "all": [
+          1.0015179990197427,
+          0.9969846962380612,
+          1.0124141394973867,
+          0.9950229472779893
+        ]
+      },
+      "annualDenominatorMs": {
+        "median": 0.05350584,
+        "minimum": 0.0520125,
+        "maximum": 0.0539917,
+        "all": [
+          0.053094180000000005,
+          0.0539175,
+          0.0520125,
+          0.0539917
+        ]
+      },
+      "bareDenominatorMs": {
+        "median": 77.32514208999999,
+        "minimum": 77.22305168,
+        "maximum": 77.65813502000002,
+        "all": [
+          77.22305168,
+          77.331565,
+          77.31871917999999,
+          77.65813502000002
+        ]
+      },
+      "baselineDenominatorMs": {
+        "median": 3.67567458,
+        "minimum": 3.37043584,
+        "maximum": 3.7755624799999996,
+        "all": [
+          3.672045,
+          3.37043584,
+          3.67930416,
+          3.7755624799999996
+        ]
+      },
+      "annualDenominatorNsPerByte": {
+        "median": 146.19081967213117,
+        "minimum": 142.11065573770492,
+        "maximum": 147.51830601092897,
+        "all": [
+          145.06606557377052,
+          147.3155737704918,
+          142.11065573770492,
+          147.51830601092897
+        ]
+      },
+      "bareDenominatorNsPerByte": {
+        "median": 773.3442222066648,
+        "minimum": 772.3231955834699,
+        "maximum": 776.6745511461377,
+        "all": [
+          772.3231955834699,
+          773.4084590150818,
+          773.2799853982477,
+          776.6745511461377
+        ]
+      },
+      "baselineDenominatorNsPerByte": {
+        "median": 111.96766723528695,
+        "minimum": 102.66954550993054,
+        "maximum": 115.01043255757278,
+        "all": [
+          111.85710369197027,
+          102.66954550993054,
+          112.07823077860364,
+          115.01043255757278
+        ]
+      },
+      "evaluationSamplesMs": [
+        [
+          3.6307834,
+          3.5979457999999997,
+          3.6361666,
+          3.7024375,
+          3.6924917
+        ],
+        [
+          3.3421542000000004,
+          3.3111125,
+          3.3130042000000004,
+          3.3208375,
+          3.3970542000000004
+        ],
+        [
+          3.6411084,
+          3.7322917,
+          3.7179709,
+          3.7275457999999997,
+          3.6760583
+        ],
+        [
+          3.779525,
+          3.7460459,
+          3.6949707999999997,
+          3.7600458,
+          3.6722375
+        ]
+      ],
+      "setupNanosecondsOncePerContext": [
+        {
+          "json_hex_decode_nanoseconds": 198500,
+          "admission_control_nanoseconds": 3729250,
+          "cache_total_nanoseconds": 71000,
+          "coins_context_nanoseconds": 1042,
+          "precompute_checker_nanoseconds": 2208
+        },
+        {
+          "json_hex_decode_nanoseconds": 220917,
+          "admission_control_nanoseconds": 3641125,
+          "cache_total_nanoseconds": 71084,
+          "coins_context_nanoseconds": 1166,
+          "precompute_checker_nanoseconds": 2042
+        },
+        {
+          "json_hex_decode_nanoseconds": 219000,
+          "admission_control_nanoseconds": 3840625,
+          "cache_total_nanoseconds": 69000,
+          "coins_context_nanoseconds": 1542,
+          "precompute_checker_nanoseconds": 2083
+        },
+        {
+          "json_hex_decode_nanoseconds": 212208,
+          "admission_control_nanoseconds": 3960959,
+          "cache_total_nanoseconds": 75417,
+          "coins_context_nanoseconds": 1583,
+          "precompute_checker_nanoseconds": 2292
+        }
+      ]
+    }
+  },
+  "processWallSeconds": {
+    "median": 9.342014958,
+    "minimum": 9.266166249999998,
+    "maximum": 9.375430834000003,
+    "all": [
+      9.345917457999999,
+      9.266166249999998,
+      9.338112458000001,
+      9.375430834000003
+    ]
+  },
+  "lifecycleWallSeconds": {
+    "median": 10.1464806255,
+    "minimum": 10.062250916,
+    "maximum": 10.189391290999996,
+    "all": [
+      10.154842292,
+      10.062250916,
+      10.138118959,
+      10.189391290999996
+    ]
+  },
+  "boundary": "cached_verify_nanoseconds / repetitions; setup, process and lifecycle walls remain separate",
+  "relativeScope": "All ratios are paired within one process and mode; absolute denominators and ranges are retained.",
+  "corpusReadNanosecondsOncePerProcess": {
+    "median": 3019812.0,
+    "minimum": 2917084,
+    "maximum": 3075375,
+    "all": [
+      2971708,
+      3075375,
+      3067916,
+      2917084
+    ]
+  },
+  "setupQualification": "Corpus read is once per process. Decode, admission, Cached construction and its nested context/precompute components are separately instrumented. Explicit warm verification is outside the cached timer and outside cache_total; it is not separately instrumented. Process wall includes startup/warm/output; lifecycle wall additionally includes provenance/readiness/cleanup. Components are not summed as independent setup totals.",
+  "historicalTimingTransferred": false,
+  "planSha256": "3de8e7da615c45a66b79fe75779f81c713986986c6b81a70897b891665e9ec5f",
+  "rawManifestSha256": "3e577dcdb4896e79a9ca839395c7ac10cbb7ada8d8775a94f5570bfb3bd35ea1"
+}
