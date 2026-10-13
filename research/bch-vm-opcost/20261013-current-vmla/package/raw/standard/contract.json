@@ -1,0 +1,192 @@
+{
+  "status": "PASS_PREPARED_CURRENT_TIMING_CONTRACT",
+  "credit": "GPT-6.1 Sol",
+  "mode": "standard",
+  "launcherManifest": {
+    "path": "/Users/kallisti/workshop/selene.cash/research/bch-vm-base-cost-10/experiments/20261013/fullstock-current-mixed-timing-launch-AH-a1/manifest.json",
+    "bytes": 2259,
+    "sha256": "8eab6555368613971cfbc062b37cd8db7b88c73734469040842b86de8e81fb23"
+  },
+  "launcherReview": {
+    "path": "/Users/kallisti/workshop/selene.cash/verifier.cash/reports/challenge-20261013/opcost/current-mixed-timing-launch-AH-a1-independent-review/review.json",
+    "bytes": 3914,
+    "sha256": "0b2bc1e98e130f2af1e92cf326b05966b23fd535eabeed3a4e520846fe953fa2"
+  },
+  "launcherReviewManifest": {
+    "path": "/Users/kallisti/workshop/selene.cash/verifier.cash/reports/challenge-20261013/opcost/current-mixed-timing-launch-AH-a1-independent-review/manifest.json",
+    "bytes": 1188,
+    "sha256": "fcc847c8bb07604064bcf3bc08098b929bf5a7005bca77627227f72a69809e79"
+  },
+  "capture": {
+    "archiveManifest": {
+      "path": "/Users/kallisti/workshop/selene.cash/research/bch-vm-base-cost-10/results/20261013/current-mixed-capture-AG-a1-standard-run-a1/archive-manifest.json",
+      "bytes": 1517,
+      "sha256": "9cfe13c0bab46e5d388a1ced00e2e41430310a218e7544a1751fbd5945e2736f"
+    },
+    "rawManifest": {
+      "path": "/Users/kallisti/workshop/selene.cash/research/bch-vm-base-cost-10/results/20261013/current-mixed-capture-AG-a1-standard-run-a1/raw-manifest.json",
+      "bytes": 1401,
+      "sha256": "37e363990ba9be3f24fd252d2fdc203ae72820b0bcf62a4f875716b023e42b68"
+    },
+    "review": {
+      "path": "/Users/kallisti/workshop/selene.cash/verifier.cash/reports/challenge-20261013/opcost/current-mixed-capture-AG-a1-full-completed-independent-review/standard/review.json",
+      "bytes": 3115,
+      "sha256": "662a2d18ca1a3bd293d5de1b8aceb0ce5d5890c386f50667fa8e75cfb57bd894"
+    },
+    "reviewManifest": {
+      "path": "/Users/kallisti/workshop/selene.cash/verifier.cash/reports/challenge-20261013/opcost/current-mixed-capture-AG-a1-full-completed-independent-review/standard/manifest.json",
+      "bytes": 596,
+      "sha256": "745362d764c4a06ad2de57258e9fc926c71d30f363cbc45169a710bbbc19e688"
+    },
+    "contract": {
+      "path": "/Users/kallisti/workshop/selene.cash/research/bch-vm-base-cost-10/results/20261013/current-mixed-capture-AG-a1-standard-run-a1/contract.json",
+      "bytes": 619212,
+      "sha256": "2c5f1714ce225b50bfd3c80a9eedd58e08e09f90b60d85b1e1104a54aab3df22"
+    },
+    "stdout": {
+      "path": "/Users/kallisti/workshop/selene.cash/research/bch-vm-base-cost-10/results/20261013/current-mixed-capture-AG-a1-standard-run-a1/standard.stdout",
+      "bytes": 13929660,
+      "sha256": "b069b27c0c04d52fb80e1c49b0a84c90f3aa97970b574918735d457a7d51a100"
+    }
+  },
+  "runtimeContract": {
+    "path": "/Users/kallisti/workshop/selene.cash/research/bch-vm-base-cost-10/results/20261013/current-mixed-capture-AG-a1-standard-run-a1/contract.json",
+    "bytes": 619212,
+    "sha256": "2c5f1714ce225b50bfd3c80a9eedd58e08e09f90b60d85b1e1104a54aab3df22"
+  },
+  "inputsDir": "/private/tmp/selene-vmla-current-timing-AH-a1-standard-inputs",
+  "inputPins": [
+    {
+      "path": "/private/tmp/selene-vmla-current-timing-AH-a1-standard-inputs/input-summary.json",
+      "bytes": 6701,
+      "sha256": "f507d478eefad867b48a79c2b5aa57124e783fe2b8402fa9cdaa338dccfbf02b"
+    },
+    {
+      "path": "/private/tmp/selene-vmla-current-timing-AH-a1-standard-inputs/process-0.jsonl",
+      "bytes": 80882723,
+      "sha256": "d445a8f274fb217636d1ceccdbe831c98b0587c375a391a177e5da378630b910"
+    },
+    {
+      "path": "/private/tmp/selene-vmla-current-timing-AH-a1-standard-inputs/process-1.jsonl",
+      "bytes": 80882723,
+      "sha256": "ed7cd06cbadc328cf44102e3db6a4ddae1c1a28770b4b717a8df7a305d44a466"
+    },
+    {
+      "path": "/private/tmp/selene-vmla-current-timing-AH-a1-standard-inputs/process-2.jsonl",
+      "bytes": 80882723,
+      "sha256": "faf4552aecb5df0b3d6d96890e9d055d81c2704054fed8dbc1f071cd75d27cff"
+    },
+    {
+      "path": "/private/tmp/selene-vmla-current-timing-AH-a1-standard-inputs/process-3.jsonl",
+      "bytes": 80882723,
+      "sha256": "ae89bb8bad13c59833272de15c326412d757aa603ce6f8a7ba94efb821a99d98"
+    },
+    {
+      "path": "/private/tmp/selene-vmla-current-timing-AH-a1-standard-inputs/process-4.jsonl",
+      "bytes": 80882723,
+      "sha256": "51a66339428974068d8eea8960a69f2ffe7168bccd11d0fd0a1bd93e841256d7"
+    },
+    {
+      "path": "/private/tmp/selene-vmla-current-timing-AH-a1-standard-inputs/process-5.jsonl",
+      "bytes": 80882723,
+      "sha256": "459059fd1ed1c6f732b5361e62c92d46f428010095746f08efd5bfdc042159d8"
+    }
+  ],
+  "streamBound": {
+    "status": "PASS_SOURCE_FIXED_CAPTURE_ORACLE_TIMING_STDOUT_BOUND",
+    "mode": "standard",
+    "evaluations": 3,
+    "repetitions": 2,
+    "streamLimitBytes": 67108864,
+    "processes": [
+      {
+        "process": 0,
+        "registrations": 3256,
+        "stdoutRows": 9768,
+        "stdoutUpperBoundBytes": 43102809,
+        "maximumLineBytes": 374841,
+        "scriptRegistrations": 3106,
+        "policyRegistrations": 150,
+        "allInputSlotsPerPass": 76426,
+        "inputSha256": "d445a8f274fb217636d1ceccdbe831c98b0587c375a391a177e5da378630b910"
+      },
+      {
+        "process": 1,
+        "registrations": 3256,
+        "stdoutRows": 9768,
+        "stdoutUpperBoundBytes": 43102809,
+        "maximumLineBytes": 374840,
+        "scriptRegistrations": 3106,
+        "policyRegistrations": 150,
+        "allInputSlotsPerPass": 76426,
+        "inputSha256": "ed7cd06cbadc328cf44102e3db6a4ddae1c1a28770b4b717a8df7a305d44a466"
+      },
+      {
+        "process": 2,
+        "registrations": 3256,
+        "stdoutRows": 9768,
+        "stdoutUpperBoundBytes": 43102809,
+        "maximumLineBytes": 374841,
+        "scriptRegistrations": 3106,
+        "policyRegistrations": 150,
+        "allInputSlotsPerPass": 76426,
+        "inputSha256": "faf4552aecb5df0b3d6d96890e9d055d81c2704054fed8dbc1f071cd75d27cff"
+      },
+      {
+        "process": 3,
+        "registrations": 3256,
+        "stdoutRows": 9768,
+        "stdoutUpperBoundBytes": 43102809,
+        "maximumLineBytes": 374840,
+        "scriptRegistrations": 3106,
+        "policyRegistrations": 150,
+        "allInputSlotsPerPass": 76426,
+        "inputSha256": "ae89bb8bad13c59833272de15c326412d757aa603ce6f8a7ba94efb821a99d98"
+      },
+      {
+        "process": 4,
+        "registrations": 3256,
+        "stdoutRows": 9768,
+        "stdoutUpperBoundBytes": 43102809,
+        "maximumLineBytes": 374841,
+        "scriptRegistrations": 3106,
+        "policyRegistrations": 150,
+        "allInputSlotsPerPass": 76426,
+        "inputSha256": "51a66339428974068d8eea8960a69f2ffe7168bccd11d0fd0a1bd93e841256d7"
+      },
+      {
+        "process": 5,
+        "registrations": 3256,
+        "stdoutRows": 9768,
+        "stdoutUpperBoundBytes": 43102809,
+        "maximumLineBytes": 374839,
+        "scriptRegistrations": 3106,
+        "policyRegistrations": 150,
+        "allInputSlotsPerPass": 76426,
+        "inputSha256": "459059fd1ed1c6f732b5361e62c92d46f428010095746f08efd5bfdc042159d8"
+      }
+    ],
+    "qualification": "Conditional on exact captured full vectors: mismatches throw before emission. All 47 fields, two vectors, metadata, 19-digit signed-int64 clocks, escaping and newline counted. No timing, memory or stderr result."
+  },
+  "readiness": {
+    "path": "/Users/kallisti/workshop/selene.cash/research/bch-vm-base-cost-10/results/20261013/current-mixed-timing-AH-a1-standard-pre-a1/readiness.json",
+    "bytes": 1016,
+    "sha256": "9d43646a7a6be5a10936c60e6f6c33cf582d6fe4ec110fd33271add5e844cf53"
+  },
+  "workRoot": "/private/tmp/selene-vmla-current-mixed-timing-AH-a1-standard",
+  "timingControlsReview": {
+    "path": "/Users/kallisti/workshop/selene.cash/verifier.cash/reports/challenge-20261013/opcost/current-mixed-timing-AH-a1-controls-completed-independent-review/review.json",
+    "bytes": 2970,
+    "sha256": "b64cf15e9f4522f494b2a2a35b51a42c9ba79a6c6ec93cf394504219760ce8e8"
+  },
+  "timingControlsReviewManifest": {
+    "path": "/Users/kallisti/workshop/selene.cash/verifier.cash/reports/challenge-20261013/opcost/current-mixed-timing-AH-a1-controls-completed-independent-review/manifest.json",
+    "bytes": 907,
+    "sha256": "81c84e53fb000c095bda452f3d76e41e5a17d6401500dd80b4604a7380191525"
+  },
+  "timingControlsRawManifest": {
+    "path": "/private/tmp/selene-vmla-current-mixed-timing-AH-a1-controls/manifest.json",
+    "bytes": 1499,
+    "sha256": "79d9eff70e5cad2c848eb1e31a954712a93778be854cce79dd555c1ac4633cbe"
+  }
+}

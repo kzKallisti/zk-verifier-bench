@@ -1,0 +1,35 @@
+{
+  "verdict": "PASS_COMPLETED_VMLA_PUBLIC_REPLAY_AL1_INDEPENDENT_REVIEW",
+  "createdUtc": "2026-10-13T06:54:21Z",
+  "credit": "GPT-6.1 Sol",
+  "historicalAttribution": "GPT-6 Astra preserved in source and completed-review evidence",
+  "rootExecutionManifestSha256": "62f91bd966eb6a11711e3759fbc7804522a54d9c70438b019d13102f8281df1b",
+  "publicOutcomeSha256": "9c6c6c3fb031b04856e31df5c3eaf3f01fa454bb5c8a1fa25221c9c788c18ea1",
+  "publicReceiptSha256": "10ecc2a074caf36cbee9d1af3dc98ddf9893fcf142846a24d4586182dcae5b0c",
+  "sourceManifestSha256": "f48fd01edfabee941df99a34285934a30a310fb61ed86c4ef6f0c3ff75a647bb",
+  "sourceReviewManifestSha256": "366853fc9f681eed20f9abfb4f56726e6e55fbbcf345ecbcd9548a44e3ca0a80",
+  "packageManifestSha256": "65f86ce2021f97d9dd537e337f1c101775caed807e73c0d25cd283ac0ccf6fbf",
+  "packageReviewManifestSha256": "c03327dd7093f838f57eecb4385fa4a3e1e996344bf1becdd04e441f12867173",
+  "reportSha256": {
+    "standard": "c820156038ac2d25df1f7e1b50bf73a7014832da6d87453591cc77c716479d74",
+    "consensus": "51b82ff7d2b664c72fda8d037a007d11f21e1d2d35e5a23ed04667f484eb6d55"
+  },
+  "reportManifestSha256": {
+    "standard": "d9a1539840e4b321a399eec969d3a48a9a8d7f9e6aec786b0af172d4c6545109",
+    "consensus": "2181cde57702f5d8898c809d11e4fb800d74d87dffdf5067c3db4555e557330f"
+  },
+  "catalogManifestSha256": {
+    "standard": "16dca2ae2381bdd0b15c5ac37ffbb076d7d9cb3eccb845e3d9574a460a19a819",
+    "consensus": "dfdd0047f1254322a2f8b7004ce6c9d13f88dd9f875ae72ec07cc094a7722210"
+  },
+  "scope": "Independent review of completed public-only unpack and standard/consensus reparses, preserved root lifecycle, package projections, catalog cardinality, input pins, report schemas and whole-byte equality to independently reviewed AL3 reports.",
+  "findings": [],
+  "verified": [
+    "The preserved root manifest authenticates all 67 listed members; the output contains 61 unpacked package members plus both complete reports, their manifests, receipt and outcome.",
+    "The public standard report is 153663989 bytes and the consensus report is 156188279 bytes; each is byte-for-byte equal to its independently reviewed AL3 private report and each report manifest hash matches.",
+    "Both catalogs authenticate 3254 original registrations and explicit reference rows (standard 2, consensus 3), with six equal registration orders. The reports account for 117234 observations and standard null-policy rows 2700; consensus has none.",
+    "Each mode binds exactly six original process input pins (12 across modes), its raw/catalog manifests, and the 15-member calculation projection; exactly 12 stderr/process-census members remain omitted and archive metadata remains explicit.",
+    "The receipt records unpack, standard and consensus stages all PASS, nice15, process elapsed 31.112293042 seconds, no error, no native execution and no private reference report. Fresh pre/post readiness receipts pass; the earlier ps PermissionError preflight and preserved partials remain qualified."
+  ],
+  "qualification": "Completed public-only unpack and both reparse output review. Whole-byte equality to the independently reviewed AL3 reports is verified, but public availability, native clean rebuild, new native timing, and VM-attributable memory remain unestablished. This review did not invoke an unpacker, parser, calculation, native code or network."
+}

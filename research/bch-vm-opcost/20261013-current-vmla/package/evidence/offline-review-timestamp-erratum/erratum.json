@@ -1,0 +1,24 @@
+{
+  "status": "ERRATUM_TIMESTAMP_METADATA_ONLY",
+  "credit": "GPT-6.1 Sol",
+  "observedUtc": "2026-10-13T05:53:50Z",
+  "subjectReviewPacket": "verifier.cash/reports/challenge-20261013/publication/current-vmla-timing-portable-AL-a3-root-execution-a1-independent-review",
+  "frozenReviewJsonSha256": "59803d3137979ee29b308b74a7c385385a14c7099d6cc2ecc9540e0f012f7ec9",
+  "frozenPacketManifestSha256": "b07757dd197664899d3858465fc42ab3d49a27aee7dca7e1fde960c206298cc6",
+  "frozenReviewCreatedUtc": "2026-10-13T00:00:00Z",
+  "frozenReviewCreatedUtcQualification": "Incorrect author placeholder; not the actual completion time.",
+  "observedUtcQualification": "Real UTC system-clock observation when this erratum was authored; it does not assert or rewrite the precise completed-review time.",
+  "subjectManifestSha256": "5a03faccd5cc7d8c97599281e2f9a32c6b0c257203a8553564a9645743fb67f8",
+  "catalogManifestSha256": {
+    "standard": "16dca2ae2381bdd0b15c5ac37ffbb076d7d9cb3eccb845e3d9574a460a19a819",
+    "consensus": "dfdd0047f1254322a2f8b7004ce6c9d13f88dd9f875ae72ec07cc094a7722210"
+  },
+  "reportManifestSha256": {
+    "standard": "d9a1539840e4b321a399eec969d3a48a9a8d7f9e6aec786b0af172d4c6545109",
+    "consensus": "2181cde57702f5d8898c809d11e4fb800d74d87dffdf5067c3db4555e557330f"
+  },
+  "exactVerdictUnchanged": "PASS_COMPLETED_VMLA_PORTABLE_A3_OUTPUT_INDEPENDENT_REVIEW",
+  "rawReplayPerformed": false,
+  "frozenBytesMutated": false,
+  "historicalAttribution": "GPT-6 Astra preserved in frozen subject and prior packets"
+}

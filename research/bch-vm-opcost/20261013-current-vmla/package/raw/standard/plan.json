@@ -1,0 +1,48 @@
+{
+  "status": "SOURCE_ONLY_CURRENT_MIXED_TIMING_PENDING_REVIEW",
+  "credit": "GPT-6.1 Sol",
+  "modes": [
+    "controls",
+    "standard",
+    "consensus"
+  ],
+  "processesPerMode": 6,
+  "evaluations": 3,
+  "repetitions": 2,
+  "rowsPerProcess": {
+    "standard": 9768,
+    "consensus": 9771
+  },
+  "rowsPerMode": {
+    "standard": 58608,
+    "consensus": 58626
+  },
+  "limits": {
+    "nice": 15,
+    "jobs": 1,
+    "streamBytesPerProcess": 67108864,
+    "processSeconds": 120,
+    "aggregateSeconds": 900,
+    "memoryFloorBytes": 4294967296,
+    "diskFloorBytes": 1073741824,
+    "readinessMaxAgeSeconds": 600
+  },
+  "workRoots": {
+    "standard": "/private/tmp/selene-vmla-current-mixed-timing-AH-a1-standard",
+    "consensus": "/private/tmp/selene-vmla-current-mixed-timing-AH-a1-consensus",
+    "controls": "/private/tmp/selene-vmla-current-mixed-timing-AH-a1-controls"
+  },
+  "sourceSubjectManifestSha256": "d767fb4f72520c09b11f14fe05bde3319bb64f0292a81c9aa680070a3e0d7fe4",
+  "driverSourceManifestSha256": "b5fa65c267176ee2ace5c336f88cc7f32598ccaa3c308a8a41e5ad581908cb06",
+  "captureLauncherManifestSha256": "eb0babb10b2ff64a3f323806f0c50034b7738800b083b3fffaaffd366646bb99",
+  "qualification": "Timing inputs are bound only after actual completed per-mode capture review. Complete original3254 plus required2/3 annual-standard references. All rejected script rows retained; policy rows remain zero-script/null-clock. No native timing or safety claim from this source plan.",
+  "controls": {
+    "processes": 1,
+    "registrations": 18,
+    "stdoutRows": 54,
+    "evaluations": 3,
+    "repetitions": 2,
+    "processSeconds": 30,
+    "aggregateSeconds": 180
+  }
+}

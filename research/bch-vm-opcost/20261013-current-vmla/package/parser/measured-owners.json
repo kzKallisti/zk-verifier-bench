@@ -1,0 +1,100 @@
+{
+  "modes": {
+    "standard": {
+      "timingArchiveSha256": "cfbbd7d39cddae5c7a24898e0d9509c41f60d077e6131efe1193466953b287cd",
+      "timingRawSha256": "172018228ea41a014d7ef4de6f8ed46685904f1128dccdd83dc293683d70fffa",
+      "captureArchiveSha256": "9cfe13c0bab46e5d388a1ced00e2e41430310a218e7544a1751fbd5945e2736f",
+      "captureRawSha256": "37e363990ba9be3f24fd252d2fdc203ae72820b0bcf62a4f875716b023e42b68",
+      "captureReviewManifestSha256": "745362d764c4a06ad2de57258e9fc926c71d30f363cbc45169a710bbbc19e688",
+      "captureReviewSha256": "662a2d18ca1a3bd293d5de1b8aceb0ce5d5890c386f50667fa8e75cfb57bd894",
+      "captureVerdict": "PASS_COMPLETED_CURRENT_STANDARD_FULL_CAPTURE",
+      "captureStdoutName": "standard.stdout",
+      "timingInputPins": [
+        {
+          "path": "/private/tmp/selene-vmla-current-timing-AH-a1-standard-inputs/process-0.jsonl",
+          "bytes": 80882723,
+          "sha256": "d445a8f274fb217636d1ceccdbe831c98b0587c375a391a177e5da378630b910"
+        },
+        {
+          "path": "/private/tmp/selene-vmla-current-timing-AH-a1-standard-inputs/process-1.jsonl",
+          "bytes": 80882723,
+          "sha256": "ed7cd06cbadc328cf44102e3db6a4ddae1c1a28770b4b717a8df7a305d44a466"
+        },
+        {
+          "path": "/private/tmp/selene-vmla-current-timing-AH-a1-standard-inputs/process-2.jsonl",
+          "bytes": 80882723,
+          "sha256": "faf4552aecb5df0b3d6d96890e9d055d81c2704054fed8dbc1f071cd75d27cff"
+        },
+        {
+          "path": "/private/tmp/selene-vmla-current-timing-AH-a1-standard-inputs/process-3.jsonl",
+          "bytes": 80882723,
+          "sha256": "ae89bb8bad13c59833272de15c326412d757aa603ce6f8a7ba94efb821a99d98"
+        },
+        {
+          "path": "/private/tmp/selene-vmla-current-timing-AH-a1-standard-inputs/process-4.jsonl",
+          "bytes": 80882723,
+          "sha256": "51a66339428974068d8eea8960a69f2ffe7168bccd11d0fd0a1bd93e841256d7"
+        },
+        {
+          "path": "/private/tmp/selene-vmla-current-timing-AH-a1-standard-inputs/process-5.jsonl",
+          "bytes": 80882723,
+          "sha256": "459059fd1ed1c6f732b5361e62c92d46f428010095746f08efd5bfdc042159d8"
+        }
+      ],
+      "captureStdoutSha256": "b069b27c0c04d52fb80e1c49b0a84c90f3aa97970b574918735d457a7d51a100",
+      "derivedReportSha256": "e2cd79c55407792160175e1fb087ece6e7844bbba507df14b8eed614aedee651"
+    },
+    "consensus": {
+      "timingArchiveSha256": "2aa6c1edb1a892c2bcce518837d600d18f1f4ef0c22ca8798bd655ae98942417",
+      "timingRawSha256": "8cbbdf320faa6141bd7917d7ffddd5514628944ad3bdc1585a5f2bfe64944811",
+      "captureArchiveSha256": "7cee9424710022014748455b018e6ead30451025c1ad3f8ed8208a96bfd70691",
+      "captureRawSha256": "f0bc22e8d1692a04028a4f442047a9f24fbe92be2eb16e404b605cd6aa616c07",
+      "captureReviewManifestSha256": "be10e93a13c49461692fc34b2aa2565e29f2bfb5f3fb5996a2c2f0c831e51118",
+      "captureReviewSha256": "48a064ce039cf64a6e0ad7efe4c81bfcf1ab45b025b7f0ca3a4e1d556175d737",
+      "captureVerdict": "PASS_COMPLETED_CURRENT_CONSENSUS_FULL_CAPTURE",
+      "captureStdoutName": "consensus.stdout",
+      "timingInputPins": [
+        {
+          "path": "/private/tmp/selene-vmla-current-timing-AH-a1-consensus-inputs/process-0.jsonl",
+          "bytes": 81493462,
+          "sha256": "ec4eb275b37e8efbbf50eee4ce9205d55751d1d53bcf1a8f8cf9568a3226a34f"
+        },
+        {
+          "path": "/private/tmp/selene-vmla-current-timing-AH-a1-consensus-inputs/process-1.jsonl",
+          "bytes": 81493462,
+          "sha256": "bd369a3fbc51425041485cb5a83004ad5cf93e8264d389216c03b6a1c487040f"
+        },
+        {
+          "path": "/private/tmp/selene-vmla-current-timing-AH-a1-consensus-inputs/process-2.jsonl",
+          "bytes": 81493462,
+          "sha256": "931bb88b99026c8e1bf637a411891449c249fc3c72dc8541930fcbf0b9a31cdf"
+        },
+        {
+          "path": "/private/tmp/selene-vmla-current-timing-AH-a1-consensus-inputs/process-3.jsonl",
+          "bytes": 81493462,
+          "sha256": "64242f18b38b6e603eedbb45021f2e295f4da8e96e491162951ea7109ff8ea88"
+        },
+        {
+          "path": "/private/tmp/selene-vmla-current-timing-AH-a1-consensus-inputs/process-4.jsonl",
+          "bytes": 81493462,
+          "sha256": "a30578fd99be6427ec7b0c3e517a2a8ce89d905f3827aab7c74f72f546d51bde"
+        },
+        {
+          "path": "/private/tmp/selene-vmla-current-timing-AH-a1-consensus-inputs/process-5.jsonl",
+          "bytes": 81493462,
+          "sha256": "d6a84dc1c11c14d40ad619d1f55621b382c7b01043a0843486a8610b3df9a27d"
+        }
+      ],
+      "captureStdoutSha256": "762a8ccc0c71626afe237af46084f4f3c7d57fbe4d71c6df2b1e36b7d6fae9e3",
+      "derivedReportSha256": "5cfe115cefc36b8ecdbed2c3b0ccc86d51eee64b5bdeee6542d1fcfd46ac7701"
+    }
+  },
+  "ownerFiles": {
+    "report.py": "4bb6c30db057763349d3aaf3b476e9206c2c6b6a7fa83295dbb2e43ebc25d666",
+    "corpus.py": "5fd08150c7f8d8b8fd61d18664db7a186dc482c93e6387a403d97695df94f888",
+    "driver-contract.json": "37c55948d9ca35e4ac0758f6550153d3bb3e67d166da9b40684bff89b726ae7a",
+    "reporting-contract.json": "597dd345ca71f3f3264b2de84a600f86933f9bea0236ab8e400b3de1f01fbc8a"
+  },
+  "integrationManifestSha256": "d767fb4f72520c09b11f14fe05bde3319bb64f0292a81c9aa680070a3e0d7fe4",
+  "draftManifestSha256": "edffbdbd97393d82f10e1f394a2733dbf0659eea1d2511db8edfe6ef979c6022"
+}

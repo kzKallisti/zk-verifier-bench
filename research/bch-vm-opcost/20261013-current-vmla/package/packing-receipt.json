@@ -1,0 +1,11 @@
+{
+  "status": "PASS_LOSSLESS_CALCULATION_PACKAGE_PENDING_PUBLIC_REPARSE",
+  "filesCompleted": 61,
+  "error": null,
+  "elapsedSeconds": 6.51945525,
+  "pid": 54991,
+  "nice": 15,
+  "finishedUtc": "2026-10-13T06:16:21.685134+00:00",
+  "nativeExecuted": false,
+  "publicAvailabilityEstablished": false
+}

@@ -1,0 +1,23 @@
+{
+  "verdict": "PASS_SOURCE_VMLA_PUBLIC_UNPACK_REPARSE_PENDING_EXECUTION",
+  "createdUtc": "2026-10-13T06:45:08Z",
+  "credit": "GPT-6.1 Sol",
+  "historicalAttribution": "GPT-6 Astra preserved in bound package and AL3 evidence",
+  "subjectManifestSha256": "f48fd01edfabee941df99a34285934a30a310fb61ed86c4ef6f0c3ff75a647bb",
+  "packageManifestSha256": "65f86ce2021f97d9dd537e337f1c101775caed807e73c0d25cd283ac0ccf6fbf",
+  "packageReviewManifestSha256": "c03327dd7093f838f57eecb4385fa4a3e1e996344bf1becdd04e441f12867173",
+  "packageReviewSha256": "b64f6d61bfa0b0cced0af575aa0b979c7ec7d445383be3bbdc9de2a5d8c75853",
+  "rootExecutionManifestSha256": "9147f85e14a009dc9a7977d189060945e0144c891ceeddc5ccc988f99f519351",
+  "packingReceiptSha256": "ef0ef57ee4def8daf6ed103dcbbfd593e242072a56908ca1489d7b92c8db4a87",
+  "scope": "Independent source-only review of the public unpack and standard/consensus reparse controller, its exact package lineage, seven bundled source owners, real prior AL3 report schema/cardinality, and bounded lifecycle/readiness interfaces.",
+  "findings": [],
+  "verified": [
+    "Controller, package, completed package review, root execution, and packing receipt bindings authenticate exactly.",
+    "The seven bundled public code/schema owners are regular pinned files and parse without forbidden network, subprocess, or remote-execution imports.",
+    "Prior AL3 reports match the reporter contract: standard 55,908 script plus 2,700 policy rows and 3,106 case-process summaries; consensus 58,626 script rows and 3,257 case-process summaries; both retain exact setup and portable-evidence shapes.",
+    "The source calls only the bundled unpacker and public adapter with reference_report=None; no private offline/report input is passed to calculations.",
+    "The source binds fresh output, empty private cache prefix, -B/assertions/no optimization, nice15, 900-second aggregate, 240-second stages, and the real M4 schedule-build readiness checks for source/root/host/UID/age/load/disk/thermal/conflicts/headroom.",
+    "Source-only controller control passed without creating output, unpacking recorded data, reparsing, executing readiness, or running native code."
+  ],
+  "qualification": "This establishes source eligibility and real schema compatibility only. It is not execution approval, readiness evidence, public availability, or numerical report equality."
+}

@@ -1,0 +1,34 @@
+{
+  "status": "PASS_COMPLETED_VMLA_PORTABLE_A3_OUTPUT_INDEPENDENT_REVIEW",
+  "createdUtc": "2026-10-13T00:00:00Z",
+  "credit": "GPT-6.1 Sol",
+  "manifestExcludesSelf": true,
+  "subjectManifestSha256": "5a03faccd5cc7d8c97599281e2f9a32c6b0c257203a8553564a9645743fb67f8",
+  "executionManifestSha256": "637b91c3be8986649798f7316842f90170358a2961c832f0f655125788a14d59",
+  "catalogManifestSha256": {
+    "standard": "16dca2ae2381bdd0b15c5ac37ffbb076d7d9cb3eccb845e3d9574a460a19a819",
+    "consensus": "dfdd0047f1254322a2f8b7004ce6c9d13f88dd9f875ae72ec07cc094a7722210"
+  },
+  "files": {
+    "README.md": {
+      "bytes": 3042,
+      "sha256": "d43a2955e7dc2d4189834d50b991c907b59d48a977139c733f0cec7b8549c3d6"
+    },
+    "check.py": {
+      "bytes": 16200,
+      "sha256": "8651676bb457871f9134c450d7755db3e98505b41900fb26f2362f2fac5292d1"
+    },
+    "checks.json": {
+      "bytes": 3530,
+      "sha256": "77d82c7968d956c82d22b3103dccc1c277560bd72fefccc7d3f12e3b7cbd955a"
+    },
+    "input-pins.json": {
+      "bytes": 2896,
+      "sha256": "10fd8103b28261abe989c0f44bd2879362a2d6fdefdf4423582424cee45c1d8e"
+    },
+    "review.json": {
+      "bytes": 3637,
+      "sha256": "59803d3137979ee29b308b74a7c385385a14c7099d6cc2ecc9540e0f012f7ec9"
+    }
+  }
+}

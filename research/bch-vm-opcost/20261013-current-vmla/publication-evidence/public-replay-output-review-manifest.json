@@ -1,0 +1,24 @@
+{
+  "status": "PASS_COMPLETED_VMLA_PUBLIC_REPLAY_AL1_INDEPENDENT_REVIEW",
+  "createdUtc": "2026-10-13T06:54:21Z",
+  "credit": "GPT-6.1 Sol; historical GPT-6 Astra retained.",
+  "manifestExcludesSelf": true,
+  "files": {
+    "README.md": {
+      "bytes": 1608,
+      "sha256": "9c4f36d4cf7051251d5f49b577a4c9147c00307e64fbcf5d1ba15bef61244f60"
+    },
+    "check.py": {
+      "bytes": 26143,
+      "sha256": "ef7be5c34ea8cd81e90e04c12f6c012ad6ec9f181d17b7c4dcb846edbd289767"
+    },
+    "checks.json": {
+      "bytes": 3970,
+      "sha256": "a8b35300603cbad17526421c2b51003d9b02981e93f3d93f778378c32cfe8b40"
+    },
+    "review.json": {
+      "bytes": 3365,
+      "sha256": "7505df5b397d506e608bd85377cdebf13a45f11e5d2c6935b893a89ba8402002"
+    }
+  }
+}

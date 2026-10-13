@@ -1,0 +1,70 @@
+{
+  "verdict": "PASS_COMPLETED_CURRENT_STANDARD_AND_CONSENSUS_MIXED_TIMING",
+  "sourceManifestSha256": "8eab6555368613971cfbc062b37cd8db7b88c73734469040842b86de8e81fb23",
+  "files": {
+    "README.md": {
+      "bytes": 3027,
+      "sha256": "b9a76cdd730b3673ae47ab38f7461c579e4fc0ca8e49edc269947852fce0e909"
+    },
+    "check.py": {
+      "bytes": 14441,
+      "sha256": "cee5bcca7779290b126b2d1663e4f437bf5a85149af7fa4432a9d2dd876fd8ce"
+    },
+    "consensus/README.md": {
+      "bytes": 2985,
+      "sha256": "e543c51f2edc63e8cbb6a9315d4e7e2df3fa8862f6f26cb4b1d3e5d9b664a020"
+    },
+    "consensus/checks.json": {
+      "bytes": 26426,
+      "sha256": "6ab491390abed5df69944683780d94c4692ade3b02d61cc875c6a8e058422d70"
+    },
+    "consensus/manifest.json": {
+      "bytes": 665,
+      "sha256": "f3b836485f1a3c89db034e46b5d78a018b5feb77879e80810c5a4f4e6e4e6101"
+    },
+    "consensus/review.json": {
+      "bytes": 4356,
+      "sha256": "1a7568c655e5077fab4a0d25f63466c3f3d8459395dc8c36dfbc90b7e7a8b47d"
+    },
+    "consensus-check.stdout": {
+      "bytes": 3942,
+      "sha256": "7c6b6a45e9388d6039f52297fd8a99fae5a51f8f124435bd8d6a85e3bdfb3e3a"
+    },
+    "operational-completion-checks.json": {
+      "bytes": 410,
+      "sha256": "362f7dd673fb68ee51bcf51cfa4e4ac60b5cf45920cabdc79a228eebf8352644"
+    },
+    "representative-peaks.json": {
+      "bytes": 16871,
+      "sha256": "5628296be88615a0c0c591af3bdb5f8c7ca8e14479ac9d48bd8bd04b83c4a719"
+    },
+    "review.json": {
+      "bytes": 2416,
+      "sha256": "f3e16cfe649452f1d8af6a17c76d5a7c920393e2fb25c1fcbcc74e1fbd9fa44b"
+    },
+    "standard/README.md": {
+      "bytes": 2977,
+      "sha256": "1df7042d18ab2ae75aa1143c803497a32c487735ca9c45c4a94b265ab8f2f5ff"
+    },
+    "standard/checks.json": {
+      "bytes": 21746,
+      "sha256": "15dcc26412ab7a7b665b5047d7950042e6c9980027683091c5c48279a505d235"
+    },
+    "standard/manifest.json": {
+      "bytes": 664,
+      "sha256": "6f4fe4458762241c087e4499fd3e6a3b40e95212446de1ad40cfaf63069e3398"
+    },
+    "standard/review.json": {
+      "bytes": 4576,
+      "sha256": "3e8c2d59c5a497b52baff047fc175a9dfa7d6ac19aefb732877bf7bf2b30d805"
+    },
+    "standard-check.stdout": {
+      "bytes": 3996,
+      "sha256": "fd11a62a2fbf8dc2be309735b20a464af7cb745bf4de276a663912b32a8bfb3a"
+    },
+    "subjects.json": {
+      "bytes": 1019,
+      "sha256": "41c54238f7a070146d1373f3ca1803048b2f9c71738c2f75b731fb9e931cd961"
+    }
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "status": "PASS_ROOT_PUBLIC_REPRODUCTION_EXACT_REPORT_BYTES_PENDING_COMPLETED_REVIEW_PUBLICATION",
+  "capturedUtc": "2026-10-13T06:50:22.546822+00:00",
+  "executionEvidence": {
+    "sourceAuthentication": "a2dfda",
+    "initialSandboxPreflightFailure": "057200",
+    "freshPreflight": "e1ef2a",
+    "launch": "e8ce98",
+    "session": 24406,
+    "completion": "bf9798",
+    "postflight": "9ddcb5"
+  },
+  "sourceManifestSha256": "f48fd01edfabee941df99a34285934a30a310fb61ed86c4ef6f0c3ff75a647bb",
+  "sourceReviewManifestSha256": "366853fc9f681eed20f9abfb4f56726e6e55fbbcf345ecbcd9548a44e3ca0a80",
+  "packageManifestSha256": "65f86ce2021f97d9dd537e337f1c101775caed807e73c0d25cd283ac0ccf6fbf",
+  "receiptSha256": "10ecc2a074caf36cbee9d1af3dc98ddf9893fcf142846a24d4586182dcae5b0c",
+  "wholeReportComparisons": {
+    "standard": {
+      "bytes": 153663989,
+      "sha256": "c820156038ac2d25df1f7e1b50bf73a7014832da6d87453591cc77c716479d74",
+      "equality": "EXACT_COMPLETE_REPORT_BYTES",
+      "manifestSha256": "d9a1539840e4b321a399eec969d3a48a9a8d7f9e6aec786b0af172d4c6545109"
+    },
+    "consensus": {
+      "bytes": 156188279,
+      "sha256": "51b82ff7d2b664c72fda8d037a007d11f21e1d2d35e5a23ed04667f484eb6d55",
+      "equality": "EXACT_COMPLETE_REPORT_BYTES",
+      "manifestSha256": "2181cde57702f5d8898c809d11e4fb800d74d87dffdf5067c3db4555e557330f"
+    }
+  },
+  "unpackedFiles": 61,
+  "unpackedBytes": 666339638,
+  "totalObservationRows": 117234,
+  "nativeExecuted": false,
+  "privateReferenceReportUsedInCalculation": false,
+  "publicAvailabilityEstablished": false,
+  "elapsedProcessSeconds": 31.112293042,
+  "originalOutputRoot": "/private/tmp/current-vmla-timing-public-replay-AL-a1",
+  "preservedOutputRoot": "/Users/kallisti/workshop/selene.cash/verifier.cash/reports/challenge-20261013/publication/current-vmla-timing-public-replay-AL-a1-root-execution-a1/public-results",
+  "preservation": "Atomic same-filesystem rename of actual completed outputs; no data regeneration.",
+  "cachePrefixEmptyAfter": true,
+  "preservedEmptyCachePrefix": "/Users/kallisti/workshop/selene.cash/verifier.cash/reports/challenge-20261013/publication/current-vmla-timing-public-replay-AL-a1-root-execution-a1/empty-import-cache-prefix",
+  "initialReadinessFailure": {
+    "directory": "/Users/kallisti/workshop/selene.cash/verifier.cash/reports/challenge-20261013/publication/current-vmla-timing-public-replay-AL-a1-pre-a1",
+    "toolOutput": "057200",
+    "error": "PermissionError [Errno 1] Operation not permitted: ps",
+    "rawReadinessProduced": false,
+    "nativeExecuted": false,
+    "partialFiles": {
+      "hardware.stderr": {
+        "bytes": 54,
+        "sha256": "4b48e95fc2c708e90935b4eb0c7fdbef56360fded00e57f1b083e052354d3774"
+      },
+      "hardware.stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "identity.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "identity.stdout": {
+        "bytes": 377,
+        "sha256": "fa495ca88eafdab112b8af2a6757d46f77781f7864364fb2da719655b05a85ef"
+      },
+      "memory.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "memory.stdout": {
+        "bytes": 1247,
+        "sha256": "3ab140d37f817b28fa11394a12aafb10350a3a4c424a70f53780d371c4cddd35"
+      },
+      "os.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "os.stdout": {
+        "bytes": 64,
+        "sha256": "98ec1edfdd0153a7f67baccc3fc2481b06de7a75d245263efaab2412ee753e57"
+      },
+      "pressure.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "pressure.stdout": {
+        "bytes": 110,
+        "sha256": "656357d17b955568c4bead49a2bc7310198e2114363214ed3c60a3f737f935ba"
+      },
+      "thermal.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "thermal.stdout": {
+        "bytes": 197,
+        "sha256": "ea443a4845721a969bb8666861608e6d029f2491d7c9e68df16e653181acf507"
+      }
+    }
+  },
+  "qualifications": [
+    "Actual public-only source path completed unpack and both recalculations without a private reference report.",
+    "Root separately compared complete report hashes and sizes with the previously independently reviewed AL3 outputs; no metadata exclusions were needed.",
+    "Offline31.112293042second process wall is a calculation diagnostic, not a native VerifyScript sample.",
+    "CurrentM4 readiness estimates are not VM-attributable memory or host isolation.",
+    "Published availability, native clean rebuild and new native measurements remain unestablished."
+  ],
+  "credit": "GPT-6.1 Sol; historical GPT-6 Astra retained."
+}

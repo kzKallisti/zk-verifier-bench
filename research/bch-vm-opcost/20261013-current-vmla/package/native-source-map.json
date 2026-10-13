@@ -1,0 +1,17 @@
+{
+  "status": "MEASURED_SOURCE_MAPPING_NOT_CLEAN_REBUILD_RECIPE",
+  "driverSha256": "853d8ada3b612271fea4feabdbf5e6f09f4b3bd31c78045e91d6da655a61c8ff",
+  "harnessSha256": "129be9b37230dc22b12ef0b0ae297729a6b49d7063a8ceebe8101f82e4de33e7",
+  "driverIncludesHistoricalPrivateHarnessPath": true,
+  "pathsAreProvenanceNotExecutionInputs": true,
+  "measuredBuildSourceManifestSha256": "aaa6b9bedf0d1e55a4399d6752670615eae90a8c819bd60dbbc182f94c7593b9",
+  "compileLinkPlanSha256": "85737e3d2c74d89f687aaad209e189179c3518a45ae0cdf869d5e19182cfc19d",
+  "dependencyPinsSha256": "1337b458e0a6c5d8113b7a313d007f7a5f70aeac2c5a9686e1600f06ac230321",
+  "linkedPinsSha256": "4bf1ee5fb6d2ac3accb5b4681e53234e002a7d41b6d7301dcced06ce17e413b3",
+  "measuredBinarySha256": "2ada7ccbc2c4b1e6c778e32265a188909759c79032937c824b6b323c45245b65",
+  "measuredBinaryUuid": "F926571D-5653-3A92-9442-33441D4958E0",
+  "buildScope": "Actual isolated M4 main-object compile/link with pinned reused native objects/archives; not a complete clean rebuild. Full BCHN/header/tool/library closure is retained in private build evidence; this small package does not supply or reconstruct all of it.",
+  "portableNativeWrapperBuilt": false,
+  "nativeExecutionInstructionsProvided": false,
+  "newNativeMeasurementsRequire": "Fresh full source/build/runtime calibration and real-checker/native flags controls, exact library binding, host budget and measured references."
+}

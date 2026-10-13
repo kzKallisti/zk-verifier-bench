@@ -1,0 +1,13 @@
+{
+  "status": "PASS_PORTABLE_CATALOG_RECONSTRUCTION",
+  "files": {
+    "catalog.json": {
+      "bytes": 89910775,
+      "sha256": "098ef64a15805bb158a24f2b0ee97dff0a22bb75ac54af00ec4ab121e3b87ee4"
+    }
+  },
+  "adapterSourceSha256": "d7f2bd0c0376927df266841bf0e26600817e33f4bf8f6dbd5aedc2d9716fe355",
+  "measuredOwnersSha256": "a08132da2ac6fdffa71226e21ed3a08bdf4ef7787d5f5bec8132aac8a26c779e",
+  "nativeExecuted": false,
+  "publicAvailabilityEstablished": false
+}

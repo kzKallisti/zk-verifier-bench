@@ -1,0 +1,119 @@
+{
+  "status": "PASS_RAW_CURRENT_TIMING_STANDARD_PENDING_INDEPENDENT_REVIEW",
+  "mode": "standard",
+  "sourceManifestSha256": "8eab6555368613971cfbc062b37cd8db7b88c73734469040842b86de8e81fb23",
+  "integrationSourceManifestSha256": "d767fb4f72520c09b11f14fe05bde3319bb64f0292a81c9aa680070a3e0d7fe4",
+  "driverSourceManifestSha256": "b5fa65c267176ee2ace5c336f88cc7f32598ccaa3c308a8a41e5ad581908cb06",
+  "captureSubjectManifestSha256": "37e363990ba9be3f24fd252d2fdc203ae72820b0bcf62a4f875716b023e42b68",
+  "manifestExcludesSelf": true,
+  "files": {
+    "contract.json": {
+      "bytes": 8657,
+      "sha256": "3dcf8db15a9f2985dd747694cf5dc48b67c179d803116e1d0a5c612fc839ab0a"
+    },
+    "plan.json": {
+      "bytes": 1667,
+      "sha256": "de370547b6018e6e9eac0701d6053e6739623a8269387fd0576d89d2020fa5fd"
+    },
+    "status.json": {
+      "bytes": 38188,
+      "sha256": "4953d526d1d4b380acad352dbf626fc1bf12582c3658712f908a9816d8e3a211"
+    },
+    "timing-0-processes.txt": {
+      "bytes": 89280,
+      "sha256": "1cc135d3cd58035f463e907ea5ab4e6dc0b8913df5e1488332eba48546489df3"
+    },
+    "timing-0.json": {
+      "bytes": 5681,
+      "sha256": "7ed0a33e7ecb8365b7e5ae5705857b4f6c679bb42acee317cf6db465b266e64b"
+    },
+    "timing-0.stderr": {
+      "bytes": 7771,
+      "sha256": "b39238bf26787bc5e3412eb6c05e29a2b0aca87259581a2bd3ff2c7e20cf5468"
+    },
+    "timing-0.stdout": {
+      "bytes": 41890522,
+      "sha256": "6d5070d5a169bdfa669684400be80c24c491002264e69b32d646bb42aeaa31d9"
+    },
+    "timing-1-processes.txt": {
+      "bytes": 89383,
+      "sha256": "8af379e3ce033db6474db2b5af8cf5cfbe0d2638e1d989f3e57bfc20847c02ae"
+    },
+    "timing-1.json": {
+      "bytes": 5687,
+      "sha256": "f0ccdb5031eeb41d6451d1171fb4d9253d516cdad7c22681314921a44d1a4170"
+    },
+    "timing-1.stderr": {
+      "bytes": 7771,
+      "sha256": "a0a7d826195552e56df490a42c0cd8a826da9107ccb3e947e8f9cd0601621b2b"
+    },
+    "timing-1.stdout": {
+      "bytes": 41892120,
+      "sha256": "3b87b731011f45838162e9bf2f748506060b19a66f4e7967b1f5cc32993080f2"
+    },
+    "timing-2-processes.txt": {
+      "bytes": 89383,
+      "sha256": "9251cc66f27c93cbaf38f05f84b0141f6aac8d4f441151b246118dfe8707662f"
+    },
+    "timing-2.json": {
+      "bytes": 5687,
+      "sha256": "538125ee85da1e56fd49bb7267a89a10b14ece3bd049f879946786980b9a6757"
+    },
+    "timing-2.stderr": {
+      "bytes": 7771,
+      "sha256": "976622a50253e11761e77d00aa10fc6104d4e042726e5ee120ee8777ba16bfc3"
+    },
+    "timing-2.stdout": {
+      "bytes": 41892615,
+      "sha256": "e8b386ae0222c3df537e522f1f6a7bf3470fca3b26397391d6c61479e3b3aed8"
+    },
+    "timing-3-processes.txt": {
+      "bytes": 89469,
+      "sha256": "e05532669b5bfdf38bb044d8d816fe6bd6917bcb1f876917dccf6d45e8a41e1e"
+    },
+    "timing-3.json": {
+      "bytes": 5686,
+      "sha256": "062b168336ccd33796cd5c7cc8edc4fccec77c1d3128fcdbb9f0405f3910199d"
+    },
+    "timing-3.stderr": {
+      "bytes": 7771,
+      "sha256": "d74143bfb378888c4ae05bf3a15b49fa9a1379a0bcf71322fe616ad807bbfcb4"
+    },
+    "timing-3.stdout": {
+      "bytes": 41893269,
+      "sha256": "5f3b3680a2af1883cf01f9759037738405594853bc1ef161e1ececb64687be05"
+    },
+    "timing-4-processes.txt": {
+      "bytes": 89469,
+      "sha256": "b090a3a09b80d88d5141cb863b16cf8757b811ac952c1477b4d5f9eb94eb8b3b"
+    },
+    "timing-4.json": {
+      "bytes": 5687,
+      "sha256": "914d01698d1edaa90256db345efb847e760202dfc8f400ed9dbc4c5bf96ceaa7"
+    },
+    "timing-4.stderr": {
+      "bytes": 7771,
+      "sha256": "d0c622f0b1d045734b0d7bc1a334d73d18a4ffb68f0644390148e86be487444d"
+    },
+    "timing-4.stdout": {
+      "bytes": 41893313,
+      "sha256": "aa16e74f3e13a61ce7f42eb2524de13ab4b5c591e62d28b4134491acaa42970f"
+    },
+    "timing-5-processes.txt": {
+      "bytes": 89315,
+      "sha256": "ffb8cc8021d3e81d48559566463a4be9252542170a744ad51de31fcf7afae2a3"
+    },
+    "timing-5.json": {
+      "bytes": 5687,
+      "sha256": "233d9e953cdbb8e400aba6238b8a8be79df20446167dbcf3efc790e04471751e"
+    },
+    "timing-5.stderr": {
+      "bytes": 7771,
+      "sha256": "b2995d0218ed1cce63785eb989035f9108468b0bce86dd7dc78819f1ee4c3e78"
+    },
+    "timing-5.stdout": {
+      "bytes": 41893502,
+      "sha256": "222751484e711410291e182af99325121d75c093ce7885a11226c37e2fb962a3"
+    }
+  }
+}

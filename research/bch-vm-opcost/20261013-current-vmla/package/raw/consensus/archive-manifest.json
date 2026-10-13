@@ -1,0 +1,126 @@
+{
+  "status": "PASS_EXACT_TERMINAL_RUN_ARCHIVE",
+  "rawStatus": "PASS_RAW_CURRENT_TIMING_CONSENSUS_PENDING_INDEPENDENT_REVIEW",
+  "files": {
+    "archive-receipt.json": {
+      "bytes": 619,
+      "sha256": "14b598e28815b44e376be801c8884c33f32049444739b7b5f4005f0bd87d6c3d"
+    },
+    "contract.json": {
+      "bytes": 8665,
+      "sha256": "3276d8116682588f91f2d52f3bd46cdb16bcd48ed57f8a2c81e3b0bffd500d2b"
+    },
+    "plan.json": {
+      "bytes": 1667,
+      "sha256": "de370547b6018e6e9eac0701d6053e6739623a8269387fd0576d89d2020fa5fd"
+    },
+    "raw-manifest.json": {
+      "bytes": 4273,
+      "sha256": "8cbbdf320faa6141bd7917d7ffddd5514628944ad3bdc1585a5f2bfe64944811"
+    },
+    "root-attestation.json": {
+      "bytes": 654,
+      "sha256": "2f1cd27d005ccf76ad002e19492516c745111424a07aff19b4ab5cfe014cd338"
+    },
+    "status.json": {
+      "bytes": 38175,
+      "sha256": "6f5edd48a46bac7f6cc48f61c555148c4b20b5ee3223d700b6257c9965c7f8e1"
+    },
+    "timing-0-processes.txt": {
+      "bytes": 89649,
+      "sha256": "8d309077f0129e221ee5004cf21f1be7e7048bee6f9fa7d59a64e19454c8ffe8"
+    },
+    "timing-0.json": {
+      "bytes": 5680,
+      "sha256": "1e9c92c4f250610c1d5e03c9e7fc31afdc1b079c7c2eb51d6a60b4fa7b0cf9c5"
+    },
+    "timing-0.stderr": {
+      "bytes": 7771,
+      "sha256": "77077d282710ea090855b4705a4bd13047f009421d037b1645cd576d99a7da6c"
+    },
+    "timing-0.stdout": {
+      "bytes": 38813452,
+      "sha256": "f52fc45985ba0d4f0c762b82113f54a9353a5825b7d0952b1388ccf0ace6a9cd"
+    },
+    "timing-1-processes.txt": {
+      "bytes": 89553,
+      "sha256": "506416f0b60590615415d18a274a7735168184a5c5d311e1a8fefe30a28cfe71"
+    },
+    "timing-1.json": {
+      "bytes": 5685,
+      "sha256": "b3348559a8fb9a8424860bba97f620c999dc210a8b40213b67b065740f391dbb"
+    },
+    "timing-1.stderr": {
+      "bytes": 7771,
+      "sha256": "3a6262a1bccb5bcc6db673c58ed63f23d44e812ea4ada6b57dcddd35364a545f"
+    },
+    "timing-1.stdout": {
+      "bytes": 38815356,
+      "sha256": "949d07add5f642a6cde2b389156f07673878218a884ac4442a25609503576e37"
+    },
+    "timing-2-processes.txt": {
+      "bytes": 89758,
+      "sha256": "916caae24bde7f47dac59fb23c564fe93e2652322afaf731426a7783fafee23c"
+    },
+    "timing-2.json": {
+      "bytes": 5685,
+      "sha256": "756ba7beb75c692197133463267c002b6a765139946842cd31b63844ffda6c92"
+    },
+    "timing-2.stderr": {
+      "bytes": 7771,
+      "sha256": "031a5ce79bfb07b1245487d63826ef0e609c046af17057deedf79318f58edb3b"
+    },
+    "timing-2.stdout": {
+      "bytes": 38815823,
+      "sha256": "7c574717559c47342d13de0cb76e45580c9aee279e5744e6eca94da034738f92"
+    },
+    "timing-3-processes.txt": {
+      "bytes": 89544,
+      "sha256": "4bef869206f042434be4fcfae6bd64eee32662e7f3b69da7e17e5cb8b34baff4"
+    },
+    "timing-3.json": {
+      "bytes": 5685,
+      "sha256": "8efb4a701162afcfda941629710907fb2610646535c904f9755487373303fb0e"
+    },
+    "timing-3.stderr": {
+      "bytes": 7771,
+      "sha256": "2ab09f98f372c77f818c71db195131c3113d42c07a179de55696af1b607ca93a"
+    },
+    "timing-3.stdout": {
+      "bytes": 38816030,
+      "sha256": "6e1efedc4fb4e4186247895c754e524d27075bf5a82ffd0def03579576929199"
+    },
+    "timing-4-processes.txt": {
+      "bytes": 89544,
+      "sha256": "576cfd301b344e717e0d1f36faeca704e0c759843d4a8ffe3b845eea04519670"
+    },
+    "timing-4.json": {
+      "bytes": 5685,
+      "sha256": "54e3978e9f0c24f20e3185aecc82422f62f67b26c602cfcee505812dc0b30040"
+    },
+    "timing-4.stderr": {
+      "bytes": 7771,
+      "sha256": "9e128e4467e6bf89bc9c1b399595d7ed58269035e98bfb678a86864926743818"
+    },
+    "timing-4.stdout": {
+      "bytes": 38816014,
+      "sha256": "b1ce275c0fbeca599e53b43d91b0aa4e30e431d91a648826b08383e18e6c1488"
+    },
+    "timing-5-processes.txt": {
+      "bytes": 89544,
+      "sha256": "7d3325d967ec6e81fee8e7210c946a2083e9e42350a7cfd288cad04131221b3f"
+    },
+    "timing-5.json": {
+      "bytes": 5680,
+      "sha256": "632ca185cbd9dec321a91f4f5db21a7b15b77eb8391271c2816339c91faf4ee4"
+    },
+    "timing-5.stderr": {
+      "bytes": 7771,
+      "sha256": "711d46e5ad3eef810b4cc26c6ffc9223f89c2708b8f4317a095218fefa10cedc"
+    },
+    "timing-5.stdout": {
+      "bytes": 38816324,
+      "sha256": "9d591fc4d0ea0a52564e6082c64bd038c2b663a258afff8d00eac2b6fcc9a16a"
+    }
+  }
+}

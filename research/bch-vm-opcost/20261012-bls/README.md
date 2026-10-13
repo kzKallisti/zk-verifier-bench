@@ -2,6 +2,8 @@
 
 This study asks whether lower uniform instruction charges make useful contracts smaller while admitting acceptable validation work. Base 100 remains the reference; 50 and 20 are experimental. These measurements isolate identical artifacts. Reoptimized bytes, maximum accepted adversarial work, VM-attributable memory and full-limit block/mempool validation remain separate research gates. No replacement schedule is selected.
 
+The [complete current-rules VMLA companion dataset](../20261013-current-vmla/README.md) preserves every original registration, rejection and timing row at base 100, with absolute verification times and matched annual/current/accepted-bare references. Its public calculation path was reproduced without private inputs; it supplements this selected-verifier experiment.
+
 The compact committed fixture has challenge score **70,009** and **69,239 spending bytes**; the fixed alternative has score **79,948** and **79,178 spending bytes**. Both use 22 inputs. Six of ten original fixtures shrink and four grow, so compact remains a qualified Pareto alternative. No verifier source, witness, scoring, or admission limit changed in this timing study.
 
 ## Timing boundary and measurement conditions

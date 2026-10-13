@@ -1,0 +1,29 @@
+{
+  "status": "PASS_COMPLETED_VMLA_TIMING_PACKAGE_AL3_OUTPUT_INDEPENDENT_REVIEW",
+  "createdUtc": "2026-10-13T06:36:36Z",
+  "credit": "GPT-6.1 Sol; historical GPT-6 Astra preserved",
+  "manifestExcludesSelf": true,
+  "subjectRootExecutionManifestSha256": "9147f85e14a009dc9a7977d189060945e0144c891ceeddc5ccc988f99f519351",
+  "subjectPackageManifestSha256": "65f86ce2021f97d9dd537e337f1c101775caed807e73c0d25cd283ac0ccf6fbf",
+  "subjectPackingReceiptSha256": "ef0ef57ee4def8daf6ed103dcbbfd593e242072a56908ca1489d7b92c8db4a87",
+  "sourceManifestSha256": "2c705f0fc9eb73a28df0e6ccac377ea1ccc2e8d41bd8e283128e6fdc66dcbed1",
+  "sourceReviewManifestSha256": "4fe3860fb12fed2edcf942465b3ef4e7f3973f4453ccbbc2ff571fe2108ff835",
+  "files": {
+    "README.md": {
+      "bytes": 1608,
+      "sha256": "7732264597060e9ab248800a21be84ac4c469a89f84f13c21cf7b6581ec57a89"
+    },
+    "check.py": {
+      "bytes": 14168,
+      "sha256": "2a0455b40d01da92a44c78972bf9afb55d86cbeb6576ec476d1efbd95281c30c"
+    },
+    "checks.json": {
+      "bytes": 1684,
+      "sha256": "124b521d6b2edc507ad2eff2ed87c64a5a11f120ac56863b7f54101aeff0861b"
+    },
+    "review.json": {
+      "bytes": 2372,
+      "sha256": "b64f6d61bfa0b0cced0af575aa0b979c7ec7d445383be3bbdc9de2a5d8c75853"
+    }
+  }
+}
