@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-09-15T12:26:52.929Z",
+  "generatedAt": "2026-10-13T18:59:13.432Z",
   "statement": {
     "proofSystem": "Groth16",
     "curve": "BN254",
@@ -36,7 +36,7 @@
       "id": "bch-groth16-intratx-pairfold5-densless",
       "label": "Best BCH-native full verifier",
       "curve": "BN254",
-      "bytes": 33179,
+      "bytes": 32547,
       "bchCompatible": true
     }
   },
@@ -772,6 +772,14 @@
     {
       "t": "2026-09-05T14:10:34.000Z",
       "score": 33179,
+      "id": "bch-groth16-intratx-pairfold5-densless",
+      "steps": 5,
+      "transactions": 1,
+      "fits": true
+    },
+    {
+      "t": "2026-10-13T18:59:13.432Z",
+      "score": 32547,
       "id": "bch-groth16-intratx-pairfold5-densless",
       "steps": 5,
       "transactions": 1,
@@ -3730,7 +3738,7 @@
     },
     {
       "id": "bch-groth16-intratx-pairfold5-densless",
-      "name": "BCH Groth16 intra-tx PairFold-5 densless natural0 (score 33179)",
+      "name": "BCH Groth16 intra-tx PairFold-5 densless base-field helper (score 32547)",
       "category": "full",
       "official": false,
       "solver": null,
@@ -3745,7 +3753,7 @@
           "tested": 5,
           "rejected": 5
         },
-        "worstCaseAccepted": true,
+        "worstCaseAccepted": null,
         "crossStageBinding": {
           "applicable": true,
           "bound": true,
@@ -3755,12 +3763,12 @@
         },
         "failures": []
       },
-      "score": 33179,
+      "score": 32547,
       "size": {
-        "scriptBytes": 32944,
+        "scriptBytes": 32312,
         "txOverheadBytes": 235,
         "transactions": 1,
-        "total": 33179
+        "total": 32547
       },
       "padding": {
         "bytes": 0,
@@ -3768,18 +3776,12 @@
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 21290314,
+          "opCost": 20099719,
           "steps": 5,
-          "heaviestStepOpCost": 6139228,
+          "heaviestStepOpCost": 5587771,
           "inputsForHeaviestStep": 1
         },
-        "worstCase": {
-          "accepted": true,
-          "opCost": 21270381,
-          "steps": 5,
-          "heaviestStepOpCost": 6139188,
-          "inputsForHeaviestStep": 1
-        }
+        "worstCase": null
       },
       "opCostBudget": 26379200,
       "bsvSingleton": false,
@@ -3811,7 +3813,7 @@
         "secure": true,
         "type": "p2sh32"
       },
-      "source": "BCH-native CashScript: five P2SH32 inputs in one intra-transaction-linked BN254 Groth16 verifier (PairFold-5 densless natural0). Zero artificial density; equal-limb BQ residual 2336; peval-expand + aff-R-only; stock public-bench value=1000 / sequence=0. Score 33179 (scriptBytes 32944 + tx overhead 235). Sibling of pevalfuse 39691 / RC 44968."
+      "source": "BCH-native five P2SH32 inputs in one intra-transaction-linked BN254 Groth16 verifier (PairFold-5 densless public-offset). Positive-ID base-field helper shared/terminal reduction; fixed public VK and public-only producer; score 32547 (scriptBytes 32312 + tx overhead 235), serialized spending bytes 32372. Finite current/spec correctness, standardness, compatibility, input-validation, binding and native resource gates are recorded separately."
     },
     {
       "id": "bch-groth16-intratx-general",
