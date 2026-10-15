@@ -5,7 +5,8 @@
 // docs/public-input-binding.md). Inputs 5-6 recompute vk_x = IC0 + n0*IC1 + n1*IC2 by GLV
 // Straus from the genesis public-input pushes and require it to equal the genesis vk_x;
 // the terminal requires 7 inputs and pins both MSM lockings.
-// The MSM inputs are hand-scheduled assembly (vkx-msm-asm.mjs); vkx-msm.mjs is the CashScript reference.
+// The MSM inputs are CashScript (pairfold5-msm/vkx-msm.mjs) compiled with the mr-zwets/cashscript
+// compiler-optimizations-7 fork. Score 45,768 (45,447 script bytes), 7 inputs, one standard tx.
 import { readFileSync } from 'node:fs';
 import { hexToBin } from '@bitauth/libauth';
 
