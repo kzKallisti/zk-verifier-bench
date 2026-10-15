@@ -120,8 +120,8 @@ const isBsvSeed = (r: BenchmarkResult): boolean =>
 // since it is purely a correctness concern). Mirrors the harness `pass` gate, reasons kept legible:
 //   'fail'       - a hard defect: the valid run is not fully accepted, an invalid run is wrongly
 //                  accepted, the worst-case proof is rejected, packaging is insecure, or a
-//                  cross-stage staple is accepted. `failures` names each. DISQUALIFIED — excluded
-//                  from the frontier leaders and score-history.
+//                  cross-stage staple or a maintainer red-team attack is accepted. `failures` names
+//                  each. DISQUALIFIED — excluded from the frontier leaders and score-history.
 //   'valid-only' - the valid run passes but the entry shipped no invalid fixtures, so rejection
 //                  was never exercised (correct as far as tested, not the same as proven sound).
 //   'pass'       - valid run accepted AND every negative fixture rejected.
@@ -137,6 +137,9 @@ const correctnessOf = (r: BenchmarkResult) => {
       ? `cross-stage staple accepted (${csb.unboundSeams}/${csb.seamsTested} seam(s))`
       : null,
     !r.securePackaging ? 'insecure P2SH20 packaging' : null,
+    r.redTeam.accepted > 0
+      ? `maintainer red-team attack accepted (${r.redTeam.accepted}/${r.redTeam.tested}; first: "${r.redTeam.firstAccepted}")`
+      : null,
   ].filter((x): x is string => x !== null);
   const verdict: 'pass' | 'fail' | 'valid-only' =
     failures.length > 0 ? 'fail' : r.invalidTotal > 0 ? 'pass' : 'valid-only';
@@ -164,6 +167,11 @@ const correctnessOf = (r: BenchmarkResult) => {
           ? `every stage bound to one proof: ${csb.seamsTested} seams staple-tested with a 2nd distinct proof, all rejected`
           : `UNBOUND: ${csb.unboundSeams}/${csb.seamsTested} seam(s) accept a spliced 2-proof hybrid (first at "${csb.firstUnboundSeam}") — one proof's stage can be stapled onto another proof's remaining stages`,
     },
+    // Maintainer red-team gate (harness/redteam.ts): attacks on the entry's exact bytes that a
+    // sound verifier must reject, e.g. a real proof with FORGED public inputs. null = no file.
+    redTeam: r.redTeam.present
+      ? { stale: r.redTeam.stale, tested: r.redTeam.tested, accepted: r.redTeam.accepted, kinds: r.redTeam.kinds, ...(r.redTeam.firstAccepted ? { firstAccepted: r.redTeam.firstAccepted } : {}) }
+      : null,
     failures,
   };
 };

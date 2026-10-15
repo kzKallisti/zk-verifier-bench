@@ -118,3 +118,8 @@ your id (correctness gates), the metadata claims match what the vectors
 demonstrate, the header comment's soundness argument holds up, and the entry
 doesn't require harness changes (if it does — a genuinely new structure or
 grading dimension — expect that part to get real review, like any code change).
+
+The maintainers may also add red-team attacks against your exact bytes
+(`src/bch/redteam/<id>.json`); every attack run must be rejected. A verifier must
+bind `vk_x` to the public inputs it claims: a real proof with forged public inputs
+has to fail. See [docs/public-input-binding.md](docs/public-input-binding.md).

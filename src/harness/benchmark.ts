@@ -60,6 +60,7 @@ import { pathToFileURL } from 'node:url';
 
 import { authenticationInstructionIsMalformed, decodeAuthenticationInstructions, encodeAuthenticationInstruction } from '@bitauth/libauth';
 
+import { redTeam } from './redteam.js';
 import { tamperProof } from './tamper.js';
 import type { BenchmarkResult, Implementation, PackagingType, Scenario, Step, StepMetrics } from './types.js';
 import {
@@ -401,6 +402,7 @@ export const benchmark = (impl: Implementation, scenario: Awaited<ReturnType<Imp
       ...tokenSafetyOf(scenario, impl),
       inputValidation: { tested: 0, rejected: 0, enforced: false },
       crossStageBinding: { applicable: false, seamsTested: 0, unboundSeams: 0 },
+      redTeam: { present: false, stale: false, tested: 0, accepted: 0, kinds: [] },
       checkpointStats: [],
       stepCount: steps.length,
       totalBytes: steps.reduce((a, s) => a + s.lockingBytes + s.unlockingBytes, 0),
@@ -486,6 +488,10 @@ export const benchmark = (impl: Implementation, scenario: Awaited<ReturnType<Imp
   // unbound seam is a soundness hole and fails the entry; N/A entries don't count against it.
   const crossStageBinding = crossStageStaple(vm, scenario, bsv);
 
+  // Maintainer red-team runs (see harness/redteam.ts): concrete attacks on this entry's exact
+  // bytes, written by the maintainers rather than the submitter. Any accepted run fails the entry.
+  const redTeamResult = redTeam(vm, impl.id, scenario, bsv);
+
   const opCosts = steps.map((s) => s.operationCost);
   const maxStepOperationCost = opCosts.length ? Math.max(...opCosts) : 0;
   // Per-input op-cost budget at the entry's script cap: BCH_2026 (41+10000)*800 = 8,032,800,
@@ -528,8 +534,9 @@ export const benchmark = (impl: Implementation, scenario: Awaited<ReturnType<Imp
     validPassed,
     invalidRejected,
     invalidTotal: invalidRuns.length,
-    pass: validPassed && worstCaseAccepted && invalidRuns.length > 0 && invalidRejected === invalidRuns.length && env.secure && crossStageBinding.unboundSeams === 0,
+    pass: validPassed && worstCaseAccepted && invalidRuns.length > 0 && invalidRejected === invalidRuns.length && env.secure && crossStageBinding.unboundSeams === 0 && redTeamResult.accepted === 0,
     crossStageBinding,
+    redTeam: redTeamResult,
     proofBinding,
     proofsTested,
     proofsPassed,
@@ -598,13 +605,14 @@ const padL = (s: string, w: number) => s.padStart(w);
  * wins). Both the live progress line and the results table derive their label from this, so
  * the ranking — and where a new gate like the cross-stage staple slots in — lives in ONE place.
  */
-type Verdict = 'profile' | 'insecure-packaging' | 'pass' | 'worst-case-fail' | 'cross-stage-fail' | 'valid-only' | 'fail';
+type Verdict = 'profile' | 'insecure-packaging' | 'pass' | 'worst-case-fail' | 'cross-stage-fail' | 'redteam-fail' | 'valid-only' | 'fail';
 const verdictOf = (r: BenchmarkResult): Verdict => {
   if (r.profileOnly) return 'profile';
   if (!r.securePackaging) return 'insecure-packaging';
   if (r.pass) return 'pass';
   if (r.worstCase?.accepted === false) return 'worst-case-fail';
   if (r.crossStageBinding.unboundSeams > 0) return 'cross-stage-fail';
+  if (r.redTeam.accepted > 0) return 'redteam-fail';
   if (r.validPassed) return 'valid-only';
   return 'fail';
 };
@@ -616,6 +624,7 @@ const progressLabel = (r: BenchmarkResult): string => ({
   pass: 'PASS',
   'worst-case-fail': 'FAIL (worst-case proof rejected)',
   'cross-stage-fail': 'FAIL (cross-stage staple accepted)',
+  'redteam-fail': 'FAIL (maintainer red-team attack accepted)',
   'valid-only': 'valid-only (no reject test)',
   fail: 'FAIL',
 }[verdictOf(r)]);
@@ -628,6 +637,7 @@ const correctnessCell = (r: BenchmarkResult): string => {
     case 'pass': return `PASS (${r.invalidRejected}/${r.invalidTotal}✗${r.bsvOpReturn ? ', BSV OP_RETURN' : ''})`;
     case 'worst-case-fail': return 'FAIL (worst-case✗)';
     case 'cross-stage-fail': return 'FAIL (cross-stage staple)';
+    case 'redteam-fail': return `FAIL (red-team ${r.redTeam.accepted}/${r.redTeam.tested})`;
     case 'valid-only': return 'valid-only';
     case 'fail': return 'FAIL';
   }
@@ -738,6 +748,14 @@ const main = async () => {
           console.log(csb.unboundSeams === 0
             ? `    > cross-stage binding: BOUND — every stage is pinned to one proof (${csb.seamsTested} seams staple-tested with a 2nd distinct proof, all rejected)`
             : `    > cross-stage binding: UNBOUND — ${csb.unboundSeams}/${csb.seamsTested} seam(s) accept a spliced 2-proof hybrid (first at "${csb.firstUnboundSeam}"): one proof's stage can be stapled onto another proof's remaining stages`);
+        }
+        const rt = r.redTeam;
+        if (rt.present) {
+          console.log(rt.stale
+            ? `    > red-team: STALE — the maintainer attack file targets lockings this entry no longer ships; regenerate it`
+            : rt.accepted === 0
+              ? `    > red-team: all ${rt.tested} maintainer attack run(s) rejected (${rt.kinds.join(', ')})`
+              : `    > red-team: BROKEN — ${rt.accepted}/${rt.tested} maintainer attack run(s) ACCEPTED (first: "${rt.firstAccepted}"; ${rt.kinds.join(', ')})`);
         }
       }
       const ms = r.impl.milestone;

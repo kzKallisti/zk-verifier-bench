@@ -12,6 +12,8 @@ For each implementation the harness:
 1. **proves correctness** — the valid run is fully ACCEPTED and every invalid
    run REJECTED, on the BCH 2026 VM with limits loosened (so even oversized
    verifiers run to completion);
+   maintainer red-team attacks from `src/bch/redteam/<id>.json` (when present)
+   must be rejected too, see [public-input-binding.md](public-input-binding.md);
 2. **measures cost** — per-step and aggregate bytes, op-cost, padding, and
    serialized-tx overhead; and
 3. **checks deployability** — replays the valid run on the real consensus VM

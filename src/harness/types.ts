@@ -4,6 +4,9 @@
 // approach, or any covenant that carries state forward) is an ordered list of
 // Steps. Implementations are grouped into separate leaderboards by
 // (proofSystem, structure).
+
+import type { RedTeamResult } from './redteam.js';
+
 export type Structure = 'single-tx' | 'multi-tx';
 
 export interface Step {
@@ -295,6 +298,11 @@ export interface BenchmarkResult {
    * for covenant/grouped entries whose token hand-off the harness cannot staple-test (N/A does
    * not penalize). See harness/benchmark.ts crossStageStaple. */
   crossStageBinding: { applicable: boolean; seamsTested: number; unboundSeams: number; firstUnboundSeam?: string };
+  /** Maintainer red-team gate: concrete attacks on the entry's exact bytes from
+   * src/bch/redteam/<id>.json (not submitter-controlled). `accepted > 0` is a soundness hole
+   * that folds into `pass`; a stale file (lockings changed) is reported but not counted.
+   * See harness/redteam.ts. */
+  redTeam: RedTeamResult;
   /** correctness was judged under the BSV post-Genesis OP_RETURN-terminator rule
    * (the valid run halts at a reachable OP_RETURN, which fails on strict BCH) */
   bsvOpReturn: boolean;
