@@ -1,10 +1,11 @@
-// PairFold-5 with a SOUND vk_x: the reconstructed peval-fuse verifier plus two vk_x MSM inputs.
-// Owning source: chunked/bn254/pairfold5-msm in groth16_cashscript (reuses leader-recovered).
+// PairFold-5 densless with a SOUND vk_x: the reconstructed densless verifier plus two vk_x MSM inputs.
+// Owning source: chunked/bn254/densless-msm in groth16_cashscript (densless-recovered, by kallisti,
+// withdrawn bench PR #36 / source PR #17, plus the MSM inputs from chunked/bn254/pairfold5-msm).
 // The PairFold genesis predicate does not bind vk_x to the claimed public inputs (see
 // docs/public-input-binding.md). Inputs 5-6 recompute vk_x = IC0 + n0*IC1 + n1*IC2 by GLV
 // Straus from the genesis public-input pushes and require it to equal the genesis vk_x;
 // the terminal requires 7 inputs and pins both MSM lockings.
-// MSM written in CashScript, compiled with the mr-zwets/cashscript compiler-optimizations-5 fork.
+// The MSM inputs are hand-scheduled assembly (vkx-msm-asm.mjs); vkx-msm.mjs is the CashScript reference.
 import { readFileSync } from 'node:fs';
 import { hexToBin } from '@bitauth/libauth';
 
@@ -26,7 +27,7 @@ interface Vectors {
 }
 
 const vectors = JSON.parse(
-  readFileSync('src/bch/groth16-intratx-pairfold5-msm-vectors.json', 'utf8'),
+  readFileSync('src/bch/groth16-intratx-pairfold5-densless-msm-vectors.json', 'utf8'),
 ) as Vectors;
 
 const toRun = (raw: RawStep[]): Step[] => {
@@ -47,16 +48,16 @@ const toRun = (raw: RawStep[]): Step[] => {
   }));
 };
 
-export const bchGroth16IntratxPairfold5Msm: Implementation = {
-  id: 'bch-groth16-intratx-pairfold5-msm',
-  name: 'BCH Groth16 intra-tx PairFold-5 with sound vk_x MSM',
+export const bchGroth16IntratxPairfold5DenslessMsm: Implementation = {
+  id: 'bch-groth16-intratx-pairfold5-densless-msm',
+  name: 'BCH Groth16 intra-tx PairFold-5 densless with sound vk_x MSM',
   proofSystem: 'Groth16',
   field: 'BN254',
   structure: 'single-tx',
   proofBinding: 'runtime',
   source:
-    'PairFold-5 peval-fuse (public-only reconstruction, chunked/bn254/leader-recovered) plus two ' +
-    'CashScript GLV Straus inputs that recompute vk_x from the claimed public inputs (chunked/bn254/pairfold5-msm). ' +
+    'PairFold-5 densless (public-only reconstruction, chunked/bn254/densless-recovered) plus two ' +
+    'GLV Straus inputs that recompute vk_x from the claimed public inputs (chunked/bn254/densless-msm). ' +
     'Seven P2SH32 inputs, one standard transaction; the terminal pins input count and all worker lockings.',
   load: async () => ({
     valid: toRun(vectors.steps),
