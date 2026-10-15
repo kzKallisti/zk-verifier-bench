@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-15T19:39:00.735Z",
+  "generatedAt": "2026-10-15T19:56:27.239Z",
   "statement": {
     "proofSystem": "Groth16",
     "curve": "BN254",
@@ -33,10 +33,10 @@
       "bchCompatible": false
     },
     "current": {
-      "id": "bch-groth16-intratx-pairfold5-densless",
+      "id": "bch-groth16-bls12381-intratx-fs-compact",
       "label": "Best BCH-native full verifier",
-      "curve": "BN254",
-      "bytes": 33179,
+      "curve": "BLS12-381",
+      "bytes": 69947,
       "bchCompatible": true
     }
   },
@@ -784,6 +784,14 @@
       "steps": 22,
       "transactions": 1,
       "fits": true
+    },
+    {
+      "t": "2026-10-15T19:56:27.239Z",
+      "score": 77193,
+      "id": "bch-groth16-intratx-crown8-rawchain",
+      "steps": 8,
+      "transactions": 1,
+      "fits": true
     }
   ],
   "entries": [
@@ -816,6 +824,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 522564,
@@ -901,6 +910,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 11717771,
@@ -982,6 +992,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 8734,
@@ -1069,6 +1080,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 6584,
@@ -1156,6 +1168,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 58870,
@@ -1244,6 +1257,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 7960,
@@ -1324,6 +1338,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 6164,
@@ -1404,6 +1419,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 59088,
@@ -1492,6 +1508,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 124238,
@@ -1580,6 +1597,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 239773,
@@ -1669,6 +1687,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 473475,
@@ -1751,6 +1770,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 93802,
@@ -1840,6 +1860,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 11051,
@@ -1920,6 +1941,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 11228,
@@ -2000,6 +2022,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 184850,
@@ -2078,6 +2101,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 14874,
@@ -2156,6 +2180,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 11351,
@@ -2245,6 +2270,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 23700,
@@ -2327,6 +2353,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 7196,
@@ -2407,6 +2434,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 7226,
@@ -2487,6 +2515,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 109305,
@@ -2576,6 +2605,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 342331,
@@ -2658,6 +2688,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 357241,
@@ -2747,6 +2778,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 635295,
@@ -2829,6 +2861,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 211163,
@@ -2911,6 +2944,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 107243,
@@ -2996,6 +3030,7 @@
           "unboundSeams": 0,
           "detail": "every stage bound to one proof: 30 seams staple-tested with a 2nd distinct proof, all rejected"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 234022,
@@ -3081,6 +3116,7 @@
           "unboundSeams": 0,
           "detail": "every stage bound to one proof: 9 seams staple-tested with a 2nd distinct proof, all rejected"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 83294,
@@ -3166,6 +3202,7 @@
           "unboundSeams": 0,
           "detail": "every stage bound to one proof: 41 seams staple-tested with a 2nd distinct proof, all rejected"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 330742,
@@ -3251,6 +3288,7 @@
           "unboundSeams": 0,
           "detail": "every stage bound to one proof: 10 seams staple-tested with a 2nd distinct proof, all rejected"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 86950,
@@ -3336,6 +3374,7 @@
           "unboundSeams": 0,
           "detail": "every stage bound to one proof: 3 seams staple-tested with a 2nd distinct proof, all rejected"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 58760,
@@ -3421,6 +3460,7 @@
           "unboundSeams": 0,
           "detail": "every stage bound to one proof: 7 seams staple-tested with a 2nd distinct proof, all rejected"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 77193,
@@ -3492,7 +3532,7 @@
       "proofSystem": "Groth16",
       "vmTarget": "bch-2026",
       "correctness": {
-        "verdict": "pass",
+        "verdict": "fail",
         "validAccepted": true,
         "invalid": {
           "tested": 7,
@@ -3506,7 +3546,18 @@
           "unboundSeams": 0,
           "detail": "every stage bound to one proof: 6 seams staple-tested with a 2nd distinct proof, all rejected"
         },
-        "failures": []
+        "redTeam": {
+          "stale": false,
+          "tested": 3,
+          "accepted": 3,
+          "kinds": [
+            "forged-public-inputs"
+          ],
+          "firstAccepted": "forged n0 = true n0 + 2 (true vk_x kept)"
+        },
+        "failures": [
+          "maintainer red-team attack accepted (3/3; first: \"forged n0 = true n0 + 2 (true vk_x kept)\")"
+        ]
       },
       "score": 54483,
       "size": {
@@ -3577,7 +3628,7 @@
       "proofSystem": "Groth16",
       "vmTarget": "bch-2026",
       "correctness": {
-        "verdict": "pass",
+        "verdict": "fail",
         "validAccepted": true,
         "invalid": {
           "tested": 5,
@@ -3591,7 +3642,18 @@
           "unboundSeams": 0,
           "detail": "every stage bound to one proof: 4 seams staple-tested with a 2nd distinct proof, all rejected"
         },
-        "failures": []
+        "redTeam": {
+          "stale": false,
+          "tested": 3,
+          "accepted": 3,
+          "kinds": [
+            "forged-public-inputs"
+          ],
+          "firstAccepted": "forged n0 = true n0 + 2 (true vk_x kept)"
+        },
+        "failures": [
+          "maintainer red-team attack accepted (3/3; first: \"forged n0 = true n0 + 2 (true vk_x kept)\")"
+        ]
       },
       "score": 44968,
       "size": {
@@ -3662,7 +3724,7 @@
       "proofSystem": "Groth16",
       "vmTarget": "bch-2026",
       "correctness": {
-        "verdict": "pass",
+        "verdict": "fail",
         "validAccepted": true,
         "invalid": {
           "tested": 5,
@@ -3676,7 +3738,18 @@
           "unboundSeams": 0,
           "detail": "every stage bound to one proof: 4 seams staple-tested with a 2nd distinct proof, all rejected"
         },
-        "failures": []
+        "redTeam": {
+          "stale": false,
+          "tested": 3,
+          "accepted": 3,
+          "kinds": [
+            "forged-public-inputs"
+          ],
+          "firstAccepted": "forged n0 = true n0 + 2 (true vk_x kept)"
+        },
+        "failures": [
+          "maintainer red-team attack accepted (3/3; first: \"forged n0 = true n0 + 2 (true vk_x kept)\")"
+        ]
       },
       "score": 36836,
       "size": {
@@ -3747,7 +3820,7 @@
       "proofSystem": "Groth16",
       "vmTarget": "bch-2026",
       "correctness": {
-        "verdict": "pass",
+        "verdict": "fail",
         "validAccepted": true,
         "invalid": {
           "tested": 5,
@@ -3761,7 +3834,18 @@
           "unboundSeams": 0,
           "detail": "every stage bound to one proof: 4 seams staple-tested with a 2nd distinct proof, all rejected"
         },
-        "failures": []
+        "redTeam": {
+          "stale": false,
+          "tested": 3,
+          "accepted": 3,
+          "kinds": [
+            "forged-public-inputs"
+          ],
+          "firstAccepted": "forged n0 = true n0 + 2 (true vk_x kept)"
+        },
+        "failures": [
+          "maintainer red-team attack accepted (3/3; first: \"forged n0 = true n0 + 2 (true vk_x kept)\")"
+        ]
       },
       "score": 33179,
       "size": {
@@ -3846,6 +3930,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 95201,
@@ -3931,6 +4016,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 234301,
@@ -4020,6 +4106,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 225877,
@@ -4109,6 +4196,7 @@
           "unboundSeams": 0,
           "detail": "every stage bound to one proof: 37 seams staple-tested with a 2nd distinct proof, all rejected"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 335614,
@@ -4194,6 +4282,7 @@
           "unboundSeams": 0,
           "detail": "every stage bound to one proof: 42 seams staple-tested with a 2nd distinct proof, all rejected"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 345471,
@@ -4279,6 +4368,7 @@
           "unboundSeams": 0,
           "detail": "every stage bound to one proof: 23 seams staple-tested with a 2nd distinct proof, all rejected"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 193309,
@@ -4364,6 +4454,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 79948,
@@ -4449,6 +4540,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 69947,
@@ -4534,6 +4626,7 @@
           "unboundSeams": 0,
           "detail": "every stage bound to one proof: 2 seams staple-tested with a 2nd distinct proof, all rejected"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 164447,
@@ -4619,6 +4712,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 345791,
@@ -4708,6 +4802,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 218083,
@@ -4797,6 +4892,7 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
         "failures": []
       },
       "score": 483,

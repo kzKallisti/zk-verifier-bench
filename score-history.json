@@ -742,5 +742,13 @@
     "steps": 22,
     "transactions": 1,
     "fits": true
+  },
+  {
+    "t": "2026-10-15T19:56:27.239Z",
+    "score": 77193,
+    "id": "bch-groth16-intratx-crown8-rawchain",
+    "steps": 8,
+    "transactions": 1,
+    "fits": true
   }
 ]
