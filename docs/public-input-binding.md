@@ -38,6 +38,14 @@ These entries now fail the correctness verdict. They stay listed but are
 excluded from the frontier and the score history until a fixed revision rejects
 the attacks.
 
+## A repaired entry
+
+`bch-groth16-intratx-pairfold5-densless-msm` keeps the reconstructed densless verifier and
+adds two inputs that recompute `vk_x = IC0 + n0*IC1 + n1*IC2` from the claimed public inputs
+(GLV Straus); the terminal requires the genesis `vk_x` to equal their result. Its red-team
+file rejects every forged run, as do adaptive forgeries that also supply a valid MSM witness
+for the forged inputs. Source: `chunked/bn254/densless-msm` in groth16_cashscript.
+
 ## The red-team gate
 
 Submitters write their own `invalid` vectors. That leaves the negative set under
