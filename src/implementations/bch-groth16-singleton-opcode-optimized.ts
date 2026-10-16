@@ -5,7 +5,8 @@
 // loops/branches, minimizes ROLL/PICK addressing, and folds adjacent stack ops into
 // multi-item ops, followed by an auto-outlining pass that factors repeated instruction
 // sequences into OP_DEFINE bodies. Semantics are identical (same runtime witnesses, same
-// verdict) -> 14,131 -> 6,314 B (-55%), far under BCH's 10,000-byte standard script-size
+// verdict) -> 7,622 -> 5,853 B on cashc compiler-optimizations-7 (with the in < r input range
+// check), far under BCH's 10,000-byte standard script-size
 // cap. Op-cost grows slightly from the outline call overhead (~750M -> ~796M), so it
 // still does not fit one input -- the win is purely byte size.
 //
@@ -49,7 +50,7 @@ export const bchGroth16SingletonOpcodeOptimized: Implementation = {
     'pass. It eliminates cashc\'s altstack park/restore (its emitReplace reassignment ' +
     'routine, ~2,150 alt-ops in the Miller loop alone), minimizes ROLL/PICK depth ' +
     'addressing, folds adjacent stack ops into multi-item ops, and outlines repeated ' +
-    'instruction sequences into OP_DEFINE bodies -- 14,131 -> 6,314 B (-55%, far under ' +
+    'instruction sequences into OP_DEFINE bodies -- 7,622 -> 5,853 B (far under ' +
     'the 10,000-byte standard cap). Identical semantics + runtime witnesses; each ' +
     'subroutine differential-tested vs the cashc original and every outline rewrite ' +
     'verified accept/reject. Op-cost ~796M, so still not one-input-standard. ' +
