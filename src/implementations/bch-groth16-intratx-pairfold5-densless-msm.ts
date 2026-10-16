@@ -58,7 +58,7 @@ export const bchGroth16IntratxPairfold5DenslessMsm: Implementation = {
   structure: 'single-tx',
   proofBinding: 'runtime',
   source:
-    'PairFold-5 densless (public-only reconstruction, chunked/bn254/densless-recovered) plus two ' +
+    'PairFold-5 densless (public-only reconstruction, chunked/bn254/densless-recovered) plus ' +
     'a GLV Straus MSM that recomputes vk_x from the claimed public inputs (chunked/bn254/densless-msm), ' +
     'carried by the existing inputs as a chain of pinned states. Five P2SH32 inputs, one standard transaction; ' +
     'the terminal pins input count and all worker lockings.',
