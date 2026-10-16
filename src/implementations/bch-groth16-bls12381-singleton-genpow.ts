@@ -1,5 +1,11 @@
 // BLS12-381 Groth16 genpow singleton, recovered symbolic source and compact IDs.
 //
+// Oct 16, 2026: main is prefixed with a public-input range check, 0 <= n0, n1 < r with
+// r = x^4 - x^2 + 1 from curveSeedAndScalarMinusOne (+17 bytes, 3,432-byte locking, sha256
+// b994fd7c4646465636bb88a9ff0f4437bb744758d94fd734b90e2b9429d34e46). Without it the
+// public-input gate accepted n0 + r and n1 + r. Figures below describe the 3,415-byte program
+// the check is prepended to.
+//
 // Full final exponentiation f^E == Fp12.ONE, E = (p^12-1)/r, over the raw
 // four-pair Miller product. vk_x is recomputed on-chain. The unlocking carries
 // compressed proof coordinates and two public inputs; no residue witness or
@@ -61,7 +67,9 @@ const mp = JSON.parse(readFileSync('src/bch/groth16-bls12381-singleton-genpow-mu
 
 export const bchGroth16Bls12381SingletonGenpow: Implementation = {
   id: 'bch-groth16-bls12381-singleton-genpow',
-  name: 'BCH Groth16 verifier singleton, BLS12-381 genpow (full final-exp, 3,415 B, recovered symbolic source)',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
+  publicInputs: [{ input: 0, push: 1, name: 'n0' }, { input: 0, push: 0, name: 'n1' }],
+  name: 'BCH Groth16 verifier singleton, BLS12-381 genpow (full final-exp, range-checked inputs, 3,432 B, recovered symbolic source)',
   proofSystem: 'Groth16',
   field: 'BLS12-381',
   structure: 'single-tx',
