@@ -1,14 +1,10 @@
-// PairFold-5 densless with a SOUND vk_x: the reconstructed densless verifier plus two vk_x MSM inputs.
-// Owning source: chunked/bn254/densless-msm in groth16_cashscript (densless-recovered, by kallisti,
-// withdrawn bench PR #36 / source PR #17, plus the MSM inputs from chunked/bn254/pairfold5-msm).
-// The PairFold genesis predicate does not bind vk_x to the claimed public inputs (see
-// docs/public-input-binding.md). Inputs 5-6 recompute vk_x = IC0 + n0*IC1 + n1*IC2 by GLV
-// Straus from the genesis public-input pushes and require it to equal the genesis vk_x;
-// the terminal requires 7 inputs and pins both MSM lockings.
-// The MSM inputs are CashScript (pairfold5-msm/vkx-msm.mjs) compiled with the mr-zwets/cashscript
-// compiler-optimizations-7 fork. The genesis has its dead vk_x predicate sliced out and the
-// claimed public inputs are input 5's own pushes. Score 42,577 (42,256 script bytes), 7 inputs,
-// one standard tx.
+// PairFold-5 densless with a SOUND vk_x: the reconstructed densless verifier (kallisti, withdrawn
+// bench PR #36 / source PR #17) with its dead vk_x predicate sliced out of genesis, plus a GLV
+// Straus MSM that recomputes vk_x = IC0 + n0*IC1 + n1*IC2 from the claimed public inputs: part A
+// runs inside the genesis input (which holds n0, n1 as pushes 22, 21), part B is input 5; the
+// terminal requires 6 inputs, pins every worker locking and requires input 5's vk_x to equal the
+// genesis vk_x. Owning source: chunked/bn254/densless-msm in groth16_cashscript (MSM in CashScript,
+// compiled with the mr-zwets/cashscript compiler-optimizations-7 fork). Score 38,945.
 import { readFileSync } from 'node:fs';
 import { hexToBin } from '@bitauth/libauth';
 
@@ -63,7 +59,7 @@ export const bchGroth16IntratxPairfold5DenslessMsm: Implementation = {
   source:
     'PairFold-5 densless (public-only reconstruction, chunked/bn254/densless-recovered) plus two ' +
     'GLV Straus inputs that recompute vk_x from the claimed public inputs (chunked/bn254/densless-msm). ' +
-    'Seven P2SH32 inputs, one standard transaction; the terminal pins input count and all worker lockings.',
+    'Six P2SH32 inputs (MSM part A carried by genesis), one standard transaction; the terminal pins input count and all worker lockings.',
   load: async () => ({
     valid: toRun(vectors.steps),
     extraValidProofs: (vectors.extraValidProofs ?? []).map(toRun),
