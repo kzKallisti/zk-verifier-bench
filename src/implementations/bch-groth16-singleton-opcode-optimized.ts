@@ -37,6 +37,8 @@ const mp = JSON.parse(readFileSync('src/bch/groth16-singleton-opcode-optimized-m
 
 export const bchGroth16SingletonOpcodeOptimized: Implementation = {
   id: 'bch-groth16-singleton-opcode-optimized',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
+  publicInputs: [{ input: 0, push: 1, name: 'n0' }, { input: 0, push: 0, name: 'n1' }],
   name: 'BCH Groth16 verifier singleton, opcode-optimized (stack-scheduling recompile)',
   proofSystem: 'Groth16',
   field: 'BN254',

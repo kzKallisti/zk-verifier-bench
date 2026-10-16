@@ -47,6 +47,8 @@ const mp = JSON.parse(readFileSync('src/bch/groth16-singleton-multiproof-vectors
 
 export const bchGroth16Singleton: Implementation = {
   id: 'bch-groth16-singleton',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
+  publicInputs: [{ input: 0, push: 1, name: 'n0' }, { input: 0, push: 0, name: 'n1' }],
   name: 'BCH Groth16 verifier singleton (vk_x on-chain + full pairing, single-tx)',
   proofSystem: 'Groth16',
   field: 'BN254',

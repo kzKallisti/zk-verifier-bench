@@ -61,6 +61,7 @@ import { pathToFileURL } from 'node:url';
 
 import { authenticationInstructionIsMalformed, decodeAuthenticationInstructions, encodeAuthenticationInstruction } from '@bitauth/libauth';
 
+import { layoutGate, publicInputGate } from './gates.js';
 import { redTeam } from './redteam.js';
 import { tamperProof } from './tamper.js';
 import type { BenchmarkResult, Implementation, PackagingType, Scenario, Step, StepMetrics } from './types.js';
@@ -347,10 +348,18 @@ const standardness = (
   }
 
   const vm = isSpec ? createStandardVmSpec() : createStandardVm();
-  const evalRejects = scenario.valid.some((s) => {
+  const runRejectsStd = (run: Step[]) => run.some((s) => {
     const o = evaluatePair(vm, s.lockingBytecode, s.unlockingBytecode, s.covenant, s.intraTx, s.grouped);
     return !(bsv ? o.bsvAccepted : o.accepted);
   });
+  const evalRejects = runRejectsStd(scenario.valid);
+  // Every shipped valid proof must be relayable, not just the primary one: a verifier whose
+  // budget only fits the primary witness is not standard for the proofs users will submit.
+  const otherRuns: [string, Step[]][] = [
+    ...(scenario.extraValidProofs ?? []).map((run, k): [string, Step[]] => [`extra proof #${k + 1}`, run]),
+    ...(scenario.worstCaseProof?.length ? [['worst-case proof', scenario.worstCaseProof] as [string, Step[]]] : []),
+  ];
+  const nonStandardProofs = otherRuns.filter(([, run]) => runRejectsStd(run)).map(([label]) => label);
 
   const reasons = [
     overLock ? `${overLock}/${steps.length} locking >${MAX_STANDARD_LOCKING_BYTECODE} B` : null,
@@ -359,6 +368,7 @@ const standardness = (
       ? `tx ${txBytes.toLocaleString('en-US')} B > ${MAX_STANDARD_TRANSACTION_SIZE.toLocaleString('en-US')} B standard size`
       : null,
     evalRejects ? 'a step is non-standard under the standard VM' : null,
+    nonStandardProofs.length ? `shipped valid proof(s) non-standard under the standard VM: ${nonStandardProofs.join(', ')}` : null,
   ].filter(Boolean);
   return { fits: reasons.length === 0, reason: reasons.length ? reasons.join('; ') : undefined };
 };
@@ -404,6 +414,8 @@ export const benchmark = (impl: Implementation, scenario: Awaited<ReturnType<Imp
       inputValidation: { tested: 0, rejected: 0, enforced: false },
       crossStageBinding: { applicable: false, seamsTested: 0, unboundSeams: 0 },
       redTeam: { present: false, stale: false, tested: 0, accepted: 0, kinds: [] },
+      publicInputs: { declared: false, tested: 0, accepted: 0 },
+      layout: { applicable: false, padsTested: 0, malleable: 0, dependencies: [] },
       checkpointStats: [],
       stepCount: steps.length,
       totalBytes: steps.reduce((a, s) => a + s.lockingBytes + s.unlockingBytes, 0),
@@ -492,6 +504,9 @@ export const benchmark = (impl: Implementation, scenario: Awaited<ReturnType<Imp
   // Maintainer red-team runs (see harness/redteam.ts): concrete attacks on this entry's exact
   // bytes, written by the maintainers rather than the submitter. Any accepted run fails the entry.
   const redTeamResult = redTeam(vm, impl.id, scenario, bsv);
+  // Generic gates (harness/gates.ts): declared public inputs must be bound; pad layout review.
+  const publicInputResult = publicInputGate(vm, impl, scenario, bsv);
+  const layoutResult = layoutGate(vm, scenario, bsv);
 
   const opCosts = steps.map((s) => s.operationCost);
   const maxStepOperationCost = opCosts.length ? Math.max(...opCosts) : 0;
@@ -535,9 +550,11 @@ export const benchmark = (impl: Implementation, scenario: Awaited<ReturnType<Imp
     validPassed,
     invalidRejected,
     invalidTotal: invalidRuns.length,
-    pass: validPassed && worstCaseAccepted && invalidRuns.length > 0 && invalidRejected === invalidRuns.length && env.secure && crossStageBinding.unboundSeams === 0 && redTeamResult.accepted === 0,
+    pass: validPassed && worstCaseAccepted && invalidRuns.length > 0 && invalidRejected === invalidRuns.length && env.secure && crossStageBinding.unboundSeams === 0 && redTeamResult.accepted === 0 && publicInputResult.accepted === 0,
     crossStageBinding,
     redTeam: redTeamResult,
+    publicInputs: publicInputResult,
+    layout: layoutResult,
     proofBinding,
     proofsTested,
     proofsPassed,
@@ -606,7 +623,7 @@ const padL = (s: string, w: number) => s.padStart(w);
  * wins). Both the live progress line and the results table derive their label from this, so
  * the ranking — and where a new gate like the cross-stage staple slots in — lives in ONE place.
  */
-type Verdict = 'profile' | 'insecure-packaging' | 'pass' | 'worst-case-fail' | 'cross-stage-fail' | 'redteam-fail' | 'valid-only' | 'fail';
+type Verdict = 'profile' | 'insecure-packaging' | 'pass' | 'worst-case-fail' | 'cross-stage-fail' | 'redteam-fail' | 'public-input-fail' | 'valid-only' | 'fail';
 const verdictOf = (r: BenchmarkResult): Verdict => {
   if (r.profileOnly) return 'profile';
   if (!r.securePackaging) return 'insecure-packaging';
@@ -614,6 +631,7 @@ const verdictOf = (r: BenchmarkResult): Verdict => {
   if (r.worstCase?.accepted === false) return 'worst-case-fail';
   if (r.crossStageBinding.unboundSeams > 0) return 'cross-stage-fail';
   if (r.redTeam.accepted > 0) return 'redteam-fail';
+  if (r.publicInputs.accepted > 0) return 'public-input-fail';
   if (r.validPassed) return 'valid-only';
   return 'fail';
 };
@@ -626,6 +644,7 @@ const progressLabel = (r: BenchmarkResult): string => ({
   'worst-case-fail': 'FAIL (worst-case proof rejected)',
   'cross-stage-fail': 'FAIL (cross-stage staple accepted)',
   'redteam-fail': 'FAIL (maintainer red-team attack accepted)',
+  'public-input-fail': 'FAIL (mutated public inputs accepted)',
   'valid-only': 'valid-only (no reject test)',
   fail: 'FAIL',
 }[verdictOf(r)]);
@@ -639,6 +658,7 @@ const correctnessCell = (r: BenchmarkResult): string => {
     case 'worst-case-fail': return 'FAIL (worst-case✗)';
     case 'cross-stage-fail': return 'FAIL (cross-stage staple)';
     case 'redteam-fail': return `FAIL (red-team ${r.redTeam.accepted}/${r.redTeam.tested})`;
+    case 'public-input-fail': return `FAIL (public inputs ${r.publicInputs.accepted}/${r.publicInputs.tested})`;
     case 'valid-only': return 'valid-only';
     case 'fail': return 'FAIL';
   }
@@ -750,6 +770,16 @@ const main = async () => {
             ? `    > cross-stage binding: BOUND — every stage is pinned to one proof (${csb.seamsTested} seams staple-tested with a 2nd distinct proof, all rejected)`
             : `    > cross-stage binding: UNBOUND — ${csb.unboundSeams}/${csb.seamsTested} seam(s) accept a spliced 2-proof hybrid (first at "${csb.firstUnboundSeam}"): one proof's stage can be stapled onto another proof's remaining stages`);
         }
+        const pi = r.publicInputs;
+        console.log(!pi.declared
+          ? `    > public inputs: not declared (Implementation.publicInputs) - binding not mutation-tested`
+          : pi.accepted === 0
+            ? `    > public inputs: bound - all ${pi.tested} mutated claims rejected`
+            : `    > public inputs: UNBOUND - ${pi.accepted}/${pi.tested} mutated claims ACCEPTED (first: ${pi.firstAccepted})`);
+        const lay = r.layout;
+        if (lay.applicable) console.log(lay.dependencies.length === 0
+          ? `    > layout: ${lay.padsTested} pads checked, ${lay.malleable} free-length, no sibling depends on their layout`
+          : `    > layout: REVIEW - ${lay.dependencies.map((d) => `input ${d.input} push ${d.push} (free length) breaks input(s) ${d.siblings.join(',')}`).join('; ')}: a sibling reads past a free-length push at a fixed offset, or pins the whole unlocking`);
         const rt = r.redTeam;
         if (rt.present) {
           console.log(rt.stale

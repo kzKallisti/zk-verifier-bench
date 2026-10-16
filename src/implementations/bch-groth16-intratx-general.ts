@@ -95,6 +95,8 @@ const toRun = (raw: RawStep[]): Step[] => {
 
 export const bchGroth16IntratxGeneral: Implementation = {
   id: 'bch-groth16-intratx-general',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
+  publicInputs: [{ input: 10, push: 91, name: 'n0' }, { input: 10, push: 90, name: 'n1' }],
   name: 'BCH Groth16 intra-tx linked — tokenless + runtime-general (whole BN254 verifier in one standard-sized transaction)',
   proofSystem: 'Groth16',
   field: 'BN254',

@@ -112,6 +112,8 @@ const toStep = (s: RawStep): Step => ({
 
 export const bchGroth16ChunkedCovenantResidue: Implementation = {
   id: 'bch-groth16-chunked-covenant-residue',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
+  publicInputs: [{ input: 0, push: 4, name: 'n0' }, { input: 0, push: 6, name: 'n0' }, { input: 1, push: 12, name: 'n0' }, { input: 1, push: 14, name: 'n0' }, { input: 2, push: 12, name: 'n0' }, { input: 2, push: 14, name: 'n0' }, { input: 3, push: 40, name: 'n0' }, { input: 3, push: 42, name: 'n0' }, { input: 0, push: 2, name: 'n1' }, { input: 0, push: 5, name: 'n1' }, { input: 1, push: 10, name: 'n1' }, { input: 1, push: 13, name: 'n1' }, { input: 2, push: 10, name: 'n1' }, { input: 2, push: 13, name: 'n1' }, { input: 3, push: 38, name: 'n1' }, { input: 3, push: 41, name: 'n1' }],
   name: 'BCH Groth16 covenant quotient-torus verifier (12 standard transactions)',
   proofSystem: 'Groth16',
   field: 'BN254',

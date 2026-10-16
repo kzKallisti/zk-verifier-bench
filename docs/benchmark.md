@@ -14,6 +14,13 @@ For each implementation the harness:
    verifiers run to completion);
    maintainer red-team attacks from `src/bch/redteam/<id>.json` (when present)
    must be rejected too, see [public-input-binding.md](public-input-binding.md);
+   an entry that declares where its public inputs live (`publicInputs`) must
+   reject the transaction when they are re-encoded with other values (+1, -1, 0,
+   swapped, n + r); every shipped valid proof, not only the primary one, must
+   pass the standard VM for the entry to count as standard; and intra-tx entries
+   get a layout review that lengthens every zero pad and reports siblings that
+   break (a fixed-offset read past a free-length push, see
+   [public-input-binding.md](public-input-binding.md#layout-review));
 2. **measures cost** — per-step and aggregate bytes, op-cost, padding, and
    serialized-tx overhead; and
 3. **checks deployability** — replays the valid run on the real consensus VM

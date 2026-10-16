@@ -39,6 +39,8 @@ const toRun = (raw: RawStep[]): Step[] => {
 
 export const bchGroth16IntratxDirectStatePublic: Implementation = {
   id: 'bch-groth16-intratx-direct-state-public',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
+  publicInputs: [{ input: 7, push: 90, name: 'n0' }, { input: 7, push: 89, name: 'n1' }],
   name: 'BCH Groth16 intra-tx direct-state boundary (public context)',
   proofSystem: 'Groth16',
   field: 'BN254',

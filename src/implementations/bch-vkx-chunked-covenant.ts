@@ -41,6 +41,8 @@ const toStep = (s: RawStep): Step => ({
 
 export const bchVkxChunkedCovenant: Implementation = {
   id: 'bch-vkx-chunked-covenant',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
+  publicInputs: [{ input: 0, push: 2, name: 'n0' }, { input: 1, push: 2, name: 'n0' }, { input: 2, push: 2, name: 'n0' }, { input: 3, push: 2, name: 'n0' }, { input: 4, push: 2, name: 'n0' }, { input: 5, push: 2, name: 'n0' }, { input: 6, push: 3, name: 'n0' }, { input: 0, push: 1, name: 'n1' }, { input: 1, push: 1, name: 'n1' }, { input: 2, push: 1, name: 'n1' }, { input: 3, push: 1, name: 'n1' }, { input: 4, push: 1, name: 'n1' }, { input: 5, push: 1, name: 'n1' }, { input: 6, push: 2, name: 'n1' }],
   name: 'BCH vk_x aggregation chunked covenant (Groth16 checkpoint #1, multi-tx, runtime-general)',
   proofSystem: 'Groth16 vk_x (BCH-native)',
   field: 'BN254',

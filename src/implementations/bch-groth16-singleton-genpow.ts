@@ -28,6 +28,8 @@ const mp = JSON.parse(readFileSync('src/bch/groth16-singleton-genpow-multiproof-
 
 export const bchGroth16SingletonGenpow: Implementation = {
   id: 'bch-groth16-singleton-genpow',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
+  publicInputs: [{ input: 0, push: 1, name: 'n0' }, { input: 0, push: 0, name: 'n1' }],
   name: 'BCH Groth16 verifier singleton, BN254 genpow (shared P, source-assembled 4,228 B)',
   proofSystem: 'Groth16',
   field: 'BN254',
