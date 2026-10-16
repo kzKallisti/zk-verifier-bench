@@ -42,6 +42,7 @@ const recordHistory = (
   curveOfId: (id: string) => string,
   standardOf: (id: string) => boolean,
   t: string,
+  soundOf: (id: string) => boolean = () => true,
 ): HistoryPoint[] => {
   const series = loadHistory();
   let changed = false;
@@ -52,6 +53,9 @@ const recordHistory = (
     const bestStandard = standardOf(best.id);
     let last: HistoryPoint | undefined;
     for (let i = series.length - 1; i >= 0; i--) {
+      // points of entries that are now unsound are not records (the site hides them too), and
+      // their reclassification (e.g. now non-standard) must not re-open a series
+      if (!soundOf(series[i].id)) continue;
       if (series[i].fits === best.fits && curveOfId(series[i].id) === best.curve && standardOf(series[i].id) === bestStandard) { last = series[i]; break; }
     }
     if (last === undefined || last.score !== best.score) {
@@ -383,11 +387,12 @@ const main = async () => {
       ...smallestPerCurve((e) => e.bch.compatible && e.bch.standard.fits && e.generality.runtimeGeneral && e.packaging.secure && e.correctness?.verdict !== 'fail', true),
       ...smallestPerCurve((e) => e.bch.compatible && !e.bch.standard.fits && e.generality.runtimeGeneral && e.packaging.secure && e.correctness?.verdict !== 'fail', true),
       // singleton ideal: smallest verifier that busts the BCH limits entirely
-      ...smallestPerCurve((e) => !e.official && !e.bch.compatible && e.packaging.secure, false),
+      ...smallestPerCurve((e) => !e.official && !e.bch.compatible && e.packaging.secure && e.correctness?.verdict !== 'fail', false),
     ],
     curveOfId,
     standardOf,
     generatedAt,
+    (id) => entries.find((e) => e.id === id)?.correctness?.verdict !== 'fail',
   );
 
   const artifact = {
