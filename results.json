@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-16T11:54:56.073Z",
+  "generatedAt": "2026-10-16T12:34:51.073Z",
   "statement": {
     "proofSystem": "Groth16",
     "curve": "BN254",
@@ -1222,12 +1222,12 @@
         "layoutReview": null,
         "failures": []
       },
-      "score": 58870,
+      "score": 58656,
       "size": {
-        "scriptBytes": 58783,
+        "scriptBytes": 58569,
         "txOverheadBytes": 87,
         "transactions": 1,
-        "total": 58870
+        "total": 58656
       },
       "padding": {
         "bytes": 0,
@@ -1235,16 +1235,16 @@
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 66730505,
+          "opCost": 66141098,
           "steps": 1,
-          "heaviestStepOpCost": 66730505,
+          "heaviestStepOpCost": 66141098,
           "inputsForHeaviestStep": 9
         },
         "worstCase": {
           "accepted": true,
-          "opCost": 79799126,
+          "opCost": 74126905,
           "steps": 1,
-          "heaviestStepOpCost": 79799126,
+          "heaviestStepOpCost": 74126905,
           "inputsForHeaviestStep": 10
         }
       },
@@ -1479,12 +1479,12 @@
         "layoutReview": null,
         "failures": []
       },
-      "score": 59088,
+      "score": 58888,
       "size": {
-        "scriptBytes": 59001,
+        "scriptBytes": 58801,
         "txOverheadBytes": 87,
         "transactions": 1,
-        "total": 59088
+        "total": 58888
       },
       "padding": {
         "bytes": 0,
@@ -1492,16 +1492,16 @@
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 149157122,
+          "opCost": 147809607,
           "steps": 1,
-          "heaviestStepOpCost": 149157122,
+          "heaviestStepOpCost": 147809607,
           "inputsForHeaviestStep": 19
         },
         "worstCase": {
           "accepted": true,
-          "opCost": 175640554,
+          "opCost": 173357239,
           "steps": 1,
-          "heaviestStepOpCost": 175640554,
+          "heaviestStepOpCost": 173357239,
           "inputsForHeaviestStep": 22
         }
       },
@@ -2102,22 +2102,22 @@
         "layoutReview": null,
         "failures": []
       },
-      "score": 184850,
+      "score": 175925,
       "size": {
-        "scriptBytes": 183458,
+        "scriptBytes": 174533,
         "txOverheadBytes": 1392,
         "transactions": 16,
-        "total": 184850
+        "total": 175925
       },
       "padding": {
         "bytes": 155760,
-        "fraction": 0.8490226645880801
+        "fraction": 0.8924386792182567
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 85206922,
+          "opCost": 53561338,
           "steps": 16,
-          "heaviestStepOpCost": 7487485,
+          "heaviestStepOpCost": 5331090,
           "inputsForHeaviestStep": 1
         }
       },
@@ -2444,12 +2444,12 @@
         "layoutReview": null,
         "failures": []
       },
-      "score": 7196,
+      "score": 6844,
       "size": {
-        "scriptBytes": 7109,
+        "scriptBytes": 6757,
         "txOverheadBytes": 87,
         "transactions": 1,
-        "total": 7196
+        "total": 6844
       },
       "padding": {
         "bytes": 0,
@@ -2457,10 +2457,10 @@
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 709356486,
+          "opCost": 702914743,
           "steps": 1,
-          "heaviestStepOpCost": 709356486,
-          "inputsForHeaviestStep": 89
+          "heaviestStepOpCost": 702914743,
+          "inputsForHeaviestStep": 88
         }
       },
       "opCostBudget": 666400,
@@ -2471,7 +2471,7 @@
         "blockers": [
           "op-cost"
         ],
-        "detail": "heaviest step ~89× one input's op-cost budget",
+        "detail": "heaviest step ~88× one input's op-cost budget",
         "standard": {
           "fits": false,
           "detail": "1/1 locking >201 B; a step is non-standard under the standard VM"
@@ -2495,7 +2495,7 @@
         "secure": true,
         "type": "p2s"
       },
-      "source": "BCH-native CashScript: the FULL pairing e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta)==1 in ONE contract (GrothPairing, singleton/bn254/verify.cash). BN254 field tower (Fp2/Fp6/Fp12), four optimal-ate Miller loops (6x+2, divisive twist, mul034 lines, psi Q1/Q2), product, and final exponentiation ((p^12-1)/r, cyclotomic exp). RUNTIME pair inputs; the contract require()s the product == Fp12 ONE (the verdict is intrinsic). Verified vs @noble/curves bn254 (Miller boundary == golden millerHex; verdict == golden). ~1.21B op-cost -> ~151 BCH inputs; ~20 KB contract does NOT fit BCH in one input -- this is why the chunked multi-tx pairing exists."
+      "source": "BCH-native CashScript: the FULL pairing e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta)==1 in ONE contract (GrothPairing, singleton/bn254/verify.cash). BN254 field tower (Fp2/Fp6/Fp12), four optimal-ate Miller loops (6x+2, divisive twist, mul034 lines, psi Q1/Q2), product, and final exponentiation ((p^12-1)/r, cyclotomic exp). RUNTIME pair inputs; the contract require()s the product == Fp12 ONE (the verdict is intrinsic). Verified vs @noble/curves bn254 (Miller boundary == golden millerHex; verdict == golden). ~703M op-cost -> ~88 BCH inputs; ~6 KB contract does NOT fit BCH in one input -- this is why the chunked multi-tx pairing exists."
     },
     {
       "id": "bch-pairing-bls12381-singleton",
@@ -2527,12 +2527,12 @@
         "layoutReview": null,
         "failures": []
       },
-      "score": 7226,
+      "score": 6871,
       "size": {
-        "scriptBytes": 7139,
+        "scriptBytes": 6784,
         "txOverheadBytes": 87,
         "transactions": 1,
-        "total": 7226
+        "total": 6871
       },
       "padding": {
         "bytes": 0,
@@ -2540,10 +2540,10 @@
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 992232588,
+          "opCost": 984139360,
           "steps": 1,
-          "heaviestStepOpCost": 992232588,
-          "inputsForHeaviestStep": 124
+          "heaviestStepOpCost": 984139360,
+          "inputsForHeaviestStep": 123
         }
       },
       "opCostBudget": 973600,
@@ -2554,7 +2554,7 @@
         "blockers": [
           "op-cost"
         ],
-        "detail": "heaviest step ~124× one input's op-cost budget",
+        "detail": "heaviest step ~123× one input's op-cost budget",
         "standard": {
           "fits": false,
           "detail": "1/1 locking >201 B; a step is non-standard under the standard VM"
@@ -2578,7 +2578,7 @@
         "secure": true,
         "type": "p2s"
       },
-      "source": "BCH-native CashScript: the FULL BLS12-381 pairing e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta)==1 in ONE contract (GrothVerify, singleton/bls12-381/verify.cash). BLS12-381 field tower (Fp2/Fp6/Fp12, xi=1+u), four optimal-ate Miller loops (M-twist, mul014 lines, |x| NAF, final conjugate), product, and the Hayashida-Scott final exponentiation. RUNTIME pair inputs; require()s the product == 1. Verified vs @noble/curves bls12-381. ~1.38B op-cost (~172 BCH inputs); ~19.8 KB does NOT fit one input -- the pairing milestone on the same curve as nchain."
+      "source": "BCH-native CashScript: the FULL BLS12-381 pairing e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta)==1 in ONE contract (GrothVerify, singleton/bls12-381/verify.cash). BLS12-381 field tower (Fp2/Fp6/Fp12, xi=1+u), four optimal-ate Miller loops (M-twist, mul014 lines, |x| NAF, final conjugate), product, and the Hayashida-Scott final exponentiation. RUNTIME pair inputs; require()s the product == 1. Verified vs @noble/curves bls12-381. ~984M op-cost (~123 BCH inputs); ~5.6 KB does NOT fit one input -- the pairing milestone on the same curve as nchain."
     },
     {
       "id": "bch-pairing-chunked",
@@ -3516,33 +3516,33 @@
         },
         "failures": []
       },
-      "score": 58760,
+      "score": 58638,
       "size": {
-        "scriptBytes": 58568,
+        "scriptBytes": 58446,
         "txOverheadBytes": 192,
         "transactions": 1,
-        "total": 58760
+        "total": 58638
       },
       "padding": {
         "bytes": 12,
-        "fraction": 0.00020489004234394207
+        "fraction": 0.0002053177291859152
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 68313233,
+          "opCost": 67456340,
           "steps": 4,
-          "heaviestStepOpCost": 24334619,
+          "heaviestStepOpCost": 24291784,
           "inputsForHeaviestStep": 1
         },
         "worstCase": {
           "accepted": true,
-          "opCost": 82387431,
+          "opCost": 80858092,
           "steps": 4,
-          "heaviestStepOpCost": 24334698,
+          "heaviestStepOpCost": 24292183,
           "inputsForHeaviestStep": 1
         }
       },
-      "opCostBudget": 78742400,
+      "opCostBudget": 78644800,
       "bsvSingleton": false,
       "bsvOpReturn": false,
       "bch": {
@@ -3572,7 +3572,7 @@
         "secure": true,
         "type": "p2sh32"
       },
-      "source": "BCH-native CashScript: one runtime-proof BN254 verifier in four linked inputs of one transaction, targeting the proposed bch-spec 100,000-byte-script VM. A 128-position four-scalar GLV schedule computes the IC1/IC2 MSM projectively. Three linked inputs then validate canonical A/B/C encodings, curve relations, identity semantics, and the exact runtime-B subgroup endpoint while executing the complete 348-operation quotient-torus Miller trace and terminal relation. The fixed e(alpha,beta) and e(IC0,gamma) factors are precomputed without using the fixture's published scalar relations to collapse the four-pair equation. The root enforces the exact input count and pins the terminal locking program; the terminal enforces its position; OP_INPUTBYTECODE binds every state handoff; all input blobs have exact widths. All accepting fixtures pass the bch-spec consensus and standard-policy VMs with fee-funded deterministic templates. The 21,393-byte maximum unlocking requires the proposed VM and exceeds current BCH's 10,000-byte limit. Deployed as P2SH32. The prescribed checkpoint key is synthetic and publishes setup and IC scalars, so this artifact establishes complete-equation execution and proposed-VM resource validity for that key; it does not establish circuit knowledge, production public-input binding, arbitrary-key verification, or independent-setup interoperability."
+      "source": "BCH-native CashScript: one runtime-proof BN254 verifier in four linked inputs of one transaction, targeting the proposed bch-spec 100,000-byte-script VM. A 128-position four-scalar GLV schedule computes the IC1/IC2 MSM projectively. Three linked inputs then validate canonical A/B/C encodings, curve relations, identity semantics, and the exact runtime-B subgroup endpoint while executing the complete 348-operation quotient-torus Miller trace and terminal relation. The fixed e(alpha,beta) and e(IC0,gamma) factors are precomputed without using the fixture's published scalar relations to collapse the four-pair equation. The root enforces the exact input count and pins the terminal locking program; the terminal enforces its position; OP_INPUTBYTECODE binds every state handoff; all input blobs have exact widths. All accepting fixtures pass the bch-spec consensus and standard-policy VMs with fee-funded deterministic templates. The 21,356-byte maximum unlocking requires the proposed VM and exceeds current BCH's 10,000-byte limit. Deployed as P2SH32. The prescribed checkpoint key is synthetic and publishes setup and IC scalars, so this artifact establishes complete-equation execution and proposed-VM resource validity for that key; it does not establish circuit knowledge, production public-input binding, arbitrary-key verification, or independent-setup interoperability."
     },
     {
       "id": "bch-groth16-intratx-crown8-rawchain",
@@ -4084,6 +4084,110 @@
         "type": "p2sh32"
       },
       "source": "PairFold-5 densless (public-only reconstruction, chunked/bn254/densless-recovered) plus two GLV Straus inputs that recompute vk_x from the claimed public inputs (chunked/bn254/densless-msm). Six P2SH32 inputs (MSM part A carried by genesis), one standard transaction; the terminal pins input count and all worker lockings."
+    },
+    {
+      "id": "bch-groth16-intratx-pairfold5-densless-msm-spec",
+      "name": "BCH Groth16 intra-tx PairFold-5 densless with sound vk_x MSM (bch-spec)",
+      "category": "spec",
+      "official": false,
+      "solver": null,
+      "curve": "BN254",
+      "structure": "single-tx",
+      "proofSystem": "Groth16",
+      "vmTarget": "bch-spec",
+      "correctness": {
+        "verdict": "pass",
+        "validAccepted": true,
+        "invalid": {
+          "tested": 5,
+          "rejected": 5
+        },
+        "worstCaseAccepted": true,
+        "crossStageBinding": {
+          "applicable": true,
+          "bound": true,
+          "seamsTested": 4,
+          "unboundSeams": 0,
+          "detail": "every stage bound to one proof: 4 seams staple-tested with a 2nd distinct proof, all rejected"
+        },
+        "redTeam": {
+          "stale": false,
+          "tested": 12,
+          "accepted": 0,
+          "kinds": [
+            "forged-public-inputs",
+            "forged-public-inputs-adaptive",
+            "proof-point-validation"
+          ]
+        },
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": {
+          "padsTested": 2,
+          "freeLength": 1,
+          "dependencies": []
+        },
+        "failures": []
+      },
+      "score": 33889,
+      "size": {
+        "scriptBytes": 33654,
+        "txOverheadBytes": 235,
+        "transactions": 1,
+        "total": 33889
+      },
+      "padding": {
+        "bytes": 0,
+        "fraction": 0
+      },
+      "benchmarks": {
+        "smallProof": {
+          "opCost": 24166471,
+          "steps": 5,
+          "heaviestStepOpCost": 9709194,
+          "inputsForHeaviestStep": 1
+        },
+        "worstCase": {
+          "accepted": true,
+          "opCost": 22852367,
+          "steps": 5,
+          "heaviestStepOpCost": 8393285,
+          "inputsForHeaviestStep": 1
+        }
+      },
+      "opCostBudget": 66783200,
+      "bsvSingleton": false,
+      "bsvOpReturn": false,
+      "bch": {
+        "compatible": true,
+        "blockers": [],
+        "detail": "every step fits the proposed bch-spec per-tx limits (100 kB scripts) — NOT current BCH",
+        "standard": {
+          "fits": true,
+          "detail": "relayable under standard mempool policy"
+        }
+      },
+      "generality": {
+        "binding": "runtime",
+        "runtimeGeneral": true,
+        "proofsTested": 4,
+        "proofsPassed": 4,
+        "detail": "runtime-general: one fixed locking verifies 4/4 distinct proofs (proof in the unlocking witness)"
+      },
+      "tokenSafety": null,
+      "inputValidation": {
+        "enforced": false,
+        "tested": 0,
+        "rejected": 0,
+        "detail": "NOT demonstrated — no isolated adversarial-point run that rejects a bad point at a validation check (a naive point-swap in a single-tx verifier is caught by the pairing equation, not by validation)"
+      },
+      "packaging": {
+        "secure": true,
+        "type": "p2sh32"
+      },
+      "source": "PairFold-5 densless (public-only reconstruction, chunked/bn254/densless-recovered) whose genesis carries a GLV Straus MSM recomputing vk_x from the claimed public inputs (chunked/bn254/densless-msm-spec); five P2SH32 inputs, one transaction, graded on the proposed bch-spec VM."
     },
     {
       "id": "bch-groth16-intratx-pairfold5-densless",
@@ -4963,33 +5067,33 @@
         },
         "failures": []
       },
-      "score": 164447,
+      "score": 164343,
       "size": {
-        "scriptBytes": 164294,
+        "scriptBytes": 164190,
         "txOverheadBytes": 153,
         "transactions": 1,
-        "total": 164447
+        "total": 164343
       },
       "padding": {
         "bytes": 99488,
-        "fraction": 0.605548589723301
+        "fraction": 0.6059321517753822
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 149620651,
+          "opCost": 148858684,
           "steps": 3,
           "heaviestStepOpCost": 80976944,
           "inputsForHeaviestStep": 1
         },
         "worstCase": {
           "accepted": true,
-          "opCost": 181376367,
+          "opCost": 179493630,
           "steps": 3,
           "heaviestStepOpCost": 80983365,
           "inputsForHeaviestStep": 1
         }
       },
-      "opCostBudget": 155351200,
+      "opCostBudget": 155268000,
       "bsvSingleton": false,
       "bsvOpReturn": false,
       "bch": {
@@ -4998,7 +5102,7 @@
         "detail": "every step fits the proposed bch-spec per-tx limits (100 kB scripts) — NOT current BCH",
         "standard": {
           "fits": false,
-          "detail": "tx 164,342 B > 100,000 B standard size"
+          "detail": "tx 164,238 B > 100,000 B standard size"
         }
       },
       "generality": {
@@ -5127,8 +5231,8 @@
         "verdict": "pass",
         "validAccepted": true,
         "invalid": {
-          "tested": 28,
-          "rejected": 28
+          "tested": 27,
+          "rejected": 27
         },
         "worstCaseAccepted": true,
         "crossStageBinding": {
@@ -5143,33 +5247,33 @@
         "layoutReview": null,
         "failures": []
       },
-      "score": 218083,
+      "score": 204634,
       "size": {
-        "scriptBytes": 216386,
-        "txOverheadBytes": 1697,
+        "scriptBytes": 203324,
+        "txOverheadBytes": 1310,
         "transactions": 3,
-        "total": 218083
+        "total": 204634
       },
       "padding": {
-        "bytes": 9260,
-        "fraction": 0.0427938960930929
+        "bytes": 54481,
+        "fraction": 0.2679516436820051
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 166916978,
-          "steps": 35,
-          "heaviestStepOpCost": 6085486,
+          "opCost": 159987187,
+          "steps": 26,
+          "heaviestStepOpCost": 7983894,
           "inputsForHeaviestStep": 1
         },
         "worstCase": {
           "accepted": true,
-          "opCost": 198840052,
-          "steps": 35,
-          "heaviestStepOpCost": 7519666,
+          "opCost": 191058845,
+          "steps": 26,
+          "heaviestStepOpCost": 7983706,
           "inputsForHeaviestStep": 1
         }
       },
-      "opCostBudget": 173276800,
+      "opCostBudget": 162784000,
       "bsvSingleton": false,
       "bsvOpReturn": false,
       "bch": {
@@ -5203,7 +5307,7 @@
         "secure": true,
         "type": "p2sh32"
       },
-      "source": "BCH-native CashScript: the complete four-pair BLS12-381 Groth16 equation for the same fixed benchmark VK as the published grouped entry, with runtime public inputs and runtime A/B/C. Five shared-table GLV vk_x inputs feed 21 fused prepared-Miller inputs. The fixed e(alpha,beta) Miller value and fixed-G2 gamma/delta line coefficients are ordinary VK preparation; runtime terms are not collapsed using the fixture's scalar relations. The accumulator lives in Fp12*/Fp6*, where one canonical six-limb u represents [c]=[1+u*W] and the terminal enforces the exact projective Frobenius relation while rejecting zero. A and C use canonical half-normalized G1 coordinates and are checked on-curve. Their G1 subgroup checks are intentionally omitted because each is paired only with an order-r G2 point, so cofactor components pair trivially and do not change the accepted prime-order equation; encoding uniqueness modulo those components is not claimed. Non-identity B is canonical, on-curve, and checked in G2; all-zero B represents pairing identity. OP_INPUTBYTECODE binds all in-group states and successor lockings. Group roots fix index zero and exact input count. Across groups, mutable NFT commitments bind state, successor locking, category, and capability. Group roots exclude same-category sibling inputs and the terminal root burns the thread; the vectors replay capability stripping, minting-thread, sibling-token, and retained-terminal-token rejections. One fixed 26-locking P2SH32 graph accepted ten measured runtime fixtures plus the separate all-position GLV stress run. Every transaction in that suite passes BCH 2026 consensus and current standard policy, remains under 100,000 bytes, and has an exact 1 sat/B fee template; the contracts do not constrain satoshi values. Byte-exact vectors reproduce from groth16_cashscript 2b76007bec86727ccc0018dcb4ea9b905042a52f and CashScript 1c707c1dbf87396b30ba5e0704b1db44475ce893. The fixed benchmark key is synthetic and publishes its setup and IC scalars, so these vectors establish complete-equation execution and BCH packaging for that key, not circuit knowledge, secure application public-input binding, arbitrary-VK support, independent-setup interoperability, or a proof-independent standardness ceiling for every possible witness."
+      "source": "BCH-native CashScript: the complete four-pair BLS12-381 Groth16 equation for the same fixed benchmark VK as the published grouped entry, with runtime public inputs and runtime A/B/C. Five shared-table GLV vk_x inputs feed 21 fused prepared-Miller inputs. The fixed e(alpha,beta) Miller value and fixed-G2 gamma/delta line coefficients are ordinary VK preparation; runtime terms are not collapsed using the fixture's scalar relations. The accumulator lives in Fp12*/Fp6*, where one canonical six-limb u represents [c]=[1+u*W] and the terminal enforces the exact projective Frobenius relation while rejecting zero. A and C use canonical half-normalized G1 coordinates and are checked on-curve. Their G1 subgroup checks are intentionally omitted because each is paired only with an order-r G2 point, so cofactor components pair trivially and do not change the accepted prime-order equation; encoding uniqueness modulo those components is not claimed. Non-identity B is canonical, on-curve, and checked in G2; all-zero B represents pairing identity. OP_INPUTBYTECODE binds all in-group states and successor lockings. Group roots fix index zero and exact input count. Across groups, mutable NFT commitments bind state, successor locking, category, and capability. Group roots exclude same-category sibling inputs and the terminal root burns the thread; the vectors replay capability stripping, minting-thread, sibling-token, and retained-terminal-token rejections. One fixed 26-locking P2SH32 graph accepted ten measured runtime fixtures plus the separate all-position GLV stress run. Every transaction in that suite passes BCH 2026 consensus and current standard policy, remains under 100,000 bytes, and has an exact 1 sat/B fee template; the contracts do not constrain satoshi values. Byte-exact vectors reproduce from groth16_cashscript 74c24a1eb8b8d59896c3bdd0fec62b17aa4641dc and CashScript 647be955537f0996d3c89184a306ee87848dbc8c. The fixed benchmark key is synthetic and publishes its setup and IC scalars, so these vectors establish complete-equation execution and BCH packaging for that key, not circuit knowledge, secure application public-input binding, arbitrary-VK support, independent-setup interoperability, or a proof-independent standardness ceiling for every possible witness."
     },
     {
       "id": "bch-multistep-demo",
