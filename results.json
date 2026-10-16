@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-15T21:58:48.781Z",
+  "generatedAt": "2026-10-16T09:23:12.366Z",
   "statement": {
     "proofSystem": "Groth16",
     "curve": "BN254",
@@ -36,7 +36,7 @@
       "id": "bch-groth16-intratx-pairfold5-densless-msm",
       "label": "Best BCH-native full verifier",
       "curve": "BN254",
-      "bytes": 45768,
+      "bytes": 42577,
       "bchCompatible": true
     }
   },
@@ -796,6 +796,14 @@
     {
       "t": "2026-10-15T21:58:48.781Z",
       "score": 45768,
+      "id": "bch-groth16-intratx-pairfold5-densless-msm",
+      "steps": 7,
+      "transactions": 1,
+      "fits": true
+    },
+    {
+      "t": "2026-10-16T09:23:12.366Z",
+      "score": 42577,
       "id": "bch-groth16-intratx-pairfold5-densless-msm",
       "steps": 7,
       "transactions": 1,
@@ -3844,41 +3852,43 @@
         },
         "redTeam": {
           "stale": false,
-          "tested": 3,
+          "tested": 13,
           "accepted": 0,
           "kinds": [
-            "forged-public-inputs"
+            "forged-public-inputs",
+            "forged-public-inputs-adaptive",
+            "proof-point-validation"
           ]
         },
         "failures": []
       },
-      "score": 45768,
+      "score": 42577,
       "size": {
-        "scriptBytes": 45447,
+        "scriptBytes": 42256,
         "txOverheadBytes": 321,
         "transactions": 1,
-        "total": 45768
+        "total": 42577
       },
       "padding": {
-        "bytes": 5558,
-        "fraction": 0.12229630118599688
+        "bytes": 5045,
+        "fraction": 0.11939132904202954
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 29645026,
+          "opCost": 24138048,
           "steps": 7,
-          "heaviestStepOpCost": 5587715,
+          "heaviestStepOpCost": 5432184,
           "inputsForHeaviestStep": 1
         },
         "worstCase": {
           "accepted": true,
-          "opCost": 28308759,
+          "opCost": 22823941,
           "steps": 7,
-          "heaviestStepOpCost": 5566010,
+          "heaviestStepOpCost": 4574900,
           "inputsForHeaviestStep": 1
         }
       },
-      "opCostBudget": 36391200,
+      "opCostBudget": 33838400,
       "bsvSingleton": false,
       "bsvOpReturn": false,
       "bch": {
