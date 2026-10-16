@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-16T12:34:51.073Z",
+  "generatedAt": "2026-10-16T13:39:02.870Z",
   "statement": {
     "proofSystem": "Groth16",
     "curve": "BN254",
@@ -36,7 +36,7 @@
       "id": "bch-groth16-intratx-pairfold5-densless-msm",
       "label": "Best BCH-native full verifier",
       "curve": "BN254",
-      "bytes": 38945,
+      "bytes": 35881,
       "bchCompatible": true
     }
   },
@@ -824,6 +824,14 @@
       "steps": 1,
       "transactions": 1,
       "fits": false
+    },
+    {
+      "t": "2026-10-16T13:39:02.870Z",
+      "score": 35881,
+      "id": "bch-groth16-intratx-pairfold5-densless-msm",
+      "steps": 5,
+      "transactions": 1,
+      "fits": true
     }
   ],
   "entries": [
@@ -3995,24 +4003,25 @@
         "verdict": "pass",
         "validAccepted": true,
         "invalid": {
-          "tested": 6,
-          "rejected": 6
+          "tested": 5,
+          "rejected": 5
         },
         "worstCaseAccepted": true,
         "crossStageBinding": {
           "applicable": true,
           "bound": true,
-          "seamsTested": 5,
+          "seamsTested": 4,
           "unboundSeams": 0,
-          "detail": "every stage bound to one proof: 5 seams staple-tested with a 2nd distinct proof, all rejected"
+          "detail": "every stage bound to one proof: 4 seams staple-tested with a 2nd distinct proof, all rejected"
         },
         "redTeam": {
           "stale": false,
-          "tested": 13,
+          "tested": 26,
           "accepted": 0,
           "kinds": [
             "forged-public-inputs",
             "forged-public-inputs-adaptive",
+            "msm-state-tamper",
             "proof-point-validation"
           ]
         },
@@ -4021,39 +4030,39 @@
           "accepted": 0
         },
         "layoutReview": {
-          "padsTested": 3,
-          "freeLength": 2,
+          "padsTested": 2,
+          "freeLength": 1,
           "dependencies": []
         },
         "failures": []
       },
-      "score": 38945,
+      "score": 35881,
       "size": {
-        "scriptBytes": 38667,
-        "txOverheadBytes": 278,
+        "scriptBytes": 35646,
+        "txOverheadBytes": 235,
         "transactions": 1,
-        "total": 38945
+        "total": 35881
       },
       "padding": {
-        "bytes": 1475,
-        "fraction": 0.03814622287738899
+        "bytes": 0,
+        "fraction": 0
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 24185457,
-          "steps": 6,
-          "heaviestStepOpCost": 5717204,
+          "opCost": 24493950,
+          "steps": 5,
+          "heaviestStepOpCost": 5945561,
           "inputsForHeaviestStep": 1
         },
         "worstCase": {
           "accepted": true,
-          "opCost": 22871352,
-          "steps": 6,
-          "heaviestStepOpCost": 4956706,
+          "opCost": 23179802,
+          "steps": 5,
+          "heaviestStepOpCost": 5844311,
           "inputsForHeaviestStep": 1
         }
       },
-      "opCostBudget": 30962400,
+      "opCostBudget": 28540800,
       "bsvSingleton": false,
       "bsvOpReturn": false,
       "bch": {
@@ -4083,7 +4092,7 @@
         "secure": true,
         "type": "p2sh32"
       },
-      "source": "PairFold-5 densless (public-only reconstruction, chunked/bn254/densless-recovered) plus two GLV Straus inputs that recompute vk_x from the claimed public inputs (chunked/bn254/densless-msm). Six P2SH32 inputs (MSM part A carried by genesis), one standard transaction; the terminal pins input count and all worker lockings."
+      "source": "PairFold-5 densless (public-only reconstruction, chunked/bn254/densless-recovered) plus a GLV Straus MSM that recomputes vk_x from the claimed public inputs (chunked/bn254/densless-msm), carried by the existing inputs as a chain of pinned states. Five P2SH32 inputs, one standard transaction; the terminal pins input count and all worker lockings."
     },
     {
       "id": "bch-groth16-intratx-pairfold5-densless-msm-spec",
