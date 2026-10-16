@@ -40,11 +40,14 @@ the attacks.
 
 ## A repaired entry
 
-`bch-groth16-intratx-pairfold5-densless-msm` keeps the reconstructed densless verifier and
-adds two inputs that recompute `vk_x = IC0 + n0*IC1 + n1*IC2` from the claimed public inputs
-(GLV Straus); the terminal requires the genesis `vk_x` to equal their result. Its red-team
-file rejects every forged run, as do adaptive forgeries that also supply a valid MSM witness
-for the forged inputs. Source: `chunked/bn254/densless-msm` in groth16_cashscript.
+`bch-groth16-intratx-pairfold5-densless-msm` keeps the reconstructed densless verifier, slices
+the dead predicate out of its genesis, and adds two inputs that recompute
+`vk_x = IC0 + n0*IC1 + n1*IC2` from the claimed public inputs (GLV Straus); the terminal requires
+the genesis `vk_x` to equal their result. Its red-team file (written by the source's
+`redteam.mjs`, since the PairFold generator here no longer matches its layout) rejects forged
+public inputs, adaptive forgeries with a valid MSM witness for the forged inputs, a pad-shift
+forgery found in review, and invalid proof points. Source: `chunked/bn254/densless-msm` in
+groth16_cashscript.
 
 ## The red-team gate
 
