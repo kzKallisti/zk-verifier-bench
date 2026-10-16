@@ -6,8 +6,10 @@
 // pushes, and the terminal checks the result against the genesis vk_x and the GLV decomposition
 // against n0, n1. Owning source: chunked/bn254/densless-msm in groth16_cashscript (MSM in
 // CashScript, compiled with the mr-zwets/cashscript compiler-optimizations-7 fork).
-// Slim MSM state: n0, n1 are pinned by genesis straight into the terminal's state push (n0, n1, X, Y,
-// Z, w; 224 B); the executors carry only X, Y, Z, w (160 B) instead of copying n0, n1 through (-192 B).
+// Slim MSM state: n0, n1 and the 64 GLV witness bytes w live only in the terminal's state push
+// (n0, n1, w, X, Y, Z; 224 B). Genesis pins n0, n1 there and reads its witness bytes from it, the
+// executors read theirs from it and carry only X, Y, Z (96 B) instead of copying n0, n1, w through
+// every stage (-408 script bytes vs the 224-B-everywhere layout).
 import { readFileSync } from 'node:fs';
 import { hexToBin } from '@bitauth/libauth';
 
