@@ -20,7 +20,8 @@
 // pairing check uses that vk_x. A forged claim needs a forged w, which changes vk_x.
 // Worst case: 30 fresh dense-witness proofs on the standard VM, peak budget use 92.6 / 89.9 / 90.3 /
 // 95.8 / 86.3 % (inputs 0..4); see densless-msm-slim/sweep-results.txt in the source repo.
-// No maintainer red-team file exists for this id yet (a submitter-suggested set is in the source repo).
+// Maintainer red-team: src/bch/redteam/<id>.json (the submitter-suggested runs plus maintainer runs on
+// the terminal public-input pushes and the state-push layout).
 // Locking sha256:
 //   exec0+vkx-msm           9d83ca198a067dca130d2e8d2ae3031676ab2df6a3cbb90e04dca4dfdd277295
 //   exec1+vkx-msm           9d83ca198a067dca130d2e8d2ae3031676ab2df6a3cbb90e04dca4dfdd277295
