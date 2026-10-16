@@ -1,6 +1,7 @@
-// PairFold-5 densless with a sound vk_x, SLIM MSM state (kzKallisti). Same pairing programs and the
-// same GLV Straus vk_x MSM as bch-groth16-intratx-pairfold5-densless-msm; only the MSM state layout
-// changes. Owning source: chunked/bn254/densless-msm-slim in groth16_cashscript (byte-exact export).
+// PairFold-5 densless with a sound vk_x, SLIM MSM state + malleability pins (kzKallisti).
+// Same pairing programs and GLV Straus vk_x MSM as bch-groth16-intratx-pairfold5-densless-msm;
+// MSM state layout is slim, and the terminal redeem prepends length/order/sign-bit pins.
+// Owning source: chunked/bn254/densless-msm-slim in groth16_cashscript (byte-exact export; SLIM_PINS=full).
 //
 // Construction / what is enforced:
 // - Claimed public inputs n0, n1 are the TERMINAL's own number pushes (input 4, pushes 53, 52). The
@@ -15,19 +16,24 @@
 //   end of the receiver's unlocking; the terminal finishes positions 3..0, adds IC0 - [2^64]G,
 //   converts to affine with a witnessed Z inverse and requires the result to equal the genesis vk_x
 //   that the Miller loop consumes. Terminal pins input count and all worker lockings.
+// - Malleability pins (paid once, prepended to the densless terminal): PUSHDATA2 length pins on the
+//   terminal header/quot and each executor quot; canonical non-decreasing order on terminal witness
+//   limbs 2..11 (BIN2NUM of sign-cleared LE limbs); fixed-table sign-bit clear on all three executor
+//   tables (OP_DEFINE/INVOKE). Closes the eight witness-malleability findings shared with the parent
+//   (see zk-verifier-bench#39).
 // Soundness: every stage consumes one w, which the terminal binds to its claimed n0, n1; the X, Y, Z
 // chain is pinned stage to stage, so vk_x = IC0 + n0*IC1 + n1*IC2 for the claimed inputs, and the
-// pairing check uses that vk_x. A forged claim needs a forged w, which changes vk_x.
-// Worst case: 30 fresh dense-witness proofs on the standard VM, peak budget use 92.6 / 89.9 / 90.3 /
-// 95.8 / 86.3 % (inputs 0..4); see densless-msm-slim/sweep-results.txt in the source repo.
-// Maintainer red-team: src/bch/redteam/<id>.json (the submitter-suggested runs plus maintainer runs on
-// the terminal public-input pushes and the state-push layout).
+// pairing check uses that vk_x. A forged claim needs a forged w, which changes vk_x. Length/order/
+// sign pins do not change the statement; they reject alternate witnesses for the same statement.
+// Worst case: 30 fresh dense-witness proofs on the standard VM, peak budget use 92.6 / 90.0 / 90.4 /
+// 95.9 / 86.4 % (inputs 0..4); see densless-msm-slim/sweep-results.txt in the source repo.
+// No maintainer red-team file exists for this id yet (a submitter-suggested set is in the source repo).
 // Locking sha256:
-//   exec0+vkx-msm           9d83ca198a067dca130d2e8d2ae3031676ab2df6a3cbb90e04dca4dfdd277295
-//   exec1+vkx-msm           9d83ca198a067dca130d2e8d2ae3031676ab2df6a3cbb90e04dca4dfdd277295
-//   exec2+vkx-msm           9d83ca198a067dca130d2e8d2ae3031676ab2df6a3cbb90e04dca4dfdd277295
-//   genesis+vkx-msm         37780495d0fe0b6197d542cc8ffbd399712dbed8b8412f79ee5a7654ac2ef365
-//   terminal+vkx-msm-final  19e5d868a080416be30f4cf1b740d29413d8413696cd1440f3685eb8bec9f17b
+//   exec0+vkx-msm           5d683dd9cdb508f3bfaee1c04fbb95a6f6797b14021ea9249b2fecc46c0aabb5
+//   exec1+vkx-msm           5d683dd9cdb508f3bfaee1c04fbb95a6f6797b14021ea9249b2fecc46c0aabb5
+//   exec2+vkx-msm           5d683dd9cdb508f3bfaee1c04fbb95a6f6797b14021ea9249b2fecc46c0aabb5
+//   genesis+vkx-msm         8c03b9fa2706c6ad363ac0b8bfd80c720a3de76b5fc86eeed2ea88120776ceac
+//   terminal+vkx-msm-final  4142c5ea05cc1a758c40525154b7c8f9bb500f2c60e036f3f47c545b2b014863
 import { readFileSync } from 'node:fs';
 import { hexToBin } from '@bitauth/libauth';
 
