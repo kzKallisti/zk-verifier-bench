@@ -72,6 +72,13 @@ const toStep = (s: RawStep): Step => ({
 
 export const bchGroth16ChunkedCovenant: Implementation = {
   id: 'bch-groth16-chunked-covenant',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts): one copy
+  // per vk_x/Miller step (steps 8-14: pushes 1, 0; steps 15-36: pushes 2, 1), located by the
+  // maintainers. Rejection partly relies on the covenant commitments, which the harness fixes.
+  publicInputs: [
+    ...[8, 9, 10, 11, 12, 13, 14].flatMap((i) => [{ input: i, push: 1, name: 'n0' }, { input: i, push: 0, name: 'n1' }]),
+    ...Array.from({ length: 22 }, (_, k) => 15 + k).flatMap((i) => [{ input: i, push: 2, name: 'n0' }, { input: i, push: 1, name: 'n1' }]),
+  ],
   name: 'BCH Groth16 verifier, chunked, covenant-threaded (48 chunks: baton genesis + transcript + forward-chain, BCH-compatible)',
   proofSystem: 'Groth16',
   field: 'BN254',

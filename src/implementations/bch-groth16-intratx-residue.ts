@@ -107,6 +107,18 @@ const toRun = (raw: RawStep[]): Step[] => {
 
 export const bchGroth16IntratxResidue: Implementation = {
   id: 'bch-groth16-intratx-residue',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts): every copy
+  // of n0, n1 in the valid run (32-byte fields packed in larger pushes), located by the maintainers
+  publicInputs: [
+    { input: 0, push: 0, offset: 0, encoding: 'le32', name: 'n0' },
+    { input: 0, push: 0, offset: 32, encoding: 'le32', name: 'n1' },
+    { input: 0, push: 0, offset: 64, encoding: 'le32', name: 'n0' },
+    { input: 0, push: 0, offset: 98, encoding: 'le32', name: 'n1' },
+    { input: 1, push: 0, offset: 96, encoding: 'le32', name: 'n0' },
+    { input: 1, push: 0, offset: 128, encoding: 'le32', name: 'n1' },
+    { input: 1, push: 0, offset: 160, encoding: 'le32', name: 'n0' },
+    { input: 1, push: 0, offset: 194, encoding: 'le32', name: 'n1' },
+  ],
   name: 'BCH Groth16 intra-tx quotient-torus residue (11-input standard fixture)',
   proofSystem: 'Groth16',
   field: 'BN254',

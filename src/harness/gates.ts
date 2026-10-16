@@ -1,8 +1,9 @@
 // Generic soundness gates that do not depend on the submitter's own negative vectors.
 //
 // 1. Public-input binding (verdict gate). An entry declares where its claimed public inputs
-//    live (Implementation.publicInputs: input index + push index in the valid run). The harness
-//    re-encodes those pushes with other values (+1, -1, 0, swapped, and the n + r alias) and
+//    live (Implementation.publicInputs: input index + push index in the valid run, optionally a
+//    byte offset + fixed-width encoding for a field packed inside a larger push). The harness
+//    re-encodes those slots with other values (+1, -1, 0, swapped, and the n + r alias) and
 //    the whole transaction must reject. Mutations that keep the encoded length are preferred
 //    so a rejection cannot come from a shifted layout instead of the binding. This is a
 //    necessary condition only: a verifier can reject a naive mutation and still be forgeable
@@ -48,6 +49,14 @@ const withUnlockings = (valid: Step[], replace: Map<number, Uint8Array>): Step[]
     const inputs = valid.map((s, i) => ({ ...s.intraTx!.inputs[i]!, unlockingBytecode: unlockings[i]! }));
     return valid.map((s, i) => ({ ...s, unlockingBytecode: unlockings[i]!, intraTx: { index: i, inputs } }));
   }
+  if (valid.some((s) => s.grouped !== undefined)) {
+    // grouped (token-carrying) txs: every step of a group sees the group's inputs, so a
+    // replaced unlocking must reach its siblings' contexts too
+    const groupInputs = new Map<number, { lockingBytecode: Uint8Array; unlockingBytecode: Uint8Array }[]>();
+    valid.forEach((s) => { if (s.grouped && !groupInputs.has(s.grouped.group)) groupInputs.set(s.grouped.group, s.grouped.inputs.map((x) => ({ ...x }))); });
+    valid.forEach((s, i) => { if (s.grouped) groupInputs.get(s.grouped.group)![s.grouped.index]!.unlockingBytecode = unlockings[i]!; });
+    return valid.map((s, i) => ({ ...s, unlockingBytecode: unlockings[i]!, ...(s.grouped ? { grouped: { ...s.grouped, inputs: groupInputs.get(s.grouped.group)! } } : {}) }));
+  }
   return valid.map((s, i) => ({ ...s, unlockingBytecode: unlockings[i]! }));
 };
 const accepts = (vm: Bch2026Vm, s: Step, bsv: boolean) => {
@@ -55,11 +64,28 @@ const accepts = (vm: Bch2026Vm, s: Step, bsv: boolean) => {
   return bsv ? o.bsvAccepted : o.accepted;
 };
 
+type Slot = { input: number; push: number; name?: string; offset?: number; encoding?: FieldEncoding };
+export type FieldEncoding = 'le32' | 'be32' | 'le48' | 'be48';
+const widthOf = (e: FieldEncoding) => (e.endsWith('48') ? 48 : 32);
+const readField = (d: Uint8Array, offset: number, e: FieldEncoding): bigint => {
+  const b = Buffer.from(d.subarray(offset, offset + widthOf(e)));
+  return BigInt('0x' + (e.startsWith('le') ? b.reverse() : b).toString('hex'));
+};
+const writeField = (d: Uint8Array, offset: number, e: FieldEncoding, v: bigint): Uint8Array | undefined => {
+  const w = widthOf(e);
+  if (v < 0n || v >= 1n << BigInt(8 * w)) return undefined; // does not fit the field
+  const b = Buffer.from(v.toString(16).padStart(2 * w, '0'), 'hex');
+  const out = Uint8Array.from(d); out.set(e.startsWith('le') ? b.reverse() : b, offset);
+  return out;
+};
+
 export interface PublicInputResult {
   declared: boolean;
   tested: number;
   accepted: number;
   firstAccepted?: string;
+  /** mutations skipped because the value does not fit a fixed-width packed field */
+  skipped?: number;
 }
 
 export const publicInputGate = (vm: Bch2026Vm, impl: Implementation, scenario: Scenario, bsv: boolean): PublicInputResult => {
@@ -70,11 +96,18 @@ export const publicInputGate = (vm: Bch2026Vm, impl: Implementation, scenario: S
   const decoded = new Map<number, Instr[]>();
   const instrOf = (input: number) => decoded.get(input) ?? decoded.set(input, decodeAuthenticationInstructions(valid[input]!.unlockingBytecode)).get(input)!;
   // slots sharing a name are copies of one public input (a real claim changes all of them)
-  const groups = new Map<string, { input: number; push: number }[]>();
+  const groups = new Map<string, Slot[]>();
   decl.forEach((d) => { const k = d.name ?? `input${d.input}/push${d.push}`; (groups.get(k) ?? groups.set(k, []).get(k)!).push(d); });
   const names = [...groups.keys()];
+  const slotValue = (d: Slot): bigint | undefined => {
+    const ins = instrOf(d.input)[d.push];
+    if (ins === undefined) return undefined;
+    if (d.offset === undefined) return valueOf(ins);
+    const data = dataOf(ins);
+    return data === undefined || data.length < d.offset + widthOf(d.encoding ?? 'le32') ? undefined : readField(data, d.offset, d.encoding ?? 'le32');
+  };
   const truth = names.map((k) => {
-    const vals = groups.get(k)!.map((d) => valueOf(instrOf(d.input)[d.push]!));
+    const vals = groups.get(k)!.map(slotValue);
     if (vals.some((v) => v === undefined || v !== vals[0])) throw new Error(`${impl.id}: declared public input ${k} is not a consistent number push`);
     return vals[0]!;
   });
@@ -88,19 +121,26 @@ export const publicInputGate = (vm: Bch2026Vm, impl: Implementation, scenario: S
     candidates.push({ label: `${name} + r`, values: set(truth[k]! + r) });
   });
   if (names.length >= 2 && truth[0] !== truth[1]) candidates.push({ label: 'first two swapped', values: truth.map((t, j) => (j === 0 ? truth[1]! : j === 1 ? truth[0]! : t)) });
-  let accepted = 0, tested = 0, firstAccepted: string | undefined;
+  let accepted = 0, tested = 0, skipped = 0, firstAccepted: string | undefined;
   for (const c of candidates) {
     const replace = new Map<number, Uint8Array>();
+    let fits = true;
     names.forEach((name, k) => groups.get(name)!.forEach((d) => {
       const ins = [...(replace.has(d.input) ? decodeAuthenticationInstructions(replace.get(d.input)!) : instrOf(d.input))];
-      ins[d.push] = numberPush(c.values[k]!);
+      if (d.offset === undefined) ins[d.push] = numberPush(c.values[k]!);
+      else {
+        const data = writeField(dataOf(ins[d.push]!)!, d.offset, d.encoding ?? 'le32', c.values[k]!);
+        if (data === undefined) { fits = false; return; }
+        ins[d.push] = decodeAuthenticationInstructions(encodeDataPush(data))[0]!;
+      }
       replace.set(d.input, encodeAll(ins));
     }));
+    if (!fits) { skipped++; continue; }
     tested++;
     const run = withUnlockings(valid, replace);
     if (run.every((s) => accepts(vm, s, bsv))) { accepted++; firstAccepted ??= c.label; }
   }
-  return { declared: true, tested, accepted, firstAccepted };
+  return { declared: true, tested, accepted, firstAccepted, ...(skipped > 0 ? { skipped } : {}) };
 };
 
 export interface LayoutResult {

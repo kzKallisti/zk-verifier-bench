@@ -65,6 +65,22 @@ const toRun = (run: RawRun): Step[] => {
 
 export const bchGroth16GroupedResidue: Implementation = {
   id: 'bch-groth16-grouped-residue',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts): every copy
+  // of n0, n1 in the valid run (32-byte fields packed in larger pushes), located by the maintainers
+  publicInputs: [
+    { input: 3, push: 0, offset: 0, encoding: 'le32', name: 'n0' },
+    { input: 3, push: 0, offset: 32, encoding: 'le32', name: 'n1' },
+    { input: 3, push: 0, offset: 64, encoding: 'le32', name: 'n0' },
+    { input: 3, push: 0, offset: 98, encoding: 'le32', name: 'n1' },
+    { input: 4, push: 0, offset: 96, encoding: 'le32', name: 'n0' },
+    { input: 4, push: 0, offset: 128, encoding: 'le32', name: 'n1' },
+    { input: 4, push: 0, offset: 160, encoding: 'le32', name: 'n0' },
+    { input: 4, push: 0, offset: 194, encoding: 'le32', name: 'n1' },
+    { input: 5, push: 0, offset: 96, encoding: 'le32', name: 'n0' },
+    { input: 5, push: 0, offset: 128, encoding: 'le32', name: 'n1' },
+    { input: 5, push: 0, offset: 160, encoding: 'le32', name: 'n0' },
+    { input: 5, push: 0, offset: 194, encoding: 'le32', name: 'n1' },
+  ],
   name: 'BCH Groth16 verifier, grouped + RESIDUE (26 chunks in 3 standard <100KB transactions: fast-G2 endo + GLV vk_x + precomputed e(alpha,beta) + c^-(6x+2)-fused Miller with terminal residue verdict)',
   proofSystem: 'Groth16',
   field: 'BN254',

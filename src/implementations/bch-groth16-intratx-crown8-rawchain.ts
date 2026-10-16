@@ -138,6 +138,13 @@ const assertLockInvariant = (): void => {
 
 export const bchGroth16IntratxCrown8Rawchain: Implementation = {
   id: 'bch-groth16-intratx-crown8-rawchain',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts): genesis
+  // (input 6) pushes 16 (n0) and 15 (n1), 32-byte little-endian; genesis range-checks them and
+  // recomputes vk_x, located by the maintainers
+  publicInputs: [
+    { input: 6, push: 16, offset: 0, encoding: 'le32', name: 'n0' },
+    { input: 6, push: 15, offset: 0, encoding: 'le32', name: 'n1' },
+  ],
   name: 'BCH BN254 Groth16 crown8 raw-chain',
   proofSystem: 'Groth16',
   field: 'BN254',
