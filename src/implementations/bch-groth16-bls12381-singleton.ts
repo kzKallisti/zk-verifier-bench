@@ -43,6 +43,8 @@ const mp = JSON.parse(readFileSync('src/bch/groth16-bls12381-singleton-multiproo
 
 export const bchGroth16Bls12381Singleton: Implementation = {
   id: 'bch-groth16-bls12381-singleton',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
+  publicInputs: [{ input: 0, push: 1, name: 'n0' }, { input: 0, push: 0, name: 'n1' }],
   name: 'BCH Groth16 verifier singleton, BLS12-381 (vk_x on-chain + full pairing, single-tx)',
   proofSystem: 'Groth16',
   field: 'BLS12-381',

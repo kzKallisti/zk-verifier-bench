@@ -43,6 +43,12 @@ const v = JSON.parse(readFileSync('src/bch/groth16-bls12381-singleton-fs-vectors
 
 export const bchGroth16Bls12381SingletonFs: Implementation = {
   id: 'bch-groth16-bls12381-singleton-fs',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts): 32-byte
+  // fields packed in the statement push, located by the maintainers
+  publicInputs: [
+    { input: 0, push: 22, offset: 193, encoding: 'le32', name: 'n0' },
+    { input: 0, push: 22, offset: 225, encoding: 'le32', name: 'n1' },
+  ],
   name: 'BCH Groth16 verifier singleton, BLS12-381 — Fiat-Shamir PIT (single-script qsplit tail-22)',
   proofSystem: 'Groth16',
   field: 'BLS12-381',

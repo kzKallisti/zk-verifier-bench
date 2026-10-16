@@ -208,7 +208,8 @@ export interface Implementation {
    * within that input's unlocking (0-based). Lets the harness mutate them generically (the
    * public-input binding gate, harness/gates.ts); new submissions should declare it.
    */
-  publicInputs?: { input: number; push: number; name?: string }[];
+  // offset + encoding: the value is a fixed-width field packed inside a larger push
+  publicInputs?: { input: number; push: number; name?: string; offset?: number; encoding?: 'le32' | 'be32' | 'le48' | 'be48' }[];
   /** the current reference implementation; others are compared against it */
   reference?: boolean;
   /** a toy demo, not a real verifier; kept in its own leaderboard but excluded

@@ -27,6 +27,30 @@ const toRun = (raw: RawStep[]): Step[] => {
 
 export const bchGroth16Bls12381Intratx: Implementation = {
   id: 'bch-groth16-bls12381-intratx',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts): every copy
+  // of n0, n1 in the valid run (32-byte fields packed in larger pushes), located by the maintainers
+  publicInputs: [
+    { input: 0, push: 0, offset: 0, encoding: 'le32', name: 'n0' },
+    { input: 0, push: 0, offset: 48, encoding: 'le32', name: 'n1' },
+    { input: 0, push: 0, offset: 96, encoding: 'le32', name: 'n0' },
+    { input: 0, push: 0, offset: 192, encoding: 'le32', name: 'n1' },
+    { input: 1, push: 0, offset: 144, encoding: 'le32', name: 'n0' },
+    { input: 1, push: 0, offset: 192, encoding: 'le32', name: 'n1' },
+    { input: 1, push: 0, offset: 240, encoding: 'le32', name: 'n0' },
+    { input: 1, push: 0, offset: 336, encoding: 'le32', name: 'n1' },
+    { input: 2, push: 0, offset: 144, encoding: 'le32', name: 'n0' },
+    { input: 2, push: 0, offset: 192, encoding: 'le32', name: 'n1' },
+    { input: 2, push: 0, offset: 240, encoding: 'le32', name: 'n0' },
+    { input: 2, push: 0, offset: 336, encoding: 'le32', name: 'n1' },
+    { input: 3, push: 0, offset: 144, encoding: 'le32', name: 'n0' },
+    { input: 3, push: 0, offset: 192, encoding: 'le32', name: 'n1' },
+    { input: 3, push: 0, offset: 240, encoding: 'le32', name: 'n0' },
+    { input: 3, push: 0, offset: 336, encoding: 'le32', name: 'n1' },
+    { input: 4, push: 0, offset: 144, encoding: 'le32', name: 'n0' },
+    { input: 4, push: 0, offset: 192, encoding: 'le32', name: 'n1' },
+    { input: 4, push: 0, offset: 240, encoding: 'le32', name: 'n0' },
+    { input: 4, push: 0, offset: 336, encoding: 'le32', name: 'n1' },
+  ],
   name: 'BCH BLS12-381 Groth16 intra-tx linked (whole verifier in one transaction, BCH-compatible)',
   proofSystem: 'Groth16',
   field: 'BLS12-381',

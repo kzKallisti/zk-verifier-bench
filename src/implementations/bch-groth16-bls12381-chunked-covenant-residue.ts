@@ -54,6 +54,18 @@ const toStep = (s: RawStep): Step => ({
 
 export const bchGroth16Bls12381ChunkedCovenantResidue: Implementation = {
   id: 'bch-groth16-bls12381-chunked-covenant-residue',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts): every copy
+  // of n0, n1 in the valid run, located by the maintainers
+  publicInputs: [
+    { input: 0, push: 2, name: 'n1' }, { input: 0, push: 4, name: 'n0' }, { input: 0, push: 5, name: 'n1' },
+    { input: 0, push: 6, name: 'n0' }, { input: 1, push: 2, name: 'n1' }, { input: 1, push: 4, name: 'n0' },
+    { input: 1, push: 5, name: 'n1' }, { input: 1, push: 6, name: 'n0' }, { input: 2, push: 2, name: 'n1' },
+    { input: 2, push: 4, name: 'n0' }, { input: 2, push: 5, name: 'n1' }, { input: 2, push: 6, name: 'n0' },
+    { input: 3, push: 2, name: 'n1' }, { input: 3, push: 4, name: 'n0' }, { input: 3, push: 5, name: 'n1' },
+    { input: 3, push: 6, name: 'n0' }, { input: 4, push: 11, name: 'n1' },
+    { input: 4, push: 13, name: 'n0' }, { input: 4, push: 14, name: 'n1' },
+    { input: 4, push: 15, name: 'n0' },
+  ],
   name: 'BCH Groth16 verifier, chunked, BLS12-381, covenant-threaded, RESIDUE final-exp (49 chunks, BCH-compatible)',
   proofSystem: 'Groth16',
   field: 'BLS12-381',

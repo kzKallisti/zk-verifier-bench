@@ -41,6 +41,9 @@ const mp = JSON.parse(readFileSync('src/bch/groth16-bls12381-singleton-minop-mul
 
 export const bchGroth16Bls12381SingletonMinOp: Implementation = {
   id: 'bch-groth16-bls12381-singleton-minop',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts); the
+  // unlocking carries each input twice
+  publicInputs: [{ input: 0, push: 4, name: 'n0' }, { input: 0, push: 12, name: 'n0' }, { input: 0, push: 2, name: 'n1' }, { input: 0, push: 11, name: 'n1' }],
   name: 'BCH Groth16 verifier singleton, BLS12-381 — op-optimized (lazy tower + quotient torus + fused psi check + GLV)',
   proofSystem: 'Groth16',
   field: 'BLS12-381',
