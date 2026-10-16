@@ -137,6 +137,9 @@ const correctnessOf = (r: BenchmarkResult) => {
       ? `cross-stage staple accepted (${csb.unboundSeams}/${csb.seamsTested} seam(s))`
       : null,
     !r.securePackaging ? 'insecure P2SH20 packaging' : null,
+    r.publicInputs.accepted > 0
+      ? `mutated public inputs accepted (${r.publicInputs.accepted}/${r.publicInputs.tested}; first: ${r.publicInputs.firstAccepted})`
+      : null,
     r.redTeam.accepted > 0
       ? `maintainer red-team attack accepted (${r.redTeam.accepted}/${r.redTeam.tested}; first: "${r.redTeam.firstAccepted}")`
       : null,
@@ -172,6 +175,10 @@ const correctnessOf = (r: BenchmarkResult) => {
     redTeam: r.redTeam.present
       ? { stale: r.redTeam.stale, tested: r.redTeam.tested, accepted: r.redTeam.accepted, kinds: r.redTeam.kinds, ...(r.redTeam.firstAccepted ? { firstAccepted: r.redTeam.firstAccepted } : {}) }
       : null,
+    // Public-input binding gate (harness/gates.ts); null = the entry did not declare its inputs.
+    publicInputs: r.publicInputs.declared ? { tested: r.publicInputs.tested, accepted: r.publicInputs.accepted, ...(r.publicInputs.firstAccepted ? { firstAccepted: r.publicInputs.firstAccepted } : {}) } : null,
+    // Layout review (not a verdict): free-length pads whose lengthening breaks a sibling input.
+    layoutReview: r.layout.applicable ? { padsTested: r.layout.padsTested, freeLength: r.layout.malleable, dependencies: r.layout.dependencies } : null,
     failures,
   };
 };

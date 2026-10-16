@@ -58,6 +58,8 @@ const toStep = (s: RawStep): Step => ({
 
 export const bchGroth16Chunked: Implementation = {
   id: 'bch-groth16-chunked',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
+  publicInputs: [{ input: 0, push: 2, name: 'n0' }, { input: 1, push: 2, name: 'n0' }, { input: 2, push: 2, name: 'n0' }, { input: 3, push: 2, name: 'n0' }, { input: 4, push: 2, name: 'n0' }, { input: 5, push: 2, name: 'n0' }, { input: 6, push: 11, name: 'n0' }, { input: 0, push: 1, name: 'n1' }, { input: 1, push: 1, name: 'n1' }, { input: 2, push: 1, name: 'n1' }, { input: 3, push: 1, name: 'n1' }, { input: 4, push: 1, name: 'n1' }, { input: 5, push: 1, name: 'n1' }, { input: 6, push: 10, name: 'n1' }],
   name: 'BCH Groth16 verifier chunked (vk_x on-chain + full pairing, multi-tx, BCH-compatible)',
   proofSystem: 'Groth16',
   field: 'BN254',

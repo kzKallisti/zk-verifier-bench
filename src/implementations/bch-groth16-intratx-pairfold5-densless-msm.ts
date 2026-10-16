@@ -53,6 +53,8 @@ const toRun = (raw: RawStep[]): Step[] => {
 
 export const bchGroth16IntratxPairfold5DenslessMsm: Implementation = {
   id: 'bch-groth16-intratx-pairfold5-densless-msm',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
+  publicInputs: [{ input: 5, push: 3, name: 'n0' }, { input: 5, push: 2, name: 'n1' }],
   name: 'BCH Groth16 intra-tx PairFold-5 densless with sound vk_x MSM',
   proofSystem: 'Groth16',
   field: 'BN254',

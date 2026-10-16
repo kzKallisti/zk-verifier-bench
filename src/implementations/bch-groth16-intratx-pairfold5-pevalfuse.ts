@@ -46,6 +46,8 @@ const toRun = (raw: RawStep[]): Step[] => {
 
 export const bchGroth16IntratxPairfold5Pevalfuse: Implementation = {
   id: 'bch-groth16-intratx-pairfold5-pevalfuse',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
+  publicInputs: [{ input: 3, push: 37, name: 'n0' }, { input: 3, push: 36, name: 'n1' }],
   name: 'BCH Groth16 intra-tx PairFold-5 peval-fuse source-reconstructed (score 36836)',
   proofSystem: 'Groth16',
   field: 'BN254',

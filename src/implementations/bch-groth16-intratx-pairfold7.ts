@@ -52,6 +52,8 @@ const toRun = (raw: RawStep[]): Step[] => {
 
 export const bchGroth16IntratxPairfold7: Implementation = {
   id: 'bch-groth16-intratx-pairfold7',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
+  publicInputs: [{ input: 5, push: 36, name: 'n0' }, { input: 5, push: 35, name: 'n1' }],
   name: 'BCH Groth16 intra-tx PairFold-7 dens-rich (score 54483)',
   proofSystem: 'Groth16',
   field: 'BN254',

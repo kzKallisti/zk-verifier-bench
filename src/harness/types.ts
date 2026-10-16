@@ -5,6 +5,7 @@
 // Steps. Implementations are grouped into separate leaderboards by
 // (proofSystem, structure).
 
+import type { LayoutResult, PublicInputResult } from './gates.js';
 import type { RedTeamResult } from './redteam.js';
 
 export type Structure = 'single-tx' | 'multi-tx';
@@ -202,6 +203,12 @@ export interface Implementation {
    * entries.
    */
   tokenSafetyEnforced?: boolean;
+  /**
+   * Where the claimed public inputs live in the valid run: the input index and the push index
+   * within that input's unlocking (0-based). Lets the harness mutate them generically (the
+   * public-input binding gate, harness/gates.ts); new submissions should declare it.
+   */
+  publicInputs?: { input: number; push: number; name?: string }[];
   /** the current reference implementation; others are compared against it */
   reference?: boolean;
   /** a toy demo, not a real verifier; kept in its own leaderboard but excluded
@@ -303,6 +310,11 @@ export interface BenchmarkResult {
    * that folds into `pass`; a stale file (lockings changed) is reported but not counted.
    * See harness/redteam.ts. */
   redTeam: RedTeamResult;
+  /** Public-input binding gate (harness/gates.ts): declared public inputs re-encoded with other
+   * values must make the transaction reject; `accepted > 0` fails the entry. */
+  publicInputs: PublicInputResult;
+  /** Layout-malleability review (harness/gates.ts): pads whose lengthening breaks a sibling. */
+  layout: LayoutResult;
   /** correctness was judged under the BSV post-Genesis OP_RETURN-terminator rule
    * (the valid run halts at a reachable OP_RETURN, which fails on strict BCH) */
   bsvOpReturn: boolean;

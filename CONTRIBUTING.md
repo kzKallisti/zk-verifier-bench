@@ -123,3 +123,12 @@ The maintainers may also add red-team attacks against your exact bytes
 (`src/bch/redteam/<id>.json`); every attack run must be rejected. A verifier must
 bind `vk_x` to the public inputs it claims: a real proof with forged public inputs
 has to fail. See [docs/public-input-binding.md](docs/public-input-binding.md).
+
+Declare where your claimed public inputs live with `publicInputs` on your
+`Implementation` (input index, push index within that input's unlocking, and a
+name; list every copy under the same name). The harness re-encodes them with
+other values and the transaction must reject. Ship every valid proof so that it
+passes the standard VM; standardness is graded on all of them. If one input reads
+another input's unlocking at a fixed offset, make sure every push before that
+offset has a pinned length, or carry the data in a push the producing input pins;
+the harness lengthens zero pads and flags siblings that break.

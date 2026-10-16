@@ -35,6 +35,8 @@ const mp = JSON.parse(readFileSync('src/bch/groth16-singleton-minop-multiproof-v
 
 export const bchGroth16SingletonMinOp: Implementation = {
   id: 'bch-groth16-singleton-minop',
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
+  publicInputs: [{ input: 0, push: 5, name: 'n0' }, { input: 0, push: 192, name: 'n0' }, { input: 0, push: 3, name: 'n1' }, { input: 0, push: 191, name: 'n1' }],
   name: 'BCH Groth16 verifier singleton — op-optimized (lazy tower + quotient torus + fused G2 + affine GLV)',
   proofSystem: 'Groth16',
   field: 'BN254',

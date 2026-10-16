@@ -88,6 +88,24 @@ If your construction changes the genesis layout so the tool no longer finds the
 auxiliary blob, say so in the PR. The maintainers will then write an attack for
 the new layout.
 
+## Generic gates
+
+The red-team gate needs an attack written for each layout. Two generic checks in
+`src/harness/gates.ts` run on every entry:
+
+- **Public-input binding.** An entry that declares `publicInputs` gets its claimed
+  inputs re-encoded with other values (+1, -1, 0, swapped, n + r, preferring
+  length-preserving encodings). Any accepted transaction fails the entry. This is a
+  necessary condition only: the PairFold entries reject these naive mutations and
+  still accept the adaptive forgery above.
+- **Layout review.** <a id="layout-review"></a>For intra-tx entries every all-zero pad
+  push is lengthened by 32 attacker-chosen bytes. If the input still accepts but a
+  sibling now rejects, that sibling depends on the padded input's layout past a
+  free-length push. This flags the pad-shift forgery found in review of the first
+  `pairfold5-densless-msm` (input 6 read input 5's witness at a fixed offset behind a
+  pad whose length nothing checked); a sibling that pins the whole unlocking triggers
+  it too, so it is reported for review rather than failed.
+
 ## Coverage
 
 Only the entries above have red-team files. The tool also matches
