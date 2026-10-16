@@ -10,8 +10,8 @@
 // base, and the per-term result. EC ops are INLINED (no multi-return functions),
 // and the final affine conversion uses an in-script Fermat inverse (no zInv
 // witness on the stack). Unlocking is padded blindly to 10,000 bytes -- which is
-// fine, since the heaviest chunk is op-cost-bound at ~7.49M and genuinely needs
-// ~9.3KB of padding to buy the per-input budget anyway.
+// fine, since the heaviest chunk is op-cost-bound at ~5.33M and genuinely needs
+// ~6.6KB of padding to buy the per-input budget anyway.
 //
 // 16 chunks (8 per term, the last of each folding); each chunk fits one standard
 // BCH input. Vectors built/measured by

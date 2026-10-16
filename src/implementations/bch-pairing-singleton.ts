@@ -11,13 +11,13 @@
 // at RUNTIME (spend args); the contract require()s the pairing product == Fp12
 // ONE, which IS the verification verdict -- nothing is baked. Every field/curve
 // op is a reusable function (OP_DEFINE/OP_INVOKE), compiled by the local cashc
-// feat/reusable-functions build. Verified against @noble/curves bn254 (the Miller
+// compiler-optimizations-7 build. Verified against @noble/curves bn254 (the Miller
 // boundary matches the golden millerHex byte-for-byte; the verdict matches the
 // golden valid/invalid).
 //
 // It accepts the valid instance and rejects the invalid one (a tampered public
-// input changes vk_x so the product != 1). But at ~1.21B op-cost (~151 standard
-// BCH inputs) and a ~20 KB contract it does NOT fit one input: on the real BCH
+// input changes vk_x so the product != 1). But at ~703M op-cost (~88 standard
+// BCH inputs) and a ~6 KB contract it does NOT fit one input: on the real BCH
 // 2026 VM it fails the 10,000-byte bytecode limit (and the op-cost density limit)
 // -- the honest result that motivates the chunked (multi-tx) pairing.
 //
@@ -47,8 +47,8 @@ export const bchPairingSingleton: Implementation = {
     'twist, mul034 lines, psi Q1/Q2), product, and final exponentiation ' +
     '((p^12-1)/r, cyclotomic exp). RUNTIME pair inputs; the contract require()s the ' +
     'product == Fp12 ONE (the verdict is intrinsic). Verified vs @noble/curves bn254 ' +
-    '(Miller boundary == golden millerHex; verdict == golden). ~1.21B op-cost -> ~151 ' +
-    'BCH inputs; ~20 KB contract does NOT fit BCH in one input -- this is why the ' +
+    '(Miller boundary == golden millerHex; verdict == golden). ~703M op-cost -> ~88 ' +
+    'BCH inputs; ~6 KB contract does NOT fit BCH in one input -- this is why the ' +
     'chunked multi-tx pairing exists.',
   load: async () => {
     const valid: Step[] = [

@@ -12,32 +12,32 @@
 // fold only the ordinary fixed-key e(alpha,beta) and e(IC0,gamma) factors; they do not use the
 // fixture's published scalar relations to collapse the statement.
 //
-// Committed fixture: 58,631 script B; 58,683 serialized B; 58,823 verifier.cash score;
-// 68,317,512 op. The dense worst-case fixture is 70,144 serialized B / 82,375,653 op.
+// Committed fixture: 58,446 script B; 58,498 serialized B; 58,638 verifier.cash score;
+// 67,456,340 op. The dense worst-case fixture is 68,315 serialized B / 80,858,092 op.
 // All 14 accepting fixture families use the same locking graph and pass the bch-spec consensus
 // and standard-policy VMs with default-minimum-fee-funded deterministic templates. This requires
 // the proposed VM because
-// the largest unlocking is 21,393 B; current BCH limits unlocking bytecode to 10,000 B.
+// the largest unlocking is 21,356 B; current BCH limits unlocking bytecode to 10,000 B.
 //
 // The prescribed checkpoint key is synthetic and publishes setup and IC scalars. These vectors
 // establish complete-equation execution and proposed-VM resource validity for that key; circuit
 // knowledge, production public-input binding, arbitrary-key verification, and independently
 // generated setup interoperability are outside this artifact's scope.
 //
-// Source: mr-zwets/groth16_cashscript @ b4d9780275d5f1545465c2dec9702e70ea621006
-// Compiler: mr-zwets/cashscript compiler-optimizations @
-// 1c707c1dbf87396b30ba5e0704b1db44475ce893
+// Source: mr-zwets/groth16_cashscript @ 74c24a1eb8b8d59896c3bdd0fec62b17aa4641dc
+// Compiler: mr-zwets/cashscript compiler-optimizations-7 @
+// 647be955537f0996d3c89184a306ee87848dbc8c
 // Input fixture SHA-256:
 //   multiproof d513f1fe45d7aba20f289cbc38439d5ebdb05a9975950a5e32d2bf21239d4abc
 //   pairing checkpoint e393e8b6af6f528c93f97f37656802bf44daefa5819640a557fbff95e236739e
-// Vector SHA-256: 860d7fa449fd1fd666cd8158d3bc3bdf9d5a5ad50947dbb89311a8cb081f7caa
+// Vector SHA-256: de0ee49676e26adeba338a6f3979902be186286398a4d51809ce44d0170bd13e
 // Locking graph SHA-256 (UTF-8 concatenated locking-hex text):
-// 661ada6d936a22991dba578fc84590c13628c429cc499c6d008efd81cb1abb48
+// 97873357b18110717b88b2511063e51f216712160a651cfbcd79e8b924e4a30a
 // Locking-bytecode SHA-256 values, in input order:
-//   00 176f4d3adcde71b894768c383511903da9fbd01db0d85a748ccd2534e3e33b25
-//   01 981413eb2acfc42deb9cab59ec4dddd56543da1dc6593e5f8f16312d5cab1f23
-//   02 eec55ea1c7a89b5c123ec0cdb331dd09d470d74c17628070749316b2f1ac83cf
-//   03 cc99d54729c273c4103fe481f9c042deca4340ff976b16f5afacf8244936c647
+//   00 74e6287705c81cc95018163d179dfd0d64550f98940c69c6208d2f59efee3134
+//   01 822a5de1d8cec6492f9a3fbb6757bd672f697b0cbd454e48407586ba35a417e7
+//   02 7633668e49057be3c9ebde39e1b4201b170a66dd699ef243ab696fd96bd08742
+//   03 164c3c54959bc72b2dbd1d943984511a0d12c9c838eaee49610f4f72bce50fac
 import { readFileSync } from 'node:fs';
 import { hexToBin } from '@bitauth/libauth';
 
@@ -81,7 +81,7 @@ export const bchGroth16IntratxResidueLarge: Implementation = {
     'four-pair equation. The root enforces the exact input count and pins the terminal locking ' +
     'program; the terminal enforces its position; OP_INPUTBYTECODE binds every state handoff; ' +
     'all input blobs have exact widths. All accepting fixtures pass the bch-spec consensus and ' +
-    'standard-policy VMs with fee-funded deterministic templates. The 21,393-byte maximum ' +
+    'standard-policy VMs with fee-funded deterministic templates. The 21,356-byte maximum ' +
     'unlocking requires the proposed VM and exceeds current BCH\'s 10,000-byte limit. Deployed ' +
     'as P2SH32. The prescribed checkpoint key is synthetic and publishes setup and IC scalars, ' +
     'so this artifact establishes complete-equation execution and proposed-VM resource validity ' +
