@@ -766,5 +766,21 @@
     "steps": 7,
     "transactions": 1,
     "fits": true
+  },
+  {
+    "t": "2026-10-16T11:54:56.073Z",
+    "score": 38945,
+    "id": "bch-groth16-intratx-pairfold5-densless-msm",
+    "steps": 6,
+    "transactions": 1,
+    "fits": true
+  },
+  {
+    "t": "2026-10-16T11:54:56.073Z",
+    "score": 6212,
+    "id": "bch-groth16-singleton-opcode-optimized",
+    "steps": 1,
+    "transactions": 1,
+    "fits": false
   }
 ]

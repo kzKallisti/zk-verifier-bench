@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-16T09:23:12.366Z",
+  "generatedAt": "2026-10-16T11:54:56.073Z",
   "statement": {
     "proofSystem": "Groth16",
     "curve": "BN254",
@@ -36,7 +36,7 @@
       "id": "bch-groth16-intratx-pairfold5-densless-msm",
       "label": "Best BCH-native full verifier",
       "curve": "BN254",
-      "bytes": 42577,
+      "bytes": 38945,
       "bchCompatible": true
     }
   },
@@ -808,6 +808,22 @@
       "steps": 7,
       "transactions": 1,
       "fits": true
+    },
+    {
+      "t": "2026-10-16T11:54:56.073Z",
+      "score": 38945,
+      "id": "bch-groth16-intratx-pairfold5-densless-msm",
+      "steps": 6,
+      "transactions": 1,
+      "fits": true
+    },
+    {
+      "t": "2026-10-16T11:54:56.073Z",
+      "score": 6212,
+      "id": "bch-groth16-singleton-opcode-optimized",
+      "steps": 1,
+      "transactions": 1,
+      "fits": false
     }
   ],
   "entries": [
@@ -841,6 +857,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 522564,
@@ -927,6 +945,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 11717771,
@@ -1009,14 +1029,19 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": null,
         "failures": []
       },
-      "score": 8734,
+      "score": 8192,
       "size": {
-        "scriptBytes": 8647,
+        "scriptBytes": 8105,
         "txOverheadBytes": 87,
         "transactions": 1,
-        "total": 8734
+        "total": 8192
       },
       "padding": {
         "bytes": 0,
@@ -1024,17 +1049,17 @@
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 797824107,
+          "opCost": 788667616,
           "steps": 1,
-          "heaviestStepOpCost": 797824107,
-          "inputsForHeaviestStep": 100
+          "heaviestStepOpCost": 788667616,
+          "inputsForHeaviestStep": 99
         },
         "worstCase": {
           "accepted": true,
-          "opCost": 857590347,
+          "opCost": 845767038,
           "steps": 1,
-          "heaviestStepOpCost": 857590347,
-          "inputsForHeaviestStep": 107
+          "heaviestStepOpCost": 845767038,
+          "inputsForHeaviestStep": 106
         }
       },
       "opCostBudget": 250400,
@@ -1045,10 +1070,10 @@
         "blockers": [
           "op-cost"
         ],
-        "detail": "heaviest step ~100× one input's op-cost budget",
+        "detail": "heaviest step ~99× one input's op-cost budget",
         "standard": {
           "fits": false,
-          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM"
+          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, extra proof #2, extra proof #3, worst-case proof"
         }
       },
       "generality": {
@@ -1097,14 +1122,19 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": null,
         "failures": []
       },
-      "score": 6584,
+      "score": 6212,
       "size": {
-        "scriptBytes": 6497,
+        "scriptBytes": 6125,
         "txOverheadBytes": 87,
         "transactions": 1,
-        "total": 6584
+        "total": 6212
       },
       "padding": {
         "bytes": 0,
@@ -1112,17 +1142,17 @@
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 813097627,
+          "opCost": 803627877,
           "steps": 1,
-          "heaviestStepOpCost": 813097627,
-          "inputsForHeaviestStep": 102
+          "heaviestStepOpCost": 803627877,
+          "inputsForHeaviestStep": 101
         },
         "worstCase": {
           "accepted": true,
-          "opCost": 871920581,
+          "opCost": 857893036,
           "steps": 1,
-          "heaviestStepOpCost": 871920581,
-          "inputsForHeaviestStep": 109
+          "heaviestStepOpCost": 857893036,
+          "inputsForHeaviestStep": 107
         }
       },
       "opCostBudget": 250400,
@@ -1133,10 +1163,10 @@
         "blockers": [
           "op-cost"
         ],
-        "detail": "heaviest step ~102× one input's op-cost budget",
+        "detail": "heaviest step ~101× one input's op-cost budget",
         "standard": {
           "fits": false,
-          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM"
+          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, extra proof #2, extra proof #3, worst-case proof"
         }
       },
       "generality": {
@@ -1157,7 +1187,7 @@
         "secure": true,
         "type": "p2s"
       },
-      "source": "Same complete Groth16 verifier as bch-groth16-singleton (Groth16Verify, singleton/bn254/groth16.cash: vk_x = IC0 + in0*IC1 + in1*IC2 on-chain, then e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) == 1), but the locking bytecode is a custom decompile->reschedule->recompile of the cashc output plus an auto-outlining pass. It eliminates cashc's altstack park/restore (its emitReplace reassignment routine, ~2,150 alt-ops in the Miller loop alone), minimizes ROLL/PICK depth addressing, folds adjacent stack ops into multi-item ops, and outlines repeated instruction sequences into OP_DEFINE bodies -- 14,131 -> 6,314 B (-55%, far under the 10,000-byte standard cap). Identical semantics + runtime witnesses; each subroutine differential-tested vs the cashc original and every outline rewrite verified accept/reject. Op-cost ~796M, so still not one-input-standard. Pipeline: singleton/bn254/recompiler/."
+      "source": "Same complete Groth16 verifier as bch-groth16-singleton (Groth16Verify, singleton/bn254/groth16.cash: vk_x = IC0 + in0*IC1 + in1*IC2 on-chain, then e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) == 1), but the locking bytecode is a custom decompile->reschedule->recompile of the cashc output plus an auto-outlining pass. It eliminates cashc's altstack park/restore (its emitReplace reassignment routine, ~2,150 alt-ops in the Miller loop alone), minimizes ROLL/PICK depth addressing, folds adjacent stack ops into multi-item ops, and outlines repeated instruction sequences into OP_DEFINE bodies -- 7,622 -> 5,853 B (far under the 10,000-byte standard cap). Identical semantics + runtime witnesses; each subroutine differential-tested vs the cashc original and every outline rewrite verified accept/reject. Op-cost ~796M, so still not one-input-standard. Pipeline: singleton/bn254/recompiler/."
     },
     {
       "id": "bch-groth16-singleton-minop",
@@ -1185,6 +1215,11 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": null,
         "failures": []
       },
       "score": 58870,
@@ -1225,7 +1260,7 @@
         "detail": "1/1 step(s) over the 10,000 B script cap; heaviest step ~9× one input's op-cost budget",
         "standard": {
           "fits": false,
-          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM"
+          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, extra proof #2, extra proof #3, worst-case proof"
         }
       },
       "generality": {
@@ -1274,6 +1309,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 7960,
@@ -1306,7 +1343,7 @@
         "detail": "heaviest step ~126× one input's op-cost budget",
         "standard": {
           "fits": false,
-          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM"
+          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, extra proof #2, extra proof #3"
         }
       },
       "generality": {
@@ -1355,6 +1392,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 6164,
@@ -1387,7 +1426,7 @@
         "detail": "heaviest step ~127× one input's op-cost budget",
         "standard": {
           "fits": false,
-          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM"
+          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, extra proof #2, extra proof #3"
         }
       },
       "generality": {
@@ -1436,6 +1475,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 59088,
@@ -1476,7 +1517,7 @@
         "detail": "1/1 step(s) over the 10,000 B script cap; heaviest step ~19× one input's op-cost budget",
         "standard": {
           "fits": false,
-          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM"
+          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, extra proof #2, extra proof #3, worst-case proof"
         }
       },
       "generality": {
@@ -1525,6 +1566,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 124238,
@@ -1565,7 +1608,7 @@
         "detail": "1/1 step(s) over the 10,000 B script cap; heaviest step ~8× one input's op-cost budget",
         "standard": {
           "fits": false,
-          "detail": "1/1 locking >201 B; 1/1 unlocking >10,000 B; a step is non-standard under the standard VM"
+          "detail": "1/1 locking >201 B; 1/1 unlocking >10,000 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, extra proof #2, extra proof #3, extra proof #4, extra proof #5, extra proof #6, extra proof #7, extra proof #8, extra proof #9, worst-case proof"
         }
       },
       "generality": {
@@ -1614,6 +1657,11 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": null,
         "failures": []
       },
       "score": 239773,
@@ -1704,6 +1752,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 473475,
@@ -1734,7 +1784,7 @@
         "detail": "every step fits BCH per-tx limits",
         "standard": {
           "fits": false,
-          "detail": "49/49 locking >201 B; a step is non-standard under the standard VM"
+          "detail": "49/49 locking >201 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1"
         }
       },
       "generality": {
@@ -1787,6 +1837,11 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": null,
         "failures": []
       },
       "score": 93802,
@@ -1877,6 +1932,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 11051,
@@ -1958,6 +2015,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 11228,
@@ -2039,6 +2098,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 184850,
@@ -2118,6 +2179,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 14874,
@@ -2197,6 +2260,11 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": null,
         "failures": []
       },
       "score": 11351,
@@ -2287,6 +2355,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 23700,
@@ -2370,6 +2440,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 7196,
@@ -2451,6 +2523,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 7226,
@@ -2532,6 +2606,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 109305,
@@ -2622,6 +2698,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 342331,
@@ -2705,6 +2783,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 357241,
@@ -2795,6 +2875,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 635295,
@@ -2825,7 +2907,7 @@
         "detail": "every step fits BCH per-tx limits",
         "standard": {
           "fits": false,
-          "detail": "69/69 locking >201 B; a step is non-standard under the standard VM"
+          "detail": "69/69 locking >201 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1"
         }
       },
       "generality": {
@@ -2878,6 +2960,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 211163,
@@ -2961,6 +3045,12 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": {
+          "padsTested": 9,
+          "freeLength": 9,
+          "dependencies": []
+        },
         "failures": []
       },
       "score": 107243,
@@ -3047,6 +3137,12 @@
           "detail": "every stage bound to one proof: 30 seams staple-tested with a 2nd distinct proof, all rejected"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": {
+          "padsTested": 22,
+          "freeLength": 22,
+          "dependencies": []
+        },
         "failures": []
       },
       "score": 234022,
@@ -3133,6 +3229,15 @@
           "detail": "every stage bound to one proof: 9 seams staple-tested with a 2nd distinct proof, all rejected"
         },
         "redTeam": null,
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": {
+          "padsTested": 22,
+          "freeLength": 0,
+          "dependencies": []
+        },
         "failures": []
       },
       "score": 83294,
@@ -3219,6 +3324,12 @@
           "detail": "every stage bound to one proof: 41 seams staple-tested with a 2nd distinct proof, all rejected"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": {
+          "padsTested": 36,
+          "freeLength": 36,
+          "dependencies": []
+        },
         "failures": []
       },
       "score": 330742,
@@ -3256,7 +3367,7 @@
         "detail": "every step fits BCH per-tx limits",
         "standard": {
           "fits": false,
-          "detail": "tx 328,894 B > 100,000 B standard size; a step is non-standard under the standard VM"
+          "detail": "tx 328,894 B > 100,000 B standard size; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, worst-case proof"
         }
       },
       "generality": {
@@ -3305,6 +3416,12 @@
           "detail": "every stage bound to one proof: 10 seams staple-tested with a 2nd distinct proof, all rejected"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": {
+          "padsTested": 9,
+          "freeLength": 9,
+          "dependencies": []
+        },
         "failures": []
       },
       "score": 86950,
@@ -3391,6 +3508,12 @@
           "detail": "every stage bound to one proof: 3 seams staple-tested with a 2nd distinct proof, all rejected"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": {
+          "padsTested": 0,
+          "freeLength": 0,
+          "dependencies": []
+        },
         "failures": []
       },
       "score": 58760,
@@ -3477,6 +3600,12 @@
           "detail": "every stage bound to one proof: 7 seams staple-tested with a 2nd distinct proof, all rejected"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": {
+          "padsTested": 12,
+          "freeLength": 0,
+          "dependencies": []
+        },
         "failures": []
       },
       "score": 77193,
@@ -3570,6 +3699,15 @@
             "forged-public-inputs"
           ],
           "firstAccepted": "forged n0 = true n0 + 2 (true vk_x kept)"
+        },
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": {
+          "padsTested": 15,
+          "freeLength": 1,
+          "dependencies": []
         },
         "failures": [
           "maintainer red-team attack accepted (3/3; first: \"forged n0 = true n0 + 2 (true vk_x kept)\")"
@@ -3667,6 +3805,15 @@
           ],
           "firstAccepted": "forged n0 = true n0 + 2 (true vk_x kept)"
         },
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": {
+          "padsTested": 5,
+          "freeLength": 1,
+          "dependencies": []
+        },
         "failures": [
           "maintainer red-team attack accepted (3/3; first: \"forged n0 = true n0 + 2 (true vk_x kept)\")"
         ]
@@ -3763,6 +3910,15 @@
           ],
           "firstAccepted": "forged n0 = true n0 + 2 (true vk_x kept)"
         },
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": {
+          "padsTested": 7,
+          "freeLength": 2,
+          "dependencies": []
+        },
         "failures": [
           "maintainer red-team attack accepted (3/3; first: \"forged n0 = true n0 + 2 (true vk_x kept)\")"
         ]
@@ -3839,16 +3995,16 @@
         "verdict": "pass",
         "validAccepted": true,
         "invalid": {
-          "tested": 7,
-          "rejected": 7
+          "tested": 6,
+          "rejected": 6
         },
         "worstCaseAccepted": true,
         "crossStageBinding": {
           "applicable": true,
           "bound": true,
-          "seamsTested": 6,
+          "seamsTested": 5,
           "unboundSeams": 0,
-          "detail": "every stage bound to one proof: 6 seams staple-tested with a 2nd distinct proof, all rejected"
+          "detail": "every stage bound to one proof: 5 seams staple-tested with a 2nd distinct proof, all rejected"
         },
         "redTeam": {
           "stale": false,
@@ -3860,35 +4016,44 @@
             "proof-point-validation"
           ]
         },
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": {
+          "padsTested": 3,
+          "freeLength": 2,
+          "dependencies": []
+        },
         "failures": []
       },
-      "score": 42577,
+      "score": 38945,
       "size": {
-        "scriptBytes": 42256,
-        "txOverheadBytes": 321,
+        "scriptBytes": 38667,
+        "txOverheadBytes": 278,
         "transactions": 1,
-        "total": 42577
+        "total": 38945
       },
       "padding": {
-        "bytes": 5045,
-        "fraction": 0.11939132904202954
+        "bytes": 1475,
+        "fraction": 0.03814622287738899
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 24138048,
-          "steps": 7,
-          "heaviestStepOpCost": 5432184,
+          "opCost": 24185457,
+          "steps": 6,
+          "heaviestStepOpCost": 5717204,
           "inputsForHeaviestStep": 1
         },
         "worstCase": {
           "accepted": true,
-          "opCost": 22823941,
-          "steps": 7,
-          "heaviestStepOpCost": 4574900,
+          "opCost": 22871352,
+          "steps": 6,
+          "heaviestStepOpCost": 4956706,
           "inputsForHeaviestStep": 1
         }
       },
-      "opCostBudget": 33838400,
+      "opCostBudget": 30962400,
       "bsvSingleton": false,
       "bsvOpReturn": false,
       "bch": {
@@ -3918,7 +4083,7 @@
         "secure": true,
         "type": "p2sh32"
       },
-      "source": "PairFold-5 densless (public-only reconstruction, chunked/bn254/densless-recovered) plus two GLV Straus inputs that recompute vk_x from the claimed public inputs (chunked/bn254/densless-msm). Seven P2SH32 inputs, one standard transaction; the terminal pins input count and all worker lockings."
+      "source": "PairFold-5 densless (public-only reconstruction, chunked/bn254/densless-recovered) plus two GLV Straus inputs that recompute vk_x from the claimed public inputs (chunked/bn254/densless-msm). Six P2SH32 inputs (MSM part A carried by genesis), one standard transaction; the terminal pins input count and all worker lockings."
     },
     {
       "id": "bch-groth16-intratx-pairfold5-densless",
@@ -3953,6 +4118,15 @@
             "forged-public-inputs"
           ],
           "firstAccepted": "forged n0 = true n0 + 2 (true vk_x kept)"
+        },
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": {
+          "padsTested": 5,
+          "freeLength": 1,
+          "dependencies": []
         },
         "failures": [
           "maintainer red-team attack accepted (3/3; first: \"forged n0 = true n0 + 2 (true vk_x kept)\")"
@@ -3992,8 +4166,8 @@
         "blockers": [],
         "detail": "every step fits BCH per-tx limits",
         "standard": {
-          "fits": true,
-          "detail": "relayable under standard mempool policy"
+          "fits": false,
+          "detail": "shipped valid proof(s) non-standard under the standard VM: extra proof #1"
         }
       },
       "generality": {
@@ -4042,6 +4216,15 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": {
+          "padsTested": 17,
+          "freeLength": 6,
+          "dependencies": []
+        },
         "failures": []
       },
       "score": 95201,
@@ -4128,6 +4311,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 234301,
@@ -4218,6 +4403,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 225877,
@@ -4308,6 +4495,12 @@
           "detail": "every stage bound to one proof: 37 seams staple-tested with a 2nd distinct proof, all rejected"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": {
+          "padsTested": 34,
+          "freeLength": 34,
+          "dependencies": []
+        },
         "failures": []
       },
       "score": 335614,
@@ -4394,6 +4587,12 @@
           "detail": "every stage bound to one proof: 42 seams staple-tested with a 2nd distinct proof, all rejected"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": {
+          "padsTested": 36,
+          "freeLength": 36,
+          "dependencies": []
+        },
         "failures": []
       },
       "score": 345471,
@@ -4480,6 +4679,12 @@
           "detail": "every stage bound to one proof: 23 seams staple-tested with a 2nd distinct proof, all rejected"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": {
+          "padsTested": 20,
+          "freeLength": 20,
+          "dependencies": []
+        },
         "failures": []
       },
       "score": 193309,
@@ -4566,6 +4771,12 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": {
+          "padsTested": 0,
+          "freeLength": 0,
+          "dependencies": []
+        },
         "failures": []
       },
       "score": 79948,
@@ -4652,6 +4863,12 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": {
+          "padsTested": 0,
+          "freeLength": 0,
+          "dependencies": []
+        },
         "failures": []
       },
       "score": 69947,
@@ -4738,6 +4955,12 @@
           "detail": "every stage bound to one proof: 2 seams staple-tested with a 2nd distinct proof, all rejected"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": {
+          "padsTested": 2,
+          "freeLength": 2,
+          "dependencies": []
+        },
         "failures": []
       },
       "score": 164447,
@@ -4824,6 +5047,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 345791,
@@ -4914,6 +5139,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 218083,
@@ -5004,6 +5231,8 @@
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
         "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 483,
@@ -5068,7 +5297,7 @@
       "proofSystem": "Groth16",
       "vmTarget": "bch-2026",
       "correctness": {
-        "verdict": "pass",
+        "verdict": "fail",
         "validAccepted": true,
         "invalid": {
           "tested": 1,
@@ -5082,7 +5311,16 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
-        "failures": []
+        "redTeam": null,
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 2,
+          "firstAccepted": "n0 + r"
+        },
+        "layoutReview": null,
+        "failures": [
+          "mutated public inputs accepted (2/9; first: n0 + r)"
+        ]
       },
       "score": 4587,
       "size": {
@@ -5114,7 +5352,7 @@
         "detail": "heaviest step ~686× one input's op-cost budget",
         "standard": {
           "fits": false,
-          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM"
+          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, extra proof #2, extra proof #3"
         }
       },
       "generality": {
@@ -5162,6 +5400,9 @@
           "unboundSeams": 0,
           "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
         },
+        "redTeam": null,
+        "publicInputs": null,
+        "layoutReview": null,
         "failures": []
       },
       "score": 3705,
@@ -5194,7 +5435,7 @@
         "detail": "heaviest step ~2579× one input's op-cost budget",
         "standard": {
           "fits": false,
-          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM"
+          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, extra proof #2, extra proof #3"
         }
       },
       "generality": {
