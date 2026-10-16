@@ -18,22 +18,26 @@
 //   that the Miller loop consumes. Terminal pins input count and all worker lockings.
 // - Malleability pins (paid once, prepended to the densless terminal): PUSHDATA2 length pins on the
 //   terminal header/quot and each executor quot; canonical non-decreasing order on terminal witness
-//   limbs 2..11 (BIN2NUM of sign-cleared LE limbs); fixed-table sign-bit clear on all three executor
+//   limbs 2..11 (minimally encoded LE numbers); fixed-table sign-bit clear on all three executor
 //   tables (OP_DEFINE/INVOKE). Closes the eight witness-malleability findings shared with the parent
 //   (see zk-verifier-bench#39).
 // Soundness: every stage consumes one w, which the terminal binds to its claimed n0, n1; the X, Y, Z
 // chain is pinned stage to stage, so vk_x = IC0 + n0*IC1 + n1*IC2 for the claimed inputs, and the
 // pairing check uses that vk_x. A forged claim needs a forged w, which changes vk_x. Length/order/
 // sign pins do not change the statement; they reject alternate witnesses for the same statement.
-// Worst case: 30 fresh dense-witness proofs on the standard VM, peak budget use 92.6 / 90.0 / 90.4 /
-// 95.9 / 86.4 % (inputs 0..4); see densless-msm-slim/sweep-results.txt in the source repo.
-// No maintainer red-team file exists for this id yet (a submitter-suggested set is in the source repo).
+// Finite dense-witness sample: 30/30 deterministic proofs accept on standard BCH2026,
+// seed densless-msm-slim-v1; peak budgets 92.6 / 89.9 / 90.4 / 96.6 / 86.9 %.
+// The order reader accepts minimally encoded variable-width numbers; default and explicit-full
+// exports match. Source regression includes a valid proof with a 31-byte terminal number.
+// Exact-byte attack file: the original 36 cases refreshed plus 8 issue39 cases (44 total),
+// re-encoded by GPT-6.1 Sol at Kallisti's request; upstream maintainer review remains pending.
+// Full-pinned score 36,008 = 35,773 script +235 overhead; no universal resource bound claimed.
 // Locking sha256:
-//   exec0+vkx-msm           5d683dd9cdb508f3bfaee1c04fbb95a6f6797b14021ea9249b2fecc46c0aabb5
-//   exec1+vkx-msm           5d683dd9cdb508f3bfaee1c04fbb95a6f6797b14021ea9249b2fecc46c0aabb5
-//   exec2+vkx-msm           5d683dd9cdb508f3bfaee1c04fbb95a6f6797b14021ea9249b2fecc46c0aabb5
-//   genesis+vkx-msm         8c03b9fa2706c6ad363ac0b8bfd80c720a3de76b5fc86eeed2ea88120776ceac
-//   terminal+vkx-msm-final  4142c5ea05cc1a758c40525154b7c8f9bb500f2c60e036f3f47c545b2b014863
+//   exec0+vkx-msm           2e34646625ffb7334a46f30782f4388e81f677c4f727e9b2f9a791c496209239
+//   exec1+vkx-msm           2e34646625ffb7334a46f30782f4388e81f677c4f727e9b2f9a791c496209239
+//   exec2+vkx-msm           2e34646625ffb7334a46f30782f4388e81f677c4f727e9b2f9a791c496209239
+//   genesis+vkx-msm         f86251dc601c4ea7627a448392026c87b5259f00c58d92e6a38e30da1b96f0c6
+//   terminal+vkx-msm-final  7c971e291c2a608f77fd0111f99f06d6d4835b4ff584a4b9ad975ad8226abd12
 import { readFileSync } from 'node:fs';
 import { hexToBin } from '@bitauth/libauth';
 
