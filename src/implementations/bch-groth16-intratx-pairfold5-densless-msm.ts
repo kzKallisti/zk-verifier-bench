@@ -1,10 +1,11 @@
 // PairFold-5 densless with a SOUND vk_x: the reconstructed densless verifier (kallisti, withdrawn
 // bench PR #36 / source PR #17) with its dead vk_x predicate sliced out of genesis, plus a GLV
-// Straus MSM that recomputes vk_x = IC0 + n0*IC1 + n1*IC2 from the claimed public inputs: part A
-// runs inside the genesis input (which holds n0, n1 as pushes 22, 21), part B is input 5; the
-// terminal requires 6 inputs, pins every worker locking and requires input 5's vk_x to equal the
-// genesis vk_x. Owning source: chunked/bn254/densless-msm in groth16_cashscript (MSM in CashScript,
-// compiled with the mr-zwets/cashscript compiler-optimizations-7 fork). Score 38,945.
+// Straus MSM that recomputes vk_x = IC0 + n0*IC1 + n1*IC2 from the claimed public inputs, carried
+// in the spare op budget of the existing inputs: genesis (which holds n0, n1 as pushes 22, 21) runs
+// positions 63..26, the three executors and the terminal continue it as a chain of pinned state
+// pushes, and the terminal checks the result against the genesis vk_x and the GLV decomposition
+// against n0, n1. Owning source: chunked/bn254/densless-msm in groth16_cashscript (MSM in
+// CashScript, compiled with the mr-zwets/cashscript compiler-optimizations-7 fork).
 import { readFileSync } from 'node:fs';
 import { hexToBin } from '@bitauth/libauth';
 
@@ -57,9 +58,10 @@ export const bchGroth16IntratxPairfold5DenslessMsm: Implementation = {
   structure: 'single-tx',
   proofBinding: 'runtime',
   source:
-    'PairFold-5 densless (public-only reconstruction, chunked/bn254/densless-recovered) plus two ' +
-    'GLV Straus inputs that recompute vk_x from the claimed public inputs (chunked/bn254/densless-msm). ' +
-    'Six P2SH32 inputs (MSM part A carried by genesis), one standard transaction; the terminal pins input count and all worker lockings.',
+    'PairFold-5 densless (public-only reconstruction, chunked/bn254/densless-recovered) plus ' +
+    'a GLV Straus MSM that recomputes vk_x from the claimed public inputs (chunked/bn254/densless-msm), ' +
+    'carried by the existing inputs as a chain of pinned states. Five P2SH32 inputs, one standard transaction; ' +
+    'the terminal pins input count and all worker lockings.',
   load: async () => ({
     valid: toRun(vectors.steps),
     extraValidProofs: (vectors.extraValidProofs ?? []).map(toRun),
