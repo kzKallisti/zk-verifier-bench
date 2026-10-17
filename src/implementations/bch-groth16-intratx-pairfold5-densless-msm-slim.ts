@@ -9,8 +9,8 @@
 //   them (S0 = k10 + lambda*k20 == n0, S1 = k11 + lambda*k21 == n1 mod r).
 // - w (64 bytes, one per Straus position) lives only in the terminal's state push (w, X, Y, Z;
 //   exactly 160 B, required by the terminal; it is the last push before the terminal redeem, whose
-//   length the locking pins). Genesis (input 3, positions 63..27) and the executors (inputs 0, 1, 2;
-//   positions by OP_INPUTINDEX, cuts 37,45,54,60) read their witness bytes from that window,
+//   length the locking pins). Genesis (input 3, positions 63..31) and the executors (inputs 0, 1, 2;
+//   positions by OP_INPUTINDEX, cuts 33,43,54,60) read their witness bytes from that window,
 //   located from the end of input 4's unlocking.
 // - Each stage pins the next stage's X, Y, Z (96-B executor state push, 160-B terminal push) from the
 //   end of the receiver's unlocking; the terminal finishes positions 3..0, adds IC0 - [2^64]G,
@@ -26,19 +26,19 @@
 // pairing check uses that vk_x. A forged claim needs a forged w, which changes vk_x. Length/order/
 // sign pins do not change the statement; they reject alternate witnesses for the same statement.
 // Finite dense-witness sample: 30/30 deterministic proofs accept on standard BCH2026,
-// seed densless-msm-slim-v1; peak budgets 92.3 / 89.6 / 90.1 / 99.6 / 84.4 %.
+// seed densless-msm-slim-v1; peak budgets 98.7 / 96.4 / 90.6 / 97.4 / 84.6 %.
 // The order reader accepts minimally encoded variable-width numbers; default and explicit-full
 // exports match. Source regression includes a valid proof with a 31-byte terminal number.
 // Exact-byte attack file: the original 36 cases refreshed plus 8 issue39 cases (44 total),
 // re-encoded by GPT-6.1 Sol at Kallisti's request; upstream maintainer review remains pending.
-// Full-pinned score 35,673 = 35,438 script +235 overhead; no universal resource bound claimed.
-// Slim-only omissions, bounded number-reader prefixes and copy windows preserve full pins.
+// Primary full-pinned score 35,309 = 35,074 script +235 overhead; no universal resource bound claimed.
+// Full13 MADD prime caching and repartition preserve full pins; genesis uses zero padding.
 // Locking sha256:
-//   exec0+vkx-msm           15d1ed3753037fa70e4f329716b484d874d3bd9bc3e7751e9d6eac6611ee1bc2
-//   exec1+vkx-msm           15d1ed3753037fa70e4f329716b484d874d3bd9bc3e7751e9d6eac6611ee1bc2
-//   exec2+vkx-msm           15d1ed3753037fa70e4f329716b484d874d3bd9bc3e7751e9d6eac6611ee1bc2
-//   genesis+vkx-msm         0ccc1409650882532a4073156a779da573e3851e90b0cbfd5897c5dec21ac101
-//   terminal+vkx-msm-final  6c304a9727d17131c6d28f30ca349c1b19fc5f9e35ec845a376f8bdd64402400
+//   exec0+vkx-msm           e75613fc648eb19bcd6553e211acd0aa401bc4f137b69db35eb2f99117852d37
+//   exec1+vkx-msm           e75613fc648eb19bcd6553e211acd0aa401bc4f137b69db35eb2f99117852d37
+//   exec2+vkx-msm           e75613fc648eb19bcd6553e211acd0aa401bc4f137b69db35eb2f99117852d37
+//   genesis+vkx-msm         c41d948df33cf946f0f0136e6c61facfcb4a7f14f8f26b73043eaf88301585c3
+//   terminal+vkx-msm-final  ad281b330da8b66be651c9d12c12f992fbc8faf3250274e50d5badd9ddf1f74c
 import { readFileSync } from 'node:fs';
 import { hexToBin } from '@bitauth/libauth';
 
