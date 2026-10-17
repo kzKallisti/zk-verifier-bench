@@ -33,7 +33,10 @@
 // re-encoded by GPT-6.1 Sol at Kallisti's request; upstream maintainer review remains pending.
 // Primary full-pinned score 35,125 = 34,890 script +235 overhead; no universal resource bound claimed.
 // Co8 with guarded floating prime caches: 13 MADD sites and six selected DBL sites; full pins, zero padding.
-// Locking sha256:
+// Optional raw-dbl/raw-madd/raw-both profiles score 35,282 / 35,496 / 35,653 bytes.
+// Consensus native costs: 24,830,569 / 24,690,991 / 24,679,327; all keep full pins and zero pads.
+// Each retains five core + short +30 archived dense proofs, 44 attacks and both native modes.
+// Default locking sha256:
 //   exec0+vkx-msm           b71630e7d38a0576de09894f8c231527e7fe73ba8e236ac94e2aebc27bb072ee
 //   exec1+vkx-msm           b71630e7d38a0576de09894f8c231527e7fe73ba8e236ac94e2aebc27bb072ee
 //   exec2+vkx-msm           b71630e7d38a0576de09894f8c231527e7fe73ba8e236ac94e2aebc27bb072ee
@@ -59,10 +62,6 @@ interface Vectors {
   invalidInputs?: RawStep[][];
 }
 
-const vectors = JSON.parse(
-  readFileSync('src/bch/groth16-intratx-pairfold5-densless-msm-slim-vectors.json', 'utf8'),
-) as Vectors;
-
 const toRun = (raw: RawStep[]): Step[] => {
   const inputs = raw.map((step) => ({
     lockingBytecode: hexToBin(step.locking),
@@ -81,23 +80,39 @@ const toRun = (raw: RawStep[]): Step[] => {
   }));
 };
 
-export const bchGroth16IntratxPairfold5DenslessMsmSlim: Implementation = {
-  id: 'bch-groth16-intratx-pairfold5-densless-msm-slim',
-  // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
-  publicInputs: [{ input: 4, push: 53, name: 'n0' }, { input: 4, push: 52, name: 'n1' }],
-  name: 'BCH Groth16 intra-tx PairFold-5 densless with sound vk_x MSM (slim MSM state)',
-  proofSystem: 'Groth16',
-  field: 'BN254',
-  structure: 'single-tx',
-  proofBinding: 'runtime',
-  source:
-    'PairFold-5 densless (chunked/bn254/densless-recovered) with the GLV Straus vk_x MSM in a slim state layout ' +
-    '(chunked/bn254/densless-msm-slim): claimed inputs are terminal pushes, witness bytes live only in the terminal state, ' +
-    'executors carry X, Y, Z. Five P2SH32 inputs, one standard transaction; the terminal pins input count and all worker lockings.',
-  load: async () => ({
-    valid: toRun(vectors.steps),
-    extraValidProofs: (vectors.extraValidProofs ?? []).map(toRun),
-    worstCaseProof: vectors.worstCaseProof ? toRun(vectors.worstCaseProof) : undefined,
-    invalid: (vectors.invalid ?? []).map(toRun),
-  }),
+const slim = (id: string, name: string, path: string): Implementation => {
+  const vectors = JSON.parse(readFileSync(path, 'utf8')) as Vectors;
+  return {
+    id,
+    // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
+    publicInputs: [{ input: 4, push: 53, name: 'n0' }, { input: 4, push: 52, name: 'n1' }],
+    name,
+    proofSystem: 'Groth16',
+    field: 'BN254',
+    structure: 'single-tx',
+    proofBinding: 'runtime',
+    source:
+      'PairFold-5 densless (chunked/bn254/densless-recovered) with the GLV Straus vk_x MSM in a slim state layout ' +
+      '(chunked/bn254/densless-msm-slim): claimed inputs are terminal pushes, witness bytes live only in the terminal state, ' +
+      'executors carry X, Y, Z. Five P2SH32 inputs, one standard transaction; the terminal pins input count and all worker lockings.',
+    load: async () => ({
+      valid: toRun(vectors.steps),
+      extraValidProofs: (vectors.extraValidProofs ?? []).map(toRun),
+      worstCaseProof: vectors.worstCaseProof ? toRun(vectors.worstCaseProof) : undefined,
+      invalid: (vectors.invalid ?? []).map(toRun),
+    }),
+  };
 };
+
+const id = 'bch-groth16-intratx-pairfold5-densless-msm-slim';
+const name = 'BCH Groth16 intra-tx PairFold-5 densless with sound vk_x MSM (slim MSM state)';
+export const bchGroth16IntratxPairfold5DenslessMsmSlim = slim(
+  id, name, 'src/bch/groth16-intratx-pairfold5-densless-msm-slim-vectors.json',
+);
+
+// Larger helper bodies lower native cost; retain the smaller floating-cache entry.
+export const bchGroth16IntratxPairfold5DenslessMsmSlimCacheProfiles =
+  ['raw-dbl', 'raw-madd', 'raw-both'].map(profile => slim(
+    `${id}-${profile}`, `${name} (${profile})`,
+    `src/bch/groth16-intratx-pairfold5-densless-msm-slim-${profile}-vectors.json`,
+  ));
