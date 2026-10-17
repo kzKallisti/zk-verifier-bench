@@ -11,7 +11,7 @@
 // at RUNTIME (spend args); the contract require()s the pairing product == Fp12
 // ONE, which IS the verification verdict -- nothing is baked. Every field/curve
 // op is a reusable function (OP_DEFINE/OP_INVOKE), compiled by the local cashc
-// compiler-optimizations-7 build. Verified against @noble/curves bn254 (the Miller
+// compiler-optimizations-8 build. Verified against @noble/curves bn254 (the Miller
 // boundary matches the golden millerHex byte-for-byte; the verdict matches the
 // golden valid/invalid).
 //
