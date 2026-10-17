@@ -113,9 +113,13 @@ export const bchGroth16IntratxPairfold5DenslessMsmSlim = slim(
   id, name, 'src/bch/groth16-intratx-pairfold5-densless-msm-slim-vectors.json',
 );
 
-// Larger helper bodies lower native cost; retain the smaller floating-cache entry.
+// Raw helpers lower native cost; orbit compresses tables at higher native cost.
+// Orbit:34,701bytes /25,265,653cons /25,333,109std; split37/cuts27,36,47,55.
+// Fullpins/zeropads; archived36proofs/bothmodes minimum margin107,427.
+// Source-generated XYZ seams are independently bound; proof/witness/scalars fixed.
+// GPT-6.1 Sol follow-up at Kallisti's request; Grothy/Grok attribution retained.
 export const bchGroth16IntratxPairfold5DenslessMsmSlimCacheProfiles =
-  ['raw-dbl', 'raw-madd', 'raw-both'].map(profile => slim(
+  ['raw-dbl', 'raw-madd', 'raw-both', 'orbit'].map(profile => slim(
     `${id}-${profile}`, `${name} (${profile})`,
     `src/bch/groth16-intratx-pairfold5-densless-msm-slim-${profile}-vectors.json`,
   ));
