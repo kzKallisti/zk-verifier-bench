@@ -5,7 +5,7 @@
 // positions 63..26, the three executors and the terminal continue it as a chain of pinned state
 // pushes, and the terminal checks the result against the genesis vk_x and the GLV decomposition
 // against n0, n1. Owning source: chunked/bn254/densless-msm in groth16_cashscript (MSM in
-// CashScript, compiled with the mr-zwets/cashscript compiler-optimizations-7 fork).
+// CashScript, compiled with the mr-zwets/cashscript compiler-optimizations-8 fork).
 import { readFileSync } from 'node:fs';
 import { hexToBin } from '@bitauth/libauth';
 
