@@ -5,7 +5,7 @@
 // loops/branches, minimizes ROLL/PICK addressing, and folds adjacent stack ops into
 // multi-item ops, followed by an auto-outlining pass that factors repeated instruction
 // sequences into OP_DEFINE bodies. Semantics are identical (same runtime witnesses, same
-// verdict) -> 7,622 -> 5,853 B on cashc compiler-optimizations-7 (with the in < r input range
+// verdict) -> 7,622 -> 5,853 B on cashc compiler-optimizations-7, 5,820 B on -8 (with the in < r input range
 // check), far under BCH's 10,000-byte standard script-size
 // cap. Op-cost grows slightly from the outline call overhead (~750M -> ~796M), so it
 // still does not fit one input -- the win is purely byte size.
