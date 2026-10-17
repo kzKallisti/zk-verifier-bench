@@ -822,5 +822,13 @@
     "steps": 5,
     "transactions": 1,
     "fits": true
+  },
+  {
+    "t": "2026-10-17T11:39:48.619Z",
+    "score": 35143,
+    "id": "bch-groth16-intratx-pairfold5-densless-msm-slim",
+    "steps": 5,
+    "transactions": 1,
+    "fits": true
   }
 ]
