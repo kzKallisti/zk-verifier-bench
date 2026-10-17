@@ -33,11 +33,11 @@
 // re-encoded by GPT-6.1 Sol at Kallisti's request; upstream maintainer review remains pending.
 // Primary full-pinned score 35,125 = 34,890 script +235 overhead; no universal resource bound claimed.
 // Co8 with guarded floating prime caches: 13 MADD sites and six selected DBL sites; full pins, zero padding.
-// Optional raw-dbl/raw-madd/raw-both profiles score 35,282 / 35,496 / 35,651 bytes.
-// Consensus native costs: 24,830,569 / 24,690,991 / 24,671,529; all keep full pins and zero pads.
+// Optional raw-dbl/raw-madd/raw-both profiles score 35,282 / 35,496 / 35,636 bytes.
+// Consensus native costs: 24,830,569 / 24,690,991 / 24,669,602; all keep full pins and zero pads.
 // Raw-both alone uses MSM_SPLIT=27 MSM_CUTS=37,43,51,52; default/raw-dbl/raw-madd remain split31.
-// Raw-both DBL418 and terminal 6PICK7PICK->6PICKDUP; all pre-redeem values fixed.
-// Raw-both minimum sampled dense native input margin: 61,064; no changed-range universal cap claimed.
+// Raw-both retains DBL418/terminal copy and compacts executor cleanup; all pre-redeem values fixed.
+// Raw-both minimum sampled dense native input margin: 61,094; no changed-range universal cap claimed.
 // Each retains five core + short +30 archived dense proofs, 44 attacks and both native modes.
 // Default locking sha256:
 //   exec0+vkx-msm           b71630e7d38a0576de09894f8c231527e7fe73ba8e236ac94e2aebc27bb072ee
