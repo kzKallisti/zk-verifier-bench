@@ -34,7 +34,9 @@
 // Primary full-pinned score 35,125 = 34,890 script +235 overhead; no universal resource bound claimed.
 // Co8 with guarded floating prime caches: 13 MADD sites and six selected DBL sites; full pins, zero padding.
 // Optional raw-dbl/raw-madd/raw-both profiles score 35,282 / 35,496 / 35,653 bytes.
-// Consensus native costs: 24,830,569 / 24,690,991 / 24,679,327; all keep full pins and zero pads.
+// Consensus native costs: 24,830,569 / 24,690,991 / 24,678,971; all keep full pins and zero pads.
+// Raw-both alone uses MSM_SPLIT=27 MSM_CUTS=37,43,54,60; default/raw-dbl/raw-madd remain split31.
+// Raw-both minimum sampled dense native input margin: 58,121; no changed-range universal cap claimed.
 // Each retains five core + short +30 archived dense proofs, 44 attacks and both native modes.
 // Default locking sha256:
 //   exec0+vkx-msm           b71630e7d38a0576de09894f8c231527e7fe73ba8e236ac94e2aebc27bb072ee
