@@ -26,19 +26,19 @@
 // pairing check uses that vk_x. A forged claim needs a forged w, which changes vk_x. Length/order/
 // sign pins do not change the statement; they reject alternate witnesses for the same statement.
 // Finite dense-witness sample: 30/30 deterministic proofs accept on standard BCH2026,
-// seed densless-msm-slim-v1; peak budgets 98.7 / 96.4 / 90.6 / 97.4 / 84.6 %.
+// seed densless-msm-slim-v1; peak budgets 98.6 / 96.2 / 90.6 / 97.1 / 84.6 %.
 // The order reader accepts minimally encoded variable-width numbers; default and explicit-full
 // exports match. Source regression includes a valid proof with a 31-byte terminal number.
 // Exact-byte attack file: the original 36 cases refreshed plus 8 issue39 cases (44 total),
 // re-encoded by GPT-6.1 Sol at Kallisti's request; upstream maintainer review remains pending.
-// Primary full-pinned score 35,309 = 35,074 script +235 overhead; no universal resource bound claimed.
-// Full13 MADD prime caching and repartition preserve full pins; genesis uses zero padding.
+// Primary full-pinned score 35,306 = 35,071 script +235 overhead; no universal resource bound claimed.
+// Full13 MADD prime caching with last-use retirement preserves full pins; genesis uses zero padding.
 // Locking sha256:
-//   exec0+vkx-msm           e75613fc648eb19bcd6553e211acd0aa401bc4f137b69db35eb2f99117852d37
-//   exec1+vkx-msm           e75613fc648eb19bcd6553e211acd0aa401bc4f137b69db35eb2f99117852d37
-//   exec2+vkx-msm           e75613fc648eb19bcd6553e211acd0aa401bc4f137b69db35eb2f99117852d37
-//   genesis+vkx-msm         c41d948df33cf946f0f0136e6c61facfcb4a7f14f8f26b73043eaf88301585c3
-//   terminal+vkx-msm-final  ad281b330da8b66be651c9d12c12f992fbc8faf3250274e50d5badd9ddf1f74c
+//   exec0+vkx-msm           3c8c6b392fea48debef64171f0dcd60b478924ed4f7ffe3eb16921af6028369e
+//   exec1+vkx-msm           3c8c6b392fea48debef64171f0dcd60b478924ed4f7ffe3eb16921af6028369e
+//   exec2+vkx-msm           3c8c6b392fea48debef64171f0dcd60b478924ed4f7ffe3eb16921af6028369e
+//   genesis+vkx-msm         16f2b18f14429f6b920a57cae281c77443df304796255414c09e10eadbd0a576
+//   terminal+vkx-msm-final  a4c5d0ca9d745a026853245e3c90f229a368a1f13866d219ba84b33f8ca114a0
 import { readFileSync } from 'node:fs';
 import { hexToBin } from '@bitauth/libauth';
 
