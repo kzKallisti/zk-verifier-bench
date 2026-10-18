@@ -127,9 +127,11 @@ export const bchGroth16IntratxPairfold5DenslessMsmSlimCacheProfiles =
     `src/bch/groth16-intratx-pairfold5-densless-msm-slim-${profile}-vectors.json`,
   ));
 
-// Opt-in US-a2 SHARED_PRIME_PROFILE=orbit-retained companion: terminal subsequence/number-pin IDs 10/12;
-// 33,800 script bytes / 33,860 measured wire bytes / 34,035 score; native 25,392,065 consensus / 25,458,113 standard.
-// UF archive vectors and 44 attack cases are mechanically re-encoded; proof, witness, public-input, and math values remain fixed.
+// Opt-in WI-a1 SHARED_PRIME_PROFILE=orbit-retained companion; source 33b4178dcea0d0826d6a691d9d6a062493c8b1e8.
+// Removes 20 balanced Miller-loop stack moves; terminal subsequence/number-pin IDs remain 10/12.
+// 33,780 script bytes / 33,840 measured wire bytes / 34,015 score; sampled native primary costs 25,349,195 consensus / 25,415,243 standard.
+// Fixed 208-context B100 corpus: 84 accept / 124 reject; minimum accepted margins 91,015 consensus / 67,463 standard.
+// Archive vectors and 44 attack cases are mechanically re-encoded; proof, witness, public-input, and math values remain fixed.
 // Default full-pinned score remains 35,109 = 34,874 script +235 overhead; no universal resource bound claimed.
 export const bchGroth16IntratxPairfold5DenslessMsmSlimSharedPrime = slim(
   `${id}-shared-prime`, `${name} (shared-prime orbit-retained companion)`,
