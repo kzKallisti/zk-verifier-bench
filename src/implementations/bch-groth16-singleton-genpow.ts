@@ -1,9 +1,9 @@
 // Source-assembled BN254 genpow with shared prime constant, public-input range check,
-// and shared 4/6-pick outline: 4,225 locking bytes.
+// and shared 4/6-pick outline: 4,217 locking bytes.
 // Exact reconstruction baseline: official 4,292-byte artifact 61c451d0...8494c83.
 // Owning source: singleton/bn254/genpow-reconstructed/{verifier.asm,build.mjs}.
-// Candidate locking SHA-256: c8f58539...b24e; TT-a2 adds outline_64 (raw ID -1) at 11
-// exact sites, demotes outline_18 to raw ID 18, and preserves proof/public-input fixtures.
+// Candidate locking SHA-256: 6229f2e5...a07bf6; TW-a1 adds outline_65 (raw ID 13) at 11
+// exact sites, demotes outline_13 to raw ID 47, and preserves proof/public-input fixtures.
 // Runtime cost and public-gate qualification are recorded after the fresh benchmark job.
 // No native input-resource or new point-validation claim is made.
 import { readFileSync } from 'node:fs';
@@ -29,20 +29,20 @@ export const bchGroth16SingletonGenpow: Implementation = {
   id: 'bch-groth16-singleton-genpow',
   // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
   publicInputs: [{ input: 0, push: 1, name: 'n0' }, { input: 0, push: 0, name: 'n1' }],
-  name: 'BCH Groth16 verifier singleton, BN254 genpow (shared P, range-checked inputs, source-assembled 4,225 B)',
+  name: 'BCH Groth16 verifier singleton, BN254 genpow (shared P, range-checked inputs, source-assembled 4,217 B, TW-a1)',
   proofSystem: 'Groth16',
   field: 'BN254',
   structure: 'single-tx',
   proofBinding: 'runtime',
   source:
     'Explicit symbolic assembly in singleton/bn254/genpow-reconstructed/verifier.asm. ' +
-    'TT-a2 replaces eleven exact OP_4 OP_PICK OP_6 OP_PICK sites with short calls to ' +
-    'outline_64 (raw ID -1), demotes outline_18 to raw ID 18, and emits 4,225 bytes ' +
-    'with sha256 c8f5853951f4c4ff18c21dab9fd173e9df84287a1a9abfa9513fa7a80af5b24e. ' +
+    'TW-a1 replaces eleven exact OP_6 OP_ROLL OP_7 OP_ROLL sites with short calls to ' +
+    'outline_65 (raw ID 13), demotes outline_13 to raw ID 47, and emits 4,217 bytes ' +
+    'with sha256 6229f2e5784b8f78c7b89fc6075c8de37a4ab9938bb04eb244459a4fa5a07bf6. ' +
     'A 32-byte prefix requires 0 <= n0, n1 < r (r = P - 6x^2), closing the n + r input alias. ' +
     'All original verification predicates and proof/public-input fixtures are preserved. ' +
     'The missing original CashScript/stackcert lineage is not claimed recovered. Runtime ' +
-    'cost and the public VM gates are measured by the fresh TT-a2 benchmark job. No native ' +
+    'cost and the public VM gates are measured by the fresh TW-a8 benchmark jobs. No native ' +
     'BCH resource or stronger input-validation claim is made.',
   load: async () => {
     const valid: Step[] = [

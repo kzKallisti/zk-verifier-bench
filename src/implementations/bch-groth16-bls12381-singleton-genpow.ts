@@ -1,4 +1,4 @@
-// BLS12-381 Groth16 genpow singleton, recovered symbolic source, compact IDs, SZ-a1, SM-a2, SV-a2, TB-a3, TJ-a2, and TR-a2.
+// BLS12-381 Groth16 genpow singleton, recovered symbolic source, compact IDs, SZ-a1, SM-a2, SV-a2, TB-a3, TJ-a2, TR-a2, and TW-a1..a4.
 //
 // Oct 16, 2026: main is prefixed with a public-input range check, 0 <= n0, n1 < r with
 // r = x^4 - x^2 + 1 from curveSeedAndScalarMinusOne (+17 bytes, 3,432-byte locking, sha256
@@ -8,7 +8,8 @@
 // raw IDs of that helper and decompressG2 and emits 3,412 bytes; TB-a3 outlines 41
 // repeated field multiplication/modulo sequences as mulFp and emits 3,341 bytes.
 // TJ-a2 outlines ten two-roll sequences and swaps its helper with fp6Mul, emitting 3,333 bytes;
-// TR-a2 outlines nine six/seven-roll sequences and swaps its helper with fp2Scale, emitting 3,328 bytes.
+// TR-a2 outlines nine six/seven-roll sequences and swaps its helper with fp2Scale, emitting 3,328 bytes;
+// TW-a1..a4 add four measured outlines and scoped ID packing, emitting 3,315 bytes.
 //
 // Full final exponentiation f^E == Fp12.ONE, E = (p^12-1)/r, over the raw
 // four-pair Miller product. vk_x is recomputed on-chain. The unlocking carries
@@ -21,14 +22,15 @@
 // TB-a3 outlines 41 repeated field multiplication/modulo sequences as mulFp and swaps
 // mulFp with fp6Add, producing 3,341 bytes; TJ-a2 adds stackSequence53=-1 and
 // moves fp6Mul to 19, producing 3,333 bytes; TR-a2 adds stackSequence54=14 and
-// moves fp2Scale to 31, producing 3,328 bytes with 51 candidate functions. The
+// moves fp2Scale to 31, producing 3,328 bytes with 51 candidate functions. TW-a1..a4
+// produce 3,315 bytes with 55 candidate functions. The
 // selected candidate's operation cost is reported
 // separately by the release gate.
 // Official operation-cost qualification is recorded separately by the release gate.
 // The historical compact baseline was 3,415 bytes; operation-cost qualification is reported
 // separately by the release gate for the selected candidate.
 // The pinned vectors contain four supplied proofs and the official changed-input mutation;
-// TR-a2 acceptance/cost gates are reported separately.
+// TW-a1..a4 acceptance/cost gates are reported separately.
 // No dense fixture or isolated input-validation fixtures are supplied.
 // Current-BCH compatibility and standardness remain false: this is a singleton
 // byte-footprint result evaluated with the official resource ceilings lifted.
@@ -48,7 +50,7 @@
 // Recovered program source:
 //   singleton/bls12-381/leader-recovered/program.mjs
 // Candidate builder/exporter: compact.mjs / export.mjs in the same directory.
-// Source candidate revision: 8e99da258cce21aa20f97af59082bd6ab6123c67
+// Source candidate revision: 326ec4acc00e9589b4ebd7bcb7c25c5640b3d12e
 // Recovered program origin revision: da85bde1a3918e653e545e3d588f8e3c7a58cd0f
 // This is recovered symbolic Script source. The original CashScript compiler
 // revision, search witness, replay and stackcert pipeline remain unavailable.
@@ -74,6 +76,8 @@
 //   ed8909fd0ed4f6ca058eb0144eac660741bea1e5b55d0f97b6506bfe44212eaf
 // TR-a2 candidate locking SHA256:
 //   d0dc12d1b7ac3d50c0ba0b07462ec8b63cf9f813d0107b3c0102f5c81f695118
+// TW-a1..a4 candidate locking SHA256:
+//   85669084e36988ea5e35db6f95e3cc7eb64bd429de38b93f66f29c026eb509f3
 // The exporter records the post-export hashes in both vector files.
 import { readFileSync } from 'node:fs';
 import { hexToBin } from '@bitauth/libauth';
@@ -97,7 +101,7 @@ export const bchGroth16Bls12381SingletonGenpow: Implementation = {
   id: 'bch-groth16-bls12381-singleton-genpow',
   // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
   publicInputs: [{ input: 0, push: 1, name: 'n0' }, { input: 0, push: 0, name: 'n1' }],
-  name: 'BCH Groth16 verifier singleton, BLS12-381 genpow (full final-exp, range-checked inputs, 3,328 B, TR-a2 recovered symbolic source)',
+  name: 'BCH Groth16 verifier singleton, BLS12-381 genpow (full final-exp, range-checked inputs, 3,315 B, TW-a1..a4 recovered symbolic source)',
   proofSystem: 'Groth16',
   field: 'BLS12-381',
   structure: 'single-tx',
@@ -109,13 +113,14 @@ export const bchGroth16Bls12381SingletonGenpow: Implementation = {
     'six repeated stack moves. SV-a2 assigns stackSequence52 ID 7 and decompressG2 ID 17; TB-a3 ' +
     'outlines 41 repeated field multiplication/modulo sequences as mulFp and swaps mulFp with fp6Add. TJ-a2 ' +
     'outlines ten two-roll sequences as stackSequence53=-1 and moves fp6Mul to 19; TR-a2 outlines nine ' +
-    'six/seven-roll sequences as stackSequence54=14 and moves fp2Scale to 31. The unlocking ' +
+    'six/seven-roll sequences as stackSequence54=14 and moves fp2Scale to 31; TW-a1..a4 add ' +
+    'four measured static outlines with scoped ID packing and emit 3,315 bytes. The unlocking ' +
     'contains compressed proof coordinates and two public inputs; no residue witness ' +
     'or Fiat-Shamir PIT is added. Recovered symbolic Script source reproduces the ' +
     'original 3,425-byte leader exactly; the range-closed baseline is 3,432 bytes, SZ-a1 is ' +
-    '3,422 bytes, SM-a2 is 3,414 bytes, SV-a2 is 3,412 bytes, TB-a3 is 3,341 bytes, TJ-a2 is 3,333 bytes, and TR-a2 is 3,328 bytes ' +
-    'with 51 candidate functions (51 in the recovered original; operation cost reported separately). ' +
-    'All four supplied proof witnesses are unchanged; TR-a2 acceptance/cost gates are reported separately. The original CashScript ' +
+    '3,422 bytes, SM-a2 is 3,414 bytes, SV-a2 is 3,412 bytes, TB-a3 is 3,341 bytes, TJ-a2 is 3,333 bytes, TR-a2 is 3,328 bytes, and TW-a1..a4 is 3,315 bytes ' +
+    'with 55 candidate functions (51 in the recovered original; operation cost reported separately). ' +
+    'All four supplied proof witnesses are unchanged; TW-a1..a4 acceptance/cost gates are reported separately. The original CashScript ' +
     'compiler/search-witness/replay pipeline remains unavailable. Current BCH and ' +
     'standardness limits are exceeded. The original no-G1/G2-subgroup-check and ' +
     'cofactor-equivalent proof posture is preserved; no new malformed-point theorem ' +
