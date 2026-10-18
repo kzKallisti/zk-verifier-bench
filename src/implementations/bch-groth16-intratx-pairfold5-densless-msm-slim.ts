@@ -126,3 +126,10 @@ export const bchGroth16IntratxPairfold5DenslessMsmSlimCacheProfiles =
     `${id}-${profile}`, `${name} (${profile})`,
     `src/bch/groth16-intratx-pairfold5-densless-msm-slim-${profile}-vectors.json`,
   ));
+
+// Opt-in SHARED_PRIME_PROFILE=orbit-retained companion: 34,457 bytes / 25,371,006 VM cost;
+// finite native receipt: 25,399,401 consensus / 25,466,345 standard units for the 174-byte saving.
+export const bchGroth16IntratxPairfold5DenslessMsmSlimSharedPrime = slim(
+  `${id}-shared-prime`, `${name} (shared-prime orbit-retained companion)`,
+  'src/bch/groth16-intratx-pairfold5-densless-msm-slim-shared-prime-vectors.json',
+);
