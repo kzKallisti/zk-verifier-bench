@@ -127,9 +127,9 @@ export const bchGroth16IntratxPairfold5DenslessMsmSlimCacheProfiles =
     `src/bch/groth16-intratx-pairfold5-densless-msm-slim-${profile}-vectors.json`,
   ));
 
-// Opt-in SHARED_PRIME_PROFILE=orbit-retained companion: 34,126 script bytes / official score 34,361;
-// measured wire size 34,186; native committed receipt: 25,397,161 consensus / 25,463,849 standard units.
-// Relative to the prior SE receipt these are -2,240 consensus / -2,496 standard units; the profile remains bounded to the reviewed schedule.
+// Opt-in SU-a2 SHARED_PRIME_PROFILE=orbit-retained companion: 33,976 script bytes / official score 34,211; measured wire size 34,036.
+// Native committed fixture-0 receipt: 25,394,888 consensus / 25,461,320 standard units; fixed36 minimum standard margin 78,516.
+// Default full-pinned score remains 35,109 = 34,874 script +235 overhead; no universal resource bound claimed.
 export const bchGroth16IntratxPairfold5DenslessMsmSlimSharedPrime = slim(
   `${id}-shared-prime`, `${name} (shared-prime orbit-retained companion)`,
   'src/bch/groth16-intratx-pairfold5-densless-msm-slim-shared-prime-vectors.json',
