@@ -36,23 +36,23 @@
 // conservative union bound is 160/(2^256-1), less than 161/2^256.
 //
 // Compact transcript/padding candidate; measured fixture coverage only.
-// Owning source Git commit 055d0eeed5a10ad2c3971908c7d2ac68da55a124.
-// Candidate source SHA256 988e576b7615208bdf95b4135c0739f1d2994bd8c1e0d8325ce3b9561681ac9e (export pin, not a Git revision); upstream base current.
+// Owning source Git commit b1375ef46c08069b93109ab07356e148855b06e2.
+// Candidate source SHA256 52b51db7a59f5c95972ca78cb8e349ff022d8c2bc68fffb995205ef1bd61aa74 (export pin, not a Git revision); upstream base current.
 // Legacy candidate provenance: 21beb8116a0fb191402160350c4bce4605a0ef95.
 // The Regular payload uses a 32-byte root for each zero window and a 704-byte
-// authenticated record for each nonzero window. Fixed proxy padding adds 409 B
+// authenticated record for each nonzero window. Fixed proxy padding adds 408 B
 // over the initial compact corpus. Input 3 retains its explicit 80-byte padding.
 //
-// Committed candidate fixture: 69,176 wire B / 68,980 script B.
-// Dense/max-size fixture: 89,336 wire B / 89,140 script B.
-// This candidate is one wire byte below the prior compact candidate; the fixed
+// Committed candidate fixture: 69,175 wire B / 68,979 script B.
+// Dense/max-size fixture: 89,335 wire B / 89,139 script B.
+// This candidate is two wire bytes below the prior compact candidate; the fixed
 // 79,948 entry remains the historical Pareto alternative.
 // Exactly three template identifiers change: 101->16, 117->15, and 104->-1;
 // 102 and 103 remain unchanged. Source coverage is finite (10 fixtures, 220
 // pairs). The current source/Libauth mutation corpus has 540 cases per mode;
-// separate native checks cover 64 contexts (20 accepted, 44 rejected, 566 calls).
+// separate native checks cover 64 contexts (20 accepted, 44 rejected, 508 calls).
 // The unchanged harness reports committed bytes and dense operation costs
-// separately; 90,107 is the derived dense footprint, not the official score.
+// separately; 90,105 is the derived dense footprint, not the official score.
 // The current pinned source replay covers ten supplied fixtures (220 source
 // input pairs); the separate benchmark vector supplies 22 full negative runs.
 // These are corpus checks only. They do not establish arbitrary-witness
@@ -63,13 +63,13 @@
 // historical baseline metadata.
 //
 // Candidate source artifact SHA256 (not a Git revision):
-//   988e576b7615208bdf95b4135c0739f1d2994bd8c1e0d8325ce3b9561681ac9e
+//   52b51db7a59f5c95972ca78cb8e349ff022d8c2bc68fffb995205ef1bd61aa74
 // Candidate pinned source resource export SHA256:
-//   59bd8f03c6e5b7953895357e872003e23c182f16cd1438196e291cef89c5de08
+//   f302f7a36a912fe1d4392352f96962c0386b17c97c37130d5b8253b5b156a9d5
 // Vector SHA256 (current package metadata):
-//   5ec0f55e14cac7bb78782582669a5284373dfccce67dd503c9703534d26d9c24
+//   d5a84c89b2e673783ed7b45cbdb0439fab1ce97cc991d42b88a31a7cd81c84f3
 // Length-prefixed locking-set SHA256:
-//   93e26c28ab0a7067f2779f6adc7fec2e32599256424eda551fe693e07ce168bb
+//   60685a3c0b38f15982cd26ca523cb366f4f2cc4f9bdcc2e3ba41e9880df5c00b
 import { readFileSync } from 'node:fs';
 
 import { hexToBin } from '@bitauth/libauth';
