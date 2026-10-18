@@ -36,49 +36,47 @@
 // conservative union bound is 160/(2^256-1), less than 161/2^256.
 //
 // Compact transcript/namespace candidate; measured fixture coverage only.
-// Source checkout base Git commit 6dba9b3e0e178fa8266f8970b7a2c3a939347986.
-// Candidate source SHA256 af6b37369565f972bb954510f5b5dc1d7bf348c5ef06a0207e1a9f36cc26b115 (export pin, not a Git revision); upstream base current.
+// Source checkout base Git commit 3339131b39b00bfc2c01213d0b23e90be900ba87.
+// Candidate source SHA256 33710a434147e6c88ce77811cbc1fc48fdd8ec6f10896f41bc627a888f846bdc (export pin, not a Git revision); upstream base current.
 // Legacy candidate provenance: 21beb8116a0fb191402160350c4bce4605a0ef95.
 // The Regular payload uses a 32-byte root for each zero window and a 704-byte
-// authenticated record for each nonzero window. SG trims 666 B of zero padding
-// from published AZ429; SK additionally saves 8 B with scoped function keys.
+// authenticated record for each nonzero window. TE saves 178 B of arithmetic-library payload and adds 149 B of required regular padding relative to published SK; net 29 B source reduction before benchmark overhead.
 // Input 3 retains its explicit 80-byte padding.
 // The tested compact map stays within one constant-width script-framing region:
-// {3:429,5:416,6:370,7:377,8:361,9:368,10:370,11:378,12:370,13:379,14:380,16:404,17:375,18:377,19:385}.
+// {3:439,5:426,6:380,7:387,8:371,9:378,10:380,11:388,12:380,13:389,14:390,16:413,17:385,18:387,19:395}.
 //
-// Committed candidate fixture: 68,488 wire B / 68,292 script B.
-// Dense/max-size fixture: 88,648 wire B / 88,452 script B.
-// Official aggregate challenge score: 69,258 B; maximum supplied-fixture
-// challenge footprint: 89,418 B. The fixed 79,948 entry remains the historical
+// Committed candidate fixture: 68,459 wire B / 68,263 script B.
+// Dense/max-size fixture: 88,619 wire B / 88,423 script B.
+// Official aggregate challenge score: 69,229 B; maximum supplied-fixture
+// challenge footprint: 89,389 B. The fixed 79,948 entry remains the historical
 // Pareto alternative.
 // The inherited identifiers are 101->16, 117->15, and 104->-1. SK changes
 // extra helper 103->14 and common helper 102->13 only in AdditionTail and its
 // proxy; other common-helper consumers retain 102. Source coverage is finite
 // (10 fixtures, 220 pairs). The current source/Libauth mutation corpus has 540 cases per mode;
-// separate native checks cover 64 contexts (20 accepted, 44 rejected, 566 reached
-// input calls).
+// separate native checks cover 64 contexts (20 accepted, 44 rejected); reached
+// input counts are retained in the native replay receipts because negative rows may stop early.
 // The unchanged harness reports committed bytes and dense operation costs
-// separately; 89,418 is the derived dense footprint, not the official score.
+// separately; 89,389 is the derived dense footprint, not the official score.
 // The current pinned source replay covers ten supplied fixtures (220 source
 // input pairs); the separate benchmark vector supplies 22 full negative runs.
 // These are corpus checks only. They do not establish arbitrary-witness
 // producer bounds, helper closure, or a universal resource theorem.
 // The prior 79,948 best entry is preserved outside this isolated candidate.
-// The current candidate's native-minus-Libauth DEFINE-body difference is 99,437
-// operation-cost units in each mode: committed standard 42,952,810 - 42,853,373
-// and maximum standard 57,042,838 - 56,943,401. The prior 99,480-unit figure
-// remains historical baseline metadata. The tightest tested native standard
-// margin is 34 operation-cost units; this is finite supplied-corpus evidence,
-// not a universal minimum.
+// Fresh native replay covers ten supplied fixtures and 22 rejection contexts in each
+// consensus/standard mode. Committed native costs are 42,896,558 / 43,085,486;
+// maximum supplied-fixture costs are 56,820,086 / 57,187,574; the minimum tested
+// standard per-input margin is 2,137 operation-cost units. These are finite
+// supplied-corpus measurements, not universal resource bounds.
 //
 // Candidate source artifact SHA256 (not a Git revision):
-//   af6b37369565f972bb954510f5b5dc1d7bf348c5ef06a0207e1a9f36cc26b115
+//   33710a434147e6c88ce77811cbc1fc48fdd8ec6f10896f41bc627a888f846bdc
 // Candidate pinned source resource export SHA256:
-//   d936ff938cf6dd0809ccc09e79bd115bf549776617dea822f99f56590310f711
+//   359b0785101180cce675e6c0af71360d5adec61747a3f58021ca2ba412e90470
 // Vector SHA256 (current package metadata):
-//   c8e71c8f20f776e7ad6b460342fa962e690f0af5529586462a68d739d87237f5
+//   1cb1467801380ea215dc080b3bd5792fc90f5955dca0c60ef67f838445b6c00b
 // Length-prefixed locking-set SHA256:
-//   29c14c1b0893b88dff5c774bdf7d4188a46d71355836870d296dff416819e5f6
+//   700838e8987a359d4678764bca58af202198ef254a660f1f6812d4fec0b5a04a
 import { readFileSync } from 'node:fs';
 
 import { hexToBin } from '@bitauth/libauth';
