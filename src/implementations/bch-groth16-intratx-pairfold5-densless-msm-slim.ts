@@ -31,20 +31,21 @@
 // exports match. Source regression includes a valid proof with a 31-byte terminal number.
 // Exact-byte attack file: the original 36 cases refreshed plus 8 issue39 cases (44 total),
 // re-encoded by GPT-6.1 Sol at Kallisti's request; upstream maintainer review remains pending.
-// Primary full-pinned score 35,125 = 34,890 script +235 overhead; no universal resource bound claimed.
+// Primary full-pinned score 35,109 = 34,874 script +235 overhead; no universal resource bound claimed.
 // Co8 with guarded floating prime caches: 13 MADD sites and six selected DBL sites; full pins, zero padding.
-// Optional raw-dbl/raw-madd/raw-both profiles score 35,282 / 35,496 / 35,636 bytes.
-// Consensus native costs: 24,830,569 / 24,690,991 / 24,669,602; all keep full pins and zero pads.
+// Optional raw-dbl/raw-madd/raw-both profiles score 35,266 / 35,480 / 35,636 bytes.
+// Consensus native costs: 24,828,520 / 24,688,942 / 24,669,602; all keep full pins and zero pads.
 // Raw-both alone uses MSM_SPLIT=27 MSM_CUTS=37,43,51,52; default/raw-dbl/raw-madd remain split31.
 // Raw-both retains DBL418/terminal copy and compacts executor cleanup; all pre-redeem values fixed.
 // Raw-both minimum sampled dense native input margin: 61,094; no changed-range universal cap claimed.
 // Each retains five core + short +30 archived dense proofs, 44 attacks and both native modes.
+// All cache profiles use the checked executor cleanup and inverse-copy rules.
 // Default locking sha256:
-//   exec0+vkx-msm           b71630e7d38a0576de09894f8c231527e7fe73ba8e236ac94e2aebc27bb072ee
-//   exec1+vkx-msm           b71630e7d38a0576de09894f8c231527e7fe73ba8e236ac94e2aebc27bb072ee
-//   exec2+vkx-msm           b71630e7d38a0576de09894f8c231527e7fe73ba8e236ac94e2aebc27bb072ee
-//   genesis+vkx-msm         2e2ff6de1e924f24075897b87be8f8616be5a72b4476918f2f48e479371c1eaa
-//   terminal+vkx-msm-final  97769eb23ff1c3aa4d4dd1eba2a57ff5e9fe433ed600b5fa82273356c44135e6
+//   exec0+vkx-msm           3be8eda70d1eee1b6ab5f2a0bb9c507fca1108519b7f853fe35308c5b8b6e956
+//   exec1+vkx-msm           3be8eda70d1eee1b6ab5f2a0bb9c507fca1108519b7f853fe35308c5b8b6e956
+//   exec2+vkx-msm           3be8eda70d1eee1b6ab5f2a0bb9c507fca1108519b7f853fe35308c5b8b6e956
+//   genesis+vkx-msm         1b317fcbffc4dd638ae4798502da48eb46711ec5a891eb689d23155b4abbe3b4
+//   terminal+vkx-msm-final  82bafb56510493f82c1f92e3c043c2299c936dc1b28c9f264db0f18baf077567
 import { readFileSync } from 'node:fs';
 import { hexToBin } from '@bitauth/libauth';
 
@@ -114,11 +115,11 @@ export const bchGroth16IntratxPairfold5DenslessMsmSlim = slim(
 );
 
 // Raw helpers lower native cost; orbit compresses tables at higher native cost.
-// Orbit:34,701bytes /25,265,653cons /25,333,109std; split37/cuts27,36,47,55.
-// Fullpins/zeropads; archived36proofs/bothmodes minimum margin107,427.
+// Orbit:34,685bytes /25,263,604cons /25,331,060std; split37/cuts27,36,47,55.
+// Fullpins/zeropads; archived36proofs/bothmodes minimum margin104,025.
 // Source-generated XYZ seams are independently bound; proof/witness/scalars fixed.
-// Retained orbit:34,647bytes /25,319,310cons /25,386,638std; same cuts.
-// Both lookup bodies747; minimum sampled native input margin96,688.
+// Retained orbit:34,631bytes /25,317,261cons /25,384,589std; same cuts.
+// Both lookup bodies747; minimum sampled native input margin93,286.
 // GPT-6.1 Sol follow-up at Kallisti's request; Grothy/Grok attribution retained.
 export const bchGroth16IntratxPairfold5DenslessMsmSlimCacheProfiles =
   ['raw-dbl', 'raw-madd', 'raw-both', 'orbit', 'orbit-retained'].map(profile => slim(
