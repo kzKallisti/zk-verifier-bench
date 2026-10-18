@@ -1,8 +1,8 @@
 // Source-assembled BN254 genpow with canonical G1 parity witnesses.
-// 4,232 locking bytes and a 208-byte witness; historical UE used 4,198/272.
+// 4,223 locking bytes and a 208-byte witness; historical UE used 4,198/272.
 // Owning source: singleton/bn254/genpow-reconstructed/{verifier.asm,build.mjs}.
-// Candidate locking SHA-256: c38e3036c31b3706df54212b768167ada00728d376b89a0d32971e2491527dd8.
-// A/C y parity is decoded with the shared 254-step Fp exponentiation loop;
+// Candidate locking SHA-256: 11562df7a32468c8417741d5a512709fbe5184edb49b538e388671e8a7cdf3e5.
+// A/C y parity is decoded with the shared exponent-driven Fp routine;
 // exact archived y, original x and eight other raw witness pushes are preserved.
 // Decoder root checks replace the two former standalone G1 equations.
 // This changes the witness representation domain; no unrestricted byte-language
@@ -30,7 +30,7 @@ export const bchGroth16SingletonGenpow: Implementation = {
   id: 'bch-groth16-singleton-genpow',
   // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
   publicInputs: [{ input: 0, push: 1, name: 'n0' }, { input: 0, push: 0, name: 'n1' }],
-  name: 'BCH Groth16 verifier singleton, BN254 genpow (shared P, range-checked inputs, source-assembled 4,232 B, G1 parity)',
+  name: 'BCH Groth16 verifier singleton, BN254 genpow (shared P, range-checked inputs, source-assembled 4,223 B, G1 parity)',
   proofSystem: 'Groth16',
   field: 'BN254',
   structure: 'single-tx',
@@ -38,11 +38,11 @@ export const bchGroth16SingletonGenpow: Implementation = {
   source:
     'Explicit symbolic assembly in singleton/bn254/genpow-reconstructed/verifier.asm. ' +
     'The fixed proof A/C y coordinates use parity pushes, reducing the witness from 272 to 208 bytes. ' +
-    'The verifier reconstructs each canonical y with the shared Fp exponentiation loop, checks the ' +
+    'The verifier reconstructs each canonical y with a shared remaining-exponent loop, checks the ' +
     'curve equation and requested parity, and retains the original x and remaining witness data. ' +
-    'The 4,232-byte program has sha256 c38e3036c31b3706df54212b768167ada00728d376b89a0d32971e2491527dd8. ' +
-    'The existing 32-byte scalar range guard, G2 checks and later arithmetic remain exact outside ' +
-    'the independently checked codec boundary and shared-loop extraction. All archived proof and ' +
+    'The 4,223-byte program has sha256 11562df7a32468c8417741d5a512709fbe5184edb49b538e388671e8a7cdf3e5. ' +
+    'The 32-byte scalar range guard, G2 checks and main remain exact. The shared power loop now ' +
+    'shifts its remaining exponent until zero; all archived proof and ' +
     'public-input integers are preserved. The original CashScript/stackcert lineage remains missing. ' +
     'Actual finite proof/cost gates are recorded separately; relaxed VM limits are required.',
   load: async () => {
