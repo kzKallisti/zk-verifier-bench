@@ -36,16 +36,16 @@
 // conservative union bound is 160/(2^256-1), less than 161/2^256.
 //
 // Compact transcript/padding candidate; measured fixture coverage only.
-// Owning source Git commit 9cc374db558a7759a6d9c07977beb9aa520da3e2.
-// Candidate source SHA256 7d21a55fbab9146ba62bf97321e2160e047524189041ee7c809311b7affad691 (export pin, not a Git revision); upstream base current.
+// Owning source Git commit 055d0eeed5a10ad2c3971908c7d2ac68da55a124.
+// Candidate source SHA256 988e576b7615208bdf95b4135c0739f1d2994bd8c1e0d8325ce3b9561681ac9e (export pin, not a Git revision); upstream base current.
 // Legacy candidate provenance: 21beb8116a0fb191402160350c4bce4605a0ef95.
 // The Regular payload uses a 32-byte root for each zero window and a 704-byte
 // authenticated record for each nonzero window. Fixed proxy padding adds 409 B
 // over the initial compact corpus. Input 3 retains its explicit 80-byte padding.
 //
-// Committed candidate fixture: 69,177 wire B / 69,947 aggregate challenge-score B.
-// Dense/max-size fixture: 89,337 wire B / 90,107 aggregate challenge-score B.
-// This candidate is 62 score bytes below the prior compact candidate; the fixed
+// Committed candidate fixture: 69,176 wire B / 68,980 script B.
+// Dense/max-size fixture: 89,336 wire B / 89,140 script B.
+// This candidate is one wire byte below the prior compact candidate; the fixed
 // 79,948 entry remains the historical Pareto alternative.
 // Exactly three template identifiers change: 101->16, 117->15, and 104->-1;
 // 102 and 103 remain unchanged. Source coverage is finite (10 fixtures, 220
@@ -63,13 +63,13 @@
 // historical baseline metadata.
 //
 // Candidate source artifact SHA256 (not a Git revision):
-//   7d21a55fbab9146ba62bf97321e2160e047524189041ee7c809311b7affad691
+//   988e576b7615208bdf95b4135c0739f1d2994bd8c1e0d8325ce3b9561681ac9e
 // Candidate pinned source resource export SHA256:
-//   e7ad9eaaab5cbc1cc29427098a6e7184a9efbbcbfeb43515175295c97d820d28
+//   59bd8f03c6e5b7953895357e872003e23c182f16cd1438196e291cef89c5de08
 // Vector SHA256 (current package metadata):
-//   8307910d302406be30f93232798f410d6a513004625b546d6410de1a8637fc54
+//   5ec0f55e14cac7bb78782582669a5284373dfccce67dd503c9703534d26d9c24
 // Length-prefixed locking-set SHA256:
-//   1db77c2b7c6a0c6a39979cf5aaac5838abe766c4785ecbc4080ca395d264649e
+//   93e26c28ab0a7067f2779f6adc7fec2e32599256424eda551fe693e07ce168bb
 import { readFileSync } from 'node:fs';
 
 import { hexToBin } from '@bitauth/libauth';
