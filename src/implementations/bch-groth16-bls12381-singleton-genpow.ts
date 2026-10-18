@@ -10,6 +10,7 @@
 // TJ-a2 outlines ten two-roll sequences and swaps its helper with fp6Mul, emitting 3,333 bytes;
 // TR-a2 outlines nine six/seven-roll sequences and swaps its helper with fp2Scale, emitting 3,328 bytes;
 // TW/UE reach 3,310 bytes; UR adds two further outlines, emitting 3,308 bytes.
+// VO replaces powFp50 with a 37-byte remaining-exponent loop, emitting 3,295 bytes.
 //
 // Full final exponentiation f^E == Fp12.ONE, E = (p^12-1)/r, over the raw
 // four-pair Miller product. vk_x is recomputed on-chain. The unlocking carries
@@ -30,7 +31,7 @@
 // The historical compact baseline was 3,415 bytes; operation-cost qualification is reported
 // separately by the release gate for the selected candidate.
 // The pinned vectors contain four supplied proofs and the official changed-input mutation;
-// UR acceptance/cost gates are reported separately.
+// VO acceptance/cost gates are reported separately.
 // No dense fixture or isolated input-validation fixtures are supplied.
 // Current-BCH compatibility and standardness remain false: this is a singleton
 // byte-footprint result evaluated with the official resource ceilings lifted.
@@ -50,7 +51,7 @@
 // Recovered program source:
 //   singleton/bls12-381/leader-recovered/program.mjs
 // Candidate builder/exporter: compact.mjs / export.mjs in the same directory.
-// Source candidate revision: 326ec4acc00e9589b4ebd7bcb7c25c5640b3d12e
+// Source candidate revision: 71d9ea706d7849851224ba0dfd097190f9c0383c
 // Recovered program origin revision: da85bde1a3918e653e545e3d588f8e3c7a58cd0f
 // This is recovered symbolic Script source. The original CashScript compiler
 // revision, search witness, replay and stackcert pipeline remain unavailable.
@@ -78,6 +79,8 @@
 //   d0dc12d1b7ac3d50c0ba0b07462ec8b63cf9f813d0107b3c0102f5c81f695118
 // UR candidate locking SHA256:
 //   3ef0a31623a2322afed809f40ee4245365b8f5f10c86142853408b27edacd4d1
+// VO candidate locking SHA256:
+//   c5b4cf41459b7ec2f4c84fef0eb8cba5dfffee09ad03da909c9d31378a9d5ece
 // The exporter records the post-export hashes in both vector files.
 import { readFileSync } from 'node:fs';
 import { hexToBin } from '@bitauth/libauth';
@@ -101,7 +104,7 @@ export const bchGroth16Bls12381SingletonGenpow: Implementation = {
   id: 'bch-groth16-bls12381-singleton-genpow',
   // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
   publicInputs: [{ input: 0, push: 1, name: 'n0' }, { input: 0, push: 0, name: 'n1' }],
-  name: 'BCH Groth16 verifier singleton, BLS12-381 genpow (full final-exp, range-checked inputs, 3,308 B, UR recovered symbolic source)',
+  name: 'BCH Groth16 verifier singleton, BLS12-381 genpow (full final-exp, range-checked inputs, 3,295 B, VO recovered symbolic source)',
   proofSystem: 'Groth16',
   field: 'BLS12-381',
   structure: 'single-tx',
@@ -114,13 +117,13 @@ export const bchGroth16Bls12381SingletonGenpow: Implementation = {
     'outlines 41 repeated field multiplication/modulo sequences as mulFp and swaps mulFp with fp6Add. TJ-a2 ' +
     'outlines ten two-roll sequences as stackSequence53=-1 and moves fp6Mul to 19; TR-a2 outlines nine ' +
     'six/seven-roll sequences as stackSequence54=14 and moves fp2Scale to 31; TW-a1..a4 add ' +
-    'four measured static outlines with scoped ID packing; UE adds three further outlines; UR adds two outlines and emits 3,308 bytes at depth 12. The unlocking ' +
+    'four measured static outlines with scoped ID packing; UE adds three further outlines; UR adds two outlines and emits 3,308 bytes at depth 12. VO replaces only powFp with a 37-byte posttest remaining-exponent loop and emits 3,295 bytes. The unlocking ' +
     'contains compressed proof coordinates and two public inputs; no residue witness ' +
     'or Fiat-Shamir PIT is added. Recovered symbolic Script source reproduces the ' +
     'original 3,425-byte leader exactly; the range-closed baseline is 3,432 bytes, SZ-a1 is ' +
     '3,422 bytes, SM-a2 is 3,414 bytes, SV-a2 is 3,412 bytes, TB-a3 is 3,341 bytes, TJ-a2 is 3,333 bytes, TR-a2 is 3,328 bytes, and TW-a1..a4 is 3,315 bytes and UE-a4 is 3,310 bytes; UR is 3,308 bytes ' +
     'with 60 candidate functions (51 in the recovered original; operation cost reported separately). ' +
-    'All four supplied proof witnesses are unchanged; UR acceptance/cost gates are reported separately. The original CashScript ' +
+    'All four supplied proof witnesses are unchanged; VO acceptance/cost gates are reported separately. The original CashScript ' +
     'compiler/search-witness/replay pipeline remains unavailable. Current BCH and ' +
     'standardness limits are exceeded. The original no-G1/G2-subgroup-check and ' +
     'cofactor-equivalent proof posture is preserved; no new malformed-point theorem ' +
