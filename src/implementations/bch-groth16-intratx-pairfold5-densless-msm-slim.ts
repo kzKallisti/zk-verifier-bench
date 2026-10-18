@@ -127,9 +127,9 @@ export const bchGroth16IntratxPairfold5DenslessMsmSlimCacheProfiles =
     `src/bch/groth16-intratx-pairfold5-densless-msm-slim-${profile}-vectors.json`,
   ));
 
-// Opt-in TK-a3 SHARED_PRIME_PROFILE=orbit-retained companion: terminal scalar ID 16 with terminalSequence0 ID 38;
+// Opt-in TV-a2 SHARED_PRIME_PROFILE=orbit-retained companion: shared prime ID 11, displaced shared/terminal ID 37;
 // 33,892 script bytes / 33,952 measured wire bytes / 34,127 score. Archive vectors and 44 attack cases are
-// mechanically re-encoded from the TA source artifact; proof, witness, public-input, and math values remain fixed.
+// mechanically re-encoded from the TK archive; proof, witness, public-input, and math values remain fixed.
 // Default full-pinned score remains 35,109 = 34,874 script +235 overhead; no universal resource bound claimed.
 export const bchGroth16IntratxPairfold5DenslessMsmSlimSharedPrime = slim(
   `${id}-shared-prime`, `${name} (shared-prime orbit-retained companion)`,
