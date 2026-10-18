@@ -40,7 +40,7 @@
 // Candidate source SHA256 52b51db7a59f5c95972ca78cb8e349ff022d8c2bc68fffb995205ef1bd61aa74 (export pin, not a Git revision); upstream base current.
 // Legacy candidate provenance: 21beb8116a0fb191402160350c4bce4605a0ef95.
 // The Regular payload uses a 32-byte root for each zero window and a 704-byte
-// authenticated record for each nonzero window. Fixed proxy padding adds 408 B
+// authenticated record for each nonzero window. Fixed proxy padding adds 407 B
 // over the initial compact corpus. Input 3 retains its explicit 80-byte padding.
 //
 // Committed candidate fixture: 69,175 wire B / 68,979 script B.
