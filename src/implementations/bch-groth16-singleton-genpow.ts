@@ -1,11 +1,12 @@
-// Source-assembled BN254 genpow with shared prime constant, public-input range check,
-// and shared 4/6-pick outline: 4,198 locking bytes.
-// Exact reconstruction baseline: official 4,292-byte artifact 61c451d0...8494c83.
+// Source-assembled BN254 genpow with canonical G1 parity witnesses.
+// 4,232 locking bytes and a 208-byte witness; historical UE used 4,198/272.
 // Owning source: singleton/bn254/genpow-reconstructed/{verifier.asm,build.mjs}.
-// Candidate locking SHA-256: c25ed044...4dfa1c3f0; UE-a4 adds outline_66/67/68 to
-// measured sites after outline_65, demotes outline_13 to raw ID 47, and preserves fixtures.
-// Runtime cost and public-gate qualification are recorded after the fresh benchmark job.
-// No native input-resource or new point-validation claim is made.
+// Candidate locking SHA-256: c38e3036c31b3706df54212b768167ada00728d376b89a0d32971e2491527dd8.
+// A/C y parity is decoded with the shared 254-step Fp exponentiation loop;
+// exact archived y, original x and eight other raw witness pushes are preserved.
+// Decoder root checks replace the two former standalone G1 equations.
+// This changes the witness representation domain; no unrestricted byte-language
+// equivalence, native resource admission or new subgroup theorem is claimed.
 import { readFileSync } from 'node:fs';
 import { hexToBin } from '@bitauth/libauth';
 
@@ -29,21 +30,21 @@ export const bchGroth16SingletonGenpow: Implementation = {
   id: 'bch-groth16-singleton-genpow',
   // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
   publicInputs: [{ input: 0, push: 1, name: 'n0' }, { input: 0, push: 0, name: 'n1' }],
-  name: 'BCH Groth16 verifier singleton, BN254 genpow (shared P, range-checked inputs, source-assembled 4,198 B, UE-a4)',
+  name: 'BCH Groth16 verifier singleton, BN254 genpow (shared P, range-checked inputs, source-assembled 4,232 B, G1 parity)',
   proofSystem: 'Groth16',
   field: 'BN254',
   structure: 'single-tx',
   proofBinding: 'runtime',
   source:
     'Explicit symbolic assembly in singleton/bn254/genpow-reconstructed/verifier.asm. ' +
-    'UE-a4 preserves eleven exact OP_6 OP_ROLL OP_7 OP_ROLL sites as outline_65 (raw ID 13), ' +
-    'adds outline_66/outline_67/outline_68 at measured stack sites, demotes outline_13 to raw ID 47, ' +
-    'and emits 4,198 bytes with sha256 c25ed044bd3c1d7f3b234cee1651a50eccbb615d3a1ba5a304ac5504dfa1c3f0. ' +
-    'A 32-byte prefix requires 0 <= n0, n1 < r (r = P - 6x^2), closing the n + r input alias. ' +
-    'All original verification predicates and proof/public-input fixtures are preserved. ' +
-    'The missing original CashScript/stackcert lineage is not claimed recovered. Runtime ' +
-    'cost and the public VM gates are measured by the fresh UE-a4 benchmark jobs. No native ' +
-    'BCH resource or stronger input-validation claim is made.',
+    'The fixed proof A/C y coordinates use parity pushes, reducing the witness from 272 to 208 bytes. ' +
+    'The verifier reconstructs each canonical y with the shared Fp exponentiation loop, checks the ' +
+    'curve equation and requested parity, and retains the original x and remaining witness data. ' +
+    'The 4,232-byte program has sha256 c38e3036c31b3706df54212b768167ada00728d376b89a0d32971e2491527dd8. ' +
+    'The existing 32-byte scalar range guard, G2 checks and later arithmetic remain exact outside ' +
+    'the independently checked codec boundary and shared-loop extraction. All archived proof and ' +
+    'public-input integers are preserved. The original CashScript/stackcert lineage remains missing. ' +
+    'Actual finite proof/cost gates are recorded separately; relaxed VM limits are required.',
   load: async () => {
     const valid: Step[] = [
       {
