@@ -127,10 +127,11 @@ export const bchGroth16IntratxPairfold5DenslessMsmSlimCacheProfiles =
     `src/bch/groth16-intratx-pairfold5-densless-msm-slim-${profile}-vectors.json`,
   ));
 
-// Opt-in AA-a1 SHARED_PRIME_PROFILE=orbit-retained companion; source b1b6d86026f84d1bb3fa3086610fa5058380ef66.
-// Replaces the eleven-rotation identity tail in sharedSequence28 (raw key 22) with PICK/DROP; retains its PICK/INVOKE prefix, helper 26 to 7 bytes and shared program 2,354 to 2,335.
-// 33,717 script bytes / 33,777 measured wire bytes / 33,952 score; sampled native primary costs 25,076,819 consensus / 25,142,483 standard.
-// Fixed 208-context B100 corpus: 84 accept / 124 reject; minimum accepted margins 89,669 consensus / 66,117 standard.
+// Opt-in AM-a1 SHARED_PRIME_PROFILE=orbit-retained companion; source e3ec332801af2b5801c3adf40f69b80e70d0c6b3.
+// Uses eight representatives per fixed public table, reconstructing point 11 from representative 13; retains point 14 for sampled native budget fit.
+// Three fixed-table sign masks replace 84 limb calls, preserving the 928/832/928-byte table frames and all other pins.
+// 33,442 script bytes / 33,502 measured wire bytes / 33,677 score; sampled native primary costs 24,964,996 consensus / 25,030,148 standard.
+// Fixed 208-context B100 corpus: 84 accept / 124 reject; minimum accepted margins 59,969 consensus / 47,681 standard.
 // Archive vectors and 44 attack cases are mechanically re-encoded; proof, witness, public-input, and math values remain fixed.
 // Default full-pinned score remains 35,109 = 34,874 script +235 overhead; no universal resource bound claimed.
 export const bchGroth16IntratxPairfold5DenslessMsmSlimSharedPrime = slim(
