@@ -128,18 +128,22 @@ export const bchGroth16IntratxPairfold5DenslessMsmSlimCacheProfiles =
     `src/bch/groth16-intratx-pairfold5-densless-msm-slim-${profile}-vectors.json`,
   ));
 
-// Opt-in shared-prime companion; qualified source d598d2e13af85e7209d2bdd5230ffe87830d234e.
-// MSM_PACKED_DIGITS=1 reads unchanged witness bytes via an unsigned integer once per main.
-// Exact retained-orbit helper library; same full pins, split37/cuts27,36,47,55.
-// GENESIS_PAD=11/STAGE_PADS=0,0,0,0; MSM_CONSTANT_HOISTING=all; both profiles default off.
+// Opt-in shared-prime companion; qualified source 3bb1646285df9804cdc742e06cddb4bb390cc967.
+// MSM_PACKED_DIGITS=1 and MSM_GLV_COMPONENTS=1, both defaultoff.
+// Four packed128-bit GLV binary components, high bits shifted64, lambda twice at end.
+// Low component has at most64bits; same scalar equations and original witness bytes.
+// Exact retained-orbit helper library, full pins, split37/cuts27,36,47,55.
+// GENESIS_PAD=10/STAGE_PADS=0,0,0,0; MSM_CONSTANT_HOISTING=all.
 // Compiler efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4 via MSM_CASHC, RESCHEDULE=on.
-// 33,337 script /33,397 wire /33,572 total bytes:17B and44,758 native primary cost fewer than33589.
-// Native primary24,981,799 consensus /25,046,695 standard; maxima25,789,031/25,853,927.
-// Fresh native208contexts:84accept/124reject,420positive inputprices,1040 completewirepairs.
-// Minimum accepted margins13,006 consensus /846 standard; finite42proofs permode only.
+// 33,326 script /33,386 wire /33,561 total bytes:11B less than33572.
+// Native primary24909731 consensus /24974627 standard;
+// maxima25714689/25779585, minimum margins
+// 12247/87 consensus/standard.
+// Fresh native208contexts:84accept/124reject,420positive inputprices,1040wirepairs.
 // All44 old attack cases retained, including exact51byte forged pad; no newredteam claim.
-// Eight old source off/default profiles and explicit shared-prime programs remain exact.
-// Previous33589 and lower-cost33677 profiles remain in history; default35109/six others unchanged.
+// All8legacy source profiles and explicit shared-prime programs remain exact.
+// GLVflagoff/GEN11 reproduces33572 exactly. Default35109/six others unchanged.
+// Historical33589/33629/33677 options retained; finite42positivecontexts permode only.
 export const bchGroth16IntratxPairfold5DenslessMsmSlimSharedPrime = slim(
   `${id}-shared-prime`, `${name} (shared-prime orbit-retained companion)`,
   'src/bch/groth16-intratx-pairfold5-densless-msm-slim-shared-prime-vectors.json',
