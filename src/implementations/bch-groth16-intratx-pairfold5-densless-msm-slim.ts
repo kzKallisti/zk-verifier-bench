@@ -128,15 +128,18 @@ export const bchGroth16IntratxPairfold5DenslessMsmSlimCacheProfiles =
     `src/bch/groth16-intratx-pairfold5-densless-msm-slim-${profile}-vectors.json`,
   ));
 
-// Opt-in SHARED_PRIME_PROFILE=orbit-retained companion; source 1493478e31ccd540416f7210bd9d976f15ace148.
-// The cached field helpers remain exact; the zk-language compiler hoists constants in the MSM mains.
-// Full pins, split37/cuts27,36,47,55, GENESIS_PAD=23/STAGE_PADS=0,0,0,25; MSM_CONSTANT_HOISTING=all.
-// Compiler cashscript efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4, MSM_CASHC=packages/cashc/dist/compiler.js, RESCHEDULE=on.
-// 33,354 script bytes / 33,414 measured wire bytes / 33,589 score; native primary costs 25,026,557 consensus / 25,091,453 standard.
-// Fixed 208-context B100 corpus: 84 accept / 124 reject; minimum accepted margins 12,601 consensus / 441 standard.
-// The previous 33,677-byte profile has lower primary native cost (24,964,996 consensus /25,030,148 standard); retained in history.
-// Archive vectors and 44 attack cases are mechanically re-encoded; proof, witness, public-input, and math values remain fixed.
-// Default full-pinned score remains 35,109 = 34,874 script +235 overhead; all six other adapter profiles remain exact.
+// Opt-in shared-prime companion; qualified source d598d2e13af85e7209d2bdd5230ffe87830d234e.
+// MSM_PACKED_DIGITS=1 reads unchanged witness bytes via an unsigned integer once per main.
+// Exact retained-orbit helper library; same full pins, split37/cuts27,36,47,55.
+// GENESIS_PAD=11/STAGE_PADS=0,0,0,0; MSM_CONSTANT_HOISTING=all; both profiles default off.
+// Compiler efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4 via MSM_CASHC, RESCHEDULE=on.
+// 33,337 script /33,397 wire /33,572 total bytes:17B and44,758 native primary cost fewer than33589.
+// Native primary24,981,799 consensus /25,046,695 standard; maxima25,789,031/25,853,927.
+// Fresh native208contexts:84accept/124reject,420positive inputprices,1040 completewirepairs.
+// Minimum accepted margins13,006 consensus /846 standard; finite42proofs permode only.
+// All44 old attack cases retained, including exact51byte forged pad; no newredteam claim.
+// Eight old source off/default profiles and explicit shared-prime programs remain exact.
+// Previous33589 and lower-cost33677 profiles remain in history; default35109/six others unchanged.
 export const bchGroth16IntratxPairfold5DenslessMsmSlimSharedPrime = slim(
   `${id}-shared-prime`, `${name} (shared-prime orbit-retained companion)`,
   'src/bch/groth16-intratx-pairfold5-densless-msm-slim-shared-prime-vectors.json',
