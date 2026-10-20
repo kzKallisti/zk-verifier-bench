@@ -148,3 +148,18 @@ export const bchGroth16IntratxPairfold5DenslessMsmSlimSharedPrime = slim(
   `${id}-shared-prime`, `${name} (shared-prime orbit-retained companion)`,
   'src/bch/groth16-intratx-pairfold5-densless-msm-slim-shared-prime-vectors.json',
 );
+
+// Optional folded GLV pairs, source 4943e72a9fb7e09f7432057bfa3edb870f24e785; MSM_GLV_PAIRS=1.
+// Two256-bit accumulators each carry two128-bit components with no cross-lane carry.
+// For K=low+2^128*high, K+(lambda-2^128)*high equals low+lambda*high exactly.
+// Same proof/witness values, full pins, split37/cuts27,36,47,55 and GENESIS_PAD10.
+// Other build flags match the33561 shared-prime profile above; all defaultoff.
+// 33,331 script +235 overhead =33,566bytes; 33,391byte spend wire.
+// Primary native24889987consensus/24954883standard; +5B/-19744cost versus33561.
+// Native208contexts84accept/124reject; all84acceptedcontexts cheaper18540..33285.
+// Max native25695631/25760527; minimum sampled margins12227/67.
+// Finite supplied corpus only; all old points and all44retained attacks preserved.
+export const bchGroth16IntratxPairfold5DenslessMsmSlimGlvPairs = slim(
+  id+'-glv-pairs', name+' (folded GLV pairs)',
+  'src/bch/groth16-intratx-pairfold5-densless-msm-slim-glv-pairs-vectors.json',
+);
