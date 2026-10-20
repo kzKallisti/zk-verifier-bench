@@ -9,8 +9,8 @@
 // 132-coefficient quotient.
 //
 // This is the FS-family op-cost oracle on the loosened VM, the counterpart of the
-// unconditional bch-groth16-bls12381-singleton-minop (149.2M op): 44,966 B locking,
-// 45,503,045 worst-case op-cost across the ten-fixture corpus (44,111,577 on the
+// unconditional bch-groth16-bls12381-singleton-minop (149.2M op): 41,434 B locking,
+// 41,273,508 worst-case op-cost across the ten-fixture corpus (39,882,044 on the
 // committed fixture). One identical proof-independent contract serves all ten
 // fixtures; twelve changed-field mutations per fixture are rejected.
 //
@@ -65,7 +65,7 @@ export const bchGroth16Bls12381SingletonFs: Implementation = {
     'authenticated inline against baked window roots with leaf indices bound to the ' +
     'committed public-input bytes; the G2 walk, slope equations, psi subgroup check, and ' +
     'the lambda = p+|x| residue terminal stay exact. One identical proof-independent ' +
-    'contract serves the full ten-fixture corpus. 45.50M worst-case op-cost vs the ' +
+    'contract serves the full ten-fixture corpus. 41.27M worst-case op-cost vs the ' +
     'unconditional minop oracle’s 149.2M. Still over the 10,000 B / per-input op limits.',
   load: async () => {
     const committed = v.proofs.find((proof) => proof.committed);
