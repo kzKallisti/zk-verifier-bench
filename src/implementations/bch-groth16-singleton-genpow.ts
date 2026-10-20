@@ -1,13 +1,14 @@
-// Source-assembled BN254 genpow with shared prime constant and a public-input range check
-// (0 <= n0, n1 < r): 4,260 locking bytes (4,228 + the 32-byte check).
-// Exact reconstruction baseline: official 4,292-byte artifact 61c451d0...8494c83.
+// Source-assembled BN254 genpow with canonical G1 parity witnesses.
+// 4,183 locking bytes and a 208-byte witness; historical UE used 4,198/272.
 // Owning source: singleton/bn254/genpow-reconstructed/{verifier.asm,build.mjs}.
-// Candidate hash a7686356...57cd0; structural full-graph equivalence preserves
-// the original arithmetic, proof/public-input checks and final exponentiation.
-// Original CashScript/stackcert pipeline is not recovered by this reconstruction.
-// Committed operation cost rises 298,949,517 to 5,505,565,336. This remains a
-// relaxed-VM singleton, with no native input-resource or new point-validation claim.
-// The original load function and gates below are unchanged, including its labels.
+// Assembly SHA-256: 1a2437914b36d1128c5476a9361d52836c80e86ea4ac1c779480f3f6cc000e73.
+// Earlier source helper reductions and the guarded outline49 rotation cycle are now exported.
+// Candidate locking SHA-256: 332fdd4dbbd5468afc997a49571e15ed88d04c6dda6ccff5863e1dfb0568e3dd.
+// A/C y parity is decoded with the shared exponent-driven Fp routine;
+// exact archived y, original x and eight other raw witness pushes are preserved.
+// Decoder root checks replace the two former standalone G1 equations.
+// This changes the witness representation domain; no unrestricted byte-language
+// equivalence, native resource admission or new subgroup theorem is claimed.
 import { readFileSync } from 'node:fs';
 import { hexToBin } from '@bitauth/libauth';
 
@@ -31,20 +32,22 @@ export const bchGroth16SingletonGenpow: Implementation = {
   id: 'bch-groth16-singleton-genpow',
   // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
   publicInputs: [{ input: 0, push: 1, name: 'n0' }, { input: 0, push: 0, name: 'n1' }],
-  name: 'BCH Groth16 verifier singleton, BN254 genpow (shared P, range-checked inputs, source-assembled 4,260 B)',
+  name: 'BCH Groth16 verifier singleton, BN254 genpow (shared P, range-checked inputs, source-assembled 4,183 B, G1 parity)',
   proofSystem: 'Groth16',
   field: 'BN254',
   structure: 'single-tx',
   proofBinding: 'runtime',
   source:
     'Explicit symbolic assembly in singleton/bn254/genpow-reconstructed/verifier.asm. ' +
-    'Reproduces the official 4,292-byte genpow leader exactly before a proved P-sharing ' +
-    'rewrite to 4,228 bytes (sha256 a7686356eba90eb594d2a05189e645111506e67fc3c52007144081761d357cd0). ' +
-    'A 32-byte prefix requires 0 <= n0, n1 < r (r = P - 6x^2), closing the n + r input alias ' +
-    '(4,260 B, sha256 6d884ee69b1ec0f6b20e749d64422a4f0c779f756a1b01bb1b8edb9b40836e80). ' +
-    'All original verification predicates and public fixtures are preserved. The missing ' +
-    'original CashScript/stackcert lineage is not claimed recovered. Committed relaxed-VM ' +
-    'cost 5,505,565,336, +298,949,517; no native BCH resource or stronger input-validation claim.',
+    'The fixed proof A/C y coordinates use parity pushes, reducing the witness from 272 to 208 bytes. ' +
+    'The verifier reconstructs each canonical y with a shared posttest remaining-exponent loop, checks the ' +
+    'curve equation and requested parity, and retains the original x and remaining witness data. ' +
+    'The 4,183-byte program has sha256 332fdd4dbbd5468afc997a49571e15ed88d04c6dda6ccff5863e1dfb0568e3dd. ' +
+    'The 72-function program retains its 32-byte scalar guard, G2 checks and source-owned helpers. ' +
+    'Three rotations after successful depth-nine disposal guards are omitted because they form an identity. The power loop ' +
+    'shifts its remaining exponent before testing for zero; all archived proof and ' +
+    'public-input integers are preserved. The original CashScript/stackcert lineage remains missing. ' +
+    'Actual finite proof/cost gates are recorded separately; relaxed VM limits are required.',
   load: async () => {
     const valid: Step[] = [
       {
