@@ -1,19 +1,23 @@
 // Current-BCH BLS12-381 FS-PIT,10 P2SH32 inputs, all21 logical stages.
-// Qualified source:9cc22fdab9fa2de44b8ed6712d853d93ad96f2b3; owner SHA256:dab7cef2f49725164affdd7244e804ee2d5c1d14a017f2952754cd65cbd21ac4.
+// Qualified source:d2bf864f84aaf88939a0f5cf3476806fe93c627e; owner SHA256:6a2ff54499fc5d5c070e4fdb5e22c7f19d926c74ea544414f1351354a31c5745.
 // Compiler efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4; flags/funding in vector.
-// 63283 script B +450 overhead B =63733 challenge B.
-// Same535/774/257 bodies, all original proof/witness/public/root/quotient/
-// auxiliary/state/challenge values; Regular initializer owns the arithmetic.
-// Native primary:38672051/38848563; maxima:50319775/50674847;
-// minimum margins:6270/254 consensus/standard.
+// 63228 script B +450 overhead B =63678 challenge B.
+// RPA_BUNDLE_REGULAR_MAIN=1: cached initializer794->2919B includes exact2120Bmain16.
+// Cacheid15 is unused by all existing nested literal definitions/calls; newguard pins it.
+// Proxies use one initializer window; outermain definition and secondwindow removed.
+// Raw535/774/257 bodies and all proof/witness/public/root/quotient/aux/state/challenge values fixed.
+// Source51fundtopups togroups5/8/11/16 leave55Bnet saving from106rawB.
+// Native primary:38654180/38830692; maxima:50301904/50656976;
+// minimum margins:6117/101 consensus/standard.
 // Ten normal exports reject3440 owning/whole controls. Actual native:
-// 1008 contexts,200 reconciled input prices; failed whole prices null.
-// All150 old11 invalid transactions/299 direct prior-origin records and172
-// current source cases retained as160 byte-distinct transactions;7 hash flips relocated.
-// Nested origin indices retain historical layouts; current source targets use10.
-// FS-PIT/exactG2/pairing-equivalentG1 unchanged. Finite supplied-corpus evidence;
-// no universal arbitrary-witness bound, new red-team, uniqueG1 or live claim.
-// All previous entries unchanged. Vector SHA256:090fdaa922883eece7f2aa44d8c05081178fc7432f93e8df73c31a2ea8736f56.
+// 1028 contexts,200 reconciled input prices; failed whole prices null.
+// All160 old10 invalids/322 direct prior-origin records and172
+// current source cases retained as160 distinct transactions;8 hash flips.
+// Historical origins nested intact. Existing adapter body exact; other entries unchanged.
+// Old10/11 and eight other normal reports reproduce exactly with newflagoff.
+// FS-PIT/exactG2/pairing-equivalentG1 grades unchanged. Finite corpus only;
+// no universal resource/soundness, newredteam, uniqueG1 or live admission claim.
+// Vector SHA256:7ededb656dda99ff4f70f5a00e9ba479d1607c4c49b7dc4353e9d7baa5407fa1.
 import { readFileSync } from 'node:fs';
 
 import { hexToBin } from '@bitauth/libauth';
