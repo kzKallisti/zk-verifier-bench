@@ -7,26 +7,28 @@
 // B receives the exact G2 subgroup check. A/C are on-curve and pairing-equivalent;
 // unique G1 encodings and the separate harness input-validation grade are not claimed.
 // The unchanged FS-PIT soundness bound is less than161/2^256 in the SHA-256 ROM.
-// Qualified source: groth16_cashscript eeafaded5963f62553b94200537039c11b047110.
-// Owner SHA256: f66f96fe50299cb5f39fd752ba6301e530f60ca4679275abf66706e4fe970363.
+// Qualified source: groth16_cashscript 1003775dc379e0232ca7302d3f0964066b88e8ce.
+// Owner SHA256: 3fac418a06ffc8a009d01ba400a76e0593d2d3b15fe4b2f185248cc62ccf88d6.
 // Compiler: zk-language efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4.
-// Compact minus-one arithmetic/profile flags remain; add RPA_SCHEDULE_COORDINATOR=1.
-// RPA_FUSE_FINAL_PAIR=1; final stages share the installed535-byte arithmetic.
-// Coordinator size scheduling preserves private function names/input ABIs and uses
-// inverse-checked ID normalization. Same fixed proof/root/quotient/state/challenge
-// values, same workers, same funding prefixes, and all prior invalid mutations.
-// Primary:64680 script B +923 overhead B =65603 challenge B.
-// Compared with prior same-count point:65802 B ->65603 B; -199 B and
-// native primary standard cost -95,422. Maximum fixture:85763 challenge B.
-// Native primary:38793936 consensus /38975568 standard;
-// maximum:52719194 /53079386; minimum margins:3627 /1323.
-// All10 fresh source exports pass (340 producer controls). This profile
-// passes20 positive and132 negative actual native transactions;420 input costs
-// reconcile. Full comparison including both old profiles:320 native contexts,
-// 1,720 cost identities. Source defaults and historical artifacts remain available.
+// Compact minus-one flags and coordinator scheduling remain; add RPA_SCHEDULE_PIC_AUTH=1.
+// Set RPA_PIC_BLOCK2_DENSITY_PADDING=0; the former145-byte prefix is unnecessary.
+// RPA_FUSE_FINAL_PAIR=1; final stages share installed535-byte arithmetic.
+// The same PIC helper source/arguments and public commitments are retained. The
+// new compiler size scheduler emits no function definitions or invocations.
+// All archived proof/root/quotient/state/challenge values and invalid controls
+// remain fixed. Adapter executable code and registry/scorer behavior unchanged.
+// Primary:64403 script B +923 overhead B =65326 challenge B.
+// Prior same-count point:65603 B ->65326 B; -277 B.
+// Native primary:37904829 consensus /38085821 standard;
+// maximum:48926249 /49285801; minimum margins:4054 /1878.
+// Maximum fixture:85486 challenge B.
+// All10 fresh source exports pass (340 producer controls). This
+// profile passes20 positive and132 negative native transactions;
+// 420 positive input costs reconcile. Full old/new comparison:320
+// native contexts and1,720 cost identities. Source defaults remain unchanged.
 // Libauth and native prices are separate. Finite supplied-corpus evidence only;
 // no universal resource bound or live relay/admission claim.
-// Vector SHA256: 1836cc73b352aae71c2ff760da4bdf84678033c6c311439e2b58054f18218cee.
+// Vector SHA256: 6318ec085b58412c4d5751c9240a23eaa2961733af0ee945e346a2dd4d30ca23.
 import { readFileSync } from 'node:fs';
 
 import { hexToBin } from '@bitauth/libauth';

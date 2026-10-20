@@ -35,26 +35,28 @@
 // identity has degree at most 137. In the SHA-256 random-oracle model, the
 // conservative union bound is 160/(2^256-1), less than 161/2^256.
 //
-// Qualified source: groth16_cashscript eeafaded5963f62553b94200537039c11b047110.
-// Owner SHA256: f66f96fe50299cb5f39fd752ba6301e530f60ca4679275abf66706e4fe970363.
+// Qualified source: groth16_cashscript 1003775dc379e0232ca7302d3f0964066b88e8ce.
+// Owner SHA256: 3fac418a06ffc8a009d01ba400a76e0593d2d3b15fe4b2f185248cc62ccf88d6.
 // Compiler: zk-language efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4.
-// Compact minus-one arithmetic/profile flags remain; add RPA_SCHEDULE_COORDINATOR=1.
-// RPA_FUSE_FINAL_PAIR is off; this is the lower-cost22-input point.
-// Coordinator size scheduling preserves private function names/input ABIs and uses
-// inverse-checked ID normalization. Same fixed proof/root/quotient/state/challenge
-// values, same workers, same funding prefixes, and all prior invalid mutations.
-// Primary:65007 script B +966 overhead B =65973 challenge B.
-// Compared with prior same-count point:66172 B ->65973 B; -199 B and
-// native primary standard cost -95,422. Maximum fixture:86133 challenge B.
-// Native primary:38729470 consensus /38911870 standard;
-// maximum:52646664 /53007624; minimum margins:3677 /1373.
-// All10 fresh source exports pass (540 producer controls). This profile
-// passes20 positive and108 negative actual native transactions;440 input costs
-// reconcile. Full comparison including both old profiles:320 native contexts,
-// 1,720 cost identities. Source defaults and historical artifacts remain available.
+// Compact minus-one flags and coordinator scheduling remain; add RPA_SCHEDULE_PIC_AUTH=1.
+// Set RPA_PIC_BLOCK2_DENSITY_PADDING=0; the former145-byte prefix is unnecessary.
+// RPA_FUSE_FINAL_PAIR is off; lower-cost22-input point.
+// The same PIC helper source/arguments and public commitments are retained. The
+// new compiler size scheduler emits no function definitions or invocations.
+// All archived proof/root/quotient/state/challenge values and invalid controls
+// remain fixed. Adapter executable code and registry/scorer behavior unchanged.
+// Primary:64730 script B +966 overhead B =65696 challenge B.
+// Prior same-count point:65973 B ->65696 B; -277 B.
+// Native primary:37840363 consensus /38022123 standard;
+// maximum:48853719 /49214039; minimum margins:4024 /1848.
+// Maximum fixture:85856 challenge B.
+// All10 fresh source exports pass (540 producer controls). This
+// profile passes20 positive and108 negative native transactions;
+// 440 positive input costs reconcile. Full old/new comparison:320
+// native contexts and1,720 cost identities. Source defaults remain unchanged.
 // Libauth and native prices are separate. Finite supplied-corpus evidence only;
 // no universal resource bound or live relay/admission claim.
-// Vector SHA256: 9ad4d69ffecf636830a8125d7e4d3cbe1eeb6d9e950232816453b2903b34bb53.
+// Vector SHA256: 061c17d9839ec255e0dc6e9187dc9469da263e4f5a7e10a2cf9de94adc7d0de0.
 import { readFileSync } from 'node:fs';
 
 import { hexToBin } from '@bitauth/libauth';
