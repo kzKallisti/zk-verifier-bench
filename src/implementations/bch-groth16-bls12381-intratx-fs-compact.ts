@@ -35,31 +35,26 @@
 // identity has degree at most 137. In the SHA-256 random-oracle model, the
 // conservative union bound is 160/(2^256-1), less than 161/2^256.
 //
-// Qualified source: groth16_cashscript 6b014791e0407fcbeeb0c6ab208a358dbb47cb0c.
-// Compiler: cashscript zk-language efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4.
-// The source uses signed line numerators, three-multiply Fp2 products, a 535-byte
-// arithmetic library, rescheduled mains and shared-prime calls. Terminal imports
-// that library through wrapper14 before invoking its existing minus-one leaf.
-// RPA_TEMPLATE_COMMON_PRIME_POOL=on and RPA_TEMPLATE_TERMINAL_PRIME_POOL=on;
-// RPA_COMPACT_ARITHMETIC_PRIME_KEY=-1, RESCHEDULE=on, RPA_TEMPLATE_CASHC=dist/compiler.js.
-// All earlier qsplit-tail22/compact/PIC settings remain; exact padding map:
-// {3:334,5:320,6:276,7:283,8:266,9:272,10:273,11:281,12:276,13:283,14:285,16:305,17:279,18:281,19:289}.
-// PIC block2 retains145 bytes; other coordinator/factor/tail/terminal pads stay0.
-// Committed: 65,402 wire B /65,206 script B /66,172 challenge B.
-// Maximum supplied fixture: 85,562 wire B /86,332 challenge B.
-// The previous69,192-byte artifact remains available in branch history.
-// One locking set accepts all10 supplied source fixtures. The source rejects540
-// controls in each mode; native replay covers64 contexts (20 accepted44 rejected)
-// and1,408 independently checked input pairs, with unchanged rejection paths.
-// B100 native primary costs:38,824,508 consensus /39,007,292 standard;
-// maximum:52,761,862 /53,123,206; minimum input margins:2,682 /378.
-// Native and source/Libauth absolute prices are reported separately.
-// These are finite supplied-corpus results; subgroup/cofactor posture and the
-// universal resource/admission scope above remain unchanged.
-// Source owner SHA256: e5a05b9ffbff445369eb264c5d2ef575faf747ab5d380498cd4c5cfcad873fdd
-// Source resource export SHA256: af3d93e6de4e46d6961f54bb87b32bb7ea7f96ebad710fa64a8c7127258f9b21
-// Vector SHA256: c2661e2d5d123207f00aa02c6e5cde4d12af0016d09e23bf1fc65e79df97089e
-// Length-prefixed locking-set SHA256: 65de70bea10263fceea5fe91731222c0573d0eee13d6119ab605bc4632529fac
+// Qualified source: groth16_cashscript eeafaded5963f62553b94200537039c11b047110.
+// Owner SHA256: f66f96fe50299cb5f39fd752ba6301e530f60ca4679275abf66706e4fe970363.
+// Compiler: zk-language efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4.
+// Compact minus-one arithmetic/profile flags remain; add RPA_SCHEDULE_COORDINATOR=1.
+// RPA_FUSE_FINAL_PAIR is off; this is the lower-cost22-input point.
+// Coordinator size scheduling preserves private function names/input ABIs and uses
+// inverse-checked ID normalization. Same fixed proof/root/quotient/state/challenge
+// values, same workers, same funding prefixes, and all prior invalid mutations.
+// Primary:65007 script B +966 overhead B =65973 challenge B.
+// Compared with prior same-count point:66172 B ->65973 B; -199 B and
+// native primary standard cost -95,422. Maximum fixture:86133 challenge B.
+// Native primary:38729470 consensus /38911870 standard;
+// maximum:52646664 /53007624; minimum margins:3677 /1373.
+// All10 fresh source exports pass (540 producer controls). This profile
+// passes20 positive and108 negative actual native transactions;440 input costs
+// reconcile. Full comparison including both old profiles:320 native contexts,
+// 1,720 cost identities. Source defaults and historical artifacts remain available.
+// Libauth and native prices are separate. Finite supplied-corpus evidence only;
+// no universal resource bound or live relay/admission claim.
+// Vector SHA256: 9ad4d69ffecf636830a8125d7e4d3cbe1eeb6d9e950232816453b2903b34bb53.
 import { readFileSync } from 'node:fs';
 
 import { hexToBin } from '@bitauth/libauth';
