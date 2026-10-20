@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-17T11:39:48.619Z",
+  "generatedAt": "2026-10-20T15:19:23.148Z",
   "statement": {
     "proofSystem": "Groth16",
     "curve": "BN254",
@@ -29,7 +29,7 @@
       "id": "bch-groth16-bls12381-singleton-genpow",
       "label": "BCH-native full verifier",
       "curve": "BLS12-381",
-      "bytes": 3722,
+      "bytes": 3585,
       "bchCompatible": false
     },
     "current": {
@@ -872,527 +872,25 @@
       "steps": 5,
       "transactions": 1,
       "fits": true
+    },
+    {
+      "t": "2026-10-20T15:19:23.148Z",
+      "score": 3585,
+      "id": "bch-groth16-bls12381-singleton-genpow",
+      "steps": 1,
+      "transactions": 1,
+      "fits": false
+    },
+    {
+      "t": "2026-10-20T15:19:23.148Z",
+      "score": 4476,
+      "id": "bch-groth16-singleton-genpow",
+      "steps": 1,
+      "transactions": 1,
+      "fits": false
     }
   ],
   "entries": [
-    {
-      "id": "bch-groth16-intratx",
-      "name": "BCH Groth16 intra-tx linked (whole verifier in one transaction, BCH-compatible)",
-      "category": "full",
-      "official": false,
-      "solver": null,
-      "curve": "BN254",
-      "structure": "single-tx",
-      "proofSystem": "Groth16",
-      "vmTarget": "bch-2026",
-      "correctness": {
-        "verdict": "pass",
-        "validAccepted": true,
-        "invalid": {
-          "tested": 7,
-          "rejected": 7
-        },
-        "worstCaseAccepted": true,
-        "crossStageBinding": {
-          "applicable": true,
-          "bound": true,
-          "seamsTested": 30,
-          "unboundSeams": 0,
-          "detail": "every stage bound to one proof: 30 seams staple-tested with a 2nd distinct proof, all rejected"
-        },
-        "redTeam": null,
-        "publicInputs": {
-          "tested": 9,
-          "accepted": 0
-        },
-        "layoutReview": {
-          "padsTested": 22,
-          "freeLength": 22,
-          "dependencies": []
-        },
-        "failures": []
-      },
-      "score": 234022,
-      "size": {
-        "scriptBytes": 232669,
-        "txOverheadBytes": 1353,
-        "transactions": 1,
-        "total": 234022
-      },
-      "padding": {
-        "bytes": 70106,
-        "fraction": 0.30131216449118703
-      },
-      "benchmarks": {
-        "smallProof": {
-          "opCost": 183037472,
-          "steps": 31,
-          "heaviestStepOpCost": 7829062,
-          "inputsForHeaviestStep": 1
-        },
-        "worstCase": {
-          "accepted": true,
-          "opCost": 218282434,
-          "steps": 31,
-          "heaviestStepOpCost": 7828943,
-          "inputsForHeaviestStep": 1
-        }
-      },
-      "opCostBudget": 186284000,
-      "bsvSingleton": false,
-      "bsvOpReturn": false,
-      "bch": {
-        "compatible": true,
-        "blockers": [],
-        "detail": "every step fits BCH per-tx limits",
-        "standard": {
-          "fits": false,
-          "detail": "tx 232,937 B > 100,000 B standard size"
-        }
-      },
-      "generality": {
-        "binding": "runtime",
-        "runtimeGeneral": true,
-        "proofsTested": 2,
-        "proofsPassed": 2,
-        "detail": "runtime-general: one fixed locking verifies 2/2 distinct proofs (proof in the unlocking witness)"
-      },
-      "tokenSafety": null,
-      "inputValidation": {
-        "enforced": true,
-        "tested": 4,
-        "rejected": 4,
-        "detail": "on-curve + G2-subgroup checks enforced: 4/4 adversarial points (off-curve / off-subgroup) rejected at an isolated check"
-      },
-      "packaging": {
-        "secure": true,
-        "type": "p2sh32"
-      },
-      "source": "BCH-native CashScript: the full BN254 Groth16 verifier (validate canonical-coordinate, on-curve, subgroup proof inputs -> vk_x -> prepared batched Miller, with fixed e(alpha,beta) replaced by one multiply with its precomputed raw Miller value -> final exponentiation -> assert product==1) laid out as the INPUTS of ONE transaction. Each input carries its incoming state as a raw byte blob and binds the chain by forward-checking its successor via tx.inputs[idx+1].unlockingBytecode introspection (OP_INPUTBYTECODE) — no NFT-commitment hand-off, no hashing, no 128-byte state limit, arbitrary intermediate size. Every input fits one BCH input budget (op-cost <=8,032,800, scripts <=10,000 B); the whole verifier is one non-standard (<1 MB) transaction. Same chunk math as bch-groth16-chunked; one fixed set of input scripts verifies any proof for the VK (proof in the witness). Single-transaction counterpart of the multi-tx bch-groth16-chunked and the non-deployable bch-groth16-singleton. Deployed as P2SH32 so each chunk's redeem rides in the scriptSig, where it counts toward the op-cost budget and offsets the pad (~30% fewer on-chain bytes than a bare-script deployment; the same lever applies to the multi-tx covenant chunks)."
-    },
-    {
-      "id": "bch-groth16-intratx-pairfold5",
-      "name": "BCH Groth16 intra-tx PairFold-5 peval dens-rich (score 44968)",
-      "category": "full",
-      "official": false,
-      "solver": null,
-      "curve": "BN254",
-      "structure": "single-tx",
-      "proofSystem": "Groth16",
-      "vmTarget": "bch-2026",
-      "correctness": {
-        "verdict": "fail",
-        "validAccepted": true,
-        "invalid": {
-          "tested": 5,
-          "rejected": 5
-        },
-        "worstCaseAccepted": true,
-        "crossStageBinding": {
-          "applicable": true,
-          "bound": true,
-          "seamsTested": 4,
-          "unboundSeams": 0,
-          "detail": "every stage bound to one proof: 4 seams staple-tested with a 2nd distinct proof, all rejected"
-        },
-        "redTeam": {
-          "stale": false,
-          "tested": 3,
-          "accepted": 3,
-          "kinds": [
-            "forged-public-inputs"
-          ],
-          "firstAccepted": "forged n0 = true n0 + 2 (true vk_x kept)"
-        },
-        "publicInputs": {
-          "tested": 9,
-          "accepted": 0
-        },
-        "layoutReview": {
-          "padsTested": 5,
-          "freeLength": 1,
-          "dependencies": []
-        },
-        "failures": [
-          "maintainer red-team attack accepted (3/3; first: \"forged n0 = true n0 + 2 (true vk_x kept)\")"
-        ]
-      },
-      "score": 44968,
-      "size": {
-        "scriptBytes": 44733,
-        "txOverheadBytes": 235,
-        "transactions": 1,
-        "total": 44968
-      },
-      "padding": {
-        "bytes": 0,
-        "fraction": 0
-      },
-      "benchmarks": {
-        "smallProof": {
-          "opCost": 33945517,
-          "steps": 5,
-          "heaviestStepOpCost": 7635697,
-          "inputsForHeaviestStep": 1
-        },
-        "worstCase": {
-          "accepted": true,
-          "opCost": 33924419,
-          "steps": 5,
-          "heaviestStepOpCost": 7635934,
-          "inputsForHeaviestStep": 1
-        }
-      },
-      "opCostBudget": 35810400,
-      "bsvSingleton": false,
-      "bsvOpReturn": false,
-      "bch": {
-        "compatible": true,
-        "blockers": [],
-        "detail": "every step fits BCH per-tx limits",
-        "standard": {
-          "fits": true,
-          "detail": "relayable under standard mempool policy"
-        }
-      },
-      "generality": {
-        "binding": "runtime",
-        "runtimeGeneral": true,
-        "proofsTested": 4,
-        "proofsPassed": 4,
-        "detail": "runtime-general: one fixed locking verifies 4/4 distinct proofs (proof in the unlocking witness)"
-      },
-      "tokenSafety": null,
-      "inputValidation": {
-        "enforced": true,
-        "tested": 4,
-        "rejected": 4,
-        "detail": "on-curve + G2-subgroup checks enforced: 4/4 adversarial points (off-curve / off-subgroup) rejected at an isolated check"
-      },
-      "packaging": {
-        "secure": true,
-        "type": "p2sh32"
-      },
-      "source": "BCH-native CashScript: five P2SH32 inputs in one intra-transaction-linked BN254 Groth16 verifier (PairFold-5 peval dens-rich). Fixed-G2 xonly tables, peval pin, dens floors 9600/9400/9500, densDrop 1200, densFuel DROP dens-positive path, stock public-bench value=1000 / sequence=0 envelope. Score 44968 (scriptBytes 44733 + tx overhead 235); fitsBchStandardness expected true. Smaller than PairFold-7 frontier and the local PairFold-6 peval RC while dropping to five inputs."
-    },
-    {
-      "id": "bch-groth16-intratx-pairfold5-densless-msm",
-      "name": "BCH Groth16 intra-tx PairFold-5 densless with sound vk_x MSM",
-      "category": "full",
-      "official": false,
-      "solver": null,
-      "curve": "BN254",
-      "structure": "single-tx",
-      "proofSystem": "Groth16",
-      "vmTarget": "bch-2026",
-      "correctness": {
-        "verdict": "pass",
-        "validAccepted": true,
-        "invalid": {
-          "tested": 5,
-          "rejected": 5
-        },
-        "worstCaseAccepted": true,
-        "crossStageBinding": {
-          "applicable": true,
-          "bound": true,
-          "seamsTested": 4,
-          "unboundSeams": 0,
-          "detail": "every stage bound to one proof: 4 seams staple-tested with a 2nd distinct proof, all rejected"
-        },
-        "redTeam": {
-          "stale": false,
-          "tested": 26,
-          "accepted": 0,
-          "kinds": [
-            "forged-public-inputs",
-            "forged-public-inputs-adaptive",
-            "msm-state-tamper",
-            "proof-point-validation"
-          ]
-        },
-        "publicInputs": {
-          "tested": 9,
-          "accepted": 0
-        },
-        "layoutReview": {
-          "padsTested": 2,
-          "freeLength": 1,
-          "dependencies": []
-        },
-        "failures": []
-      },
-      "score": 35861,
-      "size": {
-        "scriptBytes": 35626,
-        "txOverheadBytes": 235,
-        "transactions": 1,
-        "total": 35861
-      },
-      "padding": {
-        "bytes": 0,
-        "fraction": 0
-      },
-      "benchmarks": {
-        "smallProof": {
-          "opCost": 24347199,
-          "steps": 5,
-          "heaviestStepOpCost": 5884720,
-          "inputsForHeaviestStep": 1
-        },
-        "worstCase": {
-          "accepted": true,
-          "opCost": 23038251,
-          "steps": 5,
-          "heaviestStepOpCost": 5783870,
-          "inputsForHeaviestStep": 1
-        }
-      },
-      "opCostBudget": 28524800,
-      "bsvSingleton": false,
-      "bsvOpReturn": false,
-      "bch": {
-        "compatible": true,
-        "blockers": [],
-        "detail": "every step fits BCH per-tx limits",
-        "standard": {
-          "fits": true,
-          "detail": "relayable under standard mempool policy"
-        }
-      },
-      "generality": {
-        "binding": "runtime",
-        "runtimeGeneral": true,
-        "proofsTested": 4,
-        "proofsPassed": 4,
-        "detail": "runtime-general: one fixed locking verifies 4/4 distinct proofs (proof in the unlocking witness)"
-      },
-      "tokenSafety": null,
-      "inputValidation": {
-        "enforced": false,
-        "tested": 0,
-        "rejected": 0,
-        "detail": "NOT demonstrated — no isolated adversarial-point run that rejects a bad point at a validation check (a naive point-swap in a single-tx verifier is caught by the pairing equation, not by validation)"
-      },
-      "packaging": {
-        "secure": true,
-        "type": "p2sh32"
-      },
-      "source": "PairFold-5 densless (public-only reconstruction, chunked/bn254/densless-recovered) plus a GLV Straus MSM that recomputes vk_x from the claimed public inputs (chunked/bn254/densless-msm), carried by the existing inputs as a chain of pinned states. Five P2SH32 inputs, one standard transaction; the terminal pins input count and all worker lockings."
-    },
-    {
-      "id": "bch-groth16-intratx-pairfold5-densless-msm-slim",
-      "name": "BCH Groth16 intra-tx PairFold-5 densless with sound vk_x MSM (slim MSM state)",
-      "category": "full",
-      "official": false,
-      "solver": null,
-      "curve": "BN254",
-      "structure": "single-tx",
-      "proofSystem": "Groth16",
-      "vmTarget": "bch-2026",
-      "correctness": {
-        "verdict": "pass",
-        "validAccepted": true,
-        "invalid": {
-          "tested": 5,
-          "rejected": 5
-        },
-        "worstCaseAccepted": true,
-        "crossStageBinding": {
-          "applicable": true,
-          "bound": true,
-          "seamsTested": 4,
-          "unboundSeams": 0,
-          "detail": "every stage bound to one proof: 4 seams staple-tested with a 2nd distinct proof, all rejected"
-        },
-        "redTeam": {
-          "stale": false,
-          "tested": 44,
-          "accepted": 0,
-          "kinds": [
-            "forged-public-inputs",
-            "forged-public-inputs-adaptive",
-            "msm-state-tamper",
-            "proof-point-validation",
-            "public-input-encoding",
-            "msm-state-layout",
-            "witness-malleability"
-          ]
-        },
-        "publicInputs": {
-          "tested": 9,
-          "accepted": 0
-        },
-        "layoutReview": {
-          "padsTested": 2,
-          "freeLength": 1,
-          "dependencies": []
-        },
-        "failures": []
-      },
-      "score": 35143,
-      "size": {
-        "scriptBytes": 34908,
-        "txOverheadBytes": 235,
-        "transactions": 1,
-        "total": 35143
-      },
-      "padding": {
-        "bytes": 0,
-        "fraction": 0
-      },
-      "benchmarks": {
-        "smallProof": {
-          "opCost": 24932396,
-          "steps": 5,
-          "heaviestStepOpCost": 6221537,
-          "inputsForHeaviestStep": 1
-        },
-        "worstCase": {
-          "accepted": true,
-          "opCost": 23584076,
-          "steps": 5,
-          "heaviestStepOpCost": 6117626,
-          "inputsForHeaviestStep": 1
-        }
-      },
-      "opCostBudget": 27950400,
-      "bsvSingleton": false,
-      "bsvOpReturn": false,
-      "bch": {
-        "compatible": true,
-        "blockers": [],
-        "detail": "every step fits BCH per-tx limits",
-        "standard": {
-          "fits": true,
-          "detail": "relayable under standard mempool policy"
-        }
-      },
-      "generality": {
-        "binding": "runtime",
-        "runtimeGeneral": true,
-        "proofsTested": 4,
-        "proofsPassed": 4,
-        "detail": "runtime-general: one fixed locking verifies 4/4 distinct proofs (proof in the unlocking witness)"
-      },
-      "tokenSafety": null,
-      "inputValidation": {
-        "enforced": false,
-        "tested": 0,
-        "rejected": 0,
-        "detail": "NOT demonstrated — no isolated adversarial-point run that rejects a bad point at a validation check (a naive point-swap in a single-tx verifier is caught by the pairing equation, not by validation)"
-      },
-      "packaging": {
-        "secure": true,
-        "type": "p2sh32"
-      },
-      "source": "PairFold-5 densless (chunked/bn254/densless-recovered) with the GLV Straus vk_x MSM in a slim state layout (chunked/bn254/densless-msm-slim): claimed inputs are terminal pushes, witness bytes live only in the terminal state, executors carry X, Y, Z. Five P2SH32 inputs, one standard transaction; the terminal pins input count and all worker lockings."
-    },
-    {
-      "id": "bch-groth16-intratx-pairfold5-densless",
-      "name": "BCH Groth16 intra-tx PairFold-5 densless natural0 (score 33179)",
-      "category": "full",
-      "official": false,
-      "solver": null,
-      "curve": "BN254",
-      "structure": "single-tx",
-      "proofSystem": "Groth16",
-      "vmTarget": "bch-2026",
-      "correctness": {
-        "verdict": "fail",
-        "validAccepted": true,
-        "invalid": {
-          "tested": 5,
-          "rejected": 5
-        },
-        "worstCaseAccepted": true,
-        "crossStageBinding": {
-          "applicable": true,
-          "bound": true,
-          "seamsTested": 4,
-          "unboundSeams": 0,
-          "detail": "every stage bound to one proof: 4 seams staple-tested with a 2nd distinct proof, all rejected"
-        },
-        "redTeam": {
-          "stale": false,
-          "tested": 3,
-          "accepted": 3,
-          "kinds": [
-            "forged-public-inputs"
-          ],
-          "firstAccepted": "forged n0 = true n0 + 2 (true vk_x kept)"
-        },
-        "publicInputs": {
-          "tested": 9,
-          "accepted": 0
-        },
-        "layoutReview": {
-          "padsTested": 5,
-          "freeLength": 1,
-          "dependencies": []
-        },
-        "failures": [
-          "maintainer red-team attack accepted (3/3; first: \"forged n0 = true n0 + 2 (true vk_x kept)\")"
-        ]
-      },
-      "score": 33179,
-      "size": {
-        "scriptBytes": 32944,
-        "txOverheadBytes": 235,
-        "transactions": 1,
-        "total": 33179
-      },
-      "padding": {
-        "bytes": 0,
-        "fraction": 0
-      },
-      "benchmarks": {
-        "smallProof": {
-          "opCost": 21290314,
-          "steps": 5,
-          "heaviestStepOpCost": 6139228,
-          "inputsForHeaviestStep": 1
-        },
-        "worstCase": {
-          "accepted": true,
-          "opCost": 21270381,
-          "steps": 5,
-          "heaviestStepOpCost": 6139188,
-          "inputsForHeaviestStep": 1
-        }
-      },
-      "opCostBudget": 26379200,
-      "bsvSingleton": false,
-      "bsvOpReturn": false,
-      "bch": {
-        "compatible": true,
-        "blockers": [],
-        "detail": "every step fits BCH per-tx limits",
-        "standard": {
-          "fits": false,
-          "detail": "shipped valid proof(s) non-standard under the standard VM: extra proof #1"
-        }
-      },
-      "generality": {
-        "binding": "runtime",
-        "runtimeGeneral": true,
-        "proofsTested": 4,
-        "proofsPassed": 4,
-        "detail": "runtime-general: one fixed locking verifies 4/4 distinct proofs (proof in the unlocking witness)"
-      },
-      "tokenSafety": null,
-      "inputValidation": {
-        "enforced": true,
-        "tested": 4,
-        "rejected": 4,
-        "detail": "on-curve + G2-subgroup checks enforced: 4/4 adversarial points (off-curve / off-subgroup) rejected at an isolated check"
-      },
-      "packaging": {
-        "secure": true,
-        "type": "p2sh32"
-      },
-      "source": "BCH-native CashScript: five P2SH32 inputs in one intra-transaction-linked BN254 Groth16 verifier (PairFold-5 densless natural0). Zero artificial density; equal-limb BQ residual 2336; peval-expand + aff-R-only; stock public-bench value=1000 / sequence=0. Score 33179 (scriptBytes 32944 + tx overhead 235). Sibling of pevalfuse 39691 / RC 44968."
-    },
     {
       "id": "nchain",
       "name": "nChain zkScript (Groth16)",
@@ -1756,6 +1254,92 @@
       "source": "Same complete Groth16 verifier as bch-groth16-singleton (Groth16Verify, singleton/bn254/groth16.cash: vk_x = IC0 + in0*IC1 + in1*IC2 on-chain, then e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) == 1), but the locking bytecode is a custom decompile->reschedule->recompile of the cashc output plus an auto-outlining pass. It eliminates cashc's altstack park/restore (its emitReplace reassignment routine, ~2,150 alt-ops in the Miller loop alone), minimizes ROLL/PICK depth addressing, folds adjacent stack ops into multi-item ops, and outlines repeated instruction sequences into OP_DEFINE bodies -- 7,622 -> 5,853 B (far under the 10,000-byte standard cap). Identical semantics + runtime witnesses; each subroutine differential-tested vs the cashc original and every outline rewrite verified accept/reject. Op-cost ~796M, so still not one-input-standard. Pipeline: singleton/bn254/recompiler/."
     },
     {
+      "id": "bch-groth16-singleton-genpow",
+      "name": "BCH Groth16 verifier singleton, BN254 genpow (shared P, range-checked inputs, source-assembled 4,183 B, G1 parity)",
+      "category": "full",
+      "official": false,
+      "solver": null,
+      "curve": "BN254",
+      "structure": "single-tx",
+      "proofSystem": "Groth16",
+      "vmTarget": "bch-2026",
+      "correctness": {
+        "verdict": "pass",
+        "validAccepted": true,
+        "invalid": {
+          "tested": 1,
+          "rejected": 1
+        },
+        "worstCaseAccepted": null,
+        "crossStageBinding": {
+          "applicable": false,
+          "bound": null,
+          "seamsTested": 0,
+          "unboundSeams": 0,
+          "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
+        },
+        "redTeam": null,
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": null,
+        "failures": []
+      },
+      "score": 4476,
+      "size": {
+        "scriptBytes": 4391,
+        "txOverheadBytes": 85,
+        "transactions": 1,
+        "total": 4476
+      },
+      "padding": {
+        "bytes": 0,
+        "fraction": 0
+      },
+      "benchmarks": {
+        "smallProof": {
+          "opCost": 5519594621,
+          "steps": 1,
+          "heaviestStepOpCost": 5519594621,
+          "inputsForHeaviestStep": 688
+        }
+      },
+      "opCostBudget": 199200,
+      "bsvSingleton": false,
+      "bsvOpReturn": false,
+      "bch": {
+        "compatible": false,
+        "blockers": [
+          "op-cost"
+        ],
+        "detail": "heaviest step ~688× one input's op-cost budget",
+        "standard": {
+          "fits": false,
+          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, extra proof #2, extra proof #3"
+        }
+      },
+      "generality": {
+        "binding": "runtime",
+        "runtimeGeneral": true,
+        "proofsTested": 4,
+        "proofsPassed": 4,
+        "detail": "runtime-general: one fixed locking verifies 4/4 distinct proofs (proof in the unlocking witness)"
+      },
+      "tokenSafety": null,
+      "inputValidation": {
+        "enforced": false,
+        "tested": 0,
+        "rejected": 0,
+        "detail": "NOT demonstrated — no isolated adversarial-point run that rejects a bad point at a validation check (a naive point-swap in a single-tx verifier is caught by the pairing equation, not by validation)"
+      },
+      "packaging": {
+        "secure": true,
+        "type": "p2s"
+      },
+      "source": "Explicit symbolic assembly in singleton/bn254/genpow-reconstructed/verifier.asm. The fixed proof A/C y coordinates use parity pushes, reducing the witness from 272 to 208 bytes. The verifier reconstructs each canonical y with a shared posttest remaining-exponent loop, checks the curve equation and requested parity, and retains the original x and remaining witness data. The 4,183-byte program has sha256 332fdd4dbbd5468afc997a49571e15ed88d04c6dda6ccff5863e1dfb0568e3dd. The 72-function program retains its 32-byte scalar guard, G2 checks and source-owned helpers. Three rotations after successful depth-nine disposal guards are omitted because they form an identity. The power loop shifts its remaining exponent before testing for zero; all archived proof and public-input integers are preserved. The original CashScript/stackcert lineage remains missing. Actual finite proof/cost gates are recorded separately; relaxed VM limits are required."
+    },
+    {
       "id": "bch-groth16-singleton-minop",
       "name": "BCH Groth16 verifier singleton — op-optimized (lazy tower + quotient torus + fused G2 + affine GLV)",
       "category": "full",
@@ -2022,6 +1606,92 @@
       "source": "Same complete BLS12-381 Groth16 verifier as bch-groth16-bls12381-singleton (Groth16Verify, singleton/bls12-381/groth16.cash: vk_x = IC0 + in0*IC1 + in1*IC2 on-chain in one shared-doubling Shamir/Straus pass, then e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) == 1), but the locking bytecode is byte-optimized: the smaller of a custom decompile->reschedule->recompile of the cashc output and the rescheduled compile, then repeated instruction sequences outlined into OP_DEFINE bodies. Identical semantics + runtime witnesses; each subroutine differential-tested and every outline rewrite verified accept/reject. The plain entry keeps the other end of the bytesize-vs-opcost tradeoff. Pipeline: singleton/bls12-381/build_vectors_optimized.mjs + singleton/bn254/recompiler/."
     },
     {
+      "id": "bch-groth16-bls12381-singleton-genpow",
+      "name": "BCH Groth16 verifier singleton, BLS12-381 genpow (full final-exp, range-checked inputs, 3,295 B, VO recovered symbolic source)",
+      "category": "full",
+      "official": false,
+      "solver": null,
+      "curve": "BLS12-381",
+      "structure": "single-tx",
+      "proofSystem": "Groth16",
+      "vmTarget": "bch-2026",
+      "correctness": {
+        "verdict": "pass",
+        "validAccepted": true,
+        "invalid": {
+          "tested": 1,
+          "rejected": 1
+        },
+        "worstCaseAccepted": null,
+        "crossStageBinding": {
+          "applicable": false,
+          "bound": null,
+          "seamsTested": 0,
+          "unboundSeams": 0,
+          "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
+        },
+        "redTeam": null,
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": null,
+        "failures": []
+      },
+      "score": 3585,
+      "size": {
+        "scriptBytes": 3500,
+        "txOverheadBytes": 85,
+        "transactions": 1,
+        "total": 3585
+      },
+      "padding": {
+        "bytes": 0,
+        "fraction": 0
+      },
+      "benchmarks": {
+        "smallProof": {
+          "opCost": 20996867940,
+          "steps": 1,
+          "heaviestStepOpCost": 20996867940,
+          "inputsForHeaviestStep": 2614
+        }
+      },
+      "opCostBudget": 196800,
+      "bsvSingleton": false,
+      "bsvOpReturn": false,
+      "bch": {
+        "compatible": false,
+        "blockers": [
+          "op-cost"
+        ],
+        "detail": "heaviest step ~2614× one input's op-cost budget",
+        "standard": {
+          "fits": false,
+          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, extra proof #2, extra proof #3"
+        }
+      },
+      "generality": {
+        "binding": "runtime",
+        "runtimeGeneral": true,
+        "proofsTested": 4,
+        "proofsPassed": 4,
+        "detail": "runtime-general: one fixed locking verifies 4/4 distinct proofs (proof in the unlocking witness)"
+      },
+      "tokenSafety": null,
+      "inputValidation": {
+        "enforced": false,
+        "tested": 0,
+        "rejected": 0,
+        "detail": "NOT demonstrated — no isolated adversarial-point run that rejects a bad point at a validation check (a naive point-swap in a single-tx verifier is caught by the pairing equation, not by validation)"
+      },
+      "packaging": {
+        "secure": true,
+        "type": "p2s"
+      },
+      "source": "BLS12-381 Groth16 genpow singleton with on-chain vk_x, the raw four-pair Miller product, and full final exponentiation f^((p^12-1)/r) == Fp12.ONE. SZ-a1 inlines four low-fanout static helpers after compact IDs and the range guard, then SM-a2 outlines six repeated stack moves. SV-a2 assigns stackSequence52 ID 7 and decompressG2 ID 17; TB-a3 outlines 41 repeated field multiplication/modulo sequences as mulFp and swaps mulFp with fp6Add. TJ-a2 outlines ten two-roll sequences as stackSequence53=-1 and moves fp6Mul to 19; TR-a2 outlines nine six/seven-roll sequences as stackSequence54=14 and moves fp2Scale to 31; TW-a1..a4 add four measured static outlines with scoped ID packing; UE adds three further outlines; UR adds two outlines and emits 3,308 bytes at depth 12. VO replaces only powFp with a 37-byte posttest remaining-exponent loop and emits 3,295 bytes. The unlocking contains compressed proof coordinates and two public inputs; no residue witness or Fiat-Shamir PIT is added. Recovered symbolic Script source reproduces the original 3,425-byte leader exactly; the range-closed baseline is 3,432 bytes, SZ-a1 is 3,422 bytes, SM-a2 is 3,414 bytes, SV-a2 is 3,412 bytes, TB-a3 is 3,341 bytes, TJ-a2 is 3,333 bytes, TR-a2 is 3,328 bytes, and TW-a1..a4 is 3,315 bytes and UE-a4 is 3,310 bytes; UR is 3,308 bytes with 60 candidate functions (51 in the recovered original; operation cost reported separately). All four supplied proof witnesses are unchanged; VO acceptance/cost gates are reported separately. The original CashScript compiler/search-witness/replay pipeline remains unavailable. Current BCH and standardness limits are exceeded. The original no-G1/G2-subgroup-check and cofactor-equivalent proof posture is preserved; no new malformed-point theorem or isolated input-validation grade is claimed."
+    },
+    {
       "id": "bch-groth16-bls12381-singleton-minop",
       "name": "BCH Groth16 verifier singleton, BLS12-381 — op-optimized (lazy tower + quotient torus + fused psi check + GLV)",
       "category": "full",
@@ -2148,12 +1818,12 @@
         "layoutReview": null,
         "failures": []
       },
-      "score": 124238,
+      "score": 103861,
       "size": {
-        "scriptBytes": 124151,
+        "scriptBytes": 103774,
         "txOverheadBytes": 87,
         "transactions": 1,
-        "total": 124238
+        "total": 103861
       },
       "padding": {
         "bytes": 0,
@@ -2161,20 +1831,20 @@
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 58662166,
+          "opCost": 38716391,
           "steps": 1,
-          "heaviestStepOpCost": 58662166,
-          "inputsForHeaviestStep": 8
+          "heaviestStepOpCost": 38716391,
+          "inputsForHeaviestStep": 5
         },
         "worstCase": {
           "accepted": true,
-          "opCost": 60547477,
+          "opCost": 40107855,
           "steps": 1,
-          "heaviestStepOpCost": 60547477,
-          "inputsForHeaviestStep": 8
+          "heaviestStepOpCost": 40107855,
+          "inputsForHeaviestStep": 5
         }
       },
-      "opCostBudget": 50436800,
+      "opCostBudget": 39992000,
       "bsvSingleton": false,
       "bsvOpReturn": false,
       "bch": {
@@ -2183,7 +1853,7 @@
           "script-size",
           "op-cost"
         ],
-        "detail": "1/1 step(s) over the 10,000 B script cap; heaviest step ~8× one input's op-cost budget",
+        "detail": "1/1 step(s) over the 10,000 B script cap; heaviest step ~5× one input's op-cost budget",
         "standard": {
           "fits": false,
           "detail": "1/1 locking >201 B; 1/1 unlocking >10,000 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, extra proof #2, extra proof #3, extra proof #4, extra proof #5, extra proof #6, extra proof #7, extra proof #8, extra proof #9, worst-case proof"
@@ -2207,7 +1877,98 @@
         "secure": true,
         "type": "p2s"
       },
-      "source": "BCH-native CashScript: the complete qsplit tail-22 BLS12-381 Groth16 verification in ONE contract. The script rebuilds the Fiat-Shamir commitment and quotient Merkle roots over its own witness arguments with OP_SHA256 and requires the beta/alpha challenges to equal the tagged hashes of those roots; the Fp6/torus Miller relations are checked by polynomial identity testing at those challenges with one prover-supplied 132-coefficient quotient (Fiat-Shamir PIT security model — see groth16_cashscript/verifiers.md). The 32-window public-VK GT table is Merkle-authenticated inline against baked window roots with leaf indices bound to the committed public-input bytes; the G2 walk, slope equations, psi subgroup check, and the lambda = p+|x| residue terminal stay exact. One identical proof-independent contract serves the full ten-fixture corpus. 60.58M worst-case op-cost vs the unconditional minop oracle’s 149.2M. Still over the 10,000 B / per-input op limits."
+      "source": "BCH-native CashScript: the complete qsplit tail-22 BLS12-381 Groth16 verification in ONE contract. The script rebuilds the Fiat-Shamir commitment and quotient Merkle roots over its own witness arguments with OP_SHA256 and requires the beta/alpha challenges to equal the tagged hashes of those roots; the Fp6/torus Miller relations are checked by polynomial identity testing at those challenges with one prover-supplied 132-coefficient quotient (Fiat-Shamir PIT security model — see groth16_cashscript/verifiers.md). The 32-window public-VK GT table is Merkle-authenticated inline against baked window roots with leaf indices bound to the committed public-input bytes; the G2 walk, slope equations, psi subgroup check, and the lambda = p+|x| residue terminal stay exact. One identical proof-independent contract serves the full ten-fixture corpus. 40.11M worst-case op-cost vs the unconditional minop oracle’s 149.2M. Still over the 10,000 B / per-input op limits."
+    },
+    {
+      "id": "bch-groth16-bls12381-singleton-fs-spec",
+      "name": "BCH Groth16 BLS12-381 FS-PIT singleton, public slope table (bch-spec, P2SH32)",
+      "category": "spec",
+      "official": false,
+      "solver": null,
+      "curve": "BLS12-381",
+      "structure": "single-tx",
+      "proofSystem": "Groth16",
+      "vmTarget": "bch-spec",
+      "correctness": {
+        "verdict": "pass",
+        "validAccepted": true,
+        "invalid": {
+          "tested": 12,
+          "rejected": 12
+        },
+        "worstCaseAccepted": true,
+        "crossStageBinding": {
+          "applicable": false,
+          "bound": null,
+          "seamsTested": 0,
+          "unboundSeams": 0,
+          "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
+        },
+        "redTeam": null,
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": null,
+        "failures": []
+      },
+      "score": 97955,
+      "size": {
+        "scriptBytes": 97866,
+        "txOverheadBytes": 89,
+        "transactions": 1,
+        "total": 97955
+      },
+      "padding": {
+        "bytes": 0,
+        "fraction": 0
+      },
+      "benchmarks": {
+        "smallProof": {
+          "opCost": 55960666,
+          "steps": 1,
+          "heaviestStepOpCost": 55960666,
+          "inputsForHeaviestStep": 1
+        },
+        "worstCase": {
+          "accepted": true,
+          "opCost": 57352130,
+          "steps": 1,
+          "heaviestStepOpCost": 57352130,
+          "inputsForHeaviestStep": 1
+        }
+      },
+      "opCostBudget": 86264800,
+      "bsvSingleton": false,
+      "bsvOpReturn": false,
+      "bch": {
+        "compatible": true,
+        "blockers": [],
+        "detail": "every step fits the proposed bch-spec per-tx limits (100 kB scripts) — NOT current BCH",
+        "standard": {
+          "fits": true,
+          "detail": "relayable under standard mempool policy"
+        }
+      },
+      "generality": {
+        "binding": "runtime",
+        "runtimeGeneral": true,
+        "proofsTested": 10,
+        "proofsPassed": 10,
+        "detail": "runtime-general: one fixed locking verifies 10/10 distinct proofs (proof in the unlocking witness)"
+      },
+      "tokenSafety": null,
+      "inputValidation": {
+        "enforced": false,
+        "tested": 0,
+        "rejected": 0,
+        "detail": "NOT demonstrated — no isolated adversarial-point run that rejects a bad point at a validation check (a naive point-swap in a single-tx verifier is caught by the pairing equation, not by validation)"
+      },
+      "packaging": {
+        "secure": true,
+        "type": "p2sh32"
+      },
+      "source": "Single-script qsplit tail-22 FS-PIT verification. Fixed public VK delta slopes and the public G2 point reconstruct every original Miller line coefficient with the exact affine doubling/addition helpers. The original payload bytes are restored before in-script Fiat-Shamir commitment and challenge hashing. Public inputs remain bound by inline authenticated 32-window GT tables; quotient-torus relations use SHA-256-derived polynomial identity testing. The G2 psi subgroup check and residue terminal remain exact; G1 encodings are cofactor-equivalent rather than unique. One fixed proof-independent redeem script is secured by P2SH32. Requires the proposed bch-spec script and compute limits; not valid on current BCH."
     },
     {
       "id": "bch-groth16-chunked",
@@ -3702,6 +3463,101 @@
       "source": "BCH-native CashScript: the BN254 Groth16 Miller boundary computed as the INPUTS of ONE transaction. A prepared batched loop shares each fp12Sqr across the three runtime-dependent pairs; fixed e(alpha,beta) is omitted and its precomputed raw Miller value is multiplied once at the end. Each chunk carries f, the runtime e(-A,B) accumulator R0, and runtime points as a raw byte blob, binding the chain by forward-checking its successor via tx.inputs[idx+1].unlockingBytecode introspection (OP_INPUTBYTECODE) — no NFT commitment, no hashing, no 128-byte state limit. Every input fits one BCH budget (op-cost <=8,032,800, <=10,000 B); the whole boundary is one non-standard (<1 MB) transaction. Same chunk math as bch-pairing-chunked. Deployed as P2SH32 so each chunk's redeem rides in the scriptSig, where it counts toward the op-cost budget and offsets the pad (~30% fewer on-chain bytes than bare-script). Reaches the miller-boundary checkpoint (full verdict: bch-groth16-intratx)."
     },
     {
+      "id": "bch-groth16-intratx",
+      "name": "BCH Groth16 intra-tx linked (whole verifier in one transaction, BCH-compatible)",
+      "category": "full",
+      "official": false,
+      "solver": null,
+      "curve": "BN254",
+      "structure": "single-tx",
+      "proofSystem": "Groth16",
+      "vmTarget": "bch-2026",
+      "correctness": {
+        "verdict": "pass",
+        "validAccepted": true,
+        "invalid": {
+          "tested": 7,
+          "rejected": 7
+        },
+        "worstCaseAccepted": true,
+        "crossStageBinding": {
+          "applicable": true,
+          "bound": true,
+          "seamsTested": 30,
+          "unboundSeams": 0,
+          "detail": "every stage bound to one proof: 30 seams staple-tested with a 2nd distinct proof, all rejected"
+        },
+        "redTeam": null,
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": {
+          "padsTested": 22,
+          "freeLength": 22,
+          "dependencies": []
+        },
+        "failures": []
+      },
+      "score": 234022,
+      "size": {
+        "scriptBytes": 232669,
+        "txOverheadBytes": 1353,
+        "transactions": 1,
+        "total": 234022
+      },
+      "padding": {
+        "bytes": 70106,
+        "fraction": 0.30131216449118703
+      },
+      "benchmarks": {
+        "smallProof": {
+          "opCost": 183037472,
+          "steps": 31,
+          "heaviestStepOpCost": 7829062,
+          "inputsForHeaviestStep": 1
+        },
+        "worstCase": {
+          "accepted": true,
+          "opCost": 218282434,
+          "steps": 31,
+          "heaviestStepOpCost": 7828943,
+          "inputsForHeaviestStep": 1
+        }
+      },
+      "opCostBudget": 186284000,
+      "bsvSingleton": false,
+      "bsvOpReturn": false,
+      "bch": {
+        "compatible": true,
+        "blockers": [],
+        "detail": "every step fits BCH per-tx limits",
+        "standard": {
+          "fits": false,
+          "detail": "tx 232,937 B > 100,000 B standard size"
+        }
+      },
+      "generality": {
+        "binding": "runtime",
+        "runtimeGeneral": true,
+        "proofsTested": 2,
+        "proofsPassed": 2,
+        "detail": "runtime-general: one fixed locking verifies 2/2 distinct proofs (proof in the unlocking witness)"
+      },
+      "tokenSafety": null,
+      "inputValidation": {
+        "enforced": true,
+        "tested": 4,
+        "rejected": 4,
+        "detail": "on-curve + G2-subgroup checks enforced: 4/4 adversarial points (off-curve / off-subgroup) rejected at an isolated check"
+      },
+      "packaging": {
+        "secure": true,
+        "type": "p2sh32"
+      },
+      "source": "BCH-native CashScript: the full BN254 Groth16 verifier (validate canonical-coordinate, on-curve, subgroup proof inputs -> vk_x -> prepared batched Miller, with fixed e(alpha,beta) replaced by one multiply with its precomputed raw Miller value -> final exponentiation -> assert product==1) laid out as the INPUTS of ONE transaction. Each input carries its incoming state as a raw byte blob and binds the chain by forward-checking its successor via tx.inputs[idx+1].unlockingBytecode introspection (OP_INPUTBYTECODE) — no NFT-commitment hand-off, no hashing, no 128-byte state limit, arbitrary intermediate size. Every input fits one BCH input budget (op-cost <=8,032,800, scripts <=10,000 B); the whole verifier is one non-standard (<1 MB) transaction. Same chunk math as bch-groth16-chunked; one fixed set of input scripts verifies any proof for the VK (proof in the witness). Single-transaction counterpart of the multi-tx bch-groth16-chunked and the non-deployable bch-groth16-singleton. Deployed as P2SH32 so each chunk's redeem rides in the scriptSig, where it counts toward the op-cost budget and offsets the pad (~30% fewer on-chain bytes than a bare-script deployment; the same lever applies to the multi-tx covenant chunks)."
+    },
+    {
       "id": "bch-groth16-intratx-direct-state-public",
       "name": "BCH Groth16 intra-tx direct-state boundary (public context)",
       "category": "full",
@@ -4282,6 +4138,111 @@
       "source": "BCH-native CashScript: seven P2SH32 inputs in one intra-transaction-linked BN254 Groth16 verifier (PairFold-7 dens-rich). Mixed Miller windows, fixed-G2 tables, densFuel=0 pure dens path, stock public-bench value=1000 / sequence=0 envelope. Score 54483 (scriptBytes 54162 + tx overhead 321); fitsBchStandardness=true."
     },
     {
+      "id": "bch-groth16-intratx-pairfold5",
+      "name": "BCH Groth16 intra-tx PairFold-5 peval dens-rich (score 44968)",
+      "category": "full",
+      "official": false,
+      "solver": null,
+      "curve": "BN254",
+      "structure": "single-tx",
+      "proofSystem": "Groth16",
+      "vmTarget": "bch-2026",
+      "correctness": {
+        "verdict": "fail",
+        "validAccepted": true,
+        "invalid": {
+          "tested": 5,
+          "rejected": 5
+        },
+        "worstCaseAccepted": true,
+        "crossStageBinding": {
+          "applicable": true,
+          "bound": true,
+          "seamsTested": 4,
+          "unboundSeams": 0,
+          "detail": "every stage bound to one proof: 4 seams staple-tested with a 2nd distinct proof, all rejected"
+        },
+        "redTeam": {
+          "stale": false,
+          "tested": 3,
+          "accepted": 3,
+          "kinds": [
+            "forged-public-inputs"
+          ],
+          "firstAccepted": "forged n0 = true n0 + 2 (true vk_x kept)"
+        },
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": {
+          "padsTested": 5,
+          "freeLength": 1,
+          "dependencies": []
+        },
+        "failures": [
+          "maintainer red-team attack accepted (3/3; first: \"forged n0 = true n0 + 2 (true vk_x kept)\")"
+        ]
+      },
+      "score": 44968,
+      "size": {
+        "scriptBytes": 44733,
+        "txOverheadBytes": 235,
+        "transactions": 1,
+        "total": 44968
+      },
+      "padding": {
+        "bytes": 0,
+        "fraction": 0
+      },
+      "benchmarks": {
+        "smallProof": {
+          "opCost": 33945517,
+          "steps": 5,
+          "heaviestStepOpCost": 7635697,
+          "inputsForHeaviestStep": 1
+        },
+        "worstCase": {
+          "accepted": true,
+          "opCost": 33924419,
+          "steps": 5,
+          "heaviestStepOpCost": 7635934,
+          "inputsForHeaviestStep": 1
+        }
+      },
+      "opCostBudget": 35810400,
+      "bsvSingleton": false,
+      "bsvOpReturn": false,
+      "bch": {
+        "compatible": true,
+        "blockers": [],
+        "detail": "every step fits BCH per-tx limits",
+        "standard": {
+          "fits": true,
+          "detail": "relayable under standard mempool policy"
+        }
+      },
+      "generality": {
+        "binding": "runtime",
+        "runtimeGeneral": true,
+        "proofsTested": 4,
+        "proofsPassed": 4,
+        "detail": "runtime-general: one fixed locking verifies 4/4 distinct proofs (proof in the unlocking witness)"
+      },
+      "tokenSafety": null,
+      "inputValidation": {
+        "enforced": true,
+        "tested": 4,
+        "rejected": 4,
+        "detail": "on-curve + G2-subgroup checks enforced: 4/4 adversarial points (off-curve / off-subgroup) rejected at an isolated check"
+      },
+      "packaging": {
+        "secure": true,
+        "type": "p2sh32"
+      },
+      "source": "BCH-native CashScript: five P2SH32 inputs in one intra-transaction-linked BN254 Groth16 verifier (PairFold-5 peval dens-rich). Fixed-G2 xonly tables, peval pin, dens floors 9600/9400/9500, densDrop 1200, densFuel DROP dens-positive path, stock public-bench value=1000 / sequence=0 envelope. Score 44968 (scriptBytes 44733 + tx overhead 235); fitsBchStandardness expected true. Smaller than PairFold-7 frontier and the local PairFold-6 peval RC while dropping to five inputs."
+    },
+    {
       "id": "bch-groth16-intratx-pairfold5-pevalfuse",
       "name": "BCH Groth16 intra-tx PairFold-5 peval-fuse source-reconstructed (score 36836)",
       "category": "full",
@@ -4387,6 +4348,219 @@
       "source": "Public-only source reconstruction in chunked/bn254/leader-recovered. Five P2SH32 inputs, one standard transaction, 36,836 score bytes. Preserves the deployed VK/tag, transcript, coefficient ordering and worker authentication. Fixed deployment and finite-point/nonzero-denominator requirements remain; historical compiler lineage and universal resource/soundness proof are not claimed."
     },
     {
+      "id": "bch-groth16-intratx-pairfold5-densless-msm",
+      "name": "BCH Groth16 intra-tx PairFold-5 densless with sound vk_x MSM",
+      "category": "full",
+      "official": false,
+      "solver": null,
+      "curve": "BN254",
+      "structure": "single-tx",
+      "proofSystem": "Groth16",
+      "vmTarget": "bch-2026",
+      "correctness": {
+        "verdict": "pass",
+        "validAccepted": true,
+        "invalid": {
+          "tested": 5,
+          "rejected": 5
+        },
+        "worstCaseAccepted": true,
+        "crossStageBinding": {
+          "applicable": true,
+          "bound": true,
+          "seamsTested": 4,
+          "unboundSeams": 0,
+          "detail": "every stage bound to one proof: 4 seams staple-tested with a 2nd distinct proof, all rejected"
+        },
+        "redTeam": {
+          "stale": false,
+          "tested": 26,
+          "accepted": 0,
+          "kinds": [
+            "forged-public-inputs",
+            "forged-public-inputs-adaptive",
+            "msm-state-tamper",
+            "proof-point-validation"
+          ]
+        },
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": {
+          "padsTested": 2,
+          "freeLength": 1,
+          "dependencies": []
+        },
+        "failures": []
+      },
+      "score": 35861,
+      "size": {
+        "scriptBytes": 35626,
+        "txOverheadBytes": 235,
+        "transactions": 1,
+        "total": 35861
+      },
+      "padding": {
+        "bytes": 0,
+        "fraction": 0
+      },
+      "benchmarks": {
+        "smallProof": {
+          "opCost": 24347199,
+          "steps": 5,
+          "heaviestStepOpCost": 5884720,
+          "inputsForHeaviestStep": 1
+        },
+        "worstCase": {
+          "accepted": true,
+          "opCost": 23038251,
+          "steps": 5,
+          "heaviestStepOpCost": 5783870,
+          "inputsForHeaviestStep": 1
+        }
+      },
+      "opCostBudget": 28524800,
+      "bsvSingleton": false,
+      "bsvOpReturn": false,
+      "bch": {
+        "compatible": true,
+        "blockers": [],
+        "detail": "every step fits BCH per-tx limits",
+        "standard": {
+          "fits": true,
+          "detail": "relayable under standard mempool policy"
+        }
+      },
+      "generality": {
+        "binding": "runtime",
+        "runtimeGeneral": true,
+        "proofsTested": 4,
+        "proofsPassed": 4,
+        "detail": "runtime-general: one fixed locking verifies 4/4 distinct proofs (proof in the unlocking witness)"
+      },
+      "tokenSafety": null,
+      "inputValidation": {
+        "enforced": false,
+        "tested": 0,
+        "rejected": 0,
+        "detail": "NOT demonstrated — no isolated adversarial-point run that rejects a bad point at a validation check (a naive point-swap in a single-tx verifier is caught by the pairing equation, not by validation)"
+      },
+      "packaging": {
+        "secure": true,
+        "type": "p2sh32"
+      },
+      "source": "PairFold-5 densless (public-only reconstruction, chunked/bn254/densless-recovered) plus a GLV Straus MSM that recomputes vk_x from the claimed public inputs (chunked/bn254/densless-msm), carried by the existing inputs as a chain of pinned states. Five P2SH32 inputs, one standard transaction; the terminal pins input count and all worker lockings."
+    },
+    {
+      "id": "bch-groth16-intratx-pairfold5-densless-msm-slim",
+      "name": "BCH Groth16 intra-tx PairFold-5 densless with sound vk_x MSM (slim MSM state)",
+      "category": "full",
+      "official": false,
+      "solver": null,
+      "curve": "BN254",
+      "structure": "single-tx",
+      "proofSystem": "Groth16",
+      "vmTarget": "bch-2026",
+      "correctness": {
+        "verdict": "pass",
+        "validAccepted": true,
+        "invalid": {
+          "tested": 5,
+          "rejected": 5
+        },
+        "worstCaseAccepted": true,
+        "crossStageBinding": {
+          "applicable": true,
+          "bound": true,
+          "seamsTested": 4,
+          "unboundSeams": 0,
+          "detail": "every stage bound to one proof: 4 seams staple-tested with a 2nd distinct proof, all rejected"
+        },
+        "redTeam": {
+          "stale": false,
+          "tested": 44,
+          "accepted": 0,
+          "kinds": [
+            "forged-public-inputs",
+            "forged-public-inputs-adaptive",
+            "msm-state-tamper",
+            "proof-point-validation",
+            "public-input-encoding",
+            "msm-state-layout",
+            "witness-malleability"
+          ]
+        },
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": {
+          "padsTested": 2,
+          "freeLength": 1,
+          "dependencies": []
+        },
+        "failures": []
+      },
+      "score": 35143,
+      "size": {
+        "scriptBytes": 34908,
+        "txOverheadBytes": 235,
+        "transactions": 1,
+        "total": 35143
+      },
+      "padding": {
+        "bytes": 0,
+        "fraction": 0
+      },
+      "benchmarks": {
+        "smallProof": {
+          "opCost": 24932396,
+          "steps": 5,
+          "heaviestStepOpCost": 6221537,
+          "inputsForHeaviestStep": 1
+        },
+        "worstCase": {
+          "accepted": true,
+          "opCost": 23584076,
+          "steps": 5,
+          "heaviestStepOpCost": 6117626,
+          "inputsForHeaviestStep": 1
+        }
+      },
+      "opCostBudget": 27950400,
+      "bsvSingleton": false,
+      "bsvOpReturn": false,
+      "bch": {
+        "compatible": true,
+        "blockers": [],
+        "detail": "every step fits BCH per-tx limits",
+        "standard": {
+          "fits": true,
+          "detail": "relayable under standard mempool policy"
+        }
+      },
+      "generality": {
+        "binding": "runtime",
+        "runtimeGeneral": true,
+        "proofsTested": 4,
+        "proofsPassed": 4,
+        "detail": "runtime-general: one fixed locking verifies 4/4 distinct proofs (proof in the unlocking witness)"
+      },
+      "tokenSafety": null,
+      "inputValidation": {
+        "enforced": false,
+        "tested": 0,
+        "rejected": 0,
+        "detail": "NOT demonstrated — no isolated adversarial-point run that rejects a bad point at a validation check (a naive point-swap in a single-tx verifier is caught by the pairing equation, not by validation)"
+      },
+      "packaging": {
+        "secure": true,
+        "type": "p2sh32"
+      },
+      "source": "PairFold-5 densless (chunked/bn254/densless-recovered) with the GLV Straus vk_x MSM in a slim state layout (chunked/bn254/densless-msm-slim): claimed inputs are terminal pushes, witness bytes live only in the terminal state, executors carry X, Y, Z. Five P2SH32 inputs, one standard transaction; the terminal pins input count and all worker lockings."
+    },
+    {
       "id": "bch-groth16-intratx-pairfold5-densless-msm-spec",
       "name": "BCH Groth16 intra-tx PairFold-5 densless with sound vk_x MSM (bch-spec)",
       "category": "spec",
@@ -4489,6 +4663,111 @@
         "type": "p2sh32"
       },
       "source": "PairFold-5 densless (public-only reconstruction, chunked/bn254/densless-recovered) whose genesis carries a GLV Straus MSM recomputing vk_x from the claimed public inputs (chunked/bn254/densless-msm-spec); five P2SH32 inputs, one transaction, graded on the proposed bch-spec VM."
+    },
+    {
+      "id": "bch-groth16-intratx-pairfold5-densless",
+      "name": "BCH Groth16 intra-tx PairFold-5 densless natural0 (score 33179)",
+      "category": "full",
+      "official": false,
+      "solver": null,
+      "curve": "BN254",
+      "structure": "single-tx",
+      "proofSystem": "Groth16",
+      "vmTarget": "bch-2026",
+      "correctness": {
+        "verdict": "fail",
+        "validAccepted": true,
+        "invalid": {
+          "tested": 5,
+          "rejected": 5
+        },
+        "worstCaseAccepted": true,
+        "crossStageBinding": {
+          "applicable": true,
+          "bound": true,
+          "seamsTested": 4,
+          "unboundSeams": 0,
+          "detail": "every stage bound to one proof: 4 seams staple-tested with a 2nd distinct proof, all rejected"
+        },
+        "redTeam": {
+          "stale": false,
+          "tested": 3,
+          "accepted": 3,
+          "kinds": [
+            "forged-public-inputs"
+          ],
+          "firstAccepted": "forged n0 = true n0 + 2 (true vk_x kept)"
+        },
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": {
+          "padsTested": 5,
+          "freeLength": 1,
+          "dependencies": []
+        },
+        "failures": [
+          "maintainer red-team attack accepted (3/3; first: \"forged n0 = true n0 + 2 (true vk_x kept)\")"
+        ]
+      },
+      "score": 33179,
+      "size": {
+        "scriptBytes": 32944,
+        "txOverheadBytes": 235,
+        "transactions": 1,
+        "total": 33179
+      },
+      "padding": {
+        "bytes": 0,
+        "fraction": 0
+      },
+      "benchmarks": {
+        "smallProof": {
+          "opCost": 21290314,
+          "steps": 5,
+          "heaviestStepOpCost": 6139228,
+          "inputsForHeaviestStep": 1
+        },
+        "worstCase": {
+          "accepted": true,
+          "opCost": 21270381,
+          "steps": 5,
+          "heaviestStepOpCost": 6139188,
+          "inputsForHeaviestStep": 1
+        }
+      },
+      "opCostBudget": 26379200,
+      "bsvSingleton": false,
+      "bsvOpReturn": false,
+      "bch": {
+        "compatible": true,
+        "blockers": [],
+        "detail": "every step fits BCH per-tx limits",
+        "standard": {
+          "fits": false,
+          "detail": "shipped valid proof(s) non-standard under the standard VM: extra proof #1"
+        }
+      },
+      "generality": {
+        "binding": "runtime",
+        "runtimeGeneral": true,
+        "proofsTested": 4,
+        "proofsPassed": 4,
+        "detail": "runtime-general: one fixed locking verifies 4/4 distinct proofs (proof in the unlocking witness)"
+      },
+      "tokenSafety": null,
+      "inputValidation": {
+        "enforced": true,
+        "tested": 4,
+        "rejected": 4,
+        "detail": "on-curve + G2-subgroup checks enforced: 4/4 adversarial points (off-curve / off-subgroup) rejected at an isolated check"
+      },
+      "packaging": {
+        "secure": true,
+        "type": "p2sh32"
+      },
+      "source": "BCH-native CashScript: five P2SH32 inputs in one intra-transaction-linked BN254 Groth16 verifier (PairFold-5 densless natural0). Zero artificial density; equal-limb BQ residual 2336; peval-expand + aff-R-only; stock public-bench value=1000 / sequence=0. Score 33179 (scriptBytes 32944 + tx overhead 235). Sibling of pevalfuse 39691 / RC 44968."
     },
     {
       "id": "bch-groth16-intratx-general",
@@ -5612,178 +5891,6 @@
         "type": "p2s"
       },
       "source": "synthetic; mirrors multi-step-computation.md"
-    },
-    {
-      "id": "bch-groth16-bls12381-singleton-genpow",
-      "name": "BCH Groth16 verifier singleton, BLS12-381 genpow (full final-exp, range-checked inputs, 3,432 B, recovered symbolic source)",
-      "category": "full",
-      "official": false,
-      "solver": null,
-      "curve": "BLS12-381",
-      "structure": "single-tx",
-      "proofSystem": "Groth16",
-      "vmTarget": "bch-2026",
-      "correctness": {
-        "verdict": "pass",
-        "validAccepted": true,
-        "invalid": {
-          "tested": 1,
-          "rejected": 1
-        },
-        "worstCaseAccepted": null,
-        "crossStageBinding": {
-          "applicable": false,
-          "bound": null,
-          "seamsTested": 0,
-          "unboundSeams": 0,
-          "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
-        },
-        "redTeam": null,
-        "publicInputs": {
-          "tested": 9,
-          "accepted": 0
-        },
-        "layoutReview": null,
-        "failures": []
-      },
-      "score": 3722,
-      "size": {
-        "scriptBytes": 3637,
-        "txOverheadBytes": 85,
-        "transactions": 1,
-        "total": 3722
-      },
-      "padding": {
-        "bytes": 0,
-        "fraction": 0
-      },
-      "benchmarks": {
-        "smallProof": {
-          "opCost": 20711250623,
-          "steps": 1,
-          "heaviestStepOpCost": 20711250623,
-          "inputsForHeaviestStep": 2579
-        }
-      },
-      "opCostBudget": 196800,
-      "bsvSingleton": false,
-      "bsvOpReturn": false,
-      "bch": {
-        "compatible": false,
-        "blockers": [
-          "op-cost"
-        ],
-        "detail": "heaviest step ~2579× one input's op-cost budget",
-        "standard": {
-          "fits": false,
-          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, extra proof #2, extra proof #3"
-        }
-      },
-      "generality": {
-        "binding": "runtime",
-        "runtimeGeneral": true,
-        "proofsTested": 4,
-        "proofsPassed": 4,
-        "detail": "runtime-general: one fixed locking verifies 4/4 distinct proofs (proof in the unlocking witness)"
-      },
-      "tokenSafety": null,
-      "inputValidation": {
-        "enforced": false,
-        "tested": 0,
-        "rejected": 0,
-        "detail": "NOT demonstrated — no isolated adversarial-point run that rejects a bad point at a validation check (a naive point-swap in a single-tx verifier is caught by the pairing equation, not by validation)"
-      },
-      "packaging": {
-        "secure": true,
-        "type": "p2s"
-      },
-      "source": "BLS12-381 Groth16 genpow singleton with on-chain vk_x, the raw four-pair Miller product, and full final exponentiation f^((p^12-1)/r) == Fp12.ONE. The unlocking contains compressed proof coordinates and two public inputs; no residue witness or Fiat-Shamir PIT is added. Recovered symbolic Script source reproduces the original 3,425-byte leader exactly; three function-ID reassignments reduce it to 3,415 bytes (official score 3,705) and 20,711,247,449 committed operations. All four supplied proof witnesses are unchanged. The original CashScript compiler/search-witness/replay pipeline remains unavailable. Current BCH and standardness limits are exceeded. The original no-G1/G2-subgroup-check and cofactor-equivalent proof posture is preserved; no new malformed-point theorem or isolated input-validation grade is claimed."
-    },
-    {
-      "id": "bch-groth16-singleton-genpow",
-      "name": "BCH Groth16 verifier singleton, BN254 genpow (shared P, range-checked inputs, source-assembled 4,260 B)",
-      "category": "full",
-      "official": false,
-      "solver": null,
-      "curve": "BN254",
-      "structure": "single-tx",
-      "proofSystem": "Groth16",
-      "vmTarget": "bch-2026",
-      "correctness": {
-        "verdict": "pass",
-        "validAccepted": true,
-        "invalid": {
-          "tested": 1,
-          "rejected": 1
-        },
-        "worstCaseAccepted": null,
-        "crossStageBinding": {
-          "applicable": false,
-          "bound": null,
-          "seamsTested": 0,
-          "unboundSeams": 0,
-          "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
-        },
-        "redTeam": null,
-        "publicInputs": {
-          "tested": 9,
-          "accepted": 0
-        },
-        "layoutReview": null,
-        "failures": []
-      },
-      "score": 4619,
-      "size": {
-        "scriptBytes": 4532,
-        "txOverheadBytes": 87,
-        "transactions": 1,
-        "total": 4619
-      },
-      "padding": {
-        "bytes": 0,
-        "fraction": 0
-      },
-      "benchmarks": {
-        "smallProof": {
-          "opCost": 5505567176,
-          "steps": 1,
-          "heaviestStepOpCost": 5505567176,
-          "inputsForHeaviestStep": 686
-        }
-      },
-      "opCostBudget": 250400,
-      "bsvSingleton": false,
-      "bsvOpReturn": false,
-      "bch": {
-        "compatible": false,
-        "blockers": [
-          "op-cost"
-        ],
-        "detail": "heaviest step ~686× one input's op-cost budget",
-        "standard": {
-          "fits": false,
-          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, extra proof #2, extra proof #3"
-        }
-      },
-      "generality": {
-        "binding": "runtime",
-        "runtimeGeneral": true,
-        "proofsTested": 4,
-        "proofsPassed": 4,
-        "detail": "runtime-general: one fixed locking verifies 4/4 distinct proofs (proof in the unlocking witness)"
-      },
-      "tokenSafety": null,
-      "inputValidation": {
-        "enforced": false,
-        "tested": 0,
-        "rejected": 0,
-        "detail": "NOT demonstrated — no isolated adversarial-point run that rejects a bad point at a validation check (a naive point-swap in a single-tx verifier is caught by the pairing equation, not by validation)"
-      },
-      "packaging": {
-        "secure": true,
-        "type": "p2s"
-      },
-      "source": "Explicit symbolic assembly in singleton/bn254/genpow-reconstructed/verifier.asm. Reproduces the official 4,292-byte genpow leader exactly before a proved P-sharing rewrite to 4,228 bytes (sha256 a7686356eba90eb594d2a05189e645111506e67fc3c52007144081761d357cd0). A 32-byte prefix requires 0 <= n0, n1 < r (r = P - 6x^2), closing the n + r input alias (4,260 B, sha256 6d884ee69b1ec0f6b20e749d64422a4f0c779f756a1b01bb1b8edb9b40836e80). All original verification predicates and public fixtures are preserved. The missing original CashScript/stackcert lineage is not claimed recovered. Committed relaxed-VM cost 5,505,565,336, +298,949,517; no native BCH resource or stronger input-validation claim."
     }
   ]
 }
