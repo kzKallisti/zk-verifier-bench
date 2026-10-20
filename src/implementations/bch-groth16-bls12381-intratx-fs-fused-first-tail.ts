@@ -1,23 +1,26 @@
 // Current-BCH BLS12-381 FS-PIT,10 P2SH32 inputs, all21 logical stages.
-// Qualified source:d2bf864f84aaf88939a0f5cf3476806fe93c627e; owner SHA256:6a2ff54499fc5d5c070e4fdb5e22c7f19d926c74ea544414f1351354a31c5745.
+// Qualified source:62ac248d9ead36617f441947b49f80bfd7012dfa; owner SHA256:8c5e0223c1383f1046f280785b9ec7d9d821419290748e90f28ff4f29008075d.
 // Compiler efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4; flags/funding in vector.
-// 63228 script B +450 overhead B =63678 challenge B.
-// RPA_BUNDLE_REGULAR_MAIN=1: cached initializer794->2919B includes exact2120Bmain16.
+// 63125 script B +450 overhead B =63575 challenge B.
+// RPA_LAZY_PAIR_PRODUCT=1 requires bundled Regular/minus1 arithmetic; main16 stays exact2120B.
+// Function12 replaces MUL/MOD with MUL before final reduction; raw library535->534B, cache2919->2918B.
+// Nonnegative caller induction preserves the canonical outputs; arbitrary signed operands are outside scope.
 // Cacheid15 is unused by all existing nested literal definitions/calls; newguard pins it.
-// Proxies use one initializer window; outermain definition and secondwindow removed.
-// Raw535/774/257 bodies and all proof/witness/public/root/quotient/aux/state/challenge values fixed.
-// Source51fundtopups togroups5/8/11/16 leave55Bnet saving from106rawB.
-// Native primary:38654180/38830692; maxima:50301904/50656976;
-// minimum margins:6117/101 consensus/standard.
+// Existing authenticated single-window initializer/import layout and all other function bodies remain exact.
+// PIC774/257 bodies and all proof/witness/public/root/quotient/aux/state/challenge values fixed.
+// Refund26/25/25/26 funding bytes at groups5/8/11/16; one raw byte plus102funding =103B saved.
+// Some canonical helper boundary calls cost more; whole-corpus cost improvements are finite measurements.
+// Native primary:38489953/38666209; maxima:50105021/50459837;
+// minimum margins:6138/122 consensus/standard.
 // Ten normal exports reject3440 owning/whole controls. Actual native:
 // 1028 contexts,200 reconciled input prices; failed whole prices null.
-// All160 old10 invalids/322 direct prior-origin records and172
+// All160 old10 invalids/332 direct prior-origin records and172
 // current source cases retained as160 distinct transactions;8 hash flips.
 // Historical origins nested intact. Existing adapter body exact; other entries unchanged.
-// Old10/11 and eight other normal reports reproduce exactly with newflagoff.
+// Old10/11 and eight other complete normal reports reproduce exactly with lazyflagoff.
 // FS-PIT/exactG2/pairing-equivalentG1 grades unchanged. Finite corpus only;
 // no universal resource/soundness, newredteam, uniqueG1 or live admission claim.
-// Vector SHA256:7ededb656dda99ff4f70f5a00e9ba479d1607c4c49b7dc4353e9d7baa5407fa1.
+// Vector SHA256:d03a6a716241ddf72505723a3505b9bbf02e50f5d5141a1ecb4849f9f1883063.
 import { readFileSync } from 'node:fs';
 
 import { hexToBin } from '@bitauth/libauth';
