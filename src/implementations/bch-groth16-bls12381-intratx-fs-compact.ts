@@ -35,48 +35,31 @@
 // identity has degree at most 137. In the SHA-256 random-oracle model, the
 // conservative union bound is 160/(2^256-1), less than 161/2^256.
 //
-// Compact transcript/namespace candidate; measured fixture coverage only.
-// Source checkout base Git commit c40e65dfc70b094fc197dd8aee782009f938165c.
-// Candidate source measure SHA256 9d78d62be0afa0ba026ffe6961beb1b1b3e5040b08f7a2297b2e95d358fb5c30 (export pin, not a Git revision); published base current.
-// Legacy candidate provenance: 21beb8116a0fb191402160350c4bce4605a0ef95.
-// The Regular payload uses a 32-byte root for each zero window and a 704-byte
-// authenticated record for each nonzero window. UD trims seven regular-padding bytes relative to the published TU point; proof, witness, math, and authenticated resource fields remain fixed.
-// Input 3 retains its explicit 80-byte padding.
-// The tested compact map stays within one constant-width script-framing region:
-// {3:436,5:423,6:377,7:385,8:369,9:376,10:377,11:386,12:377,13:386,14:388,16:411,17:383,18:384,19:393}.
-//
-// Committed candidate fixture: 68,422 wire B / 68,226 script B.
-// Dense/max-size fixture: 88,582 wire B / 88,386 script B.
-// Official aggregate challenge score: 69,192 B; maximum supplied-fixture
-// challenge footprint: 89,352 B. The fixed 79,948 entry remains the historical
-// Pareto alternative.
-// The inherited identifiers are 101->16, 117->15, and 104->-1. SK changes
-// extra helper 103->14 and common helper 102->13 only in AdditionTail and its
-// proxy; other common-helper consumers retain 102. Source coverage is finite
-// (10 fixtures, 220 pairs). The current source/Libauth mutation corpus has 540 cases per mode;
-// separate native checks cover 64 contexts (20 accepted, 44 rejected); reached
-// input counts are retained in the native replay receipts because negative rows may stop early.
-// The unchanged harness reports committed bytes and dense operation costs
-// separately; 89,352 is the derived dense challenge footprint, not the official score.
-// The current pinned source replay covers ten supplied fixtures (220 source
-// input pairs); the separate benchmark vector supplies 22 full negative runs.
-// These are corpus checks only. They do not establish arbitrary-witness
-// producer bounds, helper closure, or a universal resource theorem.
-// The prior 79,948 best entry is preserved outside this isolated candidate.
-// Fresh native replay covers ten supplied fixtures and 22 rejection contexts in each
-// consensus/standard mode. Committed native costs are 42,895,929 / 43,084,857;
-// maximum supplied-fixture costs are 56,819,457 / 57,186,945; the minimum tested
-// standard per-input margin is 79 operation-cost units. This is finite supplied-corpus
-// evidence, not a universal resource bound.
-//
-// Candidate source artifact SHA256 (not a Git revision):
-//   9d78d62be0afa0ba026ffe6961beb1b1b3e5040b08f7a2297b2e95d358fb5c30
-// Candidate pinned source resource export SHA256:
-//   68f22952453af7a4d386bce1971c2565b12ffadf7602faef771c6b71078eb7c0
-// Vector SHA256 (current package metadata):
-//   a8f468d177020b69adacea6e52eb0496ced177dfd50b8eb77b0dbe5d41531616
-// Length-prefixed locking-set SHA256:
-//   98f3a2cebb0916acd25536d398e227f165aad9ac199938b591217fb08f84e208
+// Qualified source: groth16_cashscript 6b014791e0407fcbeeb0c6ab208a358dbb47cb0c.
+// Compiler: cashscript zk-language efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4.
+// The source uses signed line numerators, three-multiply Fp2 products, a 535-byte
+// arithmetic library, rescheduled mains and shared-prime calls. Terminal imports
+// that library through wrapper14 before invoking its existing minus-one leaf.
+// RPA_TEMPLATE_COMMON_PRIME_POOL=on and RPA_TEMPLATE_TERMINAL_PRIME_POOL=on;
+// RPA_COMPACT_ARITHMETIC_PRIME_KEY=-1, RESCHEDULE=on, RPA_TEMPLATE_CASHC=dist/compiler.js.
+// All earlier qsplit-tail22/compact/PIC settings remain; exact padding map:
+// {3:334,5:320,6:276,7:283,8:266,9:272,10:273,11:281,12:276,13:283,14:285,16:305,17:279,18:281,19:289}.
+// PIC block2 retains145 bytes; other coordinator/factor/tail/terminal pads stay0.
+// Committed: 65,402 wire B /65,206 script B /66,172 challenge B.
+// Maximum supplied fixture: 85,562 wire B /86,332 challenge B.
+// The previous69,192-byte artifact remains available in branch history.
+// One locking set accepts all10 supplied source fixtures. The source rejects540
+// controls in each mode; native replay covers64 contexts (20 accepted44 rejected)
+// and1,408 independently checked input pairs, with unchanged rejection paths.
+// B100 native primary costs:38,824,508 consensus /39,007,292 standard;
+// maximum:52,761,862 /53,123,206; minimum input margins:2,682 /378.
+// Native and source/Libauth absolute prices are reported separately.
+// These are finite supplied-corpus results; subgroup/cofactor posture and the
+// universal resource/admission scope above remain unchanged.
+// Source owner SHA256: e5a05b9ffbff445369eb264c5d2ef575faf747ab5d380498cd4c5cfcad873fdd
+// Source resource export SHA256: af3d93e6de4e46d6961f54bb87b32bb7ea7f96ebad710fa64a8c7127258f9b21
+// Vector SHA256: c2661e2d5d123207f00aa02c6e5cde4d12af0016d09e23bf1fc65e79df97089e
+// Length-prefixed locking-set SHA256: 65de70bea10263fceea5fe91731222c0573d0eee13d6119ab605bc4632529fac
 import { readFileSync } from 'node:fs';
 
 import { hexToBin } from '@bitauth/libauth';
