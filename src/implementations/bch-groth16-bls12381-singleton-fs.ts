@@ -1,16 +1,17 @@
+// Locking bytecode SHA-256: 030d83d4300c74b7c96fda27e0104301ca309c91a9399ed8cb77c8216a116cbe
 // Fiat-Shamir PIT BCH-native BLS12-381 Groth16 verifier singleton.
 //
 // The bch-groth16-bls12381-intratx-fs construction (qsplit tail-22) emitted as ONE
 // contract: the Fiat-Shamir commitment roots and the beta/alpha challenges are
 // recomputed in-script over the witness blobs, the 32 public-VK GT-table Merkle
 // authentications run inline against the baked window roots, and the 21 Miller
-// blocks chain through locals instead of cross-input reads. The witness blobs are
-// byte-identical to the transaction entry's statement, block payloads, and logical
-// 132-coefficient quotient.
+// blocks chain through locals instead of cross-input reads. Witness blobs
+// omit the public delta Miller coefficients, which the program reinserts before
+// hashing the original payloads. Statement, quotient and transcript bytes stay exact.
 //
 // This is the FS-family op-cost oracle on the loosened VM, the counterpart of the
-// unconditional bch-groth16-bls12381-singleton-minop (149.2M op): 41,434 B locking,
-// 41,273,508 worst-case op-cost across the ten-fixture corpus (39,882,044 on the
+// unconditional bch-groth16-bls12381-singleton-minop (149.2M op): 53,825 B locking,
+// 40,107,855 worst-case op-cost across the ten-fixture corpus (38,716,391 on the
 // committed fixture). One identical proof-independent contract serves all ten
 // fixtures; twelve changed-field mutations per fixture are rejected.
 //
@@ -65,7 +66,7 @@ export const bchGroth16Bls12381SingletonFs: Implementation = {
     'authenticated inline against baked window roots with leaf indices bound to the ' +
     'committed public-input bytes; the G2 walk, slope equations, psi subgroup check, and ' +
     'the lambda = p+|x| residue terminal stay exact. One identical proof-independent ' +
-    'contract serves the full ten-fixture corpus. 41.27M worst-case op-cost vs the ' +
+    'contract serves the full ten-fixture corpus. 40.11M worst-case op-cost vs the ' +
     'unconditional minop oracle’s 149.2M. Still over the 10,000 B / per-input op limits.',
   load: async () => {
     const committed = v.proofs.find((proof) => proof.committed);
