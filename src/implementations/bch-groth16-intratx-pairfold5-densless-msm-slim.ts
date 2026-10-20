@@ -4,7 +4,7 @@
 // Owning source: chunked/bn254/densless-msm-slim in groth16_cashscript (byte-exact export; SLIM_PINS=full).
 //
 // Construction / what is enforced:
-// - Claimed public inputs n0, n1 are the TERMINAL's own number pushes (input 4, pushes 53, 52). The
+// - Claimed public inputs n0, n1 are the TERMINAL's own number pushes (input 4, counted backward from the terminal redeem). The
 //   terminal range-checks 0 <= n < r and checks the GLV decomposition of the witness bytes w against
 //   them (S0 = k10 + lambda*k20 == n0, S1 = k11 + lambda*k21 == n1 mod r).
 // - w (64 bytes, one per Straus position) lives only in the terminal's state push (w, X, Y, Z;
@@ -47,7 +47,7 @@
 //   genesis+vkx-msm         1b317fcbffc4dd638ae4798502da48eb46711ec5a891eb689d23155b4abbe3b4
 //   terminal+vkx-msm-final  82bafb56510493f82c1f92e3c043c2299c936dc1b28c9f264db0f18baf077567
 import { readFileSync } from 'node:fs';
-import { hexToBin } from '@bitauth/libauth';
+import { decodeAuthenticationInstructions, hexToBin } from '@bitauth/libauth';
 
 import type { Implementation, Step } from '../harness/types.js';
 
@@ -86,10 +86,11 @@ const toRun = (raw: RawStep[]): Step[] => {
 
 const slim = (id: string, name: string, path: string): Implementation => {
   const vectors = JSON.parse(readFileSync(path, 'utf8')) as Vectors;
+  const terminalPushes = decodeAuthenticationInstructions(hexToBin(vectors.steps[4]!.unlocking)).length;
   return {
     id,
     // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
-    publicInputs: [{ input: 4, push: 53, name: 'n0' }, { input: 4, push: 52, name: 'n1' }],
+    publicInputs: [{ input: 4, push: terminalPushes - 4, name: 'n0' }, { input: 4, push: terminalPushes - 5, name: 'n1' }],
     name,
     proofSystem: 'Groth16',
     field: 'BN254',
@@ -127,13 +128,15 @@ export const bchGroth16IntratxPairfold5DenslessMsmSlimCacheProfiles =
     `src/bch/groth16-intratx-pairfold5-densless-msm-slim-${profile}-vectors.json`,
   ));
 
-// Opt-in AM-a1 SHARED_PRIME_PROFILE=orbit-retained companion; source e3ec332801af2b5801c3adf40f69b80e70d0c6b3.
-// Uses eight representatives per fixed public table, reconstructing point 11 from representative 13; retains point 14 for sampled native budget fit.
-// Three fixed-table sign masks replace 84 limb calls, preserving the 928/832/928-byte table frames and all other pins.
-// 33,442 script bytes / 33,502 measured wire bytes / 33,677 score; sampled native primary costs 24,964,996 consensus / 25,030,148 standard.
-// Fixed 208-context B100 corpus: 84 accept / 124 reject; minimum accepted margins 59,969 consensus / 47,681 standard.
+// Opt-in SHARED_PRIME_PROFILE=orbit-retained companion; source 1493478e31ccd540416f7210bd9d976f15ace148.
+// The cached field helpers remain exact; the zk-language compiler hoists constants in the MSM mains.
+// Full pins, split37/cuts27,36,47,55, GENESIS_PAD=23/STAGE_PADS=0,0,0,25; MSM_CONSTANT_HOISTING=all.
+// Compiler cashscript efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4, MSM_CASHC=packages/cashc/dist/compiler.js, RESCHEDULE=on.
+// 33,354 script bytes / 33,414 measured wire bytes / 33,589 score; native primary costs 25,026,557 consensus / 25,091,453 standard.
+// Fixed 208-context B100 corpus: 84 accept / 124 reject; minimum accepted margins 12,601 consensus / 441 standard.
+// The previous 33,677-byte profile has lower primary native cost (24,964,996 consensus /25,030,148 standard); retained in history.
 // Archive vectors and 44 attack cases are mechanically re-encoded; proof, witness, public-input, and math values remain fixed.
-// Default full-pinned score remains 35,109 = 34,874 script +235 overhead; no universal resource bound claimed.
+// Default full-pinned score remains 35,109 = 34,874 script +235 overhead; all six other adapter profiles remain exact.
 export const bchGroth16IntratxPairfold5DenslessMsmSlimSharedPrime = slim(
   `${id}-shared-prime`, `${name} (shared-prime orbit-retained companion)`,
   'src/bch/groth16-intratx-pairfold5-densless-msm-slim-shared-prime-vectors.json',
