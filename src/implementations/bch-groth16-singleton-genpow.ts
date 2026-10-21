@@ -1,14 +1,10 @@
-// Source-assembled BN254 genpow with canonical G1 parity witnesses.
-// 4,174 locking bytes and a 208-byte witness; prior source export used 4,183/208.
-// Owning source: singleton/bn254/genpow-reconstructed/{verifier.asm,build.mjs}.
-// Assembly SHA-256: 8c635b941f0238b551b83d14a003687ecc9be410617dd35ad2430c9268568f89.
-// Earlier source helper reductions and the guarded outline49 rotation cycle are now exported.
-// Candidate locking SHA-256: ad1463ce75596a0b8a5be241930db24ec563777825f22b3bde05d0a27bff0c10.
-// A/C y parity is decoded with the shared exponent-driven Fp routine;
-// exact archived y, original x and eight other raw witness pushes are preserved.
-// Decoder root checks replace the two former standalone G1 equations.
-// This changes the witness representation domain; no unrestricted byte-language
-// equivalence, native resource admission or new subgroup theorem is claimed.
+// Source-owned BN254 singleton: minimum bytes, generic final exponent.
+// Source 73645ec5f01f3a9bc8cd6f1c684881191dcfe955; profile bytes.
+// Assembly SHA256 137083ce3fc2db6d0bcf19f1438a9b89a59a8329ad35af3f2404a411546a0333; builder SHA256 6c899e71d58093e3904a7617e207778c38c906a00af5545f4eac607f4c87d355.
+// 4152 locking +208 witness +85 overhead =4445 bytes; relaxed primary cost 5516859822.
+// Locking SHA256 0e2ec0dc2ba7c23307385b6b742f89903c278c5ab095561a4350914953c65b2f.
+// Proof/witness/public/VK values fixed; four valid/four invalid and nine public-input mutations.
+// Existing validation/security grades; no new red-team, subgroup, native or bch-spec claim.
 import { readFileSync } from 'node:fs';
 import { hexToBin } from '@bitauth/libauth';
 
@@ -32,7 +28,7 @@ export const bchGroth16SingletonGenpow: Implementation = {
   id: 'bch-groth16-singleton-genpow',
   // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
   publicInputs: [{ input: 0, push: 1, name: 'n0' }, { input: 0, push: 0, name: 'n1' }],
-  name: 'BCH Groth16 verifier singleton, BN254 genpow (shared P, range-checked inputs, source-assembled 4,174 B, G1 parity)',
+  name: 'BCH Groth16 verifier singleton, BN254 genpow (shared P, range-checked inputs, source-assembled 4,152 B, G1 parity)',
   proofSystem: 'Groth16',
   field: 'BN254',
   structure: 'single-tx',
@@ -42,12 +38,12 @@ export const bchGroth16SingletonGenpow: Implementation = {
     'The fixed proof A/C y coordinates use parity pushes, reducing the witness from 272 to 208 bytes. ' +
     'The verifier reconstructs each canonical y with a shared posttest remaining-exponent loop, checks the ' +
     'curve equation and requested parity, and retains the original x and remaining witness data. ' +
-    'The 4,174-byte program has sha256 ad1463ce75596a0b8a5be241930db24ec563777825f22b3bde05d0a27bff0c10. ' +
+    'The 4,152-byte program has sha256 0e2ec0dc2ba7c23307385b6b742f89903c278c5ab095561a4350914953c65b2f. ' +
     'The 72-function program retains its 32-byte scalar guard, G2 checks and source-owned helpers. ' +
     'Three rotations after successful depth-nine disposal guards are omitted because they form an identity. The power loop ' +
     'shifts its remaining exponent before testing for zero; all archived proof and ' +
     'public-input integers are preserved. The final Fp12 exponent now shifts in place too, retaining the ' +
-    'unused counter slot to keep field-helper stack indices exact. The original CashScript/stackcert lineage remains missing. ' +
+    'unused counter slot to keep field-helper stack indices exact. Eleven depth-10 rolls in the verdict tail form an identity and are removed; the next depth-11 roll remains. The original CashScript/stackcert lineage remains missing. ' +
     'Actual finite proof/cost gates are recorded separately; relaxed VM limits are required.',
   load: async () => {
     const valid: Step[] = [
