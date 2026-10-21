@@ -1,28 +1,40 @@
 // Current-BCH BLS12-381 FS-PIT,10 P2SH32 inputs, all21 logical stages.
-// Qualified source:982645fbf76bfbd7ed4b6c86b5a5232fb3121e6c; owner SHA256:588c84c0ddd3b5e793156805e5077c03213ce70f1bee107444dd3b89e88605f8.
+// Qualified source:78857ef6f8539d1d5bd804de2c67e873881e99b1; owner SHA256:f30cd4fc0915656498eaaf46d8df8bf508d7edf7310c9e17bac8150dd10e122f.
 // Compiler efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4; flags/funding in vector.
-// 63069 script B +450 overhead B =63519 challenge B.
-// RPA_FUSE_RELATIONS=1 requires the scheduled lazy-pair bundled Regular/minus1 profile.
-// For nonnegative operands: (total+(power*residual)%P)%P=(total+power*residual)%P.
-// Unsigned parsing/power recurrence and canonical residuals preserve that domain.
-// Arbitrary signed operands are outside scope; isolated signed counterexamples retained.
-// Regular owns exact799B source arithmetic; optional mAdd inline expansion is checked exactly.
-// Literal definition IDs, exact821B parser/257B extension and namespace inverses remain guarded.
-// Private relation helper12->9B; Regular main16 is2118B and cached initializer2916B.
-// The shared534B arithmetic library and existing lazy pair-product lowering remain.
-// Refund11/11/11/10 funding bytes at groups5/8/11/16;13 raw+43 funding=56B saved.
+// 62912 script B +450 overhead B =63362 challenge B.
+// RPA_FINAL_RELATION_TOTAL=1 requires the relation-fusion scheduled lazy-pair Regular profile.
+// Last absorb keeps exactly mulAddFp(power,residual,total); its next power is unused.
+// Each later logical stage initializes its own power; no transcript relation is removed.
+// The inherited nonnegative fused-reduction domain and signed counterexamples remain.
+// Regular owns exact799B source arithmetic and unchanged534B optimized shared library.
+// Mixed continuations declare/define no private helpers and call only literal shared owners.
+// Identity remap/inverse, exact821B parser/257B extension and ABI guards remain.
+// Psi reads retain their length/offsets, with64/65/66 stack depths;616 native kernel contexts.
+// Cached Regular main16 is2106B; initializer2904B. All literal-ID checks remain.
+// Refund27/27/27/28 funding bytes at groups5/8/11/16;48 raw+109 funding=157B saved.
 // All archived proof/witness/public/root/quotient/aux/state/challenge values fixed.
-// Native primary:38419912/38596040; maxima:50034986/50389674;
-// minimum margins:5924/36 consensus/standard.
+// Native primary:38257693/38433437; maxima:49871649/50225953;
+// minimum margins:6198/310 consensus/standard.
 // Ten normal exports reject3440 owning/whole controls. Actual native:
 // 1028 contexts,200 reconciled input prices; failed whole prices null.
 // All160 old10 invalids/332 direct prior-origin records and172
 // current source cases retained as160 distinct transactions;8 hash flips.
 // Historical origins nested intact. Existing adapter body exact; other entries unchanged.
-// Twelve previous complete normal reports reproduce exactly with relation fusion off.
+// Fourteen previous complete normal reports reproduce exactly with final-total off.
 // FS-PIT/exactG2/pairing-equivalentG1 grades unchanged. Finite corpus only;
 // no universal resource/soundness, newredteam, uniqueG1 or live admission claim.
-// Vector SHA256:1eabd325e25fa0eed348b2c71a1586c5ce8d2cb9ba8307235d1d1faf1a9404ed.
+// Vector SHA256:18035f6792a89bfbcdb326062c5c532fddddb887c191cc768b505fc8cda6b04c.
+// Locking SHA256 by physical input:
+// 0: fbf2cc6d0406f05a0984a719599eb4455f86849ea0426787990207666b051b75
+// 1: 659a411f49cc7b3df7549e523184f685830183ffb7b1a57483f8055d9ddc25f6
+// 2: 22d9f6b8ae218a6ac67bb468eedcfb5b335df95a7a1f3851bb96e7b83dffedb0
+// 3: 072af8929de378333f007e3a01c06c5b04ed2153901d6e426ca01285bee0bda6
+// 4: 48465c327de3851211da5c328bdad70c8ee57d6c7ec9e29ba24a22ec0c18e10f
+// 5: de7e1f08a62dc7e503e57613da77aa4f136c93b0d20f4aa5bd502e2ec7180eb7
+// 6: 8bc7c4424f9a791ad40d071aadb0ff305c10bdea3a2996be19c094b4853b7e05
+// 7: 847efb06dd19df61083cfa0c592d398a9144a645f25de214caf1604bc371047f
+// 8: 598ec8171078c3e092c62d7932a8b8e581d501220f9ba2a6e53e99c166124068
+// 9: 254146957d11335ff1a5460da9d4e56af876cd910119ce4ca06d34bc0f6e2eb4
 import { readFileSync } from 'node:fs';
 
 import { hexToBin } from '@bitauth/libauth';
