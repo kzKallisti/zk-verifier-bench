@@ -1,26 +1,28 @@
 // Current-BCH BLS12-381 FS-PIT,10 P2SH32 inputs, all21 logical stages.
-// Qualified source:62ac248d9ead36617f441947b49f80bfd7012dfa; owner SHA256:8c5e0223c1383f1046f280785b9ec7d9d821419290748e90f28ff4f29008075d.
+// Qualified source:982645fbf76bfbd7ed4b6c86b5a5232fb3121e6c; owner SHA256:588c84c0ddd3b5e793156805e5077c03213ce70f1bee107444dd3b89e88605f8.
 // Compiler efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4; flags/funding in vector.
-// 63125 script B +450 overhead B =63575 challenge B.
-// RPA_LAZY_PAIR_PRODUCT=1 requires bundled Regular/minus1 arithmetic; main16 stays exact2120B.
-// Function12 replaces MUL/MOD with MUL before final reduction; raw library535->534B, cache2919->2918B.
-// Nonnegative caller induction preserves the canonical outputs; arbitrary signed operands are outside scope.
-// Cacheid15 is unused by all existing nested literal definitions/calls; newguard pins it.
-// Existing authenticated single-window initializer/import layout and all other function bodies remain exact.
-// PIC774/257 bodies and all proof/witness/public/root/quotient/aux/state/challenge values fixed.
-// Refund26/25/25/26 funding bytes at groups5/8/11/16; one raw byte plus102funding =103B saved.
-// Some canonical helper boundary calls cost more; whole-corpus cost improvements are finite measurements.
-// Native primary:38489953/38666209; maxima:50105021/50459837;
-// minimum margins:6138/122 consensus/standard.
+// 63069 script B +450 overhead B =63519 challenge B.
+// RPA_FUSE_RELATIONS=1 requires the scheduled lazy-pair bundled Regular/minus1 profile.
+// For nonnegative operands: (total+(power*residual)%P)%P=(total+power*residual)%P.
+// Unsigned parsing/power recurrence and canonical residuals preserve that domain.
+// Arbitrary signed operands are outside scope; isolated signed counterexamples retained.
+// Regular owns exact799B source arithmetic; optional mAdd inline expansion is checked exactly.
+// Literal definition IDs, exact821B parser/257B extension and namespace inverses remain guarded.
+// Private relation helper12->9B; Regular main16 is2118B and cached initializer2916B.
+// The shared534B arithmetic library and existing lazy pair-product lowering remain.
+// Refund11/11/11/10 funding bytes at groups5/8/11/16;13 raw+43 funding=56B saved.
+// All archived proof/witness/public/root/quotient/aux/state/challenge values fixed.
+// Native primary:38419912/38596040; maxima:50034986/50389674;
+// minimum margins:5924/36 consensus/standard.
 // Ten normal exports reject3440 owning/whole controls. Actual native:
 // 1028 contexts,200 reconciled input prices; failed whole prices null.
 // All160 old10 invalids/332 direct prior-origin records and172
 // current source cases retained as160 distinct transactions;8 hash flips.
 // Historical origins nested intact. Existing adapter body exact; other entries unchanged.
-// Old10/11 and eight other complete normal reports reproduce exactly with lazyflagoff.
+// Twelve previous complete normal reports reproduce exactly with relation fusion off.
 // FS-PIT/exactG2/pairing-equivalentG1 grades unchanged. Finite corpus only;
 // no universal resource/soundness, newredteam, uniqueG1 or live admission claim.
-// Vector SHA256:d03a6a716241ddf72505723a3505b9bbf02e50f5d5141a1ecb4849f9f1883063.
+// Vector SHA256:1eabd325e25fa0eed348b2c71a1586c5ce8d2cb9ba8307235d1d1faf1a9404ed.
 import { readFileSync } from 'node:fs';
 
 import { hexToBin } from '@bitauth/libauth';
