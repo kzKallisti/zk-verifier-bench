@@ -1,41 +1,32 @@
-// Current-BCH BLS12-381 FS-PIT,11 P2SH32 inputs, all21 logical stages.
-// Qualified source:78857ef6f8539d1d5bd804de2c67e873881e99b1; owner SHA256:f30cd4fc0915656498eaaf46d8df8bf508d7edf7310c9e17bac8150dd10e122f.
-// Compiler efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4; flags/funding in vector.
-// 62945 script B +493 overhead B =63438 challenge B.
-// RPA_FINAL_RELATION_TOTAL=1 requires the relation-fusion scheduled lazy-pair Regular profile.
-// Last absorb keeps exactly mulAddFp(power,residual,total); its next power is unused.
-// Each later logical stage initializes its own power; no transcript relation is removed.
-// The inherited nonnegative fused-reduction domain and signed counterexamples remain.
-// Regular owns exact799B source arithmetic and unchanged534B optimized shared library.
-// Mixed continuations declare/define no private helpers and call only literal shared owners.
-// Identity remap/inverse, exact821B parser/257B extension and ABI guards remain.
-// Psi reads retain their length/offsets, with64/65/66 stack depths;616 native kernel contexts.
-// Cached Regular main16 is2106B; initializer2904B. All literal-ID checks remain.
-// Refund27/27/27/28 funding bytes at groups5/8/11/16;48 raw+109 funding=157B saved.
+// Current-BCH BLS12-381 FS-PIT, 11 P2SH32 inputs, all 21 logical stages.
+// Qualified source: 066fe2a680b54fe28fa7920b8b1a30df936cccaf; owner SHA256: 20191e3e2686df5809fed7bde98d40f285f4cc23d540e7cb3787197130e216bc.
+// Compiler efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4; full buildFlags/funding in vectors.
+// 62818 script + 493 overhead = 63311 total challenge bytes.
+// RPA_EVAL6_PAIRED=1 requires the scheduled final-total lazy-pair Regular profile.
+// Exact 534-byte owner guard: replace only the 33-byte eval6 body with 27 bytes;
+// seven-field ABI unchanged, thirteen other definitions exact, library now 528 B.
+// Library SHA256: 9b7339fc17c0c562c1a3eef4a5b5769e0b7eb6b92b447cf63b42e0512036254c.
+// Reduce Horner after steps 1/3/5. Unsigned parsed coefficients/alpha and canonical
+// field/Frobenius updates own the nonnegative domain. This preserves the polynomial
+// modulo P; signed-remainder counterexamples forbid a generic signed compiler rule.
+// Actual source alpha is 32 bytes; canonical two-step intermediates need at most 112 B.
+// Refund 30/31/30/30 unused funding B at groups 5/8/11/16: 6 raw + 121 funding = 127 B.
+// Parsing, original transcript, field/Miller/quotient equations and final verdict remain.
 // All archived proof/witness/public/root/quotient/aux/state/challenge values fixed.
-// Native primary:38166505/38342377; maxima:49783149/50137581;
-// minimum margins:6186/298 consensus/standard.
-// Ten normal exports reject3140 owning/whole controls. Actual native:
-// 948 contexts,220 reconciled input prices; failed whole prices null.
-// All150 old11 invalids/307 direct prior-origin records and157
-// current source cases retained as150 distinct transactions;7 hash flips.
-// Historical origins nested intact. Existing adapter body exact; other entries unchanged.
-// Fourteen previous complete normal reports reproduce exactly with final-total off.
-// FS-PIT/exactG2/pairing-equivalentG1 grades unchanged. Finite corpus only;
-// no universal resource/soundness, newredteam, uniqueG1 or live admission claim.
-// Vector SHA256:09e65e0f73b1b7a87a6bcde88a28f57570ed2f0a145c42f80bb05aa41b983161.
-// Locking SHA256 by physical input:
-// 0: b1cfba598ef330ad1c70d656e196750fa37f9c2e4b5754e6d870f2936068bbfc
-// 1: cfe690819bf190e40fee43bf09dd8f2a3736d17f226d0957eb932a4a13f23ee2
-// 2: 07bacbef9cf9fcc2d515ade68c3c8f12789f23f279c96bab93b0285505e4c4aa
-// 3: 718ae6bf3caadf689a573ac21295d86c7a0588b8cbbe1ae5099717970a21a255
-// 4: d438b8203e227ad41e7fc110b4fa5aa43189944603d662fc98115c2a785b2334
-// 5: ae760e4288a009a90ab0ae6b2ab91a5741eb9aa3113fae3d30313fa7fe306d23
-// 6: 980bd606ff443dd93bef8dade487fd57780d2dba01403384bfefee9b3c4f917d
-// 7: 0adb2d1d21abee60901e80511fcbb2d6634c07421800127bbd010545aac274f3
-// 8: f40778aff5a308a5a2ed54c83a00c993d8dd5c7ea82365e8c597336f0a1ab10d
-// 9: 0606b8ec24199ce8076032b935149cda305df77fd14691f384ab14cb499d137a
-// 10: 1f7627d12408e27dae2438ed029a823ffa76eba36b27f63d9df332edd16a0bb4
+// Original 799-byte source arithmetic prefix and all other existing bytecode guards remain.
+// Existing shared parser/extension, literal function ownership, ABI and psi checks retained.
+// Native primary: 37964697/38140185; maxima: 49581289/49935337.
+// Minimum sampled consensus/standard margins: 6534/774.
+// Ten normal exports: 3140 owning/whole source checks. Actual native:
+// 948 contexts, 220 input-price reconciliations; failed prices null.
+// 150 prior invalids / 307 direct origins, 157 source cases,
+// 7 hash flips retained as 150 unique transactions; nested histories intact.
+// Native owner-helper kernel: 360 C/STD contexts, protected alternate stack, independent
+// polynomial expectations. Exploratory 16-partition kernel: 1,920 contexts. Whole checks separate.
+// Existing adapter executable body exact. Default-off prior reports exact; spec entries unchanged.
+// FS-PIT/exact-G2/cofactor-equivalent-G1 and input-validation grades unchanged.
+// Finite supplied cohort only: no universal resource/soundness, new red-team or live-relay claim.
+// Locking-set SHA256: cac26e37f9d43b01d0e19d9e4beb81b13a34734b61fcbfe0fb0b19a22ba758a7. Vector SHA256: 567988bb62d67689c3ffe50431ea9d032980f8b2d4a8ead3f0db2f6c92826afa.
 import { readFileSync } from 'node:fs';
 
 import { hexToBin } from '@bitauth/libauth';
