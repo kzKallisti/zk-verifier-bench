@@ -1,34 +1,31 @@
 // Current-BCH BLS12-381 FS-PIT: nine P2SH32 inputs, all21 logical stages.
-// Source b1f17f42c20a999b587219703a82705dc9591224; owner SHA256 3c04913d39591b9cd2186c330c31bac4e0518ed850186103854e3c69c33b4158.
-// Compiler efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4; full build flags in vectors.
-// 60219 script + 407 overhead = 60626 challenge bytes.
-// Immutable inline root checks pin the final ordered eight-worker locking set.
-// Root owns the quotient head; complete coordinator code is imported only after
-// that binding, from four existing funding pushes and one FirstTail data push.
-// Imported code excludes its expected worker hash: no cryptographic fixed point.
-// Each input caches the root's first870 header/statement bytes under raw key0x67.
-// Cache body is one literal PUSHDATA2 data push; witness bytes are never executed.
-// Only guarded bounded header/statement reads use it; full-root readers unchanged.
-// All46 old argument pushes,21 logical stages, transcript/equations/verdict fixed.
-// Native primary C/STD 37855684/38025924;
-// maximum 49501698/49850498; minimum sampled
+// Source 9c1f0fe614da7c00b513e34216712dde1c572423; owner SHA256 9bd26d416375327405b92c759ce377544f606917dafdbbf2989d05a6725d653c.
+// Compiler efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4; full flags in vectors.
+// 59878 script + 407 overhead = 60285 challenge bytes.
+// RPA_PIC_ZERO_MASK=1: canonical32-byte scalar OR for zero-window lengths only.
+// Original authenticated digits, statement, roots, transcript and46 arguments fixed.
+// Inline root checks pin the final ordered eight-worker locking set before imports.
+// Complete coordinator code stays in four funding carriers and FirstTail overflow.
+// Prefix mode 1; data-only cache bodies and arithmetic ABI unchanged.
+// Native primary C/STD 37816994/37986594;
+// maximum 49462972/49811132; minimum sampled
 // per-input margins 54639/48751.
-// Ten normal exports,3520 source checks;1072 native
-// contexts,180 reconciled positive input prices; failures null.
-// All164 old invalids/336 direct origins and176 current source cases retained,
-// including four relocated old carrier attacks and ten new carrier controls.
-// Complete byte-identical transaction dedup only; all nested origins preserved.
-// Existing FS-PIT,exact-G2/cofactor-equivalent-G1 and security grades unchanged.
-// Finite supplied corpus: no universal resource/soundness or live relay claim.
-// Locking-set SHA256 98c241a309b4ca66b8e2afc18fbfa3b9e5d2623486184a523e8bca13283b9b16; vector SHA256 b1d20de1df316a245aaa8916a829fc8404e2bfb45362aa527a1a75d413110a54.
-// Input 0 locking SHA256 f5ee35ffa005ea081b5ce3f635e52d8892e55171817f219125476f3688c58288.
-// Input 1 locking SHA256 f1d2858a69e10f31b34bc2e7d46dce0d134051f89c64b2ffdf83b73db0b4cf67.
+// Ten normal exports,3520 source checks;1090 native
+// contexts,180 reconciled positive prices; failed prices null.
+// Retain all173 old invalids/350 direct prior origins,
+// all nested histories,176 current source cases and10carrier controls.
+// Complete transaction byte-identity dedup only; every origin retained.
+// Existing FS-PIT, exact-G2/cofactor-equivalent-G1 and security grades unchanged.
+// Finite corpus: no universal resource/soundness or live relay claim.
+// Locking-set SHA256 98baf9022aab106f9328b57e330bd20609c9353d6df97d4bc02a4202b5e9aa94; vector SHA256 59f0e4cc153f80ad01f1b7491294236df58b11b80771bb84732b3ae6062386fe.
+// Input 0 locking SHA256 828ab4efec5c8b672df1ff669076437012298202e2738389f73a2fb0d33864d4.
+// Input 1 locking SHA256 e78cef3e6825364751ebe6ada4755945b496c7252f554b84c4d2f164ba99188c.
 // Input 2 locking SHA256 59aecca8cfbf79a3c3d5122da20be5ef754bf6017b1f56830c1afd9f50347a62.
 // Input 3 locking SHA256 d6ec654d6a2f97adb4c3f869aff911dddf76a7078f9479c14f1cb5438ed3073c.
-// Input 4 locking SHA256 1c2c333bf341f37fbfa32c0ec20f690bacf9d50ea0442c6f8f9e28b4e5e50d39.
-// Input 5 locking SHA256 4cdf048a66ed188a667d0c713233a72428f1f9951526250ad50609bb06c4f826.
+// Input 4 locking SHA256 eae327101b50859dc8a71151b2c47a56af57cae8419b480f1692b40b0518c0b8.
+// Input 5 locking SHA256 9a4e69d67894c6974a4502998d76921f94758ff9aa19a4550895ee5325ad9b90.
 // Input 6 locking SHA256 ff13bd3693311d1bb45bb647dd9b9c7b98b1745f92632ee4109e5b8c0573394e.
-// Input 7 locking SHA256 9de16eb9f68a374a86aec960ca324986d38e4eb10f117128386a7a601766a862.
+// Input 7 locking SHA256 f5caf621f0a32793049faf29c3c0afcc4e60a1b2768043d614707b10f3ae30d5.
 // Input 8 locking SHA256 356e2e9e0725d68279c06a572addd9f2e62f9b9a7310e4250244d619a1dd6609.
 import { readFileSync } from 'node:fs';
 
