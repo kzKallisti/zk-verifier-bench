@@ -35,41 +35,28 @@
 // identity has degree at most 137. In the SHA-256 random-oracle model, the
 // conservative union bound is 160/(2^256-1), less than 161/2^256.
 //
-// Compact transcript/padding candidate; measured fixture coverage only.
-// Owning source Git commit 9cc374db558a7759a6d9c07977beb9aa520da3e2.
-// Candidate source SHA256 7d21a55fbab9146ba62bf97321e2160e047524189041ee7c809311b7affad691 (export pin, not a Git revision); upstream base current.
-// Legacy candidate provenance: 21beb8116a0fb191402160350c4bce4605a0ef95.
-// The Regular payload uses a 32-byte root for each zero window and a 704-byte
-// authenticated record for each nonzero window. Fixed proxy padding adds 409 B
-// over the initial compact corpus. Input 3 retains its explicit 80-byte padding.
-//
-// Committed candidate fixture: 69,177 wire B / 69,947 aggregate challenge-score B.
-// Dense/max-size fixture: 89,337 wire B / 90,107 aggregate challenge-score B.
-// This candidate is 62 score bytes below the prior compact candidate; the fixed
-// 79,948 entry remains the historical Pareto alternative.
-// Exactly three template identifiers change: 101->16, 117->15, and 104->-1;
-// 102 and 103 remain unchanged. Source coverage is finite (10 fixtures, 220
-// pairs). The current source/Libauth mutation corpus has 540 cases per mode;
-// separate native checks cover 64 contexts (20 accepted, 44 rejected, 566 calls).
-// The unchanged harness reports committed bytes and dense operation costs
-// separately; 90,107 is the derived dense footprint, not the official score.
-// The current pinned source replay covers ten supplied fixtures (220 source
-// input pairs); the separate benchmark vector supplies 22 full negative runs.
-// These are corpus checks only. They do not establish arbitrary-witness
-// producer bounds, helper closure, or a universal resource theorem.
-// The prior 79,948 best entry is preserved outside this isolated candidate.
-// The current candidate's native-minus-Libauth DEFINE-body difference is 99,442
-// operation-cost units in each mode; the prior 99,480-unit figure remains
-// historical baseline metadata.
-//
-// Candidate source artifact SHA256 (not a Git revision):
-//   7d21a55fbab9146ba62bf97321e2160e047524189041ee7c809311b7affad691
-// Candidate pinned source resource export SHA256:
-//   e7ad9eaaab5cbc1cc29427098a6e7184a9efbbcbfeb43515175295c97d820d28
-// Vector SHA256 (current package metadata):
-//   8307910d302406be30f93232798f410d6a513004625b546d6410de1a8637fc54
-// Length-prefixed locking-set SHA256:
-//   1db77c2b7c6a0c6a39979cf5aaac5838abe766c4785ecbc4080ca395d264649e
+// Qualified source: groth16_cashscript 1003775dc379e0232ca7302d3f0964066b88e8ce.
+// Owner SHA256: 3fac418a06ffc8a009d01ba400a76e0593d2d3b15fe4b2f185248cc62ccf88d6.
+// Compiler: zk-language efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4.
+// Compact minus-one flags and coordinator scheduling remain; add RPA_SCHEDULE_PIC_AUTH=1.
+// Set RPA_PIC_BLOCK2_DENSITY_PADDING=0; the former145-byte prefix is unnecessary.
+// RPA_FUSE_FINAL_PAIR is off; lower-cost22-input point.
+// The same PIC helper source/arguments and public commitments are retained. The
+// new compiler size scheduler emits no function definitions or invocations.
+// All archived proof/root/quotient/state/challenge values and invalid controls
+// remain fixed. Adapter executable code and registry/scorer behavior unchanged.
+// Primary:64730 script B +966 overhead B =65696 challenge B.
+// Prior same-count point:65973 B ->65696 B; -277 B.
+// Native primary:37840363 consensus /38022123 standard;
+// maximum:48853719 /49214039; minimum margins:4024 /1848.
+// Maximum fixture:85856 challenge B.
+// All10 fresh source exports pass (540 producer controls). This
+// profile passes20 positive and108 negative native transactions;
+// 440 positive input costs reconcile. Full old/new comparison:320
+// native contexts and1,720 cost identities. Source defaults remain unchanged.
+// Libauth and native prices are separate. Finite supplied-corpus evidence only;
+// no universal resource bound or live relay/admission claim.
+// Vector SHA256: 061c17d9839ec255e0dc6e9187dc9469da263e4f5a7e10a2cf9de94adc7d0de0.
 import { readFileSync } from 'node:fs';
 
 import { hexToBin } from '@bitauth/libauth';
