@@ -128,37 +128,53 @@ export const bchGroth16IntratxPairfold5DenslessMsmSlimCacheProfiles =
     `src/bch/groth16-intratx-pairfold5-densless-msm-slim-${profile}-vectors.json`,
   ));
 
-// Opt-in shared-prime companion; qualified source 3bb1646285df9804cdc742e06cddb4bb390cc967.
-// MSM_PACKED_DIGITS=1 and MSM_GLV_COMPONENTS=1, both defaultoff.
-// Four packed128-bit GLV binary components, high bits shifted64, lambda twice at end.
-// Low component has at most64bits; same scalar equations and original witness bytes.
-// Exact retained-orbit helper library, full pins, split37/cuts27,36,47,55.
-// GENESIS_PAD=10/STAGE_PADS=0,0,0,0; MSM_CONSTANT_HOISTING=all.
-// Compiler efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4 via MSM_CASHC, RESCHEDULE=on.
-// 33,326 script /33,386 wire /33,561 total bytes:11B less than33572.
-// Native primary24909731 consensus /24974627 standard;
-// maxima25714689/25779585, minimum margins
-// 12247/87 consensus/standard.
-// Fresh native208contexts:84accept/124reject,420positive inputprices,1040wirepairs.
-// All44 old attack cases retained, including exact51byte forged pad; no newredteam claim.
-// All8legacy source profiles and explicit shared-prime programs remain exact.
-// GLVflagoff/GEN11 reproduces33572 exactly. Default35109/six others unchanged.
-// Historical33589/33629/33677 options retained; finite42positivecontexts permode only.
+// Shared-prime packed GLV components; source 23881a764e87f895a461e96385a4edbf76caf5d6.
+// SLIM_COMMUTATIVE_MUL=1 removes one guarded SWAP before commutative shared MUL/MOD.
+// Original caller/primitive/constant fingerprints retained; signed remainder unchanged.
+// Compiler efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4 via MSM_CASHC; RESCHEDULE=on.
+// MSM_CONSTANT_HOISTING=all, MSM_PACKED_DIGITS=1, MSM_GLV_COMPONENTS=1, MSM_GLV_PAIRS=0.
+// SLIM_CACHE=orbit-retained, SHARED_PRIME_PROFILE=orbit-retained, MSM_SIGNED_RESIDUE=madd-ny.
+// Split37/cuts27,36,47,55/fullpins; GENESIS_PAD=10, STAGE_PADS=0,0,0,0.
+// 33325 script +235 overhead =33560bytes; spend wire33385bytes.
+// Primary native24901292consensus/24966188standard.
+// Max sampled native25706250/25771146; minimum margins12247/87.
+// Native208contexts84accept/124reject/420prices; fresh owning100contexts12accept/88reject.
+// All36fixed archivedproofs passbothmodes; everymatchedcontext saves1B/8439nativeunits.
+// Proof/witness/public/aux/quotient/MSM values and all44oldmalformed cases retained.
+// Flagoff reproduces prior33561bytepoint; sixothernative and bothsingleton entries unchanged.
+// Finite corpus only; no arbitrary-proof resource, newredteam or subgroup theorem claim.
+// Locking SHA256 input0..4:
+// 0: 818415ce0c527934fa6e0e6fc058e6c10d870fd9ed9d654fef6b8be6a5eb32a2
+// 1: 818415ce0c527934fa6e0e6fc058e6c10d870fd9ed9d654fef6b8be6a5eb32a2
+// 2: 818415ce0c527934fa6e0e6fc058e6c10d870fd9ed9d654fef6b8be6a5eb32a2
+// 3: e89b0f666d0656917445db19f0457308bfc8ac322ee1aa93f99ae597909e96a3
+// 4: 5883bea34d40bfb198ba0b25365fe9f0d6c131f8e4512fe7c94205a793e1c7f4
 export const bchGroth16IntratxPairfold5DenslessMsmSlimSharedPrime = slim(
   `${id}-shared-prime`, `${name} (shared-prime orbit-retained companion)`,
   'src/bch/groth16-intratx-pairfold5-densless-msm-slim-shared-prime-vectors.json',
 );
 
-// Optional folded GLV pairs, source 4943e72a9fb7e09f7432057bfa3edb870f24e785; MSM_GLV_PAIRS=1.
-// Two256-bit accumulators each carry two128-bit components with no cross-lane carry.
-// For K=low+2^128*high, K+(lambda-2^128)*high equals low+lambda*high exactly.
-// Same proof/witness values, full pins, split37/cuts27,36,47,55 and GENESIS_PAD10.
-// Other build flags match the33561 shared-prime profile above; all defaultoff.
-// 33,331 script +235 overhead =33,566bytes; 33,391byte spend wire.
-// Primary native24889987consensus/24954883standard; +5B/-19744cost versus33561.
-// Native208contexts84accept/124reject; all84acceptedcontexts cheaper18540..33285.
-// Max native25695631/25760527; minimum sampled margins12227/67.
-// Finite supplied corpus only; all old points and all44retained attacks preserved.
+// Folded GLV pairs; source 23881a764e87f895a461e96385a4edbf76caf5d6.
+// SLIM_COMMUTATIVE_MUL=1 removes one guarded SWAP before commutative shared MUL/MOD.
+// Original caller/primitive/constant fingerprints retained; signed remainder unchanged.
+// Compiler efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4 via MSM_CASHC; RESCHEDULE=on.
+// MSM_CONSTANT_HOISTING=all, MSM_PACKED_DIGITS=1, MSM_GLV_COMPONENTS=1, MSM_GLV_PAIRS=1.
+// SLIM_CACHE=orbit-retained, SHARED_PRIME_PROFILE=orbit-retained, MSM_SIGNED_RESIDUE=madd-ny.
+// Split37/cuts27,36,47,55/fullpins; GENESIS_PAD=10, STAGE_PADS=0,0,0,0.
+// 33330 script +235 overhead =33565bytes; spend wire33390bytes.
+// Primary native24881548consensus/24946444standard.
+// Max sampled native25687192/25752088; minimum margins12227/67.
+// Native208contexts84accept/124reject/420prices; fresh owning100contexts12accept/88reject.
+// All36fixed archivedproofs passbothmodes; everymatchedcontext saves1B/8439nativeunits.
+// Proof/witness/public/aux/quotient/MSM values and all44oldmalformed cases retained.
+// Flagoff reproduces prior33566bytepoint; sixothernative and bothsingleton entries unchanged.
+// Finite corpus only; no arbitrary-proof resource, newredteam or subgroup theorem claim.
+// Locking SHA256 input0..4:
+// 0: c024de9ab1bc54e5c0970e73f876c83a0b873fe924a81315043347f5184e66c3
+// 1: c024de9ab1bc54e5c0970e73f876c83a0b873fe924a81315043347f5184e66c3
+// 2: c024de9ab1bc54e5c0970e73f876c83a0b873fe924a81315043347f5184e66c3
+// 3: cf1456f102212da1c6badd928902d187178880e5ba1a745288f476acf17d64a4
+// 4: f1bc21432fc4efbfa5b092283e83f3683cfd26f5fcf74257255a58fd65654448
 export const bchGroth16IntratxPairfold5DenslessMsmSlimGlvPairs = slim(
   id+'-glv-pairs', name+' (folded GLV pairs)',
   'src/bch/groth16-intratx-pairfold5-densless-msm-slim-glv-pairs-vectors.json',
