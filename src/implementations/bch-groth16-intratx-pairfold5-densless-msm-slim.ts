@@ -128,53 +128,61 @@ export const bchGroth16IntratxPairfold5DenslessMsmSlimCacheProfiles =
     `src/bch/groth16-intratx-pairfold5-densless-msm-slim-${profile}-vectors.json`,
   ));
 
-// Shared-prime packed GLV components; source 23881a764e87f895a461e96385a4edbf76caf5d6.
-// SLIM_COMMUTATIVE_MUL=1 removes one guarded SWAP before commutative shared MUL/MOD.
-// Original caller/primitive/constant fingerprints retained; signed remainder unchanged.
-// Compiler efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4 via MSM_CASHC; RESCHEDULE=on.
+// Shared-prime packed GLV components; source fa3167c70bebff30fcc860b2b71b7557c1f488ed.
+// MSM_SIGNED_RR=1 removes OVER ADD: rr=s2-aY, congruent to old s2+P-aY.
+// For canonical field inputs, nx dividend>=3 and existing signed ny normalization
+// yields identical canonical XYZ; h/nz/u2!=aX and caller/state guards unchanged.
+// Exact145B MADD fingerprint; output143B. No arbitrary noncanonical-helper claim.
+// Compiler efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4; MSM_CASHC, RESCHEDULE=on.
 // MSM_CONSTANT_HOISTING=all, MSM_PACKED_DIGITS=1, MSM_GLV_COMPONENTS=1, MSM_GLV_PAIRS=0.
-// SLIM_CACHE=orbit-retained, SHARED_PRIME_PROFILE=orbit-retained, MSM_SIGNED_RESIDUE=madd-ny.
-// Split37/cuts27,36,47,55/fullpins; GENESIS_PAD=10, STAGE_PADS=0,0,0,0.
-// 33325 script +235 overhead =33560bytes; spend wire33385bytes.
-// Primary native24901292consensus/24966188standard.
-// Max sampled native25706250/25771146; minimum margins12247/87.
+// SLIM_COMMUTATIVE_MUL=1, SLIM_CACHE=orbit-retained, SHARED_PRIME_PROFILE=orbit-retained.
+// MSM_SIGNED_RESIDUE=madd-ny; split37/cuts27,36,47,55/fullpins; GENESIS_PAD=0/STAGE_PADS=0,0,0,0.
+// 33313 script +235 overhead =33548bytes; spend wire33373bytes.
+// Primary native24870745consensus/24935641standard.
+// Max sampled native25673140/25738036; minimum margins17240/5080.
+// Full36fixedproofs passbothmodes; eachmatchedcontext saves12B and3561..33796nativeunits.
+// Primary saving30547; component cost varies and can increase; finite corpus only.
 // Native208contexts84accept/124reject/420prices; fresh owning100contexts12accept/88reject.
-// All36fixed archivedproofs passbothmodes; everymatchedcontext saves1B/8439nativeunits.
-// Proof/witness/public/aux/quotient/MSM values and all44oldmalformed cases retained.
-// Flagoff reproduces prior33561bytepoint; sixothernative and bothsingleton entries unchanged.
-// Finite corpus only; no arbitrary-proof resource, newredteam or subgroup theorem claim.
+// All proof/witness/public/aux/quotient/MSM values and44retained malformed cases fixed.
+// Empty unused genesis argument OP_0 remains; no nonempty zero-padding payload.
+// DisableMSM_SIGNED_RR andrestoreGENESIS_PAD=10 to reproduce prior33560bytepoint.
+// Sixothernative, BNsingletons/spec and BLS artifacts unchanged. No universalresource/theorem claim.
 // Locking SHA256 input0..4:
-// 0: 818415ce0c527934fa6e0e6fc058e6c10d870fd9ed9d654fef6b8be6a5eb32a2
-// 1: 818415ce0c527934fa6e0e6fc058e6c10d870fd9ed9d654fef6b8be6a5eb32a2
-// 2: 818415ce0c527934fa6e0e6fc058e6c10d870fd9ed9d654fef6b8be6a5eb32a2
-// 3: e89b0f666d0656917445db19f0457308bfc8ac322ee1aa93f99ae597909e96a3
-// 4: 5883bea34d40bfb198ba0b25365fe9f0d6c131f8e4512fe7c94205a793e1c7f4
+// 0: c226a4c1cab05853074a39b1076c7b8e04a3a5928172ef4d45da3d869ff9a8dc
+// 1: c226a4c1cab05853074a39b1076c7b8e04a3a5928172ef4d45da3d869ff9a8dc
+// 2: c226a4c1cab05853074a39b1076c7b8e04a3a5928172ef4d45da3d869ff9a8dc
+// 3: 6da87fba54a0dd79d9db4db7e6da528a65cde14848ebad05d4f484818e357528
+// 4: bef8bbccff22e4c376c47c8cc4078402b006b99b982e665eb8f0ea35976dd941
 export const bchGroth16IntratxPairfold5DenslessMsmSlimSharedPrime = slim(
   `${id}-shared-prime`, `${name} (shared-prime orbit-retained companion)`,
   'src/bch/groth16-intratx-pairfold5-densless-msm-slim-shared-prime-vectors.json',
 );
 
-// Folded GLV pairs; source 23881a764e87f895a461e96385a4edbf76caf5d6.
-// SLIM_COMMUTATIVE_MUL=1 removes one guarded SWAP before commutative shared MUL/MOD.
-// Original caller/primitive/constant fingerprints retained; signed remainder unchanged.
-// Compiler efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4 via MSM_CASHC; RESCHEDULE=on.
+// Folded GLV pairs; source fa3167c70bebff30fcc860b2b71b7557c1f488ed.
+// MSM_SIGNED_RR=1 removes OVER ADD: rr=s2-aY, congruent to old s2+P-aY.
+// For canonical field inputs, nx dividend>=3 and existing signed ny normalization
+// yields identical canonical XYZ; h/nz/u2!=aX and caller/state guards unchanged.
+// Exact145B MADD fingerprint; output143B. No arbitrary noncanonical-helper claim.
+// Compiler efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4; MSM_CASHC, RESCHEDULE=on.
 // MSM_CONSTANT_HOISTING=all, MSM_PACKED_DIGITS=1, MSM_GLV_COMPONENTS=1, MSM_GLV_PAIRS=1.
-// SLIM_CACHE=orbit-retained, SHARED_PRIME_PROFILE=orbit-retained, MSM_SIGNED_RESIDUE=madd-ny.
-// Split37/cuts27,36,47,55/fullpins; GENESIS_PAD=10, STAGE_PADS=0,0,0,0.
-// 33330 script +235 overhead =33565bytes; spend wire33390bytes.
-// Primary native24881548consensus/24946444standard.
-// Max sampled native25687192/25752088; minimum margins12227/67.
+// SLIM_COMMUTATIVE_MUL=1, SLIM_CACHE=orbit-retained, SHARED_PRIME_PROFILE=orbit-retained.
+// MSM_SIGNED_RESIDUE=madd-ny; split37/cuts27,36,47,55/fullpins; GENESIS_PAD=0/STAGE_PADS=0,0,0,0.
+// 33318 script +235 overhead =33553bytes; spend wire33378bytes.
+// Primary native24851001consensus/24915897standard.
+// Max sampled native25654082/25718978; minimum margins17220/5060.
+// Full36fixedproofs passbothmodes; eachmatchedcontext saves12B and3561..33796nativeunits.
+// Primary saving30547; component cost varies and can increase; finite corpus only.
 // Native208contexts84accept/124reject/420prices; fresh owning100contexts12accept/88reject.
-// All36fixed archivedproofs passbothmodes; everymatchedcontext saves1B/8439nativeunits.
-// Proof/witness/public/aux/quotient/MSM values and all44oldmalformed cases retained.
-// Flagoff reproduces prior33566bytepoint; sixothernative and bothsingleton entries unchanged.
-// Finite corpus only; no arbitrary-proof resource, newredteam or subgroup theorem claim.
+// All proof/witness/public/aux/quotient/MSM values and44retained malformed cases fixed.
+// Empty unused genesis argument OP_0 remains; no nonempty zero-padding payload.
+// DisableMSM_SIGNED_RR andrestoreGENESIS_PAD=10 to reproduce prior33565bytepoint.
+// Sixothernative, BNsingletons/spec and BLS artifacts unchanged. No universalresource/theorem claim.
 // Locking SHA256 input0..4:
-// 0: c024de9ab1bc54e5c0970e73f876c83a0b873fe924a81315043347f5184e66c3
-// 1: c024de9ab1bc54e5c0970e73f876c83a0b873fe924a81315043347f5184e66c3
-// 2: c024de9ab1bc54e5c0970e73f876c83a0b873fe924a81315043347f5184e66c3
-// 3: cf1456f102212da1c6badd928902d187178880e5ba1a745288f476acf17d64a4
-// 4: f1bc21432fc4efbfa5b092283e83f3683cfd26f5fcf74257255a58fd65654448
+// 0: 19b23fdc2d6fb347f43d9b6d7f79dced7d9ee2919f99d1f02ca627be85b5b1f1
+// 1: 19b23fdc2d6fb347f43d9b6d7f79dced7d9ee2919f99d1f02ca627be85b5b1f1
+// 2: 19b23fdc2d6fb347f43d9b6d7f79dced7d9ee2919f99d1f02ca627be85b5b1f1
+// 3: 81861ef0ff302501b971dfa82520c353f105db2589d4f76be5fec370de75f9d2
+// 4: c3348644b1fb8c6aef092ef4fbebf3cc7a71e0aa5b99cb65277ef236378e2a02
 export const bchGroth16IntratxPairfold5DenslessMsmSlimGlvPairs = slim(
   id+'-glv-pairs', name+' (folded GLV pairs)',
   'src/bch/groth16-intratx-pairfold5-densless-msm-slim-glv-pairs-vectors.json',
