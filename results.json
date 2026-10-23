@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-22T09:02:05.663Z",
+  "generatedAt": "2026-10-23T12:23:40.199Z",
   "statement": {
     "proofSystem": "Groth16",
     "curve": "BN254",
@@ -4853,6 +4853,119 @@
         "type": "p2sh32"
       },
       "source": "PairFold-5 densless (public-only reconstruction, chunked/bn254/densless-recovered) whose genesis carries a GLV Straus MSM recomputing vk_x from the claimed public inputs (chunked/bn254/densless-msm-spec); five P2SH32 inputs, one transaction, graded on the proposed bch-spec VM."
+    },
+    {
+      "id": "bch-groth16-sound-si-gls-single",
+      "name": "BCH Groth16 SI-GLS single torus identity (sound by construction), single input (bch-spec)",
+      "category": "spec",
+      "official": false,
+      "solver": null,
+      "curve": "BN254",
+      "structure": "single-tx",
+      "proofSystem": "Groth16",
+      "vmTarget": "bch-spec",
+      "correctness": {
+        "verdict": "pass",
+        "validAccepted": true,
+        "invalid": {
+          "tested": 15,
+          "rejected": 15
+        },
+        "worstCaseAccepted": true,
+        "crossStageBinding": {
+          "applicable": false,
+          "bound": null,
+          "seamsTested": 0,
+          "unboundSeams": 0,
+          "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
+        },
+        "redTeam": {
+          "stale": false,
+          "tested": 90,
+          "accepted": 0,
+          "kinds": [
+            "forged-public-inputs",
+            "public-input-encoding",
+            "invalid-proof-point",
+            "non-canonical-coordinate",
+            "subgroup",
+            "tamper-transcript",
+            "tamper-state",
+            "non-canonical-state",
+            "tamper-residue",
+            "transcript-encoding",
+            "tamper-quotient",
+            "non-canonical-quotient",
+            "quotient-cap",
+            "challenge-derivation",
+            "gls-digit",
+            "layout"
+          ]
+        },
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": null,
+        "failures": []
+      },
+      "score": 21915,
+      "size": {
+        "scriptBytes": 21852,
+        "txOverheadBytes": 63,
+        "transactions": 1,
+        "total": 21915
+      },
+      "padding": {
+        "bytes": 0,
+        "fraction": 0
+      },
+      "benchmarks": {
+        "smallProof": {
+          "opCost": 23336981,
+          "steps": 1,
+          "heaviestStepOpCost": 23336981,
+          "inputsForHeaviestStep": 1
+        },
+        "worstCase": {
+          "accepted": true,
+          "opCost": 23348039,
+          "steps": 1,
+          "heaviestStepOpCost": 23348039,
+          "inputsForHeaviestStep": 1
+        }
+      },
+      "opCostBudget": 25453600,
+      "bsvSingleton": false,
+      "bsvOpReturn": false,
+      "bch": {
+        "compatible": true,
+        "blockers": [],
+        "detail": "every step fits the proposed bch-spec per-tx limits (100 kB scripts) — NOT current BCH",
+        "standard": {
+          "fits": true,
+          "detail": "relayable under standard mempool policy"
+        }
+      },
+      "generality": {
+        "binding": "runtime",
+        "runtimeGeneral": true,
+        "proofsTested": 4,
+        "proofsPassed": 4,
+        "detail": "runtime-general: one fixed locking verifies 4/4 distinct proofs (proof in the unlocking witness)"
+      },
+      "tokenSafety": null,
+      "inputValidation": {
+        "enforced": false,
+        "tested": 0,
+        "rejected": 0,
+        "detail": "NOT demonstrated — no isolated adversarial-point run that rejects a bad point at a validation check (a naive point-swap in a single-tx verifier is caught by the pairing equation, not by validation)"
+      },
+      "packaging": {
+        "secure": true,
+        "type": "p2sh32"
+      },
+      "source": "Single-identity BN254 Groth16 verifier: one batched odd torus identity at +-z over 33 committed monic states, GT-GLS folding of e(vk_x, gamma), projective B with exact G2 endpoint check, every accept-relevant value computed on-chain, baked, hash-committed before its challenge, or exactly checked (chunked/bn254/sound-si-gls); graded on the proposed bch-spec VM."
     },
     {
       "id": "bch-groth16-intratx-pairfold5-densless",
