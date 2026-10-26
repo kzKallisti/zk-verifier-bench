@@ -902,5 +902,29 @@
     "steps": 1,
     "transactions": 1,
     "fits": false
+  },
+  {
+    "t": "2026-10-26T23:16:52.059Z",
+    "score": 34229,
+    "id": "bch-groth16-bls12381-sound-native",
+    "steps": 4,
+    "transactions": 1,
+    "fits": true
+  },
+  {
+    "t": "2026-10-26T23:16:52.059Z",
+    "score": 27624,
+    "id": "bch-groth16-bn254-sound-native",
+    "steps": 3,
+    "transactions": 1,
+    "fits": true
+  },
+  {
+    "t": "2026-10-26T23:16:52.059Z",
+    "score": 5965,
+    "id": "bch-groth16-bls12381-singleton-genpow",
+    "steps": 1,
+    "transactions": 1,
+    "fits": false
   }
 ]
