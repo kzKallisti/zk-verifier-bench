@@ -210,7 +210,13 @@ const main = async () => {
     }
   }
 
-  const plans = await planExport(previous);
+  let plans: Plan[];
+  try {
+    plans = await planExport(previous);
+  } catch (error) {
+    console.error(`export FAILED, ${outfile} and ${HISTORY_FILE} left unchanged: ${error instanceof Error ? error.message : String(error)}`);
+    process.exit(1);
+  }
   const runs = plans.filter((p) => p.action === 'run');
   const count = (a: Action) => plans.filter((p) => p.action === a).length;
   console.error(`incremental export (harness v${HARNESS_VERSION}): ${runs.length} to run, ${count('carry')} carried forward${count('stale') > 0 ? `, ${count('stale')} STALE` : ''}`);
