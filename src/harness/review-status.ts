@@ -42,11 +42,17 @@ export const REVIEW_STATUS: Record<string, ReviewStatus> = {
     ],
   },
 
-  // bn-native-sound (SI-MX3): built 2026-10-26, not yet independently reviewed
+  // BN254 native (SI-MX3, 3-input bch-2026): built on wip/bn-native-sound; independent review 2026-10-26
+  // (implementation, math, reproduction) found only minor issues, fixed or documented before merge
+  // (verifier.cash work/bn-native-sound/FIXLOG.md).
   'bch-groth16-bn254-sound-native': {
-    status: 'unreviewed',
-    reason: 'Sound-by-construction 3-input bch-2026 build of the reviewed SI-GLS mathematics (affine B walk with exact inverse-norm witnesses, hash-authenticated shared code, pinned input graph, byte-exact handovers); awaiting an independent review of the exact artifact.',
-    refs: [`${SRC}/blob/wip/bn-native-sound/chunked/bn254/bn-native-sound/README.md`],
+    status: 'reviewed',
+    reason: 'Independent soundness review of the shipped artifact (2026-10-26; implementation, math and reproduction, minor findings fixed or documented before merge); see the soundness argument, verification and open risks in its README.',
+    refs: [
+      `${SRC}/blob/main/chunked/bn254/bn-native-sound/README.md#soundness-argument-constructive-an-owner-for-every-value`,
+      `${SRC}/blob/main/chunked/bn254/bn-native-sound/README.md#verification`,
+      `${SRC}/blob/main/chunked/bn254/bn-native-sound/README.md#open-risks`,
+    ],
   },
 
   // BN254 singletons: independent review 2026-10-26 (notes: verifier.cash work/bn-singleton-review/REVIEW.md)
