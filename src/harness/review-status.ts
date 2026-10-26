@@ -46,17 +46,20 @@ export const REVIEW_STATUS: Record<string, ReviewStatus> = {
     refs: [`${SRC}/commit/521460c014bafe45b33b67dd061615141be8f37a`, `${SRC}/commit/35fe0f702794f5686238f43ed2bd4c8dd3ac32c4`, `${SRC}/commit/78a42542451f7bf64072a89358e0bf0acc03a774`],
   },
 
-  // BLS12-381 singletons: the maintainer hold (no range/curve/subgroup checks) is resolved by the
-  // domain checks added to groth16.cash; rebuilt with the same pipelines.
+  // BLS12-381 singletons: the maintainer hold (no range/curve/subgroup checks) was resolved by the
+  // domain checks added to groth16.cash (groth16_cashscript 14d139e, 974a691). Independent review
+  // 2026-10-26 (notes: verifier.cash work/bls-singleton-review/REVIEW.md) found no soundness gaps;
+  // its minor follow-ups (Bxa/Bxb/Bya/Cx +p rejection runs, README cofactor-malleability note) are
+  // done in wip/bls-singleton-followups. Locking bytecode unchanged by the follow-ups.
   'bch-groth16-bls12381-singleton': {
-    status: 'unreviewed',
-    reason: 'Domain checks added (range, curve, G2 subgroup) to groth16.cash and rebuilt; previously held by maintainer review.',
-    refs: [`${SRC}/blob/main/singleton/bls12-381/README.md`],
+    status: 'reviewed',
+    reason: 'independent review 2026-10-26: no soundness break (range, curve and fused psi G2 subgroup checks verified); follow-ups done: non-canonical +p rejection runs for every coordinate, A/C cofactor malleability documented (malleability only).',
+    refs: [`${SRC}/commit/974a6910eb6924cfdbb547ea2556f229d9790421`, `${SRC}/commit/47c1ab15bd837d21c016e2e61b948f0e94b5862b`, `${SRC}/blob/main/singleton/bls12-381/README.md#proof-point-validation`],
   },
   'bch-groth16-bls12381-singleton-opcode-optimized': {
-    status: 'unreviewed',
-    reason: 'Domain checks added (range, curve, G2 subgroup) to groth16.cash and rebuilt; previously held by maintainer review.',
-    refs: [`${SRC}/blob/main/singleton/bls12-381/README.md`],
+    status: 'reviewed',
+    reason: 'independent review 2026-10-26: no soundness break (range, curve and fused psi G2 subgroup checks verified); follow-ups done: non-canonical +p rejection runs for every coordinate, A/C cofactor malleability documented (malleability only).',
+    refs: [`${SRC}/commit/974a6910eb6924cfdbb547ea2556f229d9790421`, `${SRC}/commit/47c1ab15bd837d21c016e2e61b948f0e94b5862b`, `${SRC}/blob/main/singleton/bls12-381/README.md#proof-point-validation`],
   },
 
   // withdrawn: author withdrawals (F1/F4/F5/F6/F9)
