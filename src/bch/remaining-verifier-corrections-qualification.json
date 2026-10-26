@@ -1,6 +1,6 @@
 {
   "schema": "remaining-verifier-corrections-qualification/v1",
-  "sourceRevision": "f8b16b221fb039f0ed04636b195a5deb8379f13c",
+  "sourceRevision": "dbbd0d3763da02720df5891d494a515312dd8636",
   "benchmarkBase": "b140f64ca073c6d0466083fe14b5d9c83776d844",
   "status": "STANDALONE_CORRECTED_REFERENCES_DEFAULT_REGISTRY_AND_FEED_UNCHANGED",
   "frameProfiles": {
@@ -23,8 +23,9 @@
     "completeDeclaredConsensusGraphsAccepted": 0,
     "completeDeclaredStandardGraphsAccepted": 0,
     "nativeResourceAdmission": "HOLD",
-    "keyScope": "Six original source lineages match the known checker VK; original PairFold-7 VK intent is unestablished. Its successor is checked only against the known checker VK.",
-    "soundnessOwner": "Mandatory full fixed-key equation checker; legacy PIT/slope/table predicates receive no independent soundness credit."
+    "keyScope": "The checker VK has an explicit pinned public owner. All 20 checker coordinates and original PairFold-7 twelve raw Miller coefficients match. Original PairFold-7 individual alpha/beta declaration and legacy role bindings remain unestablished; withdrawal unchanged.",
+    "soundnessOwner": "Mandatory full fixed-key equation checker; legacy PIT/slope/table predicates receive no independent soundness credit.",
+    "keyProvenance": "src/bch/bn254-legacy-key-provenance.json"
   },
   "blsLarge": {
     "existingProofGraphs": 3,

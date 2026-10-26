@@ -12,7 +12,7 @@
     },
     {
       "file": "profiles.json",
-      "sha256": "f135015663ac48177c1039eaa1106bbe51f74dd0c2c72803b6d26fc603b82c20"
+      "sha256": "eee065fd01a357291543c429445d8466a663dedafa0f1f1cb52769f38f19114f"
     },
     {
       "file": "export.mjs",
@@ -290,7 +290,7 @@
       "n1Push": 35,
       "argumentCount": 37,
       "declaredVm": "bch-2026",
-      "verificationKeyScope": "known fixed checker VK; original PairFold-7 VK intent is not established",
+      "verificationKeyScope": "explicit public checker VK; original PairFold-7 contains 14 matching coordinate values and 12 matching raw-Miller factor coefficients; original individual alpha/beta declaration and independent legacy role binding remain unestablished",
       "programs": [
         "75757c757c00ca022e017f77022f027f7551ca022e017f770260047f7552ca022e017f77025f047f7553ca022e017f77025f047f7554ca022e017f7702ea027f757e7e7e7e76aa20377452b077800cb00afe1abb316eb5529990c1065f6d87033f97baa6561cd34c8801648901648a",
         "75757c757c00ca022e017f77022f027f7551ca022e017f770260047f7552ca022e017f77025f047f7553ca022e017f77025f047f7554ca022e017f7702ea027f757e7e7e7e76aa20377452b077800cb00afe1abb316eb5529990c1065f6d87033f97baa6561cd34c8801648901648a",

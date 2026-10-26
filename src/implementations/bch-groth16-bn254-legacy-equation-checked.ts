@@ -7,7 +7,7 @@ import {adaptExistingPositives, type Profile, type RawStep} from '../bch/bn254-l
 import type {Implementation, Step} from '../harness/types.js';
 
 const bytes = readFileSync('src/bch/groth16-bn254-legacy-equation-checked-catalog.json');
-assert.equal(createHash('sha256').update(bytes).digest('hex'), 'c134ea992a22d497dfe426d7c4d4acb96699f9e6347e62ccd2ff78302cffa04f');
+assert.equal(createHash('sha256').update(bytes).digest('hex'), 'c427c7c1e3325133cb9eb541ecbe3a93733fa4acb1e4d1dcb1994c3c036c327f');
 const catalog = JSON.parse(bytes.toString('utf8')) as {schema: string; profiles: Profile[]};
 assert.equal(catalog.schema, 'bn254-legacy-equation-checked-static-code/v1');
 
