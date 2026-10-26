@@ -30,12 +30,14 @@ export const REVIEW_STATUS: Record<string, ReviewStatus> = {
     ],
   },
 
-  // BLS12-381 SI-GLS (bch-spec): built 2026-10-26 on wip/bls-si-gls-spec; awaiting the independent owner review.
+  // BLS12-381 SI-GLS (bch-spec): built on wip/bls-si-gls-spec; independent review 2026-10-26 (implementation,
+  // math, reproduction) found only minor issues, all six fixed before merge (verifier.cash work/bls-si-gls-spec/FIXLOG.md).
   'bch-groth16-bls12381-sound-si-gls-single': {
-    status: 'unreviewed',
-    reason: 'New sound-by-construction build (port of the reviewed BN254 SI-GLS); the independent soundness review of the shipped artifact is pending.',
+    status: 'reviewed',
+    reason: 'Independent soundness review of the shipped artifact (2026-10-26; implementation, math and reproduction, minor findings fixed before merge); see the soundness argument, verification and open risks in its README.',
     refs: [
       `${SRC}/blob/main/chunked/bls12-381/sound-si-gls/README.md#soundness-argument`,
+      `${SRC}/blob/main/chunked/bls12-381/sound-si-gls/README.md#verification`,
       `${SRC}/blob/main/chunked/bls12-381/sound-si-gls/README.md#open-risks`,
     ],
   },
