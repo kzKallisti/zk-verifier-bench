@@ -398,7 +398,8 @@ export interface Txv5Summary {
   /** TXv5 mode `score` and `padBytes` are measured in (fixture 0) */
   mode: 'standard' | 'consensus';
   standard: boolean;
-  /** the first honest run whose figure is not standard, when standard is false */
+  /** an honest run whose figure is not standard (the worst case when it is one), when standard
+   * is false */
   nonStandard?: { run: string; reason?: string };
   estimated: boolean;
   worst?: Txv5RunFigure;
@@ -410,12 +411,14 @@ export const txv5Summary = (g: Txv5Grade, shippedScore: number): Txv5Summary => 
   const honest = g.honest ?? [];
   const f0 = honest[0] ?? figureOf('fixture 0', g as ReturnType<typeof gradeRun>, shippedScore);
   const all = honest.length ? honest : [f0];
-  const nonStd = all.find((f) => !f.standard);
+
   // TXv5 worst case: an invalid run if any, else the largest figure among the runs that do NOT
   // validate as shipped (a run that fits as shipped is never the binding one)
   const needy = all.filter((f) => f.status !== 'as-shipped');
   const worst = needy.find((f) => f.status === 'invalid')
     ?? needy.reduce<Txv5RunFigure | undefined>((w, f) => (w === undefined || (f.score ?? 0) > (w.score ?? 0) ? f : w), undefined);
+  // the run to name when the figure is not standard: the worst case if it is non-standard
+  const nonStd = worst !== undefined && !worst.standard ? worst : all.find((f) => !f.standard);
   const shipped = all.filter((f) => f.status === 'as-shipped').length;
   return {
     status: f0.status,
