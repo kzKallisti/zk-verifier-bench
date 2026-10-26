@@ -47,12 +47,60 @@ benchmark's focus is the BCH-native entries competing below them.
 pnpm install
 pnpm fetch            # download the reference verifier artifacts from WhatsOnChain
 pnpm benchmark        # run the leaderboards
-pnpm benchmark:json   # export results.json + score-history.json (no filters)
+pnpm benchmark:json   # export results.json + score-history.json (incremental, see below)
 ```
 
 `pnpm benchmark` takes positional substring filters on the entry id
 (`pnpm benchmark genpow`, `pnpm benchmark singleton chunked`); `--demos`
 includes the demo entries.
+
+### Incremental export
+
+`pnpm benchmark:json` is incremental: it re-runs only the entries whose inputs
+changed and carries every other row of the existing `results.json` forward
+unchanged. Each row stores an `inputHash` (`src/harness/input-hash.ts`), a
+SHA-256 over
+
+- the implementation module, with comments, formatting and the `name`,
+  `source` and `reviewStatus` values stripped (it is hashed as printed AST);
+- any local module it imports (outside `src/harness`);
+- every `src/...` / `data/...` file named by a string literal in those
+  modules (the vectors JSON, the reference tx hex), byte for byte;
+- its red-team file `src/bch/redteam/<id>.json` (its absence too);
+- `HARNESS_VERSION` (in `input-hash.ts`) and the installed libauth version.
+
+Metadata is never an input: renaming an entry, editing its source text or
+comments, or changing `review-status.ts` re-attaches the new metadata to the
+carried row without a re-run. The frontier (leader / current) and the score
+history are always recomputed from the merged rows, and rows are always
+emitted in registry order, so a no-op run reproduces `results.json` byte for
+byte except `generatedAt` (in about a second).
+
+| variable | effect |
+|----------|--------|
+| (none) | re-run new entries, rows without `inputHash`, and rows whose hash changed |
+| `FULL=1` | re-run every entry (SKIP_IMPLS ones still skipped) |
+| `ONLY_IMPLS=a,b` | re-run exactly these ids (exact match; bypasses SKIP_IMPLS) and carry every other row as is, even a stale one (it keeps its old hash, so the next default run re-runs it) |
+| `SKIP_IMPLS=genpow` (default) | never re-run these unless forced. Their last row is carried forward while its inputs are unchanged (a legacy row without `inputHash`: while its registered name and source still match). Once their inputs change, the old row no longer measures the program and is dropped with a warning: re-run it with `ONLY_IMPLS=<id>` |
+| `STAMP_HASHES=1` | bootstrap: give rows that have no `inputHash` the current hash without re-running. Only use it when the artifact is known to match the sources |
+
+`SKIP_IMPLS='' FULL=1 pnpm benchmark:json` is the old complete export.
+
+Rows are never dropped silently. A row whose id is no longer registered leaves
+the feed (logged). An entry whose `data/` file is missing (the gitignored
+nChain / sCrypt mainnet tx hex; `pnpm fetch` restores it) is carried forward
+with a warning, and the export fails if there is no previous row to carry. A
+load failure during a re-run aborts the export and leaves `results.json`
+untouched.
+
+Bump `HARNESS_VERSION` whenever a change under `src/harness` can change any
+measured number or verdict (the VM wrapper, the benchmark, gates, red-team,
+adversarial or tamper logic, or the row shape built by `entryOf` in
+`export-json.ts`). Metadata-only harness edits do not need a bump.
+`pnpm benchmark:deps` audits the dependency discovery: it traces every file the
+implementations actually read (at import and in `load()`) and fails if any read
+is missing from that entry's input hash, for example a file opened through a
+computed path.
 
 ## Leaderboards
 
@@ -180,7 +228,8 @@ loops — see `docs/checkpoints.md`).
 | script | what |
 |--------|------|
 | `pnpm benchmark [id-filter ...]` | run entries and print the leaderboards |
-| `pnpm benchmark:json` | export `results.json` + `score-history.json` (complete, unfiltered) |
+| `pnpm benchmark:json` | export `results.json` + `score-history.json` (incremental; `FULL=1`, `ONLY_IMPLS=a,b`, see above) |
+| `pnpm benchmark:deps` | check that every file an entry reads is covered by its `inputHash` |
 | `pnpm gen:multiproof` / `gen:multiproof-bls` | mint extra distinct valid proofs under the fixed VK (proof-generality) |
 | `pnpm checkpoints` | compute/validate the BN254 golden checkpoints (vk_x + Miller boundary) |
 | `pnpm checkpoints:pairing-gen` / `checkpoints:pairing` / `checkpoints:pairing-basis` | pairing-milestone vectors, grading, Fp12-basis probe |

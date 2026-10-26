@@ -1,6 +1,9 @@
 // Emit the benchmark as the structured results.json the competition website reads.
 // The website never runs the harness directly; it renders this artifact. Usage:
 //   pnpm benchmark:json [outfile]      (default: results.json in the cwd)
+// Incremental: only entries whose inputHash (harness/input-hash.ts) changed are re-run; the other
+// rows of the existing outfile are carried forward. FULL=1 re-runs everything, ONLY_IMPLS=a,b
+// exactly those ids (see planExport below and the README).
 //
 // Schema (v1): a flat list of entries the site groups by `category`:
 //   - "full"    -> a full Groth16 verifier        (the MAIN leaderboard)
