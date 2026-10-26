@@ -6,9 +6,16 @@
 //       'src/...' or 'data/...' that names a file, e.g. src/bch/<x>-vectors.json,
 //       data/nchain/parent-tx.hex),
 //   (c) its maintainer red-team file (src/bch/redteam/<id>.json, keyed by id), and
-//   (d) the harness itself (src/harness/*, the libauth VM).
-// (a)-(c) are hashed by content; (d) is represented by HARNESS_VERSION plus the installed libauth
-// version. The export re-runs an entry only when this hash differs from the one stored in its row.
+//   (d) the harness itself: the measurement sources under src/harness (vm, benchmark, gates,
+//       red-team, adversarial, tamper, entry, types), and the installed npm packages.
+// (a)-(c) are hashed by content. (d) is the HARNESS FINGERPRINT, computed automatically: the
+// normalized (comment/format-free) code of every src/harness/*.ts except the files that cannot
+// change a row (HARNESS_EXCLUDED below), plus the resolved version of every runtime dependency
+// and of typescript (whose printer produces the normalized code), plus HARNESS_VERSION. So any
+// harness code edit re-runs every entry; nothing depends on remembering a version bump.
+// A data/ file pinned in data/<x>/SHA256SUMS is hashed through its pinned digest, so a missing
+// (gitignored, not yet fetched) file still yields the true hash, and a present file must match.
+// The export re-runs an entry only when this hash differs from the one stored in its row.
 //
 // Metadata never enters the hash: in the implementation module the initializers of `name`,
 // `source` and `reviewStatus` (in any object literal that also has an `id` property) are replaced
@@ -25,14 +32,20 @@ import type { Implementation } from './types.js';
 import { redTeamPath } from './redteam.js';
 
 /**
- * Bump this whenever a harness change can change ANY measured row: the VM wrapper (vm.ts), the
- * benchmark / gates / red-team / adversarial / tamper logic, the row shape built by entryOf in
- * export-json.ts, or anything else under src/harness that feeds a number or verdict. Bumping it
- * invalidates every stored hash, so the next default export re-runs everything (except the
- * SKIP_IMPLS entries, which are then dropped loudly until re-run, see export-json.ts).
- * Metadata-only harness edits (review-status.ts, comments, docs) do not need a bump.
+ * Manual invalidation knob. Harness CODE edits are detected automatically (harnessFingerprint),
+ * so bump this only for a change the fingerprint cannot see that can still change a measured row
+ * (e.g. a Node.js upgrade that changes behavior, or an edit to an excluded file that turns out to
+ * matter). Bumping it invalidates every stored hash, so the next default export re-runs
+ * everything; a SKIP_IMPLS entry then fails the export until re-run with SKIP_IMPLS=''.
  */
 export const HARNESS_VERSION = 1;
+
+/** Harness files that cannot change a measured row, kept out of the fingerprint:
+ * review-status.ts (metadata, re-stamped on every export), export-json.ts (planning, frontier and
+ * history, recomputed from the rows on every export; the row itself is built in entry.ts),
+ * input-hash.ts (this file: a change to the hashing changes the hashes anyway) and audit-deps.ts. */
+const HARNESS_EXCLUDED = new Set(['review-status.ts', 'export-json.ts', 'input-hash.ts', 'audit-deps.ts']);
+const HARNESS_DIR = 'src/harness';
 
 /** Object-literal properties that are presentation metadata, never inputs of a measurement. */
 const METADATA_PROPERTIES = new Set(['name', 'source', 'reviewStatus']);
@@ -43,13 +56,20 @@ const IMPLEMENTATIONS_DIR = 'src/implementations';
 const sha256 = (data: string | Uint8Array): string => createHash('sha256').update(data).digest('hex');
 const rel = (p: string): string => relative(ROOT, p).split('\\').join('/');
 
-const libauthVersion = ((): string => {
-  try {
-    const pkg = JSON.parse(readFileSync(join(ROOT, 'node_modules/@bitauth/libauth/package.json'), 'utf8')) as { version?: string };
-    return pkg.version ?? 'unknown';
-  } catch {
-    return 'unknown';
-  }
+/** Resolved (installed) versions of every runtime dependency (libauth, @noble/curves, ...) and of
+ * the build tools that shape the hash or the transpiled code (typescript, tsx), from
+ * node_modules/<name>/package.json. A lockfile bump of any of them re-runs every entry. */
+const packageVersions = ((): string => {
+  const manifest = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')) as { dependencies?: Record<string, string>; devDependencies?: Record<string, string> };
+  const names = [...Object.keys(manifest.dependencies ?? {}), ...Object.keys(manifest.devDependencies ?? {}).filter((n) => !n.startsWith('@types/'))].sort();
+  return names.map((name) => {
+    try {
+      const pkg = JSON.parse(readFileSync(join(ROOT, 'node_modules', name, 'package.json'), 'utf8')) as { version?: string };
+      return `${name}@${pkg.version ?? 'unknown'}`;
+    } catch {
+      return `${name}@missing`;
+    }
+  }).join(',');
 })();
 
 const parse = (file: string): ts.SourceFile =>
@@ -63,10 +83,18 @@ const propertyName = (p: ts.ObjectLiteralElementLike): string | undefined =>
  * printer re-emits the AST (comment-free), after `name` / `source` / `reviewStatus` values in
  * id-carrying object literals are replaced by the identifier __metadata__.
  */
-const normalizedCode = (file: string): string => {
+const normalizedCode = (file: string, harness = false): string => {
   const source = parse(file);
   const strip: ts.TransformerFactory<ts.SourceFile> = (context) => {
-    const visit = (node: ts.Node): ts.Node => {
+    const visit = (node: ts.Node): ts.Node | undefined => {
+      if (harness) {
+        // benchmark.ts: the implementation imports and the REGISTRY list are not harness logic
+        // (each entry's own module is hashed per entry), so registering an entry re-runs only it
+        if (ts.isImportDeclaration(node) && ts.isStringLiteral(node.moduleSpecifier) && node.moduleSpecifier.text.includes('/implementations/')) return undefined;
+        if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.name.text === 'REGISTRY' && node.initializer !== undefined) {
+          return ts.factory.updateVariableDeclaration(node, node.name, node.exclamationToken, node.type, ts.factory.createIdentifier('__registry__'));
+        }
+      }
       if (ts.isObjectLiteralExpression(node) && node.properties.some((p) => propertyName(p) === 'id')) {
         const properties = node.properties.map((p) => {
           const name = propertyName(p);
@@ -80,6 +108,7 @@ const normalizedCode = (file: string): string => {
     return (sf) => ts.visitNode(sf, visit) as ts.SourceFile;
   };
   const result = ts.transform(source, [strip]);
+  // (the printer output depends on the typescript version, which is part of the hash preamble)
   const printed = ts.createPrinter({ removeComments: true, newLine: ts.NewLineKind.LineFeed }).printFile(result.transformed[0]!);
   result.dispose();
   return printed;
@@ -118,7 +147,38 @@ const resolveModule = (from: string, specifier: string): string | undefined => {
   return undefined;
 };
 
-/** True for modules owned by the harness (their changes are tracked by HARNESS_VERSION). */
+/** The harness fingerprint (see the header): computed once per process. */
+let harnessFingerprintCache: string | undefined;
+export const harnessFingerprint = (): string => {
+  if (harnessFingerprintCache !== undefined) return harnessFingerprintCache;
+  const h = createHash('sha256');
+  const files = readdirSync(join(ROOT, HARNESS_DIR)).filter((f) => /\.(m?ts)$/.test(f) && !HARNESS_EXCLUDED.has(f)).sort();
+  for (const name of files) h.update(`${name}\0${sha256(normalizedCode(join(ROOT, HARNESS_DIR, name), true))}\0`);
+  harnessFingerprintCache = h.digest('hex');
+  return harnessFingerprintCache;
+};
+
+/** Pinned digests of fetched data files: data/<x>/SHA256SUMS (sha256sum format), path -> hex. */
+const pinnedDigests = new Map<string, string>();
+const pinnedDigestOf = (path: string): string | undefined => {
+  const sums = `${dirname(path)}/SHA256SUMS`;
+  if (!pinnedDigests.has(`#${sums}`)) {
+    pinnedDigests.set(`#${sums}`, '');
+    if (existsSync(join(ROOT, sums))) {
+      for (const line of readFileSync(join(ROOT, sums), 'utf8').split('\n')) {
+        const m = /^([0-9a-f]{64})\s+\*?(\S+)$/.exec(line.trim());
+        if (m !== null) pinnedDigests.set(`${dirname(path)}/${m[2]}`, m[1]!);
+      }
+    }
+  }
+  return pinnedDigests.get(path);
+};
+
+/** Module files whose code is parsed for further references and hashed as printed AST; anything
+ * else that is imported (e.g. a JSON module) is hashed as raw bytes like a data file. */
+const isCodeModule = (abs: string): boolean => /\.(m?ts|tsx|m?js|cjs)$/.test(abs);
+
+/** True for modules owned by the harness (covered by the harness fingerprint instead). */
 const isHarnessModule = (abs: string): boolean => rel(abs).startsWith('src/harness/');
 
 export interface InputDependency {
@@ -129,6 +189,8 @@ export interface InputDependency {
   kind: 'entry' | 'code' | 'file';
   /** the file does not exist (yet); a missing data/ file is a fetchable artifact (pnpm fetch) */
   missing: boolean;
+  /** a data file whose digest is pinned in data/<x>/SHA256SUMS (hashed through the pin) */
+  pinned: boolean;
 }
 
 /** Every input of one implementation: its module, the local modules it imports (transitively,
@@ -136,7 +198,7 @@ export interface InputDependency {
 export const dependenciesOf = (id: string, implementationFile: string): InputDependency[] => {
   const deps = new Map<string, InputDependency>();
   const add = (path: string, kind: InputDependency['kind']) => {
-    if (!deps.has(path)) deps.set(path, { path, kind, missing: !existsSync(join(ROOT, path)) });
+    if (!deps.has(path)) deps.set(path, { path, kind, missing: !existsSync(join(ROOT, path)), pinned: kind === 'file' && pinnedDigestOf(path) !== undefined });
   };
   const queue = [resolve(ROOT, implementationFile)];
   const seen = new Set<string>();
@@ -150,7 +212,9 @@ export const dependenciesOf = (id: string, implementationFile: string): InputDep
     for (const specifier of modules) {
       const target = resolveModule(file, specifier);
       if (target === undefined) throw new Error(`${rel(file)}: cannot resolve import '${specifier}'`);
-      if (!isHarnessModule(target)) queue.push(target);
+      if (isHarnessModule(target)) continue;
+      if (isCodeModule(target)) queue.push(target);
+      else add(rel(target), 'file'); // e.g. import x from './v.json' with { type: 'json' }: raw bytes
     }
   }
   add(redTeamPath(id), 'file');
@@ -158,6 +222,14 @@ export const dependenciesOf = (id: string, implementationFile: string): InputDep
 };
 
 const contentHash = (dep: InputDependency): string => {
+  const pinned = dep.kind === 'file' ? pinnedDigestOf(dep.path) : undefined;
+  if (pinned !== undefined) {
+    if (!dep.missing) {
+      const actual = sha256(readFileSync(join(ROOT, dep.path)));
+      if (actual !== pinned) throw new Error(`${dep.path}: sha256 ${actual} differs from the digest pinned in ${dirname(dep.path)}/SHA256SUMS; re-fetch it (pnpm fetch) or update the pin deliberately`);
+    }
+    return pinned;
+  }
   if (dep.missing) return 'missing';
   const abs = join(ROOT, dep.path);
   if (dep.kind === 'entry') return sha256(normalizedCode(abs));
@@ -169,7 +241,7 @@ const contentHash = (dep: InputDependency): string => {
 /** The input hash stored in each results.json row (`inputHash`). */
 export const inputHashOf = (id: string, deps: InputDependency[]): string => {
   const h = createHash('sha256');
-  h.update(`zk-verifier-bench/input-hash\0harness=${HARNESS_VERSION}\0libauth=${libauthVersion}\0id=${id}\0`);
+  h.update(`zk-verifier-bench/input-hash/v2\0harness=${HARNESS_VERSION}\0harnessSources=${harnessFingerprint()}\0packages=${packageVersions}\0id=${id}\0`);
   // the red-team file is part of the hash even when absent ('missing'), so adding one re-runs the entry
   for (const dep of deps) h.update(`${dep.kind}\0${dep.path}\0${contentHash(dep)}\0`);
   return `sha256:${h.digest('hex')}`;

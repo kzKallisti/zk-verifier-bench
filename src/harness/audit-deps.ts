@@ -7,7 +7,17 @@
 // change to it. This script traces every fs read while the registry is imported (module-level
 // vector loads) and while each implementation's load() runs, attributes each read to the
 // implementation(s) whose module graph made it (by stack trace), and fails if a read file is not
-// among those implementations' hashed dependencies.
+// among those implementations' hashed dependencies. Traced: readFileSync, openSync, readFile,
+// createReadStream, fs.promises.readFile / open, and directory listings (readdirSync, readdir,
+// fs.promises.readdir), since a listing decides which files are read but is never hashed.
+// Reads made by the ESM loader itself (e.g. a JSON module import) are not visible here; those are
+// covered statically (input-hash.ts hashes a non-code imported module as raw bytes).
+//
+// `pnpm benchmark:json` runs this audit first (SKIP_DEPS_AUDIT=1 skips it).
+if (process.env.SKIP_DEPS_AUDIT === '1') {
+  console.error('dependency audit skipped (SKIP_DEPS_AUDIT=1)');
+  process.exit(0);
+}
 import fs from 'node:fs';
 import { syncBuiltinESMExports } from 'node:module';
 import { relative } from 'node:path';
@@ -17,9 +27,10 @@ const ROOT = process.cwd();
 const rel = (p: string): string => relative(ROOT, p).split('\\').join('/');
 const isCode = (p: string): boolean => /\.(m?[jt]s|cjs)$/.test(p);
 
-interface Read { path: string; frames: string[] }
+interface Read { path: string; frames: string[]; listing: boolean }
 const reads: Read[] = [];
 let current: Read[] = reads;
+let tracing = true;
 
 const framesOf = (): string[] =>
   (new Error().stack ?? '').split('\n').slice(2).map((line) => {
@@ -29,30 +40,48 @@ const framesOf = (): string[] =>
     return rel(file);
   }).filter((f) => f.startsWith('src/') && !f.startsWith('src/harness/'));
 
-const trace = (path: unknown) => {
+const trace = (path: unknown, listing: boolean) => {
+  if (!tracing) return;
   if (typeof path !== 'string' && !(path instanceof URL)) return;
   const p = rel(path instanceof URL ? fileURLToPath(path) : path);
-  if ((p.startsWith('src/') || p.startsWith('data/')) && !isCode(p)) current.push({ path: p, frames: framesOf() });
+  if (!(p.startsWith('src/') || p.startsWith('data/')) || (!listing && isCode(p))) return;
+  const frames = framesOf();
+  // a listing made by the harness itself (no implementation frame) is the harness's business
+  if (listing && frames.length === 0) return;
+  current.push({ path: p, frames, listing });
 };
-for (const name of ['readFileSync', 'openSync'] as const) {
-  const original = fs[name] as (...args: unknown[]) => unknown;
-  (fs as unknown as Record<string, unknown>)[name] = (...args: unknown[]) => {
-    trace(args[0]);
-    return original.apply(fs, args);
-  };
-}
+const wrap = (target: Record<string, unknown>, names: string[], listing: boolean) => {
+  for (const name of names) {
+    const original = target[name] as (...args: unknown[]) => unknown;
+    target[name] = function (this: unknown, ...args: unknown[]) {
+      trace(args[0], listing);
+      return original.apply(this, args);
+    };
+  }
+};
+wrap(fs as unknown as Record<string, unknown>, ['readFileSync', 'openSync', 'readFile', 'createReadStream', 'open'], false);
+wrap(fs as unknown as Record<string, unknown>, ['readdirSync', 'readdir', 'opendirSync', 'opendir'], true);
+wrap(fs.promises as unknown as Record<string, unknown>, ['readFile', 'open'], false);
+wrap(fs.promises as unknown as Record<string, unknown>, ['readdir', 'opendir'], true);
 syncBuiltinESMExports();
 
 const { REGISTRY } = await import('./benchmark.js');
 const { dependenciesOf, implementationModules } = await import('./input-hash.js');
+// the hash computation's own reads (SHA256SUMS, package.json, sources) are not implementation reads
+tracing = false;
 const modules = await implementationModules(REGISTRY);
 const deps = new Map(REGISTRY.map((impl) => [impl.id, dependenciesOf(impl.id, modules.get(impl.id)!)]));
+tracing = true;
 // which ids have a given module in their (hashed) module graph
 const idsOfModule = (module: string): string[] =>
   [...deps].filter(([, d]) => d.some((x) => x.path === module && x.kind !== 'file')).map(([id]) => id);
 
 const problems: string[] = [];
 const check = (read: Read, ids: string[], context: string) => {
+  if (read.listing) {
+    problems.push(`${read.path}: directory listed by ${context} [${read.frames.join(' <- ')}]; a listing is not part of any input hash, name the files by literal path instead`);
+    return;
+  }
   if (ids.length === 0) {
     problems.push(`${read.path}: read by ${context} [${read.frames.join(' <- ')}], not attributable to any implementation module`);
     return;

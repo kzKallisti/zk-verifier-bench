@@ -5,8 +5,23 @@
 //   pnpm fetch                    # everything
 //   pnpm fetch:nchain             # just the nChain mainnet txs
 //   pnpm fetch:scrypt-bn256       # just the sCrypt BN256 mainnet txs
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { dirname } from 'node:path';
+//
+// Each fetched file must match the digest pinned in its folder's SHA256SUMS (committed): the
+// incremental export (harness/input-hash.ts) hashes these files through that pin, so a row
+// measured on them stays checkable even while the gitignored hex is absent.
+import { createHash } from 'node:crypto';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { basename, dirname, join } from 'node:path';
+
+const pinnedDigest = (out: string): string | undefined => {
+  const sums = join(dirname(out), 'SHA256SUMS');
+  if (!existsSync(sums)) return undefined;
+  for (const line of readFileSync(sums, 'utf8').split('\n')) {
+    const m = /^([0-9a-f]{64})\s+\*?(\S+)$/.exec(line.trim());
+    if (m !== null && m[2] === basename(out)) return m[1];
+  }
+  return undefined;
+};
 
 type Tx = { group: string; net: 'main' | 'test'; txid: string; out: string; note: string };
 
@@ -57,8 +72,15 @@ for (const tx of selected) {
     process.exitCode = 1;
     continue;
   }
-  const hex = await res.text();
+  const hex = (await res.text()).trim();
+  const pinned = pinnedDigest(tx.out);
+  const actual = createHash('sha256').update(hex).digest('hex');
+  if (pinned !== undefined && actual !== pinned) {
+    console.log(`FAILED (sha256 ${actual} differs from the pin in ${join(dirname(tx.out), 'SHA256SUMS')}; not written)`);
+    process.exitCode = 1;
+    continue;
+  }
   mkdirSync(dirname(tx.out), { recursive: true });
-  writeFileSync(tx.out, hex.trim());
+  writeFileSync(tx.out, hex);
   console.log(`${(hex.length / 2).toLocaleString()} bytes -> ${tx.out}`);
 }
