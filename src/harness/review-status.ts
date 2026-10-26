@@ -30,6 +30,13 @@ export const REVIEW_STATUS: Record<string, ReviewStatus> = {
     ],
   },
 
+  // bn-native-sound (SI-MX3): built 2026-10-26, not yet independently reviewed
+  'bch-groth16-bn254-sound-native': {
+    status: 'unreviewed',
+    reason: 'Sound-by-construction 3-input bch-2026 build of the reviewed SI-GLS mathematics (affine B walk with exact inverse-norm witnesses, hash-authenticated shared code, pinned input graph, byte-exact handovers); awaiting an independent review of the exact artifact.',
+    refs: [`${SRC}/blob/wip/bn-native-sound/chunked/bn254/bn-native-sound/README.md`],
+  },
+
   // BN254 singletons: independent review 2026-10-26 (notes: verifier.cash work/bn-singleton-review/REVIEW.md)
   // after the jacAddG1 right-identity fix (bench 15bf0fe). Its one LOW finding, missing
   // 0 <= v < p checks on the proof coordinates (encoding malleability only), is fixed in
