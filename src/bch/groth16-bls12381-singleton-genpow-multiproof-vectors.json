@@ -43,17 +43,17 @@
   ],
   "provenance": {
     "source": "singleton/bls12-381/leader-recovered/cofactor-points.mjs",
-    "sourceBaseRevision": "5aa48d80caec4ba0ab4c06df5cde70853b938659",
+    "sourceRevision": "b7338eab2899f9b7b6be381b029691fc903abebf",
     "sourceFiles": {
       "program.mjs": "160e5d0bbb337eae61395596f73e15a749a4868c57ea344db918db293486b2de",
       "field.mjs": "1f045d29f75d18e499b107658e7f7316f7e11c87c3757386c99dc008615129b1",
       "build.mjs": "4bcfb1355e5202c8cb96fc2bd2a2f664eb68343d4ced5eb8b0708908ca340ba4",
       "compact.mjs": "7fac95231567b04c90112e787d346031bd493f954377a1eb46dc440c240b7863",
-      "export.mjs": "01d2fa72e41a155e3ab7520d469b67b19d1370d9563ae1706baebc4d6c723b9b",
+      "export.mjs": "44f15ce3c694c1570216f77177afb6209484aa681ca162aa12b84773bf5ecff9",
       "cofactor-points.mjs": "520fdb101351335acc764f822d0aa639f71070e8ef9603eaa2d03c2652d9cb18",
       "point-checks.mjs": "8953e15d758f3cae7d94018ff3c174cd24256b4ec51da5994553b4d391d499a6",
       "complete-points.mjs": "ac907c995d3d6dba8a472ff42429f8172e69f8e266dd5b7b4bf071899bf2a8ba",
-      "subgroup.mjs": "3acf9e60225ec9e0c95fa07a7b15736f0439bad96011e03da0b8f316842d9315"
+      "subgroup.mjs": "27674e56b60cba88eabc46f6f0803656f48f18f6e979a4091d9a3fe2f1b28411"
     },
     "recoveredProgramSource": true,
     "originalCompilerAndSearchPipelineRecovered": false,
@@ -64,7 +64,6 @@
     "profile": "checked",
     "proofDomain": "fixed-VK cofactor-equivalent G1 and G2; original G2 subgroup membership is not enforced",
     "nativeResourceStatus": "HOLD; arithmetic-oracle acceptance does not establish native admission",
-    "baselineVectorSha256": "294a5cb74cc3ef8389bfb2738de77d2c830d215dc1b7105396aba316993df3a8",
-    "previousVectorSha256": "ed5c97338ebd9fe7c3dba57519b63d11d622499df21a9846c8de8f8249686d8c"
+    "baselineVectorSha256": "294a5cb74cc3ef8389bfb2738de77d2c830d215dc1b7105396aba316993df3a8"
   }
 }
