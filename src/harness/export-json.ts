@@ -9,9 +9,11 @@
 // Score = total on-chain bytes (lower = cheaper fees). op-cost / steps are
 // secondary. BCH compatibility is a multi-dimensional cell, not a yes/no: a huge
 // BSV singleton is a correct, listed submission that simply does not fit BCH.
-// Each entry carries `reviewStatus` (reviewed | unreviewed | withdrawn, see
-// harness/review-status.ts); withdrawn entries stay listed but never count for the frontier.
-import { REVIEW_STATUS, reviewStatusOf } from './review-status.js';
+// Each entry carries `reviewStatus` (reviewed | unreviewed | withdrawn | baseline | demo |
+// component | archived, see harness/review-status.ts). Withdrawn and archived entries never
+// count for the frontier or new history points; withdrawn implementations are normally removed
+// from REGISTRY and so are absent from entries[], while archived rows stay listed.
+import { REVIEW_STATUS, isRanked, reviewStatusOf } from './review-status.js';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 
 import type { BenchmarkResult } from './types.js';
@@ -59,8 +61,9 @@ const recordHistory = (
       // points of entries that are now unsound are not records (the site hides them too), and
       // their reclassification (e.g. now non-standard) must not re-open a series
       if (!soundOf(series[i].id)) continue;
-      // nor are points of withdrawn entries (still kept in the file as history)
-      if (REVIEW_STATUS[series[i].id]?.status === 'withdrawn') continue;
+      // nor are points of withdrawn or archived entries (their old points stay in the file as history)
+      const status = REVIEW_STATUS[series[i].id];
+      if (status !== undefined && !isRanked(status)) continue;
       if (series[i].fits === best.fits && curveOfId(series[i].id) === best.curve && standardOf(series[i].id) === bestStandard) { last = series[i]; break; }
     }
     if (last === undefined || last.score !== best.score) {
@@ -211,8 +214,11 @@ const entryOf = (r: BenchmarkResult) => ({
   correctness: correctnessOf(r),
   // Evidence-based soundness review status: 'reviewed' (independent review of this exact
   // artifact), 'unreviewed' (author/maintainer claim, no open finding; the default) or
-  // 'withdrawn' (claim withdrawn or a finding applies). Withdrawn entries stay listed here
-  // and in the history, but are excluded from the frontier leader / current (see main()).
+  // 'withdrawn' (claim withdrawn or a finding applies; the implementation is normally removed
+  // from REGISTRY, so its row leaves this list), 'baseline' / 'demo' / 'component' (labels for
+  // references, the self-test and partial checkpoints) or 'archived' (superseded; the row stays
+  // listed). Withdrawn and archived entries are excluded from the frontier leader / current and
+  // new history points (see main()); their old history points stay in the file.
   reviewStatus: reviewStatusOf(r.impl),
   // headline score = full on-chain footprint (lower is better): the verifier scripts PLUS
   // the serialized transaction overhead (envelope + outpoints + CashToken prefixes + varints).
@@ -373,8 +379,8 @@ const main = async () => {
 
   const byId = (id: string) => entries.find((e) => e.id === id);
   const full = entries.filter((e) => e.category === 'full');
-  // withdrawn entries never count for the frontier (leader / current) or new history points
-  const active = full.filter((e) => e.reviewStatus.status !== 'withdrawn');
+  // withdrawn and archived entries never count for the frontier (leader / current) or new history points
+  const active = full.filter((e) => isRanked(e.reviewStatus));
   // current best GENUINE BCH-native verifier (none yet -> null): fits the per-tx limits
   // AND verifies any proof at runtime. Instance-specific (baked) artifacts fit but are
   // excluded, so neither the frontier "current" nor the score-history records them.
