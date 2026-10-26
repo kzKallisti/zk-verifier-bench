@@ -55,11 +55,17 @@ export const REVIEW_STATUS: Record<string, ReviewStatus> = {
     ],
   },
 
-  // BLS12-381 sound native (4-input bch-2026 SI-GLS): built 2026-10-26, no independent review yet
+  // BLS12-381 sound native (4-input bch-2026 SI-GLS): built on wip/bls-native-sound; independent review 2026-10-26
+  // (implementation, math, reproduction) found only minor issues, fixed or documented in two fix rounds before merge
+  // (verifier.cash work/bls-native-sound/FIXLOG.md).
   'bch-groth16-bls12381-sound-native': {
-    status: 'unreviewed',
-    reason: 'new build (2026-10-26); awaiting the independent soundness review of the shipped artifact. See the soundness argument and open risks in its README.',
-    refs: [`${SRC}/blob/main/chunked/bls12-381/bls-native-sound/README.md#soundness-argument`, `${SRC}/blob/main/chunked/bls12-381/bls-native-sound/README.md#open-risks`],
+    status: 'reviewed',
+    reason: 'Independent soundness review of the shipped artifact (2026-10-26; implementation, math and reproduction, minor findings fixed or documented before merge); see the soundness argument, verification and open risks in its README.',
+    refs: [
+      `${SRC}/blob/main/chunked/bls12-381/bls-native-sound/README.md#soundness-argument`,
+      `${SRC}/blob/main/chunked/bls12-381/bls-native-sound/README.md#verification`,
+      `${SRC}/blob/main/chunked/bls12-381/bls-native-sound/README.md#open-risks`,
+    ],
   },
 
   // BN254 singletons: independent review 2026-10-26 (notes: verifier.cash work/bn-singleton-review/REVIEW.md)
