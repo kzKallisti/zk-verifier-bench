@@ -68,10 +68,11 @@ export const REVIEW_STATUS: Record<string, ReviewStatus> = {
     reason: 'Corrected successor (4,320 B program, outline_32 P + O = P and neutral-point handling) merged via groth16_cashscript #30 / bench #47; the original 4,183 B program was withdrawn under F4.',
     refs: [...FINDINGS, `${SRC}/pull/30`, `${BENCH}/pull/47`],
   },
-  'bch-groth16-bls12381-singleton-genpow': withdrawn(
-    'F5: ships the unchecked 3,295 B leader-recovered program (decompressG1/G2); corrected successor pending.',
-    [...FINDINGS, `${SRC}/pull/31`, `${BENCH}/pull/48`],
-  ),
+  'bch-groth16-bls12381-singleton-genpow': {
+    status: 'unreviewed',
+    reason: 'Corrected successor (5,675 B program): canonical points, complete root chart and cofactor-equivalent G1/G2 projections from source #31 / benchmark #48. Native HOLD remains; original-G2 subgroup rejection is not asserted.',
+    refs: [...FINDINGS, `${SRC}/pull/31`, `${BENCH}/pull/48`],
+  },
   'bch-groth16-intratx': withdrawn(
     'F1 (BN42): the final vk_x chunk reads in1 without an exact-length gate.',
     FINDINGS,
