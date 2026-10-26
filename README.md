@@ -133,6 +133,34 @@ on-chain bytes** (locking + unlocking + serialized-tx overhead, with dead-weight
 zero-padding reported separately). Lower is better. Current numbers live in
 `results.json` — the README deliberately doesn't hard-code them.
 
+Fifteen original implementations are held or withdrawn from their claimed
+full-verifier or connected-component qualification and the default registry: the BN42, authenticated42, grouped42, grouped26, BLS24, PairFold-5,
+PairFold-5 pevalfuse, PairFold-5 densless, three densless-MSM variants,
+PairFold-7, the BLS chunked-covenant vk_x component, the BLS residue-large
+verifier, and the partial pairing intra-tx component. See [benchmark issue
+#49](https://github.com/mr-zwets/zk-verifier-bench/issues/49) and [source issue
+#32](https://github.com/mr-zwets/groth16_cashscript/issues/32). The current feed
+excludes those fifteen observations. The old BLS12-381 genpow observation is
+also omitted pending the separately qualified corrected artifact for [PR
+#48](https://github.com/mr-zwets/zk-verifier-bench/pull/48); its descriptor
+remains registered. Merge source #31 and benchmark #48 before this PR so the
+registered BLS genpow descriptor identifies its corrected artifact. The corrected BN254
+genpow observation from merged [PR
+#47](https://github.com/mr-zwets/zk-verifier-bench/pull/47) is retained at
+4,613 B. The three separately corrected standalone descriptors retain distinct
+IDs and their stated mathematical scope, but remain outside the default
+registry until qualified. No replacement score is inferred. All original numerical measurements remain in
+the [immutable historical export](https://github.com/mr-zwets/zk-verifier-bench/blob/86820022643b8832c4818967666c8cdaaaaa3b6e/results.json),
+and score-history points are retained as historical measurements, not current
+qualification. Separately corrected standalone profiles retain their stated
+scope and resource holds and are not registered by their presence on disk.
+The upstream current artifact therefore names `bch-groth16-singleton-genpow`
+as the 4,613 B leader (not BCH-compatible) and
+`bch-groth16-bls12381-intratx-fs-fused-coordinator-head` as the 60,285 B
+BCH-compatible current anchor. A leaderboard deployment must consume the
+updated feed; this change does not claim that a deployed website has already
+updated.
+
 | category | meaning |
 |----------|---------|
 | `full` | a complete Groth16 verifier |
