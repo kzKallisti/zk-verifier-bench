@@ -854,5 +854,37 @@
     "steps": 9,
     "transactions": 1,
     "fits": true
+  },
+  {
+    "t": "2026-10-26T15:27:01.130Z",
+    "score": 345471,
+    "id": "bch-groth16-bls12381-intratx",
+    "steps": 43,
+    "transactions": 1,
+    "fits": true
+  },
+  {
+    "t": "2026-10-26T15:27:01.130Z",
+    "score": 473475,
+    "id": "bch-groth16-chunked-covenant",
+    "steps": 49,
+    "transactions": 49,
+    "fits": true
+  },
+  {
+    "t": "2026-10-26T15:27:01.130Z",
+    "score": 58841,
+    "id": "bch-groth16-bls12381-singleton-minop",
+    "steps": 1,
+    "transactions": 1,
+    "fits": false
+  },
+  {
+    "t": "2026-10-26T15:27:01.130Z",
+    "score": 6198,
+    "id": "bch-groth16-singleton-opcode-optimized",
+    "steps": 1,
+    "transactions": 1,
+    "fits": false
   }
 ]

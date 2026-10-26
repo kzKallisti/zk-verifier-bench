@@ -80,6 +80,7 @@ import { authenticationInstructionIsMalformed, decodeAuthenticationInstructions,
 
 import { layoutGate, publicInputGate } from './gates.js';
 import { redTeam } from './redteam.js';
+import { reviewStatusOf } from './review-status.js';
 import { tamperProof } from './tamper.js';
 import type { BenchmarkResult, Implementation, PackagingType, Scenario, Step, StepMetrics } from './types.js';
 import {
@@ -600,6 +601,10 @@ export const benchmark = (impl: Implementation, scenario: Awaited<ReturnType<Imp
     insecurePackagingReason: env.reason,
   };
 };
+
+// Attach the evidence-based review status (harness/review-status.ts) to every registered
+// implementation; an id missing from that table defaults to 'unreviewed'.
+for (const impl of REGISTRY) impl.reviewStatus = reviewStatusOf(impl);
 
 /** Implementations skipped in full runs because they are too slow/expensive to evaluate
  * (for now: the genpow verifiers). SKIP_IMPLS is a comma-separated, case-insensitive list

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-26T14:56:57.367Z",
+  "generatedAt": "2026-10-26T15:27:01.130Z",
   "statement": {
     "proofSystem": "Groth16",
     "curve": "BN254",
@@ -26,17 +26,17 @@
       "bytes": 10000
     },
     "leader": {
-      "id": "bch-groth16-bls12381-singleton-genpow",
+      "id": "bch-groth16-singleton-opcode-optimized",
       "label": "BCH-native full verifier",
-      "curve": "BLS12-381",
-      "bytes": 3585,
+      "curve": "BN254",
+      "bytes": 6198,
       "bchCompatible": false
     },
     "current": {
-      "id": "bch-groth16-intratx-pairfold5-densless-msm-slim",
+      "id": "bch-groth16-bls12381-intratx-fs-fused-coordinator-head",
       "label": "Best BCH-native full verifier",
-      "curve": "BN254",
-      "bytes": 35143,
+      "curve": "BLS12-381",
+      "bytes": 60285,
       "bchCompatible": true
     }
   },
@@ -896,6 +896,38 @@
       "steps": 9,
       "transactions": 1,
       "fits": true
+    },
+    {
+      "t": "2026-10-26T15:27:01.130Z",
+      "score": 345471,
+      "id": "bch-groth16-bls12381-intratx",
+      "steps": 43,
+      "transactions": 1,
+      "fits": true
+    },
+    {
+      "t": "2026-10-26T15:27:01.130Z",
+      "score": 473475,
+      "id": "bch-groth16-chunked-covenant",
+      "steps": 49,
+      "transactions": 49,
+      "fits": true
+    },
+    {
+      "t": "2026-10-26T15:27:01.130Z",
+      "score": 58841,
+      "id": "bch-groth16-bls12381-singleton-minop",
+      "steps": 1,
+      "transactions": 1,
+      "fits": false
+    },
+    {
+      "t": "2026-10-26T15:27:01.130Z",
+      "score": 6198,
+      "id": "bch-groth16-singleton-opcode-optimized",
+      "steps": 1,
+      "transactions": 1,
+      "fits": false
     }
   ],
   "entries": [
@@ -932,6 +964,9 @@
         "publicInputs": null,
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 522564,
       "size": {
@@ -1021,6 +1056,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 11717771,
       "size": {
         "scriptBytes": 11717684,
@@ -1107,6 +1145,10 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed",
+        "reason": "jacAddG1 right-identity (P + O = P) fixed and rebuilt in bench 15bf0fe."
       },
       "score": 8164,
       "size": {
@@ -1201,6 +1243,10 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed",
+        "reason": "jacAddG1 right-identity (P + O = P) fixed and rebuilt in bench 15bf0fe."
+      },
       "score": 6198,
       "size": {
         "scriptBytes": 6111,
@@ -1294,6 +1340,16 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F4: ships the 4,183 B program whose outline_32 identity addition can drop a term; corrected successor pending.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/groth16_cashscript/pull/30",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/47"
+        ]
+      },
       "score": 4476,
       "size": {
         "scriptBytes": 4391,
@@ -1379,6 +1435,9 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 58073,
       "size": {
@@ -1474,6 +1533,13 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "Held by maintainer review: no coordinate range, curve-equation or G2 subgroup checks in groth16.cash.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/singleton/bls12-381/README.md"
+        ]
+      },
       "score": 7347,
       "size": {
         "scriptBytes": 7260,
@@ -1559,6 +1625,13 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "Held by maintainer review: same source as the BLS12-381 singleton (no range/curve/subgroup checks).",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/singleton/bls12-381/README.md"
+        ]
       },
       "score": 5828,
       "size": {
@@ -1646,6 +1719,16 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F5: ships the unchecked 3,295 B leader-recovered program (decompressG1/G2); corrected successor pending.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/groth16_cashscript/pull/31",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/48"
+        ]
+      },
       "score": 3585,
       "size": {
         "scriptBytes": 3500,
@@ -1731,6 +1814,9 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 58841,
       "size": {
@@ -1826,6 +1912,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 103861,
       "size": {
         "scriptBytes": 103774,
@@ -1920,6 +2009,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 97955,
       "size": {
         "scriptBytes": 97866,
@@ -2010,6 +2102,9 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 73536,
       "size": {
@@ -2102,6 +2197,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 65218,
       "size": {
         "scriptBytes": 65131,
@@ -2192,6 +2290,9 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 239773,
       "size": {
@@ -2288,6 +2389,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 473475,
       "size": {
         "scriptBytes": 466123,
@@ -2375,6 +2479,9 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 93802,
       "size": {
@@ -2468,6 +2575,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 11051,
       "size": {
         "scriptBytes": 10964,
@@ -2550,6 +2660,9 @@
         "publicInputs": null,
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 11228,
       "size": {
@@ -2634,6 +2747,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 175823,
       "size": {
         "scriptBytes": 174431,
@@ -2714,6 +2830,9 @@
         "publicInputs": null,
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 14874,
       "size": {
@@ -2798,6 +2917,9 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 11351,
       "size": {
@@ -2891,6 +3013,13 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "Held (F3 class): each covenant step pins only commitment + category, not its successor locking.",
+        "refs": [
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/50"
+        ]
+      },
       "score": 23700,
       "size": {
         "scriptBytes": 22259,
@@ -2976,6 +3105,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 6640,
       "size": {
         "scriptBytes": 6553,
@@ -3059,6 +3191,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 6652,
       "size": {
         "scriptBytes": 6565,
@@ -3141,6 +3276,9 @@
         "publicInputs": null,
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 109305,
       "size": {
@@ -3234,6 +3372,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 342331,
       "size": {
         "scriptBytes": 337429,
@@ -3321,6 +3462,9 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 357241,
       "size": {
@@ -3417,6 +3561,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 635295,
       "size": {
         "scriptBytes": 625533,
@@ -3504,6 +3651,9 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 211163,
       "size": {
@@ -3593,6 +3743,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 107243,
       "size": {
@@ -3689,6 +3842,14 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F1 (BN42): the final vk_x chunk reads in1 without an exact-length gate.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49"
+        ]
+      },
       "score": 234022,
       "size": {
         "scriptBytes": 232669,
@@ -3783,6 +3944,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 83294,
       "size": {
@@ -3879,6 +4043,15 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F1 (authenticated42): no byte-owner gates on state/table bytes.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/50"
+        ]
+      },
       "score": 330742,
       "size": {
         "scriptBytes": 328916,
@@ -3973,6 +4146,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 86950,
       "size": {
@@ -4069,6 +4245,9 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 58460,
       "size": {
         "scriptBytes": 58268,
@@ -4163,6 +4342,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 77193,
       "size": {
@@ -4267,6 +4449,15 @@
         },
         "failures": [
           "maintainer red-team attack accepted (3/3; first: \"forged n0 = true n0 + 2 (true vk_x kept)\")"
+        ]
+      },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "Held (F9 class): public-statement binding not established; the harness red-team already fails it.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/50"
         ]
       },
       "score": 54483,
@@ -4374,6 +4565,14 @@
           "maintainer red-team attack accepted (3/3; first: \"forged n0 = true n0 + 2 (true vk_x kept)\")"
         ]
       },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F9: genesis byte-identical to the withdrawn pevalfuse genesis; the public MSM is not established.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49"
+        ]
+      },
       "score": 44968,
       "size": {
         "scriptBytes": 44733,
@@ -4477,6 +4676,15 @@
         },
         "failures": [
           "maintainer red-team attack accepted (3/3; first: \"forged n0 = true n0 + 2 (true vk_x kept)\")"
+        ]
+      },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F9: the auxiliary relation does not establish the public MSM.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/50"
         ]
       },
       "score": 36836,
@@ -4583,6 +4791,16 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F6: densless executors and terminal; no soundness argument.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/groth16_cashscript/issues/28",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/50"
+        ]
       },
       "score": 35861,
       "size": {
@@ -4692,6 +4910,16 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F6: ships the withdrawn densless-msm-slim head; no soundness argument.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/groth16_cashscript/issues/28",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/50"
+        ]
+      },
       "score": 35143,
       "size": {
         "scriptBytes": 34908,
@@ -4795,6 +5023,16 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F6: same densless executors and terminal; no soundness argument.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/groth16_cashscript/issues/28",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/50"
+        ]
       },
       "score": 33875,
       "size": {
@@ -4909,6 +5147,15 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "reviewed",
+        "reason": "Independent soundness review of the shipped artifact; see the soundness argument, verification and open risks in its README.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bn254/sound-si-gls/README.md#soundness-argument",
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bn254/sound-si-gls/README.md#verification",
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bn254/sound-si-gls/README.md#open-risks"
+        ]
+      },
       "score": 21915,
       "size": {
         "scriptBytes": 21852,
@@ -5014,6 +5261,15 @@
           "maintainer red-team attack accepted (3/3; first: \"forged n0 = true n0 + 2 (true vk_x kept)\")"
         ]
       },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F6: same millerEvent and terminal bytes as the withdrawn densless constructions; no soundness argument.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/groth16_cashscript/issues/28"
+        ]
+      },
       "score": 33179,
       "size": {
         "scriptBytes": 32944,
@@ -5109,6 +5365,9 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 95201,
       "size": {
         "scriptBytes": 94622,
@@ -5199,6 +5458,14 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F1 (grouped42): in0/in1 are trailing limbs without an exact-length gate.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49"
+        ]
       },
       "score": 234301,
       "size": {
@@ -5294,6 +5561,15 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F1 (grouped26): no carrier / terminal-state byte owner.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/50"
+        ]
       },
       "score": 225877,
       "size": {
@@ -5391,6 +5667,9 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 335614,
       "size": {
         "scriptBytes": 333960,
@@ -5485,6 +5764,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 345471,
       "size": {
@@ -5581,6 +5863,15 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F1 (BLS24): no GLV-carrier / terminal-state byte owner.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/50"
+        ]
+      },
       "score": 193309,
       "size": {
         "scriptBytes": 192257,
@@ -5675,6 +5966,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 79948,
       "size": {
@@ -5771,6 +6065,9 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 65696,
       "size": {
         "scriptBytes": 64730,
@@ -5865,6 +6162,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 65326,
       "size": {
@@ -5961,6 +6261,9 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 65160,
       "size": {
         "scriptBytes": 64280,
@@ -6055,6 +6358,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 64783,
       "size": {
@@ -6151,6 +6457,9 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 64689,
       "size": {
         "scriptBytes": 64024,
@@ -6245,6 +6554,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 64532,
       "size": {
@@ -6341,6 +6653,9 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 64159,
       "size": {
         "scriptBytes": 63623,
@@ -6435,6 +6750,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 63866,
       "size": {
@@ -6531,6 +6849,9 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 62328,
       "size": {
         "scriptBytes": 61835,
@@ -6625,6 +6946,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 62252,
       "size": {
@@ -6721,6 +7045,9 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 60285,
       "size": {
         "scriptBytes": 59878,
@@ -6815,6 +7142,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 60308,
       "size": {
@@ -6911,6 +7241,15 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "Held (F1 pattern): chunks are generated without enforceExactInputLength (prefix-only forward checks).",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/50"
+        ]
+      },
       "score": 161660,
       "size": {
         "scriptBytes": 161507,
@@ -7001,6 +7340,9 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 345791,
       "size": {
@@ -7097,6 +7439,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 202594,
       "size": {
         "scriptBytes": 201284,
@@ -7188,6 +7533,9 @@
         "publicInputs": null,
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 483,
       "size": {
