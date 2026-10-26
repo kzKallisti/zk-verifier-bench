@@ -217,7 +217,22 @@ export interface Implementation {
   demo?: boolean;
   /** a same-milestone comparison against a reference verifier (see Milestone) */
   milestone?: Milestone;
+  /**
+   * Evidence-based soundness review status (default 'unreviewed'): 'reviewed' = an
+   * independent review of the exact artifact found no gaps; 'withdrawn' = the author
+   * withdrew the claim or a finding applies (kept in results/history, but never counts
+   * for the frontier). Normally resolved from harness/review-status.ts by id.
+   */
+  reviewStatus?: ReviewStatus;
   load: () => Promise<Scenario>;
+}
+
+export interface ReviewStatus {
+  status: 'reviewed' | 'unreviewed' | 'withdrawn';
+  /** short human-readable reason (finding, fix commit, review pointer) */
+  reason?: string;
+  /** issue / PR / document links backing the status */
+  refs?: string[];
 }
 
 /**

@@ -16,8 +16,13 @@
 // A is negated in-script. require()s the product == Fp12 ONE. Sound: vk_x is
 // recomputed on-chain. Verified against @noble/curves bls12-381.
 //
-// Same curve (BLS12-381) as nchain -> a direct comparison. At ~966M op-cost
-// (~121 standard BCH inputs) and a 7,698-byte locking script it does not fit one
+// The proof points are validated before any pairing work: coordinates in [0, p), A and C
+// on y^2 = x^3 + 4, B on the twist y^2 = x^3 + 4(1+u), and B in G2 (psi(B) == [-x]B fused
+// into B's Miller walk, with a Z != 0 guard). Points at infinity have no encoding and are
+// rejected. The vectors ship 13 out-of-domain proofs as extra invalid runs.
+//
+// Same curve (BLS12-381) as nchain -> a direct comparison. At ~995M op-cost
+// (~124 standard BCH inputs) and a 7,026-byte locking script it does not fit one
 // input because of op-cost density. The honest
 // single-tx baseline that motivates a chunked (multi-tx) BLS verifier.
 //
@@ -32,6 +37,9 @@ const v = JSON.parse(readFileSync('src/bch/groth16-bls12381-singleton-vectors.js
   lockingOK: string;
   unlocking: string;
   invalidUnlocking: string;
+  // out-of-domain proof points (coordinate >= p, off-curve A/C/B, B on the twist but outside
+  // G2), from groth16_contract/singleton/bls12-381/domain_cases.mjs; each must be REJECTED
+  domainInvalid: { label: string; unlocking: string }[];
 };
 
 // Extra DISTINCT proofs minted under the SAME VK (same locking), to confirm this
@@ -59,11 +67,12 @@ export const bchGroth16Bls12381Singleton: Implementation = {
     'BLS12-381 pairing e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) (M-twist ' +
     'Miller, |x| NAF, conjugate, Hayashida-Scott final exp) and require()s == 1. ' +
     'VK hardcoded; proof (A,B,C) + public inputs (in0,in1) at RUNTIME; A negated ' +
-    'in-script. Sound (vk_x recomputed on-chain). Verified vs @noble/curves ' +
+    'in-script; proof points validated (coordinate range, curve equations, G2 subgroup via ' +
+    'psi(B) == [-x]B fused into the Miller walk). Verified vs @noble/curves ' +
     'bls12-381. Locking is plain compiler output (size objective + ' +
-    'rescheduleStacks, no post-passes; 7,698-byte locking) -- the honest baseline vs the ' +
+    'rescheduleStacks, no post-passes; 7,026-byte locking) -- the honest baseline vs the ' +
     'nchain single-tx reference, and the other end of the bytesize-vs-opcost ' +
-    'tradeoff from the -opcode-optimized entry. ~966M op-cost (~121 BCH ' +
+    'tradeoff from the -opcode-optimized entry. ~995M op-cost (~124 BCH ' +
     'inputs) does NOT fit one input.',
   load: async () => {
     const valid: Step[] = [
@@ -76,6 +85,7 @@ export const bchGroth16Bls12381Singleton: Implementation = {
     ];
     const invalid: Step[][] = [
       [{ ...valid[0]!, unlockingBytecode: hexToBin(v.invalidUnlocking) }],
+      ...v.domainInvalid.map((d) => [{ ...valid[0]!, unlockingBytecode: hexToBin(d.unlocking) }]),
     ];
     const extraValidProofs: Step[][] = mp.proofs
       .filter((p) => !p.committed)

@@ -9,6 +9,9 @@
 // Score = total on-chain bytes (lower = cheaper fees). op-cost / steps are
 // secondary. BCH compatibility is a multi-dimensional cell, not a yes/no: a huge
 // BSV singleton is a correct, listed submission that simply does not fit BCH.
+// Each entry carries `reviewStatus` (reviewed | unreviewed | withdrawn, see
+// harness/review-status.ts); withdrawn entries stay listed but never count for the frontier.
+import { REVIEW_STATUS, reviewStatusOf } from './review-status.js';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 
 import type { BenchmarkResult } from './types.js';
@@ -56,6 +59,8 @@ const recordHistory = (
       // points of entries that are now unsound are not records (the site hides them too), and
       // their reclassification (e.g. now non-standard) must not re-open a series
       if (!soundOf(series[i].id)) continue;
+      // nor are points of withdrawn entries (still kept in the file as history)
+      if (REVIEW_STATUS[series[i].id]?.status === 'withdrawn') continue;
       if (series[i].fits === best.fits && curveOfId(series[i].id) === best.curve && standardOf(series[i].id) === bestStandard) { last = series[i]; break; }
     }
     if (last === undefined || last.score !== best.score) {
@@ -204,6 +209,11 @@ const entryOf = (r: BenchmarkResult) => ({
   // single headline "is this a valid verifier" signal the per-dimension cells never summarized;
   // `verdict: 'fail'` disqualifies the entry from the frontier leaders / score-history (see main()).
   correctness: correctnessOf(r),
+  // Evidence-based soundness review status: 'reviewed' (independent review of this exact
+  // artifact), 'unreviewed' (author/maintainer claim, no open finding; the default) or
+  // 'withdrawn' (claim withdrawn or a finding applies). Withdrawn entries stay listed here
+  // and in the history, but are excluded from the frontier leader / current (see main()).
+  reviewStatus: reviewStatusOf(r.impl),
   // headline score = full on-chain footprint (lower is better): the verifier scripts PLUS
   // the serialized transaction overhead (envelope + outpoints + CashToken prefixes + varints).
   // Folding tx overhead in makes structures comparable — a covenant chain pays it once PER
@@ -358,18 +368,23 @@ const main = async () => {
     } catch { /* unreadable previous artifact: proceed with fresh entries only */ }
   }
 
+  // re-stamp the review status (entries carried forward from an older artifact may predate it)
+  for (const e of entries) e.reviewStatus = reviewStatusOf({ id: e.id, reviewStatus: undefined });
+
   const byId = (id: string) => entries.find((e) => e.id === id);
   const full = entries.filter((e) => e.category === 'full');
+  // withdrawn entries never count for the frontier (leader / current) or new history points
+  const active = full.filter((e) => e.reviewStatus.status !== 'withdrawn');
   // current best GENUINE BCH-native verifier (none yet -> null): fits the per-tx limits
   // AND verifies any proof at runtime. Instance-specific (baked) artifacts fit but are
   // excluded, so neither the frontier "current" nor the score-history records them.
-  const bestBchNative = full
+  const bestBchNative = active
     .filter((e) => e.bch.compatible && e.generality.runtimeGeneral && e.packaging.secure && e.correctness?.verdict !== 'fail')
     .sort((a, b) => a.score - b.score)[0];
   // smallest BCH-native (non-baseline) full verifier: the current frontier leader,
   // whether or not it already fits BCH per-tx limits. A P2SH20-packaged entry is
   // disqualified, so it can never be the leader.
-  const leader = full
+  const leader = active
     .filter((e) => !e.official && e.packaging.secure && e.correctness?.verdict !== 'fail')
     .sort((a, b) => a.score - b.score)[0];
 
@@ -383,7 +398,7 @@ const main = async () => {
   const curvesPresent = [...new Set(full.map((e) => e.curve))];
   const smallestPerCurve = (pred: (e: Entry) => boolean, fits: boolean): Best[] =>
     curvesPresent
-      .map((c) => full.filter((e) => e.curve === c && pred(e)).sort((a, b) => a.score - b.score)[0])
+      .map((c) => active.filter((e) => e.curve === c && pred(e)).sort((a, b) => a.score - b.score)[0])
       .filter((e): e is Entry => e !== undefined)
       .map((e) => ({ score: e.score, id: e.id, steps: e.benchmarks.smallProof.steps, transactions: e.size.transactions, curve: e.curve, fits }));
 

@@ -11,6 +11,7 @@
     "benchmark": "tsx --max-old-space-size=8192 src/harness/benchmark.ts",
     "benchmark:json": "tsx --max-old-space-size=8192 src/harness/export-json.ts",
     "gen:multiproof": "node src/bch/gen-multiproof.mjs",
+    "gen:zero-input": "node src/bch/gen-zero-input-proofs.mjs",
     "gen:multiproof-bls": "node src/bch/gen-multiproof-bls12381.mjs",
     "checkpoints": "tsx src/checkpoints/demo.ts",
     "checkpoints:pairing-gen": "tsx src/checkpoints/gen-pairing-vectors.ts",

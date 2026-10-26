@@ -26,13 +26,11 @@ import { bchMultistepDemo } from '../implementations/bch-multistep-demo.js';
 import { bchPairingBls12381Chunked } from '../implementations/bch-pairing-bls12381-chunked.js';
 import { bchPairingBls12381Singleton } from '../implementations/bch-pairing-bls12381-singleton.js';
 import { bchPairingChunked } from '../implementations/bch-pairing-chunked.js';
-import { bchPairingIntratx } from '../implementations/bch-pairing-intratx.js';
 import { bchGroth16IntratxDirectStatePublic } from '../implementations/bch-groth16-intratx-direct-state-public.js';
 import { bchGroth16IntratxResidue } from '../implementations/bch-groth16-intratx-residue.js';
 import { bchGroth16IntratxGeneral } from '../implementations/bch-groth16-intratx-general.js';
 import { bchGroth16IntratxResidueLarge } from '../implementations/bch-groth16-intratx-residue-large.js';
 import { bchGroth16IntratxCrown8Rawchain } from '../implementations/bch-groth16-intratx-crown8-rawchain.js';
-import { bchGroth16IntratxPairfold7 } from '../implementations/bch-groth16-intratx-pairfold7.js';
 import { bchGroth16SoundSiGlsSingle } from '../implementations/bch-groth16-sound-si-gls-single.js';
 import { bchGroth16Bls12381Grouped } from '../implementations/bch-groth16-bls12381-grouped.js';
 import { bchGroth16Bls12381GroupedResidue } from '../implementations/bch-groth16-bls12381-grouped-residue.js';
@@ -51,9 +49,7 @@ import { bchGroth16Bls12381IntratxFsRegularInitializer } from '../implementation
 import { bchGroth16Bls12381IntratxFsFusedFirstTail } from '../implementations/bch-groth16-bls12381-intratx-fs-fused-first-tail.js';
 import { bchGroth16Bls12381IntratxFsFusedCoordinatorHead } from '../implementations/bch-groth16-bls12381-intratx-fs-fused-coordinator-head.js';
 import { bchGroth16Bls12381IntratxFsFusedCoordinatorHeadFields } from '../implementations/bch-groth16-bls12381-intratx-fs-fused-coordinator-head-fields.js';
-import { bchGroth16Bls12381IntratxResidueLarge } from '../implementations/bch-groth16-bls12381-intratx-residue-large.js';
 import { bchPairingSingleton } from '../implementations/bch-pairing-singleton.js';
-import { bchVkxBls12381ChunkedCovenant } from '../implementations/bch-vkx-bls12381-chunked-covenant.js';
 import { bchVkxChunkedCovenant } from '../implementations/bch-vkx-chunked-covenant.js';
 import { bchVkxChunkedShamir } from '../implementations/bch-vkx-chunked-shamir.js';
 import { bchVkxChunkedTwoloop } from '../implementations/bch-vkx-chunked-twoloop.js';
@@ -69,6 +65,7 @@ import { authenticationInstructionIsMalformed, decodeAuthenticationInstructions,
 
 import { layoutGate, publicInputGate } from './gates.js';
 import { redTeam } from './redteam.js';
+import { reviewStatusOf } from './review-status.js';
 import { tamperProof } from './tamper.js';
 import type { BenchmarkResult, Implementation, PackagingType, Scenario, Step, StepMetrics } from './types.js';
 import {
@@ -102,7 +99,7 @@ const limitReason = (error: string): string => {
   return 'limit';
 };
 
-export const REGISTRY: Implementation[] = [nchain, scryptBn256, bchGroth16Singleton, bchGroth16SingletonOpcodeOptimized, bchGroth16SingletonGenpow, bchGroth16SingletonMinOp, bchGroth16Bls12381Singleton, bchGroth16Bls12381SingletonOpcodeOptimized, bchGroth16Bls12381SingletonGenpow, bchGroth16Bls12381SingletonMinOp, bchGroth16Bls12381SingletonFs, bchGroth16Bls12381SingletonFsSpec, bchGroth16Bls12381SingletonFsSpecShared, bchGroth16Bls12381SingletonFsSpecZero, bchGroth16Chunked, bchGroth16ChunkedCovenant, bchGroth16ChunkedCovenantResidue, bchVkxScalarmult, bchVkxSingleton, bchVkxBls12381Singleton, bchVkxChunkedTwoloop, bchVkxChunkedShamir, bchVkxChunkedCovenant, bchVkxBls12381ChunkedCovenant, bchPairingSingleton, bchPairingBls12381Singleton, bchPairingChunked, bchPairingBls12381Chunked, bchGroth16Bls12381Chunked, bchGroth16Bls12381ChunkedCovenant, bchGroth16Bls12381ChunkedCovenantResidue, bchPairingIntratx, bchGroth16IntratxDirectStatePublic, bchGroth16IntratxResidue, bchGroth16IntratxResidueLarge, bchGroth16IntratxCrown8Rawchain, bchGroth16IntratxPairfold7, bchGroth16SoundSiGlsSingle, bchGroth16IntratxGeneral, bchPairingBls12381Intratx, bchGroth16Bls12381Intratx, bchGroth16Bls12381IntratxFs, bchGroth16Bls12381IntratxFsCompact, bchGroth16Bls12381IntratxFsFusedFinal, bchGroth16Bls12381IntratxFsFusedRegular, bchGroth16Bls12381IntratxFsFusedRegularPairs, bchGroth16Bls12381IntratxFsFusedRegularPairsPacked, bchGroth16Bls12381IntratxFsFusedRegularTriples, bchGroth16Bls12381IntratxFsFusedCarrierPair, bchGroth16Bls12381IntratxFsFusedMiddlePair, bchGroth16Bls12381IntratxFsRegularInitializer, bchGroth16Bls12381IntratxFsFusedFirstTail, bchGroth16Bls12381IntratxFsFusedCoordinatorHead, bchGroth16Bls12381IntratxFsFusedCoordinatorHeadFields, bchGroth16Bls12381IntratxResidueLarge, bchGroth16Bls12381Grouped, bchGroth16Bls12381GroupedResidue, bchMultistepDemo];
+export const REGISTRY: Implementation[] = [nchain, scryptBn256, bchGroth16Singleton, bchGroth16SingletonOpcodeOptimized, bchGroth16SingletonGenpow, bchGroth16SingletonMinOp, bchGroth16Bls12381Singleton, bchGroth16Bls12381SingletonOpcodeOptimized, bchGroth16Bls12381SingletonGenpow, bchGroth16Bls12381SingletonMinOp, bchGroth16Bls12381SingletonFs, bchGroth16Bls12381SingletonFsSpec, bchGroth16Bls12381SingletonFsSpecShared, bchGroth16Bls12381SingletonFsSpecZero, bchGroth16Chunked, bchGroth16ChunkedCovenant, bchGroth16ChunkedCovenantResidue, bchVkxScalarmult, bchVkxSingleton, bchVkxBls12381Singleton, bchVkxChunkedTwoloop, bchVkxChunkedShamir, bchVkxChunkedCovenant, bchPairingSingleton, bchPairingBls12381Singleton, bchPairingChunked, bchPairingBls12381Chunked, bchGroth16Bls12381Chunked, bchGroth16Bls12381ChunkedCovenant, bchGroth16Bls12381ChunkedCovenantResidue, bchGroth16IntratxDirectStatePublic, bchGroth16IntratxResidue, bchGroth16IntratxResidueLarge, bchGroth16IntratxCrown8Rawchain, bchGroth16SoundSiGlsSingle, bchGroth16IntratxGeneral, bchPairingBls12381Intratx, bchGroth16Bls12381Intratx, bchGroth16Bls12381IntratxFs, bchGroth16Bls12381IntratxFsCompact, bchGroth16Bls12381IntratxFsFusedFinal, bchGroth16Bls12381IntratxFsFusedRegular, bchGroth16Bls12381IntratxFsFusedRegularPairs, bchGroth16Bls12381IntratxFsFusedRegularPairsPacked, bchGroth16Bls12381IntratxFsFusedRegularTriples, bchGroth16Bls12381IntratxFsFusedCarrierPair, bchGroth16Bls12381IntratxFsFusedMiddlePair, bchGroth16Bls12381IntratxFsRegularInitializer, bchGroth16Bls12381IntratxFsFusedFirstTail, bchGroth16Bls12381IntratxFsFusedCoordinatorHead, bchGroth16Bls12381IntratxFsFusedCoordinatorHeadFields, bchGroth16Bls12381Grouped, bchGroth16Bls12381GroupedResidue, bchMultistepDemo];
 
 // Zero-padding accounting: the chunked/intra-tx steps append one big all-zero push to each
 // unlocking purely to buy op-cost budget ((41+len)*800). Its full encoded length (push
@@ -589,6 +586,10 @@ export const benchmark = (impl: Implementation, scenario: Awaited<ReturnType<Imp
     insecurePackagingReason: env.reason,
   };
 };
+
+// Attach the evidence-based review status (harness/review-status.ts) to every registered
+// implementation; an id missing from that table defaults to 'unreviewed'.
+for (const impl of REGISTRY) impl.reviewStatus = reviewStatusOf(impl);
 
 /** Implementations skipped in full runs because they are too slow/expensive to evaluate
  * (for now: the genpow verifiers). SKIP_IMPLS is a comma-separated, case-insensitive list
