@@ -99,7 +99,6 @@ const recordHistory = (
 //     the id here makes the next default export measure and publish it.
 const FEED_OMIT = new Map<string, string>([
   ['bch-vkx-scalarmult', 'site-exclude: sub-step benchmark, not listed on the site'],
-  ['bch-groth16-bls12381-singleton-genpow', 'hold: corrected BLS12-381 genpow artifact (#48) is unreviewed and under a native HOLD; omitted until separately qualified (README)'],
 ]);
 
 const anchor = (e: Entry | undefined, label: string) =>
@@ -127,31 +126,38 @@ const envList = (name: string): string[] | undefined => {
 // Incremental export. Each registered entry is either RE-RUN (fresh measurement) or CARRIED
 // forward from the previous artifact unchanged except for its metadata:
 //   default        re-run entries that are new, lack an inputHash, or whose inputHash changed
-//   FULL=1         re-run every entry (except SKIP_IMPLS ones, see below)
+//                  (SKIP_IMPLS ones included: a slow entry is measured when its inputs change)
+//   FULL=1         re-run every entry, except SKIP_IMPLS ones whose inputHash still matches
 //   ONLY_IMPLS=a,b re-run exactly these ids (exact match, bypasses SKIP_IMPLS; an id in
 //                  FEED_OMIT or unregistered is an error; not combinable with FULL=1); carry
-//                  every other row as is. A carried row whose inputs changed is STALE: the
-//                  artifact is still written, but history / frontier are frozen and exit 2
-//   SKIP_IMPLS     (default 'genpow') never re-run unless forced; carried only while the stored
-//                  inputHash equals the current one. A row whose inputs changed, or a legacy row
-//                  without an inputHash (its inputs are unknown), would be DROPPED, which fails
-//                  the export (run it with SKIP_IMPLS='' or ONLY_IMPLS=<id>)
-//   ALLOW_DROP=1   write the artifact even though rows are dropped / absent; history and
-//                  frontier are then frozen (never recomputed from the reduced row set) and the
-//                  export exits 2: a degraded artifact, never a standing policy (see FEED_OMIT)
+//                  every other row as is. A carried row whose inputs changed is STALE
+//   SKIP_IMPLS     (default 'genpow') the slow entries: FULL=1 does not force them, but they are
+//                  re-run like any other entry when they are new, lack an inputHash (a legacy
+//                  row, inputs unknown) or their inputs changed. Never dropped
+//   DEFER_SKIPPED=1  do not wait for those SKIP_IMPLS re-runs: carry the old row instead,
+//                  marked STALE (needs a previous row; one with no row at all fails)
+//   STALE rows     carry an explicit `stale` field (the reason) and keep their old inputHash, so
+//                  the next default run re-runs them; the artifact is written, but history and
+//                  frontier are frozen and the export exits 2 (never publish it)
+//   ALLOW_DROP=1   write the artifact even though rows are absent (ONLY_IMPLS without a previous
+//                  row); history and frontier are then frozen (never recomputed from the reduced
+//                  row set) and the export exits 2: a degraded artifact, never a standing policy
+//                  (see FEED_OMIT)
 // An entry whose data/ file is missing (e.g. the nChain / sCrypt mainnet tx hex, fetched by
 // `pnpm fetch`) is hashed through the digest pinned in data/<x>/SHA256SUMS, so its row is
 // carried only while every input is unchanged; anything that would re-run it fails loudly
 // (FULL=1 too, unless ALLOW_MISSING_DATA=1). A failing load is an error, never a dropped row.
-type Action = 'run' | 'carry' | 'stale' | 'drop' | 'absent';
+type Action = 'run' | 'carry' | 'stale' | 'absent';
 type Plan = { impl: Implementation; action: Action; reason: string; hash: string; previous?: Entry };
 
 const planExport = async (previous: Map<string, Entry>): Promise<Plan[]> => {
   const full = process.env.FULL === '1';
   const allowMissingData = process.env.ALLOW_MISSING_DATA === '1';
+  const deferSkipped = process.env.DEFER_SKIPPED === '1';
   const only = envList('ONLY_IMPLS');
   if (process.env.STAMP_HASHES !== undefined) throw new Error('STAMP_HASHES was removed (it adopted hashes without re-running); rows without an inputHash are re-run, or fail under SKIP_IMPLS');
   if (full && only !== undefined) throw new Error('FULL=1 and ONLY_IMPLS are mutually exclusive');
+  if (deferSkipped && only !== undefined) throw new Error('DEFER_SKIPPED=1 and ONLY_IMPLS are mutually exclusive (ONLY_IMPLS already carries every other row, as STALE when changed)');
   const registered = new Set(REGISTRY.map((impl) => impl.id));
   const unknown = (only ?? []).filter((id) => !registered.has(id));
   if (unknown.length > 0) throw new Error(`ONLY_IMPLS names unregistered id(s): ${unknown.join(', ')}`);
@@ -185,17 +191,19 @@ const planExport = async (previous: Map<string, Entry>): Promise<Plan[]> => {
       if (prev === undefined) return plan('absent', 'not in ONLY_IMPLS, no previous row');
       return prev.inputHash === hash ? plan('carry', 'unchanged') : plan('stale', 'not in ONLY_IMPLS, inputs changed (STALE)');
     }
+    // why the previous row does not measure the current inputs (undefined: it does)
+    const outdated = prev === undefined ? 'new entry'
+      : prev.inputHash === undefined ? 'no input hash in previous row (legacy row, inputs unknown)'
+        : prev.inputHash !== hash ? 'inputs changed' : undefined;
     if (isSkipped(impl.id)) {
-      if (prev === undefined) return plan('absent', `SKIP_IMPLS, no previous row; run it with SKIP_IMPLS='' or ONLY_IMPLS=${impl.id}`);
-      if (prev.inputHash === hash) return plan('carry', 'SKIP_IMPLS, inputs unchanged');
-      // a legacy row (no inputHash) measures unknown inputs: never carried, whatever its metadata
-      const what = prev.inputHash === undefined ? 'its previous row has no inputHash (legacy row, inputs unknown)' : 'its inputs changed';
-      return plan('drop', `SKIP_IMPLS but ${what}: the old row is not known to measure the current program; re-run with SKIP_IMPLS='' (or ONLY_IMPLS=${impl.id})`);
+      // a slow entry: never forced by FULL=1, but never left stale or dropped either
+      if (outdated === undefined) return plan('carry', 'SKIP_IMPLS, inputs unchanged');
+      if (!deferSkipped) return plan('run', `SKIP_IMPLS (slow) but ${outdated}: measuring it`);
+      if (prev === undefined) return plan('absent', `DEFER_SKIPPED but there is no previous row to carry; run without DEFER_SKIPPED`);
+      return plan('stale', `DEFER_SKIPPED: ${outdated}, old row carried (STALE)`);
     }
     if (full) return plan('run', 'FULL=1');
-    if (prev === undefined) return plan('run', 'new entry');
-    if (prev.inputHash === undefined) return plan('run', 'no input hash in previous row');
-    if (prev.inputHash !== hash) return plan('run', 'inputs changed');
+    if (outdated !== undefined) return plan('run', outdated);
     return plan('carry', 'unchanged');
   });
 };
@@ -237,12 +245,12 @@ const main = async () => {
   const unregistered = [...previous.keys()].filter((id) => !registered.has(id));
   if (unregistered.length > 0) console.error(`  removed (no longer registered): ${unregistered.join(', ')}`);
 
-  // A dropped / absent row would leave a hole in the artifact and, worse, shift the frontier and
+  // An absent row would leave a hole in the artifact and, worse, shift the frontier and
   // append a false point to the append-only score history. Refuse unless explicitly allowed.
-  const missing = plans.filter((p) => p.action === 'drop' || p.action === 'absent');
+  const missing = plans.filter((p) => p.action === 'absent');
   const allowDrop = process.env.ALLOW_DROP === '1';
   if (missing.length > 0 && !allowDrop) {
-    console.error(`export FAILED, ${outfile} and ${HISTORY_FILE} left unchanged: ${missing.length} row(s) would be missing:\n  ${missing.map((p) => `${p.impl.id}: ${p.reason}`).join('\n  ')}\n(ALLOW_DROP=1 writes the artifact without them, with the history and frontier frozen)`);
+    console.error(`export FAILED, ${outfile} and ${HISTORY_FILE} left unchanged: ${missing.length} row(s) would be missing:\n  ${missing.map((p) => `${p.impl.id}: ${p.reason}`).join('\n  ')}\n(ALLOW_DROP=1 writes the artifact without them, with the history and frontier frozen and exit 2)`);
     process.exit(1);
   }
 
@@ -276,8 +284,13 @@ const main = async () => {
   for (const p of plans) {
     if (p.action === 'run') entries.push(fresh.get(p.impl.id)!);
     else if (p.action === 'carry' || p.action === 'stale') {
-      attachMetadata(p.previous!, p.impl);
-      entries.push(p.previous!);
+      const e = p.previous!;
+      attachMetadata(e, p.impl);
+      // explicit in-row marker: a STALE row keeps its old inputHash (so the next default run
+      // re-runs it) and says why it is out of date; a current row never carries the marker
+      if (p.action === 'stale') e.stale = p.reason;
+      else delete e.stale;
+      entries.push(e);
     }
   }
 

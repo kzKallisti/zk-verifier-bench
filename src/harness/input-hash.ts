@@ -39,8 +39,8 @@ import { redTeamPath } from './redteam.js';
  * Manual invalidation knob. Harness code, lockfile, tsconfig and Node.js version changes are
  * detected automatically (harnessFingerprint / toolchain), so bump this only for a change none of
  * them can see that can still change a measured row (e.g. an edit to an excluded file that turns
- * out to matter, or a change of machine-level behavior outside Node). Bumping it invalidates every stored hash, so the next default export re-runs
- * everything; a SKIP_IMPLS entry then fails the export until re-run with SKIP_IMPLS=''.
+ * out to matter, or a change of machine-level behavior outside Node). Bumping it invalidates every
+ * stored hash, so the next default export re-runs everything, the slow SKIP_IMPLS entries included.
  */
 export const HARNESS_VERSION = 1;
 

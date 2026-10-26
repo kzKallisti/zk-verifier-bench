@@ -273,4 +273,4 @@ export const entryOf = (r: BenchmarkResult) => ({
 
 // `inputHash` (harness/input-hash.ts) is appended to every row: the hash of the inputs that
 // produced its measurements. The incremental export re-runs a row only when it changes.
-export type Entry = ReturnType<typeof entryOf> & { inputHash?: string };
+export type Entry = ReturnType<typeof entryOf> & { inputHash?: string; stale?: string };
