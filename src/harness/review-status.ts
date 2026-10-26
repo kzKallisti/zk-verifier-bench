@@ -55,6 +55,13 @@ export const REVIEW_STATUS: Record<string, ReviewStatus> = {
     ],
   },
 
+  // BLS12-381 sound native (4-input bch-2026 SI-GLS): built 2026-10-26, no independent review yet
+  'bch-groth16-bls12381-sound-native': {
+    status: 'unreviewed',
+    reason: 'new build (2026-10-26); awaiting the independent soundness review of the shipped artifact. See the soundness argument and open risks in its README.',
+    refs: [`${SRC}/blob/main/chunked/bls12-381/bls-native-sound/README.md#soundness-argument`, `${SRC}/blob/main/chunked/bls12-381/bls-native-sound/README.md#open-risks`],
+  },
+
   // BN254 singletons: independent review 2026-10-26 (notes: verifier.cash work/bn-singleton-review/REVIEW.md)
   // after the jacAddG1 right-identity fix (bench 15bf0fe). Its one LOW finding, missing
   // 0 <= v < p checks on the proof coordinates (encoding malleability only), is fixed in
