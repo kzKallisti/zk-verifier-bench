@@ -29,10 +29,18 @@
 // result is then replayed on the real TXv5 VM, which must accept every input.
 //
 // Every honest run the entry ships is graded (the valid run = fixture 0, every extraValidProof,
-// and the bch-spec worstCaseProof). On TXv5 the binding witness is the one needing the most pad
-// (op-cost minus (41 + len) * 800), which need not be the bch-spec worst case (the largest
-// op-cost), so the summary reports fixture 0 next to the largest figure over all honest runs, and
-// calls the TXv5 figure standard only if EVERY honest run's figure is standard.
+// and the bch-spec worstCaseProof). On TXv5 a padded run's size is set by its op-cost (each
+// padded input ends near ceil(op / 800) - 41 bytes whatever its shipped length), and a run that
+// validates as shipped costs its shipped size; so the TXv5 worst case is the honest run with the
+// largest TXv5 figure over ALL honest runs (as-shipped ones included), which need not be the
+// bch-spec worst-case witness. The summary reports fixture 0 next to that maximum, and calls the
+// TXv5 figure standard only if EVERY honest run's figure is standard.
+//
+// Transaction size (the standard 100,000 B check, txBytes and the score's tx overhead) is
+// modelled with the harness's v1/v2 serialization. TXv5's v5 encoding is a few bytes smaller per
+// input and output (1-byte input bitfield instead of a 4-byte sequence, compact values), so the
+// figures slightly overstate a v5 transaction; no current standardness verdict is within that
+// margin (the closest, 100,109 B and 101,201 B, are hundreds of bytes over the cap).
 import {
   decodeAuthenticationInstructions,
   encodeAuthenticationInstruction,
@@ -153,9 +161,9 @@ export interface Txv5Grade {
   /** not-paddable only: the padding a pad slot WOULD need (estimate, not measured: assumes
    * the pad costs one push of its bytes plus one OP_DROP, on top of the measured op-cost). */
   estimate?: { padBytes: number; score: number; mode: 'standard' };
-  /** the bch-spec worst-case witness (worstCaseProof: the largest op-cost, picked for bch-spec;
-   * on TXv5 the binding witness is the one needing the most pad, see `honest`), graded the same
-   * way */
+  /** the bch-spec worst-case witness (worstCaseProof, picked for the bch-spec budget), graded the
+   * same way. It need not be the TXv5 worst case: on TXv5 the largest figure over all honest runs
+   * binds (see `honest` and Txv5Summary.worst) */
   worstCase?: { consensus: Txv5ModeGrade; standard: Txv5ModeGrade & { fits: boolean; policyReason?: string }; padding: Txv5Grade['padding']; estimate?: Txv5Grade['estimate'] };
   /** the TXv5 figure of every honest run: fixture 0 first, then each extraValidProof, then the
    * worst-case proof */
@@ -328,14 +336,22 @@ export interface Txv5RunFigure {
   mode: 'standard' | 'consensus';
   /** the figure is relayable (standard) under the assumed 100,000 B unlocking cap */
   standard: boolean;
-  /** why not standard (policy, or the standard VM), when it is not */
+  /** why not standard (policy, or the standard VM), when it is not. Names the mode it comes
+   * from when that differs from `mode` (e.g. 'standard mode, padded: tx ...' next to a
+   * consensus score) */
   nonStandardReason?: string;
+  /** serialized size of the transaction(s) behind `score` (same mode as score; harness v2
+   * model); absent for estimates and invalid runs */
+  txBytes?: number;
   estimated: boolean;
 }
 
-const figureOf = (run: string, g: ReturnType<typeof gradeRun>, shippedScore: number): Txv5RunFigure => {
+const figureOf = (run: string, g: ReturnType<typeof gradeRun>, shipped: { score: number; txBytes: number }): Txv5RunFigure => {
+  const shippedScore = shipped.score;
+  // the standard-mode reason, labelled with its mode when the figure is a consensus figure
+  const stdReason = (r: string | undefined) => (r === undefined ? undefined : g.standard.fits ? r : `standard mode, ${r}`);
   if (g.padding === 'not-needed') {
-    return { run, status: 'as-shipped', score: shippedScore, padBytes: 0, mode: g.standard.fits ? 'standard' : 'consensus', standard: g.standard.fits, ...(g.standard.fits ? {} : { nonStandardReason: g.standard.policyReason ?? g.standard.reason }), estimated: false };
+    return { run, status: 'as-shipped', score: shippedScore, padBytes: 0, mode: g.standard.fits ? 'standard' : 'consensus', standard: g.standard.fits, ...(g.standard.fits ? {} : { nonStandardReason: stdReason(g.standard.policyReason ?? g.standard.reason) }), txBytes: shipped.txBytes, estimated: false };
   }
   if (g.padding === 'paddable') {
     const stdPadded = g.standard.fits && g.standard.padded !== undefined;
@@ -345,7 +361,8 @@ const figureOf = (run: string, g: ReturnType<typeof gradeRun>, shippedScore: num
       : stdShipped ? shippedScore
       : g.consensus.padded?.score ?? (g.consensus.asShipped ? shippedScore : null);
     const padBytes = stdPadded ? g.standard.padded!.padBytes : stdShipped ? 0 : g.consensus.padded?.padBytes ?? 0;
-    return { run, status: 'padded', score, padBytes, mode: g.standard.fits ? 'standard' : 'consensus', standard: g.standard.fits, ...(g.standard.fits ? {} : { nonStandardReason: g.standard.policyReason ?? g.standard.reason }), estimated: false };
+    const txBytes = stdPadded ? g.standard.padded!.txBytes : stdShipped ? shipped.txBytes : g.consensus.padded?.txBytes ?? (g.consensus.asShipped ? shipped.txBytes : undefined);
+    return { run, status: 'padded', score, padBytes, mode: g.standard.fits ? 'standard' : 'consensus', standard: g.standard.fits, ...(g.standard.fits ? {} : { nonStandardReason: stdReason(g.standard.policyReason ?? g.standard.reason) }), ...(txBytes !== undefined ? { txBytes } : {}), estimated: false };
   }
   if (g.estimate) {
     return { run, status: 'not-paddable', score: g.estimate.score, padBytes: g.estimate.padBytes, mode: 'standard', standard: false, nonStandardReason: 'not paddable as shipped', estimated: true };
@@ -355,7 +372,7 @@ const figureOf = (run: string, g: ReturnType<typeof gradeRun>, shippedScore: num
 
 /** Grade one bch-spec entry on TXv5 as written. `scoreOf` is the harness's own score model.
  * The top-level fields grade the valid run (fixture 0); `worstCase` grades the bch-spec
- * worst-case witness (largest op-cost, which is not necessarily the TXv5 worst case); `honest`
+ * worst-case witness (picked for the bch-spec budget; not necessarily the TXv5 worst case); `honest`
  * gives the figure of every honest run (fixture 0, each extraValidProof, the worst-case proof). */
 export const txv5Grade = (scenario: Scenario, bsv: boolean, scoreOf: ScoreOf): Txv5Grade => {
   const ctx: ModeContext[] = [
@@ -374,7 +391,7 @@ export const txv5Grade = (scenario: Scenario, bsv: boolean, scoreOf: ScoreOf): T
     vm: 'txv5',
     ...main,
     ...(wc ? { worstCase: { consensus: wc.consensus, standard: wc.standard, padding: wc.padding, ...(wc.estimate ? { estimate: wc.estimate } : {}) } } : {}),
-    honest: graded.map((x) => figureOf(x.label, x.g, scoreOf(x.run).score)),
+    honest: graded.map((x) => figureOf(x.label, x.g, scoreOf(x.run))),
   };
 };
 
@@ -387,9 +404,11 @@ export const txv5Grade = (scenario: Scenario, bsv: boolean, scoreOf: ScoreOf): T
  *   'invalid'      - rejects on TXv5 for a reason padding cannot fix; score = null.
  * standard is true only if EVERY honest run's figure is standard (liveness: the worst-case
  * honest witness must be relayable too). worst is the TXv5 worst case when it is not fixture 0:
- * an invalid honest run, else the largest figure among the honest runs that do not validate as
- * shipped (the binding witness on TXv5 is the one needing the most pad); mixed is true when honest runs land on
- * different sides of the TXv5 budget (some valid as shipped, others not). */
+ * an invalid honest run, else the honest run with the largest TXv5 figure over ALL honest runs
+ * (a run valid as shipped counts with its shipped score: it is the size that proof costs on TXv5).
+ * worstPadded is the largest figure among the runs that need padding (or an estimate), when that
+ * run differs from worst; mixed is true when honest runs land on different sides of the TXv5
+ * budget (some valid as shipped, others not). */
 export interface Txv5Summary {
   status: Txv5RunFigure['status'];
   score: number | null;
@@ -403,20 +422,23 @@ export interface Txv5Summary {
   nonStandard?: { run: string; reason?: string };
   estimated: boolean;
   worst?: Txv5RunFigure;
+  /** the heaviest honest run that does NOT validate as shipped, when it is not `worst` */
+  worstPadded?: Txv5RunFigure;
   mixed: boolean;
   /** number of honest runs graded */
   runs: number;
 }
 export const txv5Summary = (g: Txv5Grade, shippedScore: number): Txv5Summary => {
   const honest = g.honest ?? [];
-  const f0 = honest[0] ?? figureOf('fixture 0', g as ReturnType<typeof gradeRun>, shippedScore);
+  const f0 = honest[0] ?? figureOf('fixture 0', g as ReturnType<typeof gradeRun>, { score: shippedScore, txBytes: 0 });
   const all = honest.length ? honest : [f0];
 
-  // TXv5 worst case: an invalid run if any, else the largest figure among the runs that do NOT
-  // validate as shipped (a run that fits as shipped is never the binding one)
-  const needy = all.filter((f) => f.status !== 'as-shipped');
-  const worst = needy.find((f) => f.status === 'invalid')
-    ?? needy.reduce<Txv5RunFigure | undefined>((w, f) => (w === undefined || (f.score ?? 0) > (w.score ?? 0) ? f : w), undefined);
+  // TXv5 worst case: an invalid run if any, else the largest TXv5 figure over ALL honest runs
+  // (a run valid as shipped costs its shipped size on TXv5; ties keep the earlier run)
+  const largest = (fs: Txv5RunFigure[]) => fs.reduce<Txv5RunFigure | undefined>((w, f) => (w === undefined || (f.score ?? 0) > (w.score ?? 0) ? f : w), undefined);
+  const worst = all.find((f) => f.status === 'invalid') ?? largest(all);
+  // the heaviest run that needs padding (or an estimate), reported when it is not `worst`
+  const worstPadded = largest(all.filter((f) => f.status !== 'as-shipped' && f.status !== 'invalid'));
   // the run to name when the figure is not standard: the worst case if it is non-standard
   const nonStd = worst !== undefined && !worst.standard ? worst : all.find((f) => !f.standard);
   const shipped = all.filter((f) => f.status === 'as-shipped').length;
@@ -429,6 +451,7 @@ export const txv5Summary = (g: Txv5Grade, shippedScore: number): Txv5Summary => 
     ...(nonStd ? { nonStandard: { run: nonStd.run, ...(nonStd.nonStandardReason ? { reason: nonStd.nonStandardReason } : {}) } } : {}),
     estimated: f0.estimated,
     ...(worst !== undefined && worst !== f0 ? { worst } : {}),
+    ...(worstPadded !== undefined && worstPadded !== worst && worstPadded !== f0 ? { worstPadded } : {}),
     mixed: shipped > 0 && shipped < all.length,
     runs: all.length,
   };

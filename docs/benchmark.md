@@ -148,13 +148,23 @@ all, see *Why these measures* in the README.)
   script a pad slot needs (an `OP_DROP` or a changed `DEPTH` constant) and,
   for multi-input entries, the extra introspection cost of a larger sibling.
   Every honest run is graded (fixture 0, each extra valid proof, the
-  worst-case proof). On TXv5 the binding witness is the one needing the most
-  pad, which need not be the bch-spec worst case (largest op-cost), so
-  `txv5.honest` lists each run's figure and `txv5.summary` gives fixture 0's
-  figure, the TXv5 worst case (`worst`, the largest figure among runs that do
-  not validate as shipped), `mixed` when honest runs fall on both sides of the
-  budget, and `standard`, which is true only if every honest run's figure is
-  standard. Assumptions: the standard unlocking cap is 100,000 B (TXv5's
+  worst-case proof). On TXv5 a padded run's size is set by its op-cost (each
+  padded input ends near `ceil(op / 800) − 41` bytes whatever its shipped
+  length) and a run that validates as shipped costs its shipped size, so the
+  TXv5 worst case is the honest run with the largest TXv5 figure, which need
+  not be the bch-spec worst-case witness. `txv5.honest` lists each run's
+  figure (score, mode, and the `txBytes` of the same mode) and `txv5.summary`
+  gives fixture 0's figure, the TXv5 worst case (`worst`: an invalid run if
+  any, else the largest figure over ALL honest runs, as-shipped ones
+  included), `worstPadded` (the heaviest run that needs padding, when it is
+  not `worst`), `mixed` when honest runs fall on both sides of the budget,
+  and `standard`, which is true only if every honest run's figure is
+  standard. The worst case is over the shipped honest proofs only; an honest
+  witness outside them can be heavier (e.g. intratx-residue-large's
+  max-density GLV witness, which is not shipped). Transaction sizes use the
+  harness's v1/v2 serialization; TXv5's v5 encoding is a few bytes smaller
+  per input and output, so the figures slightly overstate a v5 transaction
+  (no current standardness verdict is within that margin). Assumptions: the standard unlocking cap is 100,000 B (TXv5's
   rationale, not its text), and the VM number limit stays 10,000 B because
   TXv5 v1.0.0 does not mention it (`BCH_SPEC` uses 100,000); no current grade
   depends on the latter. `pnpm txv5 [id ...]` prints the grade without
