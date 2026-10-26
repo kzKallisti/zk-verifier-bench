@@ -26,6 +26,9 @@ const v = JSON.parse(readFileSync('src/bch/groth16-bls12381-singleton-opcode-opt
   lockingOK: string;
   unlocking: string;
   invalidUnlocking: string;
+  // out-of-domain proof points (coordinate >= p, off-curve A/C/B, B on the twist but outside
+  // G2), from groth16_contract/singleton/bls12-381/domain_cases.mjs; each must be REJECTED
+  domainInvalid: { label: string; unlocking: string }[];
 };
 
 const mp = JSON.parse(readFileSync('src/bch/groth16-bls12381-singleton-opcode-optimized-multiproof-vectors.json', 'utf8')) as {
@@ -46,7 +49,8 @@ export const bchGroth16Bls12381SingletonOpcodeOptimized: Implementation = {
     'Same complete BLS12-381 Groth16 verifier as bch-groth16-bls12381-singleton ' +
     '(Groth16Verify, singleton/bls12-381/groth16.cash: vk_x = IC0 + in0*IC1 + in1*IC2 ' +
     'on-chain in one shared-doubling Shamir/Straus pass, then ' +
-    'e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) == 1), but the ' +
+    'e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) == 1, with the same proof-point ' +
+    'validation: coordinate range, curve equations, G2 subgroup), but the ' +
     'locking bytecode is byte-optimized: the smaller of a custom ' +
     'decompile->reschedule->recompile of the cashc output and the rescheduled compile, ' +
     'then repeated instruction sequences outlined into OP_DEFINE bodies. Identical ' +
@@ -65,6 +69,7 @@ export const bchGroth16Bls12381SingletonOpcodeOptimized: Implementation = {
     ];
     const invalid: Step[][] = [
       [{ ...valid[0]!, unlockingBytecode: hexToBin(v.invalidUnlocking) }],
+      ...v.domainInvalid.map((d) => [{ ...valid[0]!, unlockingBytecode: hexToBin(d.unlocking) }]),
     ];
     const extraValidProofs: Step[][] = mp.proofs
       .filter((p) => !p.committed)

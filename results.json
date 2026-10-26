@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-23T12:23:40.199Z",
+  "generatedAt": "2026-10-26T19:11:22.271Z",
   "statement": {
     "proofSystem": "Groth16",
     "curve": "BN254",
@@ -26,17 +26,17 @@
       "bytes": 10000
     },
     "leader": {
-      "id": "bch-groth16-bls12381-singleton-genpow",
+      "id": "bch-groth16-singleton-genpow",
       "label": "BCH-native full verifier",
-      "curve": "BLS12-381",
-      "bytes": 3585,
+      "curve": "BN254",
+      "bytes": 4613,
       "bchCompatible": false
     },
     "current": {
-      "id": "bch-groth16-intratx-pairfold5-densless-msm-slim",
+      "id": "bch-groth16-bls12381-intratx-fs-fused-coordinator-head",
       "label": "Best BCH-native full verifier",
-      "curve": "BN254",
-      "bytes": 35143,
+      "curve": "BLS12-381",
+      "bytes": 60285,
       "bchCompatible": true
     }
   },
@@ -896,6 +896,54 @@
       "steps": 9,
       "transactions": 1,
       "fits": true
+    },
+    {
+      "t": "2026-10-26T15:27:01.130Z",
+      "score": 345471,
+      "id": "bch-groth16-bls12381-intratx",
+      "steps": 43,
+      "transactions": 1,
+      "fits": true
+    },
+    {
+      "t": "2026-10-26T15:27:01.130Z",
+      "score": 473475,
+      "id": "bch-groth16-chunked-covenant",
+      "steps": 49,
+      "transactions": 49,
+      "fits": true
+    },
+    {
+      "t": "2026-10-26T15:27:01.130Z",
+      "score": 58841,
+      "id": "bch-groth16-bls12381-singleton-minop",
+      "steps": 1,
+      "transactions": 1,
+      "fits": false
+    },
+    {
+      "t": "2026-10-26T15:27:01.130Z",
+      "score": 6198,
+      "id": "bch-groth16-singleton-opcode-optimized",
+      "steps": 1,
+      "transactions": 1,
+      "fits": false
+    },
+    {
+      "t": "2026-10-26T16:45:25.606Z",
+      "score": 4613,
+      "id": "bch-groth16-singleton-genpow",
+      "steps": 1,
+      "transactions": 1,
+      "fits": false
+    },
+    {
+      "t": "2026-10-26T19:11:22.271Z",
+      "score": 5999,
+      "id": "bch-groth16-bls12381-singleton-opcode-optimized",
+      "steps": 1,
+      "transactions": 1,
+      "fits": false
     }
   ],
   "entries": [
@@ -932,6 +980,9 @@
         "publicInputs": null,
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 522564,
       "size": {
@@ -1021,6 +1072,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 11717771,
       "size": {
         "scriptBytes": 11717684,
@@ -1089,8 +1143,8 @@
         "verdict": "pass",
         "validAccepted": true,
         "invalid": {
-          "tested": 1,
-          "rejected": 1
+          "tested": 25,
+          "rejected": 25
         },
         "worstCaseAccepted": true,
         "crossStageBinding": {
@@ -1108,12 +1162,20 @@
         "layoutReview": null,
         "failures": []
       },
-      "score": 8145,
+      "reviewStatus": {
+        "status": "reviewed",
+        "reason": "independent review 2026-10-26: no soundness break; coordinate range checks added (review LOW finding: encoding malleability only).",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/commit/521460c014bafe45b33b67dd061615141be8f37a",
+          "https://github.com/mr-zwets/groth16_cashscript/commit/78a42542451f7bf64072a89358e0bf0acc03a774"
+        ]
+      },
+      "score": 8206,
       "size": {
-        "scriptBytes": 8058,
+        "scriptBytes": 8119,
         "txOverheadBytes": 87,
         "transactions": 1,
-        "total": 8145
+        "total": 8206
       },
       "padding": {
         "bytes": 0,
@@ -1121,16 +1183,16 @@
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 771253243,
+          "opCost": 771300238,
           "steps": 1,
-          "heaviestStepOpCost": 771253243,
+          "heaviestStepOpCost": 771300238,
           "inputsForHeaviestStep": 97
         },
         "worstCase": {
           "accepted": true,
-          "opCost": 830070806,
+          "opCost": 831111866,
           "steps": 1,
-          "heaviestStepOpCost": 830070806,
+          "heaviestStepOpCost": 831111866,
           "inputsForHeaviestStep": 104
         }
       },
@@ -1145,15 +1207,15 @@
         "detail": "heaviest step ~97× one input's op-cost budget",
         "standard": {
           "fits": false,
-          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, extra proof #2, extra proof #3, worst-case proof"
+          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, extra proof #2, extra proof #3, extra proof #4, extra proof #5, extra proof #6, worst-case proof"
         }
       },
       "generality": {
         "binding": "runtime",
         "runtimeGeneral": true,
-        "proofsTested": 4,
-        "proofsPassed": 4,
-        "detail": "runtime-general: one fixed locking verifies 4/4 distinct proofs (proof in the unlocking witness)"
+        "proofsTested": 7,
+        "proofsPassed": 7,
+        "detail": "runtime-general: one fixed locking verifies 7/7 distinct proofs (proof in the unlocking witness)"
       },
       "tokenSafety": null,
       "inputValidation": {
@@ -1166,7 +1228,7 @@
         "secure": true,
         "type": "p2s"
       },
-      "source": "BCH-native CashScript: the COMPLETE Groth16 verifier in ONE contract (Groth16Verify, singleton/bn254/groth16.cash). Computes vk_x = IC0 + in0*IC1 + in1*IC2 on-chain (G1 Jacobian double-and-add + Fermat inverse), then the full BN254 pairing e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) and require()s == 1. VK hardcoded; proof (A,B,C) + public inputs (in0,in1) at RUNTIME; A negated in-script. Sound (vk_x recomputed on-chain). Verified vs @noble/curves bn254. Same curve as scrypt-bn256 -> ~543x smaller bytecode, but ~1.26B op-cost (~157 BCH inputs); ~21.7 KB does NOT fit one input -- motivates the chunked multi-tx verifier."
+      "source": "BCH-native CashScript: the COMPLETE Groth16 verifier in ONE contract (Groth16Verify, singleton/bn254/groth16.cash). Computes vk_x = IC0 + in0*IC1 + in1*IC2 on-chain (G1 Jacobian double-and-add + Fermat inverse), then the full BN254 pairing e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) and require()s == 1. VK hardcoded; proof (A,B,C) + public inputs (in0,in1) at RUNTIME; A negated in-script; public inputs in [0, r), proof coordinates in [0, p), A/C on-curve, B on the twist and in G2. Sound (vk_x recomputed on-chain). Verified vs @noble/curves bn254. Same curve as scrypt-bn256. Plain cashc output (7,847-byte locking), ~771M op-cost (~97 BCH inputs) -- does NOT fit one input; motivates the chunked multi-tx verifier."
     },
     {
       "id": "bch-groth16-singleton-opcode-optimized",
@@ -1182,8 +1244,8 @@
         "verdict": "pass",
         "validAccepted": true,
         "invalid": {
-          "tested": 1,
-          "rejected": 1
+          "tested": 25,
+          "rejected": 25
         },
         "worstCaseAccepted": true,
         "crossStageBinding": {
@@ -1201,12 +1263,21 @@
         "layoutReview": null,
         "failures": []
       },
-      "score": 6179,
+      "reviewStatus": {
+        "status": "reviewed",
+        "reason": "independent review 2026-10-26: no soundness break; coordinate range checks added (review LOW finding: encoding malleability only).",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/commit/521460c014bafe45b33b67dd061615141be8f37a",
+          "https://github.com/mr-zwets/groth16_cashscript/commit/35fe0f702794f5686238f43ed2bd4c8dd3ac32c4",
+          "https://github.com/mr-zwets/groth16_cashscript/commit/78a42542451f7bf64072a89358e0bf0acc03a774"
+        ]
+      },
+      "score": 6237,
       "size": {
-        "scriptBytes": 6092,
+        "scriptBytes": 6150,
         "txOverheadBytes": 87,
         "transactions": 1,
-        "total": 6179
+        "total": 6237
       },
       "padding": {
         "bytes": 0,
@@ -1214,16 +1285,16 @@
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 800091938,
+          "opCost": 800155122,
           "steps": 1,
-          "heaviestStepOpCost": 800091938,
+          "heaviestStepOpCost": 800155122,
           "inputsForHeaviestStep": 100
         },
         "worstCase": {
           "accepted": true,
-          "opCost": 854357097,
+          "opCost": 855414346,
           "steps": 1,
-          "heaviestStepOpCost": 854357097,
+          "heaviestStepOpCost": 855414346,
           "inputsForHeaviestStep": 107
         }
       },
@@ -1238,15 +1309,15 @@
         "detail": "heaviest step ~100× one input's op-cost budget",
         "standard": {
           "fits": false,
-          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, extra proof #2, extra proof #3, worst-case proof"
+          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, extra proof #2, extra proof #3, extra proof #4, extra proof #5, extra proof #6, worst-case proof"
         }
       },
       "generality": {
         "binding": "runtime",
         "runtimeGeneral": true,
-        "proofsTested": 4,
-        "proofsPassed": 4,
-        "detail": "runtime-general: one fixed locking verifies 4/4 distinct proofs (proof in the unlocking witness)"
+        "proofsTested": 7,
+        "proofsPassed": 7,
+        "detail": "runtime-general: one fixed locking verifies 7/7 distinct proofs (proof in the unlocking witness)"
       },
       "tokenSafety": null,
       "inputValidation": {
@@ -1259,11 +1330,11 @@
         "secure": true,
         "type": "p2s"
       },
-      "source": "Same complete Groth16 verifier as bch-groth16-singleton (Groth16Verify, singleton/bn254/groth16.cash: vk_x = IC0 + in0*IC1 + in1*IC2 on-chain, then e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) == 1), but the locking bytecode is a custom decompile->reschedule->recompile of the cashc output plus an auto-outlining pass. It eliminates cashc's altstack park/restore (its emitReplace reassignment routine, ~2,150 alt-ops in the Miller loop alone), minimizes ROLL/PICK depth addressing, folds adjacent stack ops into multi-item ops, and outlines repeated instruction sequences into OP_DEFINE bodies -- 7,622 -> 5,853 B (far under the 10,000-byte standard cap). Identical semantics + runtime witnesses; each subroutine differential-tested vs the cashc original and every outline rewrite verified accept/reject. Op-cost ~796M, so still not one-input-standard. Pipeline: singleton/bn254/recompiler/."
+      "source": "Same complete Groth16 verifier as bch-groth16-singleton (Groth16Verify, singleton/bn254/groth16.cash: vk_x = IC0 + in0*IC1 + in1*IC2 on-chain, then e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) == 1), but the locking bytecode is a custom decompile->reschedule->recompile of the cashc output plus an auto-outlining pass. It eliminates cashc's altstack park/restore (its emitReplace reassignment routine, ~2,150 alt-ops in the Miller loop alone), minimizes ROLL/PICK depth addressing, folds adjacent stack ops into multi-item ops, and outlines repeated instruction sequences into OP_DEFINE bodies -- 7,953 -> 5,878 B (far under the 10,000-byte standard cap). Identical semantics + runtime witnesses; each subroutine differential-tested vs the cashc original, every outline rewrite verified accept/reject, and the non-canonical-coordinate cases re-checked on the final artifact. Op-cost ~800M, so still not one-input-standard. Pipeline: singleton/bn254/recompiler/."
     },
     {
       "id": "bch-groth16-singleton-genpow",
-      "name": "BCH Groth16 verifier singleton, BN254 genpow (shared P, range-checked inputs, source-assembled 4,183 B, G1 parity)",
+      "name": "BCH Groth16 verifier singleton, BN254 genpow (shared P, range-checked inputs, source-assembled 4,320 B, G1 parity)",
       "category": "full",
       "official": false,
       "solver": null,
@@ -1294,12 +1365,22 @@
         "layoutReview": null,
         "failures": []
       },
-      "score": 4476,
+      "reviewStatus": {
+        "status": "unreviewed",
+        "reason": "Corrected successor (4,320 B program, outline_32 P + O = P and neutral-point handling) merged via groth16_cashscript #30 / bench #47; the original 4,183 B program was withdrawn under F4.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/groth16_cashscript/pull/30",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/47"
+        ]
+      },
+      "score": 4613,
       "size": {
-        "scriptBytes": 4391,
+        "scriptBytes": 4528,
         "txOverheadBytes": 85,
         "transactions": 1,
-        "total": 4476
+        "total": 4613
       },
       "padding": {
         "bytes": 0,
@@ -1307,9 +1388,9 @@
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 5519594621,
+          "opCost": 5519652719,
           "steps": 1,
-          "heaviestStepOpCost": 5519594621,
+          "heaviestStepOpCost": 5519652719,
           "inputsForHeaviestStep": 688
         }
       },
@@ -1345,7 +1426,7 @@
         "secure": true,
         "type": "p2s"
       },
-      "source": "Explicit symbolic assembly in singleton/bn254/genpow-reconstructed/verifier.asm. The fixed proof A/C y coordinates use parity pushes, reducing the witness from 272 to 208 bytes. The verifier reconstructs each canonical y with a shared posttest remaining-exponent loop, checks the curve equation and requested parity, and retains the original x and remaining witness data. The 4,183-byte program has sha256 332fdd4dbbd5468afc997a49571e15ed88d04c6dda6ccff5863e1dfb0568e3dd. The 72-function program retains its 32-byte scalar guard, G2 checks and source-owned helpers. Three rotations after successful depth-nine disposal guards are omitted because they form an identity. The power loop shifts its remaining exponent before testing for zero; all archived proof and public-input integers are preserved. The original CashScript/stackcert lineage remains missing. Actual finite proof/cost gates are recorded separately; relaxed VM limits are required."
+      "source": "Explicit symbolic assembly in singleton/bn254/genpow-reconstructed/verifier.asm. Original finite A/C parity witnesses and all proof/public bytes remain unchanged. Canonical coordinate/Fr guards, complete MSM identity addition, and neutral G1/G2 Miller branches bind the fixed-key equation, including neutral vk_x. The 72 helper IDs and 2,790-step final exponent schedule are unchanged. Neutral G1 uses parity2,x0; neutral G2 uses four zero limbs. All four unchanged 208-byte original positives passed the pinned arithmetic oracle. All eight default BCH2026 consensus/standard runs rejected at operation-cost density. Native resource HOLD remains; arithmetic-oracle success does not establish native or relay acceptance."
     },
     {
       "id": "bch-groth16-singleton-minop",
@@ -1379,6 +1460,9 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 58073,
       "size": {
@@ -1455,8 +1539,8 @@
         "verdict": "pass",
         "validAccepted": true,
         "invalid": {
-          "tested": 1,
-          "rejected": 1
+          "tested": 14,
+          "rejected": 14
         },
         "worstCaseAccepted": null,
         "crossStageBinding": {
@@ -1474,12 +1558,19 @@
         "layoutReview": null,
         "failures": []
       },
-      "score": 7347,
+      "reviewStatus": {
+        "status": "unreviewed",
+        "reason": "Domain checks added (range, curve, G2 subgroup) to groth16.cash and rebuilt; previously held by maintainer review.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/singleton/bls12-381/README.md"
+        ]
+      },
+      "score": 7510,
       "size": {
-        "scriptBytes": 7260,
+        "scriptBytes": 7423,
         "txOverheadBytes": 87,
         "transactions": 1,
-        "total": 7347
+        "total": 7510
       },
       "padding": {
         "bytes": 0,
@@ -1487,10 +1578,10 @@
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 978824303,
+          "opCost": 994589979,
           "steps": 1,
-          "heaviestStepOpCost": 978824303,
-          "inputsForHeaviestStep": 122
+          "heaviestStepOpCost": 994589979,
+          "inputsForHeaviestStep": 124
         }
       },
       "opCostBudget": 350400,
@@ -1501,7 +1592,7 @@
         "blockers": [
           "op-cost"
         ],
-        "detail": "heaviest step ~122× one input's op-cost budget",
+        "detail": "heaviest step ~124× one input's op-cost budget",
         "standard": {
           "fits": false,
           "detail": "1/1 locking >201 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, extra proof #2, extra proof #3"
@@ -1525,7 +1616,7 @@
         "secure": true,
         "type": "p2s"
       },
-      "source": "BCH-native CashScript: the COMPLETE Groth16 verifier in ONE contract on BLS12-381 -- the SAME curve as nchain (Groth16Verify, singleton/bls12-381/groth16.cash). Computes vk_x = IC0 + in0*IC1 + in1*IC2 on-chain (one MSB-first Shamir/Straus pass with shared Jacobian doublings + Fermat inverse), then the full BLS12-381 pairing e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) (M-twist Miller, |x| NAF, conjugate, Hayashida-Scott final exp) and require()s == 1. VK hardcoded; proof (A,B,C) + public inputs (in0,in1) at RUNTIME; A negated in-script. Sound (vk_x recomputed on-chain). Verified vs @noble/curves bls12-381. Locking is plain compiler output (size objective + rescheduleStacks, no post-passes; 7,698-byte locking) -- the honest baseline vs the nchain single-tx reference, and the other end of the bytesize-vs-opcost tradeoff from the -opcode-optimized entry. ~966M op-cost (~121 BCH inputs) does NOT fit one input."
+      "source": "BCH-native CashScript: the COMPLETE Groth16 verifier in ONE contract on BLS12-381 -- the SAME curve as nchain (Groth16Verify, singleton/bls12-381/groth16.cash). Computes vk_x = IC0 + in0*IC1 + in1*IC2 on-chain (one MSB-first Shamir/Straus pass with shared Jacobian doublings + Fermat inverse), then the full BLS12-381 pairing e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) (M-twist Miller, |x| NAF, conjugate, Hayashida-Scott final exp) and require()s == 1. VK hardcoded; proof (A,B,C) + public inputs (in0,in1) at RUNTIME; A negated in-script; proof points validated (coordinate range, curve equations, G2 subgroup via psi(B) == [-x]B fused into the Miller walk). Verified vs @noble/curves bls12-381. Locking is plain compiler output (size objective + rescheduleStacks, no post-passes; 7,026-byte locking) -- the honest baseline vs the nchain single-tx reference, and the other end of the bytesize-vs-opcost tradeoff from the -opcode-optimized entry. ~995M op-cost (~124 BCH inputs) does NOT fit one input."
     },
     {
       "id": "bch-groth16-bls12381-singleton-opcode-optimized",
@@ -1541,8 +1632,8 @@
         "verdict": "pass",
         "validAccepted": true,
         "invalid": {
-          "tested": 1,
-          "rejected": 1
+          "tested": 14,
+          "rejected": 14
         },
         "worstCaseAccepted": null,
         "crossStageBinding": {
@@ -1560,12 +1651,19 @@
         "layoutReview": null,
         "failures": []
       },
-      "score": 5828,
+      "reviewStatus": {
+        "status": "unreviewed",
+        "reason": "Domain checks added (range, curve, G2 subgroup) to groth16.cash and rebuilt; previously held by maintainer review.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/singleton/bls12-381/README.md"
+        ]
+      },
+      "score": 5999,
       "size": {
-        "scriptBytes": 5741,
+        "scriptBytes": 5912,
         "txOverheadBytes": 87,
         "transactions": 1,
-        "total": 5828
+        "total": 5999
       },
       "padding": {
         "bytes": 0,
@@ -1573,9 +1671,9 @@
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 1002455753,
+          "opCost": 1003512299,
           "steps": 1,
-          "heaviestStepOpCost": 1002455753,
+          "heaviestStepOpCost": 1003512299,
           "inputsForHeaviestStep": 125
         }
       },
@@ -1611,7 +1709,7 @@
         "secure": true,
         "type": "p2s"
       },
-      "source": "Same complete BLS12-381 Groth16 verifier as bch-groth16-bls12381-singleton (Groth16Verify, singleton/bls12-381/groth16.cash: vk_x = IC0 + in0*IC1 + in1*IC2 on-chain in one shared-doubling Shamir/Straus pass, then e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) == 1), but the locking bytecode is byte-optimized: the smaller of a custom decompile->reschedule->recompile of the cashc output and the rescheduled compile, then repeated instruction sequences outlined into OP_DEFINE bodies. Identical semantics + runtime witnesses; each subroutine differential-tested and every outline rewrite verified accept/reject. The plain entry keeps the other end of the bytesize-vs-opcost tradeoff. Pipeline: singleton/bls12-381/build_vectors_optimized.mjs + singleton/bn254/recompiler/."
+      "source": "Same complete BLS12-381 Groth16 verifier as bch-groth16-bls12381-singleton (Groth16Verify, singleton/bls12-381/groth16.cash: vk_x = IC0 + in0*IC1 + in1*IC2 on-chain in one shared-doubling Shamir/Straus pass, then e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) == 1, with the same proof-point validation: coordinate range, curve equations, G2 subgroup), but the locking bytecode is byte-optimized: the smaller of a custom decompile->reschedule->recompile of the cashc output and the rescheduled compile, then repeated instruction sequences outlined into OP_DEFINE bodies. Identical semantics + runtime witnesses; each subroutine differential-tested and every outline rewrite verified accept/reject. The plain entry keeps the other end of the bytesize-vs-opcost tradeoff. Pipeline: singleton/bls12-381/build_vectors_optimized.mjs + singleton/bn254/recompiler/."
     },
     {
       "id": "bch-groth16-bls12381-singleton-genpow",
@@ -1645,6 +1743,16 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F5: ships the unchecked 3,295 B leader-recovered program (decompressG1/G2); corrected successor pending.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/groth16_cashscript/pull/31",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/48"
+        ]
       },
       "score": 3585,
       "size": {
@@ -1731,6 +1839,9 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 58841,
       "size": {
@@ -1826,6 +1937,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 103861,
       "size": {
         "scriptBytes": 103774,
@@ -1920,6 +2034,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 97955,
       "size": {
         "scriptBytes": 97866,
@@ -2010,6 +2127,9 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 73536,
       "size": {
@@ -2102,6 +2222,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 65218,
       "size": {
         "scriptBytes": 65131,
@@ -2192,6 +2315,9 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 239773,
       "size": {
@@ -2288,6 +2414,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 473475,
       "size": {
         "scriptBytes": 466123,
@@ -2375,6 +2504,9 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 93802,
       "size": {
@@ -2468,6 +2600,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 11051,
       "size": {
         "scriptBytes": 10964,
@@ -2550,6 +2685,9 @@
         "publicInputs": null,
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 11228,
       "size": {
@@ -2634,6 +2772,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 175823,
       "size": {
         "scriptBytes": 174431,
@@ -2714,6 +2855,9 @@
         "publicInputs": null,
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 14874,
       "size": {
@@ -2798,6 +2942,9 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 11351,
       "size": {
@@ -2891,6 +3038,13 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "Held (F3 class): each covenant step pins only commitment + category, not its successor locking.",
+        "refs": [
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/50"
+        ]
+      },
       "score": 23700,
       "size": {
         "scriptBytes": 22259,
@@ -2976,6 +3130,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 6640,
       "size": {
         "scriptBytes": 6553,
@@ -3059,6 +3216,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 6652,
       "size": {
         "scriptBytes": 6565,
@@ -3141,6 +3301,9 @@
         "publicInputs": null,
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 109305,
       "size": {
@@ -3234,6 +3397,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 342331,
       "size": {
         "scriptBytes": 337429,
@@ -3321,6 +3487,9 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 357241,
       "size": {
@@ -3417,6 +3586,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 635295,
       "size": {
         "scriptBytes": 625533,
@@ -3504,6 +3676,9 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 211163,
       "size": {
@@ -3593,6 +3768,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 107243,
       "size": {
@@ -3689,6 +3867,14 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F1 (BN42): the final vk_x chunk reads in1 without an exact-length gate.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49"
+        ]
+      },
       "score": 234022,
       "size": {
         "scriptBytes": 232669,
@@ -3783,6 +3969,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 83294,
       "size": {
@@ -3879,6 +4068,15 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F1 (authenticated42): no byte-owner gates on state/table bytes.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/50"
+        ]
+      },
       "score": 330742,
       "size": {
         "scriptBytes": 328916,
@@ -3973,6 +4171,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 86950,
       "size": {
@@ -4069,6 +4270,9 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 58460,
       "size": {
         "scriptBytes": 58268,
@@ -4163,6 +4367,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 77193,
       "size": {
@@ -4267,6 +4474,15 @@
         },
         "failures": [
           "maintainer red-team attack accepted (3/3; first: \"forged n0 = true n0 + 2 (true vk_x kept)\")"
+        ]
+      },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "Held (F9 class): public-statement binding not established; the harness red-team already fails it.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/50"
         ]
       },
       "score": 54483,
@@ -4374,6 +4590,14 @@
           "maintainer red-team attack accepted (3/3; first: \"forged n0 = true n0 + 2 (true vk_x kept)\")"
         ]
       },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F9: genesis byte-identical to the withdrawn pevalfuse genesis; the public MSM is not established.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49"
+        ]
+      },
       "score": 44968,
       "size": {
         "scriptBytes": 44733,
@@ -4477,6 +4701,15 @@
         },
         "failures": [
           "maintainer red-team attack accepted (3/3; first: \"forged n0 = true n0 + 2 (true vk_x kept)\")"
+        ]
+      },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F9: the auxiliary relation does not establish the public MSM.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/50"
         ]
       },
       "score": 36836,
@@ -4583,6 +4816,16 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F6: densless executors and terminal; no soundness argument.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/groth16_cashscript/issues/28",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/50"
+        ]
       },
       "score": 35861,
       "size": {
@@ -4692,6 +4935,16 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F6: ships the withdrawn densless-msm-slim head; no soundness argument.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/groth16_cashscript/issues/28",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/50"
+        ]
+      },
       "score": 35143,
       "size": {
         "scriptBytes": 34908,
@@ -4795,6 +5048,16 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F6: same densless executors and terminal; no soundness argument.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/groth16_cashscript/issues/28",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/50"
+        ]
       },
       "score": 33875,
       "size": {
@@ -4909,6 +5172,15 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "reviewed",
+        "reason": "Independent soundness review of the shipped artifact; see the soundness argument, verification and open risks in its README.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bn254/sound-si-gls/README.md#soundness-argument",
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bn254/sound-si-gls/README.md#verification",
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bn254/sound-si-gls/README.md#open-risks"
+        ]
+      },
       "score": 21915,
       "size": {
         "scriptBytes": 21852,
@@ -5014,6 +5286,15 @@
           "maintainer red-team attack accepted (3/3; first: \"forged n0 = true n0 + 2 (true vk_x kept)\")"
         ]
       },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F6: same millerEvent and terminal bytes as the withdrawn densless constructions; no soundness argument.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/groth16_cashscript/issues/28"
+        ]
+      },
       "score": 33179,
       "size": {
         "scriptBytes": 32944,
@@ -5109,6 +5390,9 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 95201,
       "size": {
         "scriptBytes": 94622,
@@ -5199,6 +5483,14 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F1 (grouped42): in0/in1 are trailing limbs without an exact-length gate.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49"
+        ]
       },
       "score": 234301,
       "size": {
@@ -5294,6 +5586,15 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F1 (grouped26): no carrier / terminal-state byte owner.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/50"
+        ]
       },
       "score": 225877,
       "size": {
@@ -5391,6 +5692,9 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 335614,
       "size": {
         "scriptBytes": 333960,
@@ -5485,6 +5789,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 345471,
       "size": {
@@ -5581,6 +5888,15 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "F1 (BLS24): no GLV-carrier / terminal-state byte owner.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/50"
+        ]
+      },
       "score": 193309,
       "size": {
         "scriptBytes": 192257,
@@ -5675,6 +5991,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 79948,
       "size": {
@@ -5771,6 +6090,9 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 65696,
       "size": {
         "scriptBytes": 64730,
@@ -5865,6 +6187,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 65326,
       "size": {
@@ -5961,6 +6286,9 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 65160,
       "size": {
         "scriptBytes": 64280,
@@ -6055,6 +6383,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 64783,
       "size": {
@@ -6151,6 +6482,9 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 64689,
       "size": {
         "scriptBytes": 64024,
@@ -6245,6 +6579,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 64532,
       "size": {
@@ -6341,6 +6678,9 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 64159,
       "size": {
         "scriptBytes": 63623,
@@ -6435,6 +6775,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 63866,
       "size": {
@@ -6531,6 +6874,9 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 62328,
       "size": {
         "scriptBytes": 61835,
@@ -6625,6 +6971,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 62252,
       "size": {
@@ -6721,6 +7070,9 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 60285,
       "size": {
         "scriptBytes": 59878,
@@ -6815,6 +7167,9 @@
           "dependencies": []
         },
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 60308,
       "size": {
@@ -6911,6 +7266,15 @@
         },
         "failures": []
       },
+      "reviewStatus": {
+        "status": "withdrawn",
+        "reason": "Held (F1 pattern): chunks are generated without enforceExactInputLength (prefix-only forward checks).",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/50"
+        ]
+      },
       "score": 161660,
       "size": {
         "scriptBytes": 161507,
@@ -7001,6 +7365,9 @@
         },
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 345791,
       "size": {
@@ -7097,6 +7464,9 @@
         "layoutReview": null,
         "failures": []
       },
+      "reviewStatus": {
+        "status": "unreviewed"
+      },
       "score": 202594,
       "size": {
         "scriptBytes": 201284,
@@ -7188,6 +7558,9 @@
         "publicInputs": null,
         "layoutReview": null,
         "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed"
       },
       "score": 483,
       "size": {
