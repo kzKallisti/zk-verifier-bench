@@ -418,7 +418,9 @@ const planExport = async (previous: Map<string, Entry>): Promise<Plan[]> => {
         // legacy row: the PR #50 metadata-identity guard (same registered name and source)
         ? prev.name === impl.name && prev.source === impl.source
         : prev.inputHash === hash;
-      return current ? plan('carry', 'SKIP_IMPLS, inputs unchanged') : plan('drop', 'SKIP_IMPLS but its inputs changed: the old row does not measure the current program; re-run it with ONLY_IMPLS');
+      if (current) return plan('carry', 'SKIP_IMPLS, inputs unchanged');
+      const what = prev.inputHash === undefined ? 'its registered name/source changed (legacy row without inputHash)' : 'its inputs changed';
+      return plan('drop', `SKIP_IMPLS but ${what}: the old row does not measure the current program; re-run it with ONLY_IMPLS=${impl.id}`);
     }
     if (full) return plan('run', 'FULL=1');
     if (prev === undefined) return plan('run', 'new entry');
