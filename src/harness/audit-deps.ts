@@ -12,6 +12,10 @@
 // fs.promises.readdir), since a listing decides which files are read but is never hashed.
 // Reads made by the ESM loader itself (e.g. a JSON module import) are not visible here; those are
 // covered statically (input-hash.ts hashes a non-code imported module as raw bytes).
+// Scope: every read of a repo file under src/ or data/, and EVERY read made from an implementation
+// frame (src/... outside src/harness on the stack) of any file outside node_modules, wherever it
+// lives (e.g. an absolute or ../groth16_cashscript path) and whatever its type (a .ts / .mjs file
+// read as text too). Such a read must be one of the entry's hashed dependencies.
 //
 // `pnpm benchmark:json` runs this audit first (SKIP_DEPS_AUDIT=1 skips it).
 if (process.env.SKIP_DEPS_AUDIT === '1') {
@@ -44,8 +48,11 @@ const trace = (path: unknown, listing: boolean) => {
   if (!tracing) return;
   if (typeof path !== 'string' && !(path instanceof URL)) return;
   const p = rel(path instanceof URL ? fileURLToPath(path) : path);
-  if (!(p.startsWith('src/') || p.startsWith('data/')) || (!listing && isCode(p))) return;
   const frames = framesOf();
+  const repoData = (p.startsWith('src/') || p.startsWith('data/')) && (listing || !isCode(p));
+  // anything an implementation frame reads directly (not a package's own internal read)
+  const fromImplementation = frames.length > 0 && !p.split('/').includes('node_modules');
+  if (!repoData && !fromImplementation) return;
   // a listing made by the harness itself (no implementation frame) is the harness's business
   if (listing && frames.length === 0) return;
   current.push({ path: p, frames, listing });

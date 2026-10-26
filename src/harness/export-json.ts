@@ -21,11 +21,10 @@
 // the merged rows, so editing it never makes a stored row stale.
 import { REVIEW_STATUS, reviewStatusOf } from './review-status.js';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { basename, dirname, join } from 'node:path';
 import type { Implementation } from './types.js';
-import { runImplementation } from './benchmark.js';
-import { HARNESS_VERSION, dependenciesOf, implementationModules, inputHashOf } from './input-hash.js';
-
-import { isSkipped, REGISTRY } from './benchmark.js';
+import { HARNESS_VERSION, assertUnmodifiedSince, dependenciesOf, implementationModules, inputHashOf } from './input-hash.js';
+import { isSkipped, REGISTRY, runImplementation } from './benchmark.js';
 import { SIZE_CAP, entryOf, isBsvSeed, isBsvSingleton, type Entry } from './entry.js';
 
 const SCHEMA_VERSION = 1;
@@ -33,12 +32,21 @@ const SCHEMA_VERSION = 1;
 // Accumulating time-series for the score-history chart, ONE file holding two interleaved
 // series tagged by `fits`: the best BCH-native (fitting) full verifier, and the smallest
 // NON-fitting single-tx "singleton" ideal — their gap over time is the chunking tax.
-const HISTORY_FILE = 'score-history.json';
+// The history file lives next to the outfile: results.json -> score-history.json in the same
+// directory; any other outfile (an experiment, e.g. `pnpm benchmark:json scratch.json`) gets its
+// own <outfile>.score-history.json, seeded read-only from the default score-history.json in the
+// cwd, so an experiment never appends a point to the real history.
+const OUTFILE = process.argv[2] ?? 'results.json';
+const DEFAULT_HISTORY_FILE = 'score-history.json';
+const HISTORY_FILE = basename(OUTFILE) === 'results.json'
+  ? join(dirname(OUTFILE), DEFAULT_HISTORY_FILE)
+  : `${OUTFILE.replace(/\.json$/, '')}.score-history.json`;
 interface HistoryPoint { t: string; score: number; id: string; steps: number; transactions: number; fits: boolean }
 const loadHistory = (): HistoryPoint[] => {
-  if (!existsSync(HISTORY_FILE)) return [];
+  const source = existsSync(HISTORY_FILE) ? HISTORY_FILE : DEFAULT_HISTORY_FILE;
+  if (!existsSync(source)) return [];
   try {
-    const arr = JSON.parse(readFileSync(HISTORY_FILE, 'utf8')) as HistoryPoint[];
+    const arr = JSON.parse(readFileSync(source, 'utf8')) as HistoryPoint[];
     // legacy points predate the `fits` flag (fitting-only series) and the `transactions`
     // field; the file is backfilled, so the ?? fallbacks only guard a stale/partial read.
     return arr.map((p) => ({ ...p, fits: p.fits ?? true, transactions: p.transactions ?? p.steps }));
@@ -81,11 +89,18 @@ const recordHistory = (
   return { series, changed };
 };
 
-// Entries the harness still benchmarks (e.g. for the normalized vs-sCrypt op-cost
-// comparison) but the website should not list. bch-vkx-scalarmult is a single
-// scalarMult sub-step on the old EC codegen — a fraction of vk_x, so it muddies the
-// monolith-vs-chunked milestone story.
-const SITE_EXCLUDE = new Set(['bch-vkx-scalarmult']);
+// Registered entries that are deliberately NOT emitted in the feed (no row, no history point, not
+// counted as missing, never run by the export; ONLY_IMPLS refuses them). Each export logs them.
+// This is a standing policy list, unlike ALLOW_DROP (a one-off, degraded, non-zero exit).
+//   site-exclude: still benchmarked by `pnpm benchmark`, but the website should not list it.
+//     bch-vkx-scalarmult is a single scalarMult sub-step on the old EC codegen, a fraction of
+//     vk_x, so it muddies the monolith-vs-chunked milestone story.
+//   hold: registered descriptor whose observation is withheld pending qualification. Removing
+//     the id here makes the next default export measure and publish it.
+const FEED_OMIT = new Map<string, string>([
+  ['bch-vkx-scalarmult', 'site-exclude: sub-step benchmark, not listed on the site'],
+  ['bch-groth16-bls12381-singleton-genpow', 'hold: corrected BLS12-381 genpow artifact (#48) is unreviewed and under a native HOLD; omitted until separately qualified (README)'],
+]);
 
 const anchor = (e: Entry | undefined, label: string) =>
   e === undefined
@@ -113,17 +128,17 @@ const envList = (name: string): string[] | undefined => {
 // forward from the previous artifact unchanged except for its metadata:
 //   default        re-run entries that are new, lack an inputHash, or whose inputHash changed
 //   FULL=1         re-run every entry (except SKIP_IMPLS ones, see below)
-//   ONLY_IMPLS=a,b re-run exactly these ids (exact match, bypasses SKIP_IMPLS); carry every
-//                  other row as is. A carried row whose inputs changed is STALE: the artifact
-//                  is still written, but history / frontier are frozen and the export exits 2
-//   SKIP_IMPLS     (default 'genpow') never re-run unless forced; carried only while their
-//                  inputs are unchanged (or, for a legacy row without inputHash, while the
-//                  registered name/source still match). Otherwise the row would be DROPPED,
-//                  which fails the export (see ALLOW_DROP)
+//   ONLY_IMPLS=a,b re-run exactly these ids (exact match, bypasses SKIP_IMPLS; an id in
+//                  FEED_OMIT or unregistered is an error; not combinable with FULL=1); carry
+//                  every other row as is. A carried row whose inputs changed is STALE: the
+//                  artifact is still written, but history / frontier are frozen and exit 2
+//   SKIP_IMPLS     (default 'genpow') never re-run unless forced; carried only while the stored
+//                  inputHash equals the current one. A row whose inputs changed, or a legacy row
+//                  without an inputHash (its inputs are unknown), would be DROPPED, which fails
+//                  the export (run it with SKIP_IMPLS='' or ONLY_IMPLS=<id>)
 //   ALLOW_DROP=1   write the artifact even though rows are dropped / absent; history and
-//                  frontier are then frozen (never recomputed from the reduced row set)
-//   STAMP_HASHES=1 bootstrap: give previous rows that have no inputHash the current hash
-//                  without re-running (only when the artifact is known to match the sources)
+//                  frontier are then frozen (never recomputed from the reduced row set) and the
+//                  export exits 2: a degraded artifact, never a standing policy (see FEED_OMIT)
 // An entry whose data/ file is missing (e.g. the nChain / sCrypt mainnet tx hex, fetched by
 // `pnpm fetch`) is hashed through the digest pinned in data/<x>/SHA256SUMS, so its row is
 // carried only while every input is unchanged; anything that would re-run it fails loudly
@@ -133,14 +148,17 @@ type Plan = { impl: Implementation; action: Action; reason: string; hash: string
 
 const planExport = async (previous: Map<string, Entry>): Promise<Plan[]> => {
   const full = process.env.FULL === '1';
-  const stamp = process.env.STAMP_HASHES === '1';
   const allowMissingData = process.env.ALLOW_MISSING_DATA === '1';
   const only = envList('ONLY_IMPLS');
+  if (process.env.STAMP_HASHES !== undefined) throw new Error('STAMP_HASHES was removed (it adopted hashes without re-running); rows without an inputHash are re-run, or fail under SKIP_IMPLS');
+  if (full && only !== undefined) throw new Error('FULL=1 and ONLY_IMPLS are mutually exclusive');
   const registered = new Set(REGISTRY.map((impl) => impl.id));
   const unknown = (only ?? []).filter((id) => !registered.has(id));
   if (unknown.length > 0) throw new Error(`ONLY_IMPLS names unregistered id(s): ${unknown.join(', ')}`);
+  const omitted = (only ?? []).filter((id) => FEED_OMIT.has(id));
+  if (omitted.length > 0) throw new Error(`ONLY_IMPLS names id(s) the feed omits (FEED_OMIT): ${omitted.map((id) => `${id} (${FEED_OMIT.get(id)})`).join(', ')}`);
   const modules = await implementationModules(REGISTRY);
-  return REGISTRY.filter((impl) => !SITE_EXCLUDE.has(impl.id)).map((impl): Plan => {
+  return REGISTRY.filter((impl) => !FEED_OMIT.has(impl.id)).map((impl): Plan => {
     const deps = dependenciesOf(impl.id, modules.get(impl.id)!);
     const hash = inputHashOf(impl.id, deps);
     const prev = previous.get(impl.id);
@@ -167,19 +185,12 @@ const planExport = async (previous: Map<string, Entry>): Promise<Plan[]> => {
       if (prev === undefined) return plan('absent', 'not in ONLY_IMPLS, no previous row');
       return prev.inputHash === hash ? plan('carry', 'unchanged') : plan('stale', 'not in ONLY_IMPLS, inputs changed (STALE)');
     }
-    if (stamp && prev !== undefined && prev.inputHash === undefined) {
-      prev.inputHash = hash;
-      return plan('carry', 'STAMP_HASHES: adopted current input hash');
-    }
     if (isSkipped(impl.id)) {
       if (prev === undefined) return plan('absent', `SKIP_IMPLS, no previous row; run it with SKIP_IMPLS='' or ONLY_IMPLS=${impl.id}`);
-      const current = prev.inputHash === undefined
-        // legacy row: the PR #50 metadata-identity guard (same registered name and source)
-        ? prev.name === impl.name && prev.source === impl.source
-        : prev.inputHash === hash;
-      if (current) return plan('carry', 'SKIP_IMPLS, inputs unchanged');
-      const what = prev.inputHash === undefined ? 'its registered name/source changed (legacy row without inputHash)' : 'its inputs changed';
-      return plan('drop', `SKIP_IMPLS but ${what}: the old row does not measure the current program; re-run with SKIP_IMPLS='' (or ONLY_IMPLS=${impl.id})`);
+      if (prev.inputHash === hash) return plan('carry', 'SKIP_IMPLS, inputs unchanged');
+      // a legacy row (no inputHash) measures unknown inputs: never carried, whatever its metadata
+      const what = prev.inputHash === undefined ? 'its previous row has no inputHash (legacy row, inputs unknown)' : 'its inputs changed';
+      return plan('drop', `SKIP_IMPLS but ${what}: the old row is not known to measure the current program; re-run with SKIP_IMPLS='' (or ONLY_IMPLS=${impl.id})`);
     }
     if (full) return plan('run', 'FULL=1');
     if (prev === undefined) return plan('run', 'new entry');
@@ -192,7 +203,7 @@ const planExport = async (previous: Map<string, Entry>): Promise<Plan[]> => {
 interface Artifact { generatedAt?: string; frontier?: unknown; entries?: Entry[] }
 
 const main = async () => {
-  const outfile = process.argv[2] ?? 'results.json';
+  const outfile = OUTFILE;
   // include demos so the artifact is complete; the site filters by category.
   const registered = new Map(REGISTRY.map((implementation) => [implementation.id, implementation]));
 
@@ -221,9 +232,10 @@ const main = async () => {
   const count = (a: Action) => plans.filter((p) => p.action === a).length;
   console.error(`incremental export (harness v${HARNESS_VERSION}): ${runs.length} to run, ${count('carry')} carried forward${count('stale') > 0 ? `, ${count('stale')} STALE` : ''}`);
   for (const p of plans) if (p.action !== 'carry' || p.reason !== 'unchanged') console.error(`  ${p.action.padEnd(6)} ${p.impl.id}: ${p.reason}`);
+  for (const [id, why] of FEED_OMIT) if (registered.has(id)) console.error(`  omit   ${id}: ${why}${previous.has(id) ? ' (previous row removed)' : ''}`);
   // rows of ids that are no longer registered leave the feed (e.g. a withdrawal, PR #50)
-  const unregistered = [...previous.keys()].filter((id) => !registered.has(id) || SITE_EXCLUDE.has(id));
-  if (unregistered.length > 0) console.error(`  removed (no longer registered/listed): ${unregistered.join(', ')}`);
+  const unregistered = [...previous.keys()].filter((id) => !registered.has(id));
+  if (unregistered.length > 0) console.error(`  removed (no longer registered): ${unregistered.join(', ')}`);
 
   // A dropped / absent row would leave a hole in the artifact and, worse, shift the frontier and
   // append a false point to the append-only score history. Refuse unless explicitly allowed.
@@ -248,6 +260,14 @@ const main = async () => {
   if (failures.length > 0) {
     // never drop a row silently: refuse to write a partial artifact
     console.error(`export FAILED, ${outfile} left unchanged:\n  ${failures.join('\n  ')}`);
+    process.exit(1);
+  }
+  // module-level vector loads happened when benchmark.js was imported, before the hashes were
+  // computed: refuse to store hashes if any hashed input was edited after this process started
+  try {
+    assertUnmodifiedSince(performance.timeOrigin);
+  } catch (error) {
+    console.error(`export FAILED, ${outfile} and ${HISTORY_FILE} left unchanged: ${error instanceof Error ? error.message : String(error)}`);
     process.exit(1);
   }
 
@@ -356,11 +376,14 @@ const main = async () => {
   }
 
   if (degraded) {
-    if (missing.length > 0) console.error(`ALLOW_DROP: ${missing.length} row(s) missing (${missing.map((p) => p.impl.id).join(', ')}); history and frontier frozen`);
-    if (stale.length > 0) {
-      console.error(`STALE: ${stale.length} carried row(s) do not match their current inputs: ${stale.map((p) => p.impl.id).join(', ')}\n  history and frontier frozen; run the default export before publishing`);
-      process.exit(2);
+    if (missing.length > 0) {
+      console.error(`ALLOW_DROP: ${missing.length} row(s) missing (${missing.map((p) => p.impl.id).join(', ')}); history and frontier frozen; not publishable`);
+      const anchors = Object.values((frontier ?? {}) as Record<string, { id?: string } | null>).map((a) => a?.id).filter((id): id is string => id !== undefined);
+      const dangling = anchors.filter((id) => byId(id) === undefined);
+      if (dangling.length > 0) console.error(`  the frozen frontier names id(s) with no row in this artifact: ${dangling.join(', ')}`);
     }
+    if (stale.length > 0) console.error(`STALE: ${stale.length} carried row(s) do not match their current inputs: ${stale.map((p) => p.impl.id).join(', ')}\n  history and frontier frozen; run the default export before publishing`);
+    process.exit(2);
   }
 };
 
