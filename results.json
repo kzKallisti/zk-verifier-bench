@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-26T19:11:22.271Z",
+  "generatedAt": "2026-10-26T23:16:52.059Z",
   "statement": {
     "proofSystem": "Groth16",
     "curve": "BN254",
@@ -33,10 +33,10 @@
       "bchCompatible": false
     },
     "current": {
-      "id": "bch-groth16-bls12381-intratx-fs-fused-coordinator-head",
+      "id": "bch-groth16-bn254-sound-native",
       "label": "Best BCH-native full verifier",
-      "curve": "BLS12-381",
-      "bytes": 60285,
+      "curve": "BN254",
+      "bytes": 27624,
       "bchCompatible": true
     }
   },
@@ -944,6 +944,30 @@
       "steps": 1,
       "transactions": 1,
       "fits": false
+    },
+    {
+      "t": "2026-10-26T23:16:52.059Z",
+      "score": 34229,
+      "id": "bch-groth16-bls12381-sound-native",
+      "steps": 4,
+      "transactions": 1,
+      "fits": true
+    },
+    {
+      "t": "2026-10-26T23:16:52.059Z",
+      "score": 27624,
+      "id": "bch-groth16-bn254-sound-native",
+      "steps": 3,
+      "transactions": 1,
+      "fits": true
+    },
+    {
+      "t": "2026-10-26T23:16:52.059Z",
+      "score": 5965,
+      "id": "bch-groth16-bls12381-singleton-genpow",
+      "steps": 1,
+      "transactions": 1,
+      "fits": false
     }
   ],
   "entries": [
@@ -1539,8 +1563,8 @@
         "verdict": "pass",
         "validAccepted": true,
         "invalid": {
-          "tested": 14,
-          "rejected": 14
+          "tested": 18,
+          "rejected": 18
         },
         "worstCaseAccepted": null,
         "crossStageBinding": {
@@ -1559,10 +1583,12 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed",
-        "reason": "Domain checks added (range, curve, G2 subgroup) to groth16.cash and rebuilt; previously held by maintainer review.",
+        "status": "reviewed",
+        "reason": "independent review 2026-10-26: no soundness break (range, curve and fused psi G2 subgroup checks verified); follow-ups done: non-canonical +p rejection runs for every coordinate, A/C cofactor malleability documented (malleability only).",
         "refs": [
-          "https://github.com/mr-zwets/groth16_cashscript/blob/main/singleton/bls12-381/README.md"
+          "https://github.com/mr-zwets/groth16_cashscript/commit/974a6910eb6924cfdbb547ea2556f229d9790421",
+          "https://github.com/mr-zwets/groth16_cashscript/commit/47c1ab15bd837d21c016e2e61b948f0e94b5862b",
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/singleton/bls12-381/README.md#proof-point-validation"
         ]
       },
       "score": 7510,
@@ -1632,8 +1658,8 @@
         "verdict": "pass",
         "validAccepted": true,
         "invalid": {
-          "tested": 14,
-          "rejected": 14
+          "tested": 18,
+          "rejected": 18
         },
         "worstCaseAccepted": null,
         "crossStageBinding": {
@@ -1652,10 +1678,12 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed",
-        "reason": "Domain checks added (range, curve, G2 subgroup) to groth16.cash and rebuilt; previously held by maintainer review.",
+        "status": "reviewed",
+        "reason": "independent review 2026-10-26: no soundness break (range, curve and fused psi G2 subgroup checks verified); follow-ups done: non-canonical +p rejection runs for every coordinate, A/C cofactor malleability documented (malleability only).",
         "refs": [
-          "https://github.com/mr-zwets/groth16_cashscript/blob/main/singleton/bls12-381/README.md"
+          "https://github.com/mr-zwets/groth16_cashscript/commit/974a6910eb6924cfdbb547ea2556f229d9790421",
+          "https://github.com/mr-zwets/groth16_cashscript/commit/47c1ab15bd837d21c016e2e61b948f0e94b5862b",
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/singleton/bls12-381/README.md#proof-point-validation"
         ]
       },
       "score": 5999,
@@ -1710,6 +1738,102 @@
         "type": "p2s"
       },
       "source": "Same complete BLS12-381 Groth16 verifier as bch-groth16-bls12381-singleton (Groth16Verify, singleton/bls12-381/groth16.cash: vk_x = IC0 + in0*IC1 + in1*IC2 on-chain in one shared-doubling Shamir/Straus pass, then e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) == 1, with the same proof-point validation: coordinate range, curve equations, G2 subgroup), but the locking bytecode is byte-optimized: the smaller of a custom decompile->reschedule->recompile of the cashc output and the rescheduled compile, then repeated instruction sequences outlined into OP_DEFINE bodies. Identical semantics + runtime witnesses; each subroutine differential-tested and every outline rewrite verified accept/reject. The plain entry keeps the other end of the bytesize-vs-opcost tradeoff. Pipeline: singleton/bls12-381/build_vectors_optimized.mjs + singleton/bn254/recompiler/."
+    },
+    {
+      "id": "bch-groth16-bls12381-singleton-genpow",
+      "name": "BCH Groth16 verifier singleton, BLS12-381 genpow (checked cofactor-equivalent G1/G2, 5,675 B; native-resource HOLD)",
+      "category": "full",
+      "official": false,
+      "solver": null,
+      "curve": "BLS12-381",
+      "structure": "single-tx",
+      "proofSystem": "Groth16",
+      "vmTarget": "bch-2026",
+      "correctness": {
+        "verdict": "pass",
+        "validAccepted": true,
+        "invalid": {
+          "tested": 1,
+          "rejected": 1
+        },
+        "worstCaseAccepted": null,
+        "crossStageBinding": {
+          "applicable": false,
+          "bound": null,
+          "seamsTested": 0,
+          "unboundSeams": 0,
+          "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
+        },
+        "redTeam": null,
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": null,
+        "failures": []
+      },
+      "reviewStatus": {
+        "status": "unreviewed",
+        "reason": "Corrected successor (5,675 B program): canonical points, complete root chart and cofactor-equivalent G1/G2 projections from source #31 / benchmark #48. Native HOLD remains; original-G2 subgroup rejection is not asserted.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/issues/32",
+          "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
+          "https://github.com/mr-zwets/groth16_cashscript/pull/31",
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/48"
+        ]
+      },
+      "score": 5965,
+      "size": {
+        "scriptBytes": 5880,
+        "txOverheadBytes": 85,
+        "transactions": 1,
+        "total": 5965
+      },
+      "padding": {
+        "bytes": 0,
+        "fraction": 0
+      },
+      "benchmarks": {
+        "smallProof": {
+          "opCost": 25609641017,
+          "steps": 1,
+          "heaviestStepOpCost": 25609641017,
+          "inputsForHeaviestStep": 3189
+        }
+      },
+      "opCostBudget": 196800,
+      "bsvSingleton": false,
+      "bsvOpReturn": false,
+      "bch": {
+        "compatible": false,
+        "blockers": [
+          "op-cost"
+        ],
+        "detail": "heaviest step ~3189× one input's op-cost budget",
+        "standard": {
+          "fits": false,
+          "detail": "1/1 locking >201 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, extra proof #2, extra proof #3"
+        }
+      },
+      "generality": {
+        "binding": "runtime",
+        "runtimeGeneral": true,
+        "proofsTested": 4,
+        "proofsPassed": 4,
+        "detail": "runtime-general: one fixed locking verifies 4/4 distinct proofs (proof in the unlocking witness)"
+      },
+      "tokenSafety": null,
+      "inputValidation": {
+        "enforced": false,
+        "tested": 0,
+        "rejected": 0,
+        "detail": "NOT demonstrated — no isolated adversarial-point run that rejects a bad point at a validation check (a naive point-swap in a single-tx verifier is caught by the pairing equation, not by validation)"
+      },
+      "packaging": {
+        "secure": true,
+        "type": "p2s"
+      },
+      "source": "cofactorPoints() in singleton/bls12-381/leader-recovered/cofactor-points.mjs: canonical finite compressed-point and curve checks, complete G2 root chart, complete group arithmetic and r-component-preserving G1/G2 projections. On-chain vk_x and the full final exponent bind the fixed-VK four-pair equation. G1 and G2 have cofactor-equivalent semantics; original G2 subgroup membership is not enforced. All original proof/public/witness bytes are unchanged. Four original positives passed the arithmetic oracle; native-resource HOLD. No BCH/relay admission or native score is claimed. Original compiler/search lineage remains unavailable."
     },
     {
       "id": "bch-groth16-bls12381-singleton-minop",
@@ -4060,6 +4184,383 @@
         "type": "p2sh32"
       },
       "source": "Single-identity BN254 Groth16 verifier: one batched odd torus identity at +-z over 33 committed monic states, GT-GLS folding of e(vk_x, gamma), projective B with exact G2 endpoint check, every accept-relevant value computed on-chain, baked, hash-committed before its challenge, or exactly checked (chunked/bn254/sound-si-gls); graded on the proposed bch-spec VM."
+    },
+    {
+      "id": "bch-groth16-bls12381-sound-si-gls-single",
+      "name": "BCH Groth16 BLS12-381 SI-GLS single torus identity (sound by construction), single input (bch-spec)",
+      "category": "spec",
+      "official": false,
+      "solver": null,
+      "curve": "BLS12-381",
+      "structure": "single-tx",
+      "proofSystem": "Groth16",
+      "vmTarget": "bch-spec",
+      "correctness": {
+        "verdict": "pass",
+        "validAccepted": true,
+        "invalid": {
+          "tested": 16,
+          "rejected": 16
+        },
+        "worstCaseAccepted": true,
+        "crossStageBinding": {
+          "applicable": false,
+          "bound": null,
+          "seamsTested": 0,
+          "unboundSeams": 0,
+          "detail": "not staple-tested — single-tx, or a covenant/grouped token hand-off the harness does not model yet"
+        },
+        "redTeam": {
+          "stale": false,
+          "tested": 87,
+          "accepted": 0,
+          "kinds": [
+            "invalid-proof-point",
+            "non-canonical-coordinate",
+            "identity-point",
+            "subgroup",
+            "invalid-proof",
+            "public-input-encoding",
+            "gls-digit",
+            "gls-binding",
+            "slope",
+            "non-canonical-slope",
+            "tamper-transcript",
+            "tamper-state",
+            "non-canonical-state",
+            "tamper-residue",
+            "transcript-encoding",
+            "tamper-quotient",
+            "non-canonical-quotient",
+            "quotient-cap",
+            "layout"
+          ]
+        },
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": null,
+        "failures": []
+      },
+      "reviewStatus": {
+        "status": "reviewed",
+        "reason": "Independent soundness review of the shipped artifact (2026-10-26; implementation, math and reproduction, minor findings fixed before merge); see the soundness argument, verification and open risks in its README.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bls12-381/sound-si-gls/README.md#soundness-argument",
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bls12-381/sound-si-gls/README.md#verification",
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bls12-381/sound-si-gls/README.md#open-risks"
+        ]
+      },
+      "score": 26484,
+      "size": {
+        "scriptBytes": 26421,
+        "txOverheadBytes": 63,
+        "transactions": 1,
+        "total": 26484
+      },
+      "padding": {
+        "bytes": 0,
+        "fraction": 0
+      },
+      "benchmarks": {
+        "smallProof": {
+          "opCost": 26070993,
+          "steps": 1,
+          "heaviestStepOpCost": 26070993,
+          "inputsForHeaviestStep": 1
+        },
+        "worstCase": {
+          "accepted": true,
+          "opCost": 27484296,
+          "steps": 1,
+          "heaviestStepOpCost": 27484296,
+          "inputsForHeaviestStep": 1
+        }
+      },
+      "opCostBudget": 29108800,
+      "bsvSingleton": false,
+      "bsvOpReturn": false,
+      "bch": {
+        "compatible": true,
+        "blockers": [],
+        "detail": "every step fits the proposed bch-spec per-tx limits (100 kB scripts) — NOT current BCH",
+        "standard": {
+          "fits": true,
+          "detail": "relayable under standard mempool policy"
+        }
+      },
+      "generality": {
+        "binding": "runtime",
+        "runtimeGeneral": true,
+        "proofsTested": 6,
+        "proofsPassed": 6,
+        "detail": "runtime-general: one fixed locking verifies 6/6 distinct proofs (proof in the unlocking witness)"
+      },
+      "tokenSafety": null,
+      "inputValidation": {
+        "enforced": false,
+        "tested": 0,
+        "rejected": 0,
+        "detail": "NOT demonstrated — no isolated adversarial-point run that rejects a bad point at a validation check (a naive point-swap in a single-tx verifier is caught by the pairing equation, not by validation)"
+      },
+      "packaging": {
+        "secure": true,
+        "type": "p2sh32"
+      },
+      "source": "Single-identity BLS12-381 Groth16 verifier: one batched odd torus identity at +-z over 32 committed monic states, base-|x| GT-GLS folding of e(vk_x, gamma) with an exact integer binding, affine-then-projective B walk (witnessed affine slopes fixed by exact equations) with an exact psi endpoint G2 check, every accept-relevant value computed on-chain, baked, hash-committed before its challenge, or exactly checked (chunked/bls12-381/sound-si-gls); graded on the proposed bch-spec VM."
+    },
+    {
+      "id": "bch-groth16-bn254-sound-native",
+      "name": "BCH Groth16 SI-MX3 sound native (BN254), one transaction with 3 inputs (bch-2026)",
+      "category": "full",
+      "official": false,
+      "solver": null,
+      "curve": "BN254",
+      "structure": "single-tx",
+      "proofSystem": "Groth16",
+      "vmTarget": "bch-2026",
+      "correctness": {
+        "verdict": "pass",
+        "validAccepted": true,
+        "invalid": {
+          "tested": 24,
+          "rejected": 24
+        },
+        "worstCaseAccepted": true,
+        "crossStageBinding": {
+          "applicable": true,
+          "bound": true,
+          "seamsTested": 2,
+          "unboundSeams": 0,
+          "detail": "every stage bound to one proof: 2 seams staple-tested with a 2nd distinct proof, all rejected"
+        },
+        "redTeam": {
+          "stale": false,
+          "tested": 143,
+          "accepted": 0,
+          "kinds": [
+            "public-input-binding",
+            "public-input-encoding",
+            "invalid-proof-point",
+            "non-canonical-coordinate",
+            "g2-subgroup",
+            "gls-digit",
+            "tamper-residue",
+            "non-canonical-state",
+            "tamper-state",
+            "inverse-norm",
+            "staple",
+            "tamper-transcript",
+            "tamper-quotient",
+            "non-canonical-quotient",
+            "quotient-cap",
+            "handover",
+            "layout",
+            "filler",
+            "code",
+            "constants",
+            "graph"
+          ]
+        },
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": {
+          "padsTested": 3,
+          "freeLength": 0,
+          "dependencies": []
+        },
+        "failures": []
+      },
+      "reviewStatus": {
+        "status": "reviewed",
+        "reason": "Independent soundness review of the shipped artifact (2026-10-26; implementation, math and reproduction, minor findings fixed or documented before merge); see the soundness argument, verification and open risks in its README.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bn254/bn-native-sound/README.md#soundness-argument-constructive-an-owner-for-every-value",
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bn254/bn-native-sound/README.md#verification",
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bn254/bn-native-sound/README.md#open-risks"
+        ]
+      },
+      "score": 27624,
+      "size": {
+        "scriptBytes": 27475,
+        "txOverheadBytes": 149,
+        "transactions": 1,
+        "total": 27624
+      },
+      "padding": {
+        "bytes": 208,
+        "fraction": 0.007570518653321201
+      },
+      "benchmarks": {
+        "smallProof": {
+          "opCost": 20572881,
+          "steps": 3,
+          "heaviestStepOpCost": 7002127,
+          "inputsForHeaviestStep": 1
+        },
+        "worstCase": {
+          "accepted": true,
+          "opCost": 20760869,
+          "steps": 3,
+          "heaviestStepOpCost": 7022726,
+          "inputsForHeaviestStep": 1
+        }
+      },
+      "opCostBudget": 21994400,
+      "bsvSingleton": false,
+      "bsvOpReturn": false,
+      "bch": {
+        "compatible": true,
+        "blockers": [],
+        "detail": "every step fits BCH per-tx limits",
+        "standard": {
+          "fits": true,
+          "detail": "relayable under standard mempool policy"
+        }
+      },
+      "generality": {
+        "binding": "runtime",
+        "runtimeGeneral": true,
+        "proofsTested": 4,
+        "proofsPassed": 4,
+        "detail": "runtime-general: one fixed locking verifies 4/4 distinct proofs (proof in the unlocking witness)"
+      },
+      "tokenSafety": null,
+      "inputValidation": {
+        "enforced": false,
+        "tested": 0,
+        "rejected": 0,
+        "detail": "NOT demonstrated — no isolated adversarial-point run that rejects a bad point at a validation check (a naive point-swap in a single-tx verifier is caught by the pairing equation, not by validation)"
+      },
+      "packaging": {
+        "secure": true,
+        "type": "p2sh32"
+      },
+      "source": "SI-GLS mathematics split over 3 P2SH32 inputs of one bch-2026 transaction (shared redeem loads hash-authenticated code; graph pinned by input count and identical lockings; affine B walk with exact inverse-norm witnesses; per-input digests of the committed data; canonical handovers between roles) (chunked/bn254/bn-native-sound)."
+    },
+    {
+      "id": "bch-groth16-bls12381-sound-native",
+      "name": "BCH Groth16 SI-GLS sound native (BLS12-381), one transaction with 4 inputs (bch-2026)",
+      "category": "full",
+      "official": false,
+      "solver": null,
+      "curve": "BLS12-381",
+      "structure": "single-tx",
+      "proofSystem": "Groth16",
+      "vmTarget": "bch-2026",
+      "correctness": {
+        "verdict": "pass",
+        "validAccepted": true,
+        "invalid": {
+          "tested": 41,
+          "rejected": 41
+        },
+        "worstCaseAccepted": true,
+        "crossStageBinding": {
+          "applicable": true,
+          "bound": true,
+          "seamsTested": 3,
+          "unboundSeams": 0,
+          "detail": "every stage bound to one proof: 3 seams staple-tested with a 2nd distinct proof, all rejected"
+        },
+        "redTeam": {
+          "stale": false,
+          "tested": 57,
+          "accepted": 0,
+          "kinds": [
+            "pins",
+            "layout",
+            "program",
+            "constants",
+            "transcript",
+            "statement",
+            "quotient",
+            "claims",
+            "canonical",
+            "points",
+            "staple"
+          ]
+        },
+        "publicInputs": {
+          "tested": 9,
+          "accepted": 0
+        },
+        "layoutReview": {
+          "padsTested": 4,
+          "freeLength": 0,
+          "dependencies": []
+        },
+        "failures": []
+      },
+      "reviewStatus": {
+        "status": "reviewed",
+        "reason": "Independent soundness review of the shipped artifact (2026-10-26; implementation, math and reproduction, minor findings fixed or documented before merge); see the soundness argument, verification and open risks in its README.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bls12-381/bls-native-sound/README.md#soundness-argument",
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bls12-381/bls-native-sound/README.md#verification",
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bls12-381/bls-native-sound/README.md#open-risks"
+        ]
+      },
+      "score": 34229,
+      "size": {
+        "scriptBytes": 34037,
+        "txOverheadBytes": 192,
+        "transactions": 1,
+        "total": 34229
+      },
+      "padding": {
+        "bytes": 317,
+        "fraction": 0.009313394247436614
+      },
+      "benchmarks": {
+        "smallProof": {
+          "opCost": 24040286,
+          "steps": 4,
+          "heaviestStepOpCost": 6827540,
+          "inputsForHeaviestStep": 1
+        },
+        "worstCase": {
+          "accepted": true,
+          "opCost": 26008890,
+          "steps": 4,
+          "heaviestStepOpCost": 7333486,
+          "inputsForHeaviestStep": 1
+        }
+      },
+      "opCostBudget": 27248800,
+      "bsvSingleton": false,
+      "bsvOpReturn": false,
+      "bch": {
+        "compatible": true,
+        "blockers": [],
+        "detail": "every step fits BCH per-tx limits",
+        "standard": {
+          "fits": true,
+          "detail": "relayable under standard mempool policy"
+        }
+      },
+      "generality": {
+        "binding": "runtime",
+        "runtimeGeneral": true,
+        "proofsTested": 7,
+        "proofsPassed": 7,
+        "detail": "runtime-general: one fixed locking verifies 7/7 distinct proofs (proof in the unlocking witness)"
+      },
+      "tokenSafety": null,
+      "inputValidation": {
+        "enforced": false,
+        "tested": 0,
+        "rejected": 0,
+        "detail": "NOT demonstrated — no isolated adversarial-point run that rejects a bad point at a validation check (a naive point-swap in a single-tx verifier is caught by the pairing equation, not by validation)"
+      },
+      "packaging": {
+        "secure": true,
+        "type": "p2sh32"
+      },
+      "source": "SI-GLS mathematics split over 4 P2SH32 inputs of one bch-2026 transaction (uniform redeem: input count and identical lockings pinned, hash-authenticated shared program loaded from two carriers; role by input index); all-affine B walk with exact slope equations and the psi endpoint G2 check; head transcript over every input's committed region; exact base-|x| GT-GLS binding of n0, n1; canonical byte-exact handovers between roles (chunked/bls12-381/bls-native-sound)."
     },
     {
       "id": "bch-groth16-intratx-general",

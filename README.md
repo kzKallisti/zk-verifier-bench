@@ -68,11 +68,10 @@ PairFold-7, the BLS chunked-covenant vk_x component, the BLS residue-large
 verifier, and the partial pairing intra-tx component. See [benchmark issue
 #49](https://github.com/mr-zwets/zk-verifier-bench/issues/49) and [source issue
 #32](https://github.com/mr-zwets/groth16_cashscript/issues/32). The current feed
-excludes those fifteen observations. The old BLS12-381 genpow observation is
-also omitted pending the separately qualified corrected artifact for [PR
-#48](https://github.com/mr-zwets/zk-verifier-bench/pull/48); its descriptor
-remains registered. Merge source #31 and benchmark #48 before this PR so the
-registered BLS genpow descriptor identifies its corrected artifact. The corrected BN254
+excludes those fifteen observations. The BLS12-381 genpow descriptor now
+identifies the corrected artifact from [PR
+#48](https://github.com/mr-zwets/zk-verifier-bench/pull/48) (source #31), and the
+feed carries its measurement (5,965 B, unreviewed). The corrected BN254
 genpow observation from merged [PR
 #47](https://github.com/mr-zwets/zk-verifier-bench/pull/47) is retained at
 4,613 B. The three separately corrected standalone descriptors retain distinct
@@ -82,12 +81,10 @@ the [immutable historical export](https://github.com/mr-zwets/zk-verifier-bench/
 and score-history points are retained as historical measurements, not current
 qualification. Separately corrected standalone profiles retain their stated
 scope and resource holds and are not registered by their presence on disk.
-The upstream current artifact therefore names `bch-groth16-singleton-genpow`
-as the 4,613 B leader (not BCH-compatible) and
-`bch-groth16-bls12381-intratx-fs-fused-coordinator-head` as the 60,285 B
-BCH-compatible current anchor. A leaderboard deployment must consume the
-updated feed; this change does not claim that a deployed website has already
-updated.
+As of the 2026-10-27 export the feed names `bch-groth16-singleton-genpow`
+as the 4,613 B leader (not BCH-compatible, unreviewed) and
+`bch-groth16-bn254-sound-native` as the 27,624 B BCH-compatible current anchor
+(independently reviewed).
 
 | category | meaning |
 |----------|---------|

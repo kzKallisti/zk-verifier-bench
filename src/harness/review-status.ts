@@ -30,6 +30,44 @@ export const REVIEW_STATUS: Record<string, ReviewStatus> = {
     ],
   },
 
+  // BLS12-381 SI-GLS (bch-spec): built on wip/bls-si-gls-spec; independent review 2026-10-26 (implementation,
+  // math, reproduction) found only minor issues, all six fixed before merge (verifier.cash work/bls-si-gls-spec/FIXLOG.md).
+  'bch-groth16-bls12381-sound-si-gls-single': {
+    status: 'reviewed',
+    reason: 'Independent soundness review of the shipped artifact (2026-10-26; implementation, math and reproduction, minor findings fixed before merge); see the soundness argument, verification and open risks in its README.',
+    refs: [
+      `${SRC}/blob/main/chunked/bls12-381/sound-si-gls/README.md#soundness-argument`,
+      `${SRC}/blob/main/chunked/bls12-381/sound-si-gls/README.md#verification`,
+      `${SRC}/blob/main/chunked/bls12-381/sound-si-gls/README.md#open-risks`,
+    ],
+  },
+
+  // BN254 native (SI-MX3, 3-input bch-2026): built on wip/bn-native-sound; independent review 2026-10-26
+  // (implementation, math, reproduction) found only minor issues, fixed or documented before merge
+  // (verifier.cash work/bn-native-sound/FIXLOG.md).
+  'bch-groth16-bn254-sound-native': {
+    status: 'reviewed',
+    reason: 'Independent soundness review of the shipped artifact (2026-10-26; implementation, math and reproduction, minor findings fixed or documented before merge); see the soundness argument, verification and open risks in its README.',
+    refs: [
+      `${SRC}/blob/main/chunked/bn254/bn-native-sound/README.md#soundness-argument-constructive-an-owner-for-every-value`,
+      `${SRC}/blob/main/chunked/bn254/bn-native-sound/README.md#verification`,
+      `${SRC}/blob/main/chunked/bn254/bn-native-sound/README.md#open-risks`,
+    ],
+  },
+
+  // BLS12-381 sound native (4-input bch-2026 SI-GLS): built on wip/bls-native-sound; independent review 2026-10-26
+  // (implementation, math, reproduction) found only minor issues, fixed or documented in two fix rounds before merge
+  // (verifier.cash work/bls-native-sound/FIXLOG.md).
+  'bch-groth16-bls12381-sound-native': {
+    status: 'reviewed',
+    reason: 'Independent soundness review of the shipped artifact (2026-10-26; implementation, math and reproduction, minor findings fixed or documented before merge); see the soundness argument, verification and open risks in its README.',
+    refs: [
+      `${SRC}/blob/main/chunked/bls12-381/bls-native-sound/README.md#soundness-argument`,
+      `${SRC}/blob/main/chunked/bls12-381/bls-native-sound/README.md#verification`,
+      `${SRC}/blob/main/chunked/bls12-381/bls-native-sound/README.md#open-risks`,
+    ],
+  },
+
   // BN254 singletons: independent review 2026-10-26 (notes: verifier.cash work/bn-singleton-review/REVIEW.md)
   // after the jacAddG1 right-identity fix (bench 15bf0fe). Its one LOW finding, missing
   // 0 <= v < p checks on the proof coordinates (encoding malleability only), is fixed in
