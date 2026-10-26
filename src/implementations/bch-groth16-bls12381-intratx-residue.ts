@@ -36,7 +36,7 @@ const toRun = (raw: RawStep[]): Step[] => {
 };
 
 export const bchGroth16Bls12381IntratxResidue: Implementation = {
-  id: 'bch-groth16-bls12381-intratx-residue',
+  id: 'bch-groth16-bls12381-intratx-residue-corrected',
   // where the claimed public inputs live (public-input binding gate, harness/gates.ts): every copy
   // of n0, n1 in the valid run (32-byte fields packed in larger pushes), located by the maintainers
   publicInputs: [

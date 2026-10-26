@@ -61,12 +61,13 @@ on-chain bytes** (locking + unlocking + serialized-tx overhead, with dead-weight
 zero-padding reported separately). Lower is better. Current numbers live in
 `results.json` — the README deliberately doesn't hard-code them.
 
-The authenticated-P2S, grouped-residue, BLS12-381 intratx-residue, PairFold-5
-pevalfuse, and three densless-MSM (base/slim/spec) entries are withdrawn from
-full-verifier qualification and the default registry; see [benchmark issue
+The authenticated-P2S, grouped-residue, BLS12-381 intratx-residue, PairFold-5,
+PairFold-5 pevalfuse, PairFold-5 densless, and three densless-MSM (base/slim/spec)
+entries are withdrawn from full-verifier qualification and the default registry;
+see [benchmark issue
 #49](https://github.com/mr-zwets/zk-verifier-bench/issues/49) and [source issue
 #32](https://github.com/mr-zwets/groth16_cashscript/issues/32). The current feed
-excludes these seven entries. The obsolete BN254 and BLS12-381 genpow results
+excludes these eleven entries. The obsolete BN254 and BLS12-381 genpow results
 are also removed pending separately qualified observations for [BN254 PR
 #47](https://github.com/mr-zwets/zk-verifier-bench/pull/47) and [BLS12-381 PR
 #48](https://github.com/mr-zwets/zk-verifier-bench/pull/48). Those corrected IDs

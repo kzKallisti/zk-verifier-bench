@@ -64,7 +64,7 @@ const toRun = (run: RawRun): Step[] => {
 };
 
 export const bchGroth16GroupedResidue: Implementation = {
-  id: 'bch-groth16-grouped-residue',
+  id: 'bch-groth16-grouped-residue-corrected',
   // where the claimed public inputs live (public-input binding gate, harness/gates.ts): every copy
   // of n0, n1 in the valid run (32-byte fields packed in larger pushes), located by the maintainers
   publicInputs: [
