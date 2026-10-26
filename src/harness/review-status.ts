@@ -30,9 +30,21 @@ export const REVIEW_STATUS: Record<string, ReviewStatus> = {
     ],
   },
 
-  // BN254 singletons: the jacAddG1 right-identity gap (F4 mechanism) is fixed in bench 15bf0fe.
-  'bch-groth16-singleton': { status: 'unreviewed', reason: 'jacAddG1 right-identity (P + O = P) fixed and rebuilt in bench 15bf0fe.' },
-  'bch-groth16-singleton-opcode-optimized': { status: 'unreviewed', reason: 'jacAddG1 right-identity (P + O = P) fixed and rebuilt in bench 15bf0fe.' },
+  // BN254 singletons: independent review 2026-10-26 (notes: verifier.cash work/bn-singleton-review/REVIEW.md)
+  // after the jacAddG1 right-identity fix (bench 15bf0fe). Its one LOW finding, missing
+  // 0 <= v < p checks on the proof coordinates (encoding malleability only), is fixed in
+  // groth16_cashscript 521460c and rebuilt here; the recompiler fix 35fe0f7 keeps those checks
+  // in the opcode-optimized build.
+  'bch-groth16-singleton': {
+    status: 'reviewed',
+    reason: 'independent review 2026-10-26: no soundness break; coordinate range checks added (review LOW finding: encoding malleability only).',
+    refs: [`${SRC}/commit/521460c014bafe45b33b67dd061615141be8f37a`, `${SRC}/commit/78a42542451f7bf64072a89358e0bf0acc03a774`],
+  },
+  'bch-groth16-singleton-opcode-optimized': {
+    status: 'reviewed',
+    reason: 'independent review 2026-10-26: no soundness break; coordinate range checks added (review LOW finding: encoding malleability only).',
+    refs: [`${SRC}/commit/521460c014bafe45b33b67dd061615141be8f37a`, `${SRC}/commit/35fe0f702794f5686238f43ed2bd4c8dd3ac32c4`, `${SRC}/commit/78a42542451f7bf64072a89358e0bf0acc03a774`],
+  },
 
   // withdrawn: author withdrawals (F1/F4/F5/F6/F9)
   'bch-groth16-singleton-genpow': {
