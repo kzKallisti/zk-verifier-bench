@@ -63,44 +63,68 @@ SHA-256 over
 
 - the implementation module, with comments, formatting and the `name`,
   `source` and `reviewStatus` values stripped (it is hashed as printed AST);
-- any local module it imports (outside `src/harness`);
+- any local module it imports (outside `src/harness`); an imported non-code
+  module (e.g. a JSON import) is hashed as raw bytes;
 - every `src/...` / `data/...` file named by a string literal in those
-  modules (the vectors JSON, the reference tx hex), byte for byte;
+  modules (the vectors JSON, the reference tx hex), byte for byte. A `data/`
+  file listed in its folder's committed `SHA256SUMS` is hashed through that
+  pinned digest (and must match it when present);
 - its red-team file `src/bch/redteam/<id>.json` (its absence too);
-- `HARNESS_VERSION` (in `input-hash.ts`) and the installed libauth version.
+- the **harness fingerprint**, computed automatically: the printed AST of every
+  `src/harness/*.ts` except `review-status.ts`, `export-json.ts`,
+  `input-hash.ts` and `audit-deps.ts` (in `benchmark.ts` the implementation
+  imports and the `REGISTRY` list are left out, so registering an entry re-runs
+  only that entry). The row builder `entryOf` lives in `entry.ts` and is
+  covered;
+- the installed versions of every dependency and build tool in `package.json`
+  (libauth, `@noble/curves`, typescript, tsx; not `@types/*`), and
+  `HARNESS_VERSION`.
+
+So any code edit to the measurement harness (VM wrapper, benchmark, gates,
+red-team, adversarial, tamper, row shape) re-runs every entry, with no version
+bump to remember. A typescript upgrade also re-runs everything, because the
+normalized code is the typescript printer's output. `HARNESS_VERSION` remains as
+a manual knob for changes the fingerprint cannot see (for example a Node.js
+upgrade). `export-json.ts` is excluded because it only plans the export and
+recomputes the frontier and history from the rows on every run.
 
 Metadata is never an input: renaming an entry, editing its source text or
 comments, or changing `review-status.ts` re-attaches the new metadata to the
 carried row without a re-run. The frontier (leader / current) and the score
-history are always recomputed from the merged rows, and rows are always
-emitted in registry order, so a no-op run reproduces `results.json` byte for
-byte except `generatedAt` (in about a second).
+history are recomputed from the merged rows, and rows are always emitted in
+registry order. A no-op run leaves `results.json` untouched, including
+`generatedAt`.
 
 | variable | effect |
 |----------|--------|
 | (none) | re-run new entries, rows without `inputHash`, and rows whose hash changed |
 | `FULL=1` | re-run every entry (SKIP_IMPLS ones still skipped) |
-| `ONLY_IMPLS=a,b` | re-run exactly these ids (exact match; bypasses SKIP_IMPLS) and carry every other row as is, even a stale one (it keeps its old hash, so the next default run re-runs it) |
-| `SKIP_IMPLS=genpow` (default) | never re-run these unless forced. Their last row is carried forward while its inputs are unchanged (a legacy row without `inputHash`: while its registered name and source still match). Once their inputs change, the old row no longer measures the program and is dropped with a warning: re-run it with `ONLY_IMPLS=<id>` |
+| `ONLY_IMPLS=a,b` | re-run exactly these ids (exact match; bypasses SKIP_IMPLS) and carry every other row. A carried row whose inputs changed is **STALE**: the artifact is written, but the history and frontier are frozen at their previous values and the export exits 2. Never publish from such a run; the next default run re-runs the stale rows |
+| `SKIP_IMPLS=genpow` (default) | never re-run these unless forced. Their last row is carried forward while its inputs are unchanged (a legacy row without `inputHash`: while its registered name and source still match). Once their inputs change (including any harness edit), the export **fails** and leaves `results.json` and `score-history.json` untouched: re-run with `SKIP_IMPLS='' pnpm benchmark:json` |
+| `ALLOW_DROP=1` | write the artifact even though a SKIP_IMPLS row is dropped or a row is absent; history and frontier are frozen so no false point enters the append-only `score-history.json` |
+| `ALLOW_MISSING_DATA=1` | under `FULL=1`, carry an unchanged row whose `data/` file is missing instead of failing |
 | `STAMP_HASHES=1` | bootstrap: give rows that have no `inputHash` the current hash without re-running. Only use it when the artifact is known to match the sources |
+| `SKIP_DEPS_AUDIT=1` | skip the dependency audit that `pnpm benchmark:json` runs first |
 
-`SKIP_IMPLS='' FULL=1 pnpm benchmark:json` is the old complete export.
+`SKIP_IMPLS='' FULL=1 pnpm benchmark:json` is the old complete export. A publish
+uses the default (or `FULL=1`) mode, never `ONLY_IMPLS`.
 
-Rows are never dropped silently. A row whose id is no longer registered leaves
-the feed (logged). An entry whose `data/` file is missing (the gitignored
-nChain / sCrypt mainnet tx hex; `pnpm fetch` restores it) is carried forward
-with a warning, and the export fails if there is no previous row to carry. A
-load failure during a re-run aborts the export and leaves `results.json`
-untouched.
+Rows are never dropped silently, and the score history only ever gets points
+computed from a complete, current row set. A row whose id is no longer
+registered leaves the feed (logged). An entry whose `data/` file is missing (the
+gitignored nChain / sCrypt mainnet tx hex; `pnpm fetch` restores it and checks
+the pinned digest) is carried forward only while its hash, computed through the
+pinned digests, still matches its row; if anything else about it changed, or
+with no previous row, the export fails and asks for `pnpm fetch`. A load failure
+during a re-run aborts the export and leaves `results.json` untouched.
 
-Bump `HARNESS_VERSION` whenever a change under `src/harness` can change any
-measured number or verdict (the VM wrapper, the benchmark, gates, red-team,
-adversarial or tamper logic, or the row shape built by `entryOf` in
-`export-json.ts`). Metadata-only harness edits do not need a bump.
-`pnpm benchmark:deps` audits the dependency discovery: it traces every file the
-implementations actually read (at import and in `load()`) and fails if any read
+`pnpm benchmark:json` first runs `pnpm benchmark:deps`, the dependency audit: it
+traces every file the implementations actually read or list (at import and in
+`load()`: `readFileSync`, `openSync`, `readFile`, `createReadStream`,
+`fs.promises.readFile` / `open`, and directory listings) and fails if any read
 is missing from that entry's input hash, for example a file opened through a
-computed path.
+computed path. Reads by the ESM loader (JSON imports) are not traced; those are
+hashed statically.
 
 ## Leaderboards
 
