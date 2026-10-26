@@ -1,5 +1,5 @@
 {
-  "schema": "remaining-verifier-corrections-qualification/v1",
+  "schema": "remaining-verifier-corrections-qualification/v2",
   "sourceRevision": "dbbd0d3763da02720df5891d494a515312dd8636",
   "benchmarkBase": "b140f64ca073c6d0466083fe14b5d9c83776d844",
   "status": "STANDALONE_CORRECTED_REFERENCES_DEFAULT_REGISTRY_AND_FEED_UNCHANGED",
@@ -66,25 +66,6 @@
     "terminalSuccessorPredicate": false,
     "limits": "Connected designated NFT lineage and valid ancestry remain premises; no complete pairing or token lifecycle claim."
   },
-  "sourceOnlyQualifications": [
-    {
-      "profile": "default BLS one-chunk Fp6 terminal",
-      "incomingBytes": 1728,
-      "witnessFields": 6,
-      "actualProgramCompiles": true,
-      "existingFullFixture": "NO_MATCHING_EXISTING_FIXTURE"
-    },
-    {
-      "profile": "BN grouped nonprojective final GLV",
-      "equalFiniteOperands": "corrected within mixed-add helper",
-      "actualProgramCompiles": true,
-      "existingFullFixture": "NO_MATCHING_EXISTING_FIXTURE"
-    },
-    {
-      "profile": "legacy connected BN48/BLS86",
-      "existingFullFixture": "INCOMPATIBLE_ARCHIVED_STATE_CODEC; no payload reencoding or replacement fixture is supplied"
-    }
-  ],
   "mergedSourceProvenance": {
     "sourceRevision": "8eb2c5dd6b1fd88dce3cdf90acc2bb19bfa78db7",
     "files": [
@@ -99,7 +80,69 @@
     "negativeFixtureExecution": false,
     "cybersecurityTesting": false,
     "byteOptimization": false,
-    "proofPublicStateTablePaddingReencoding": false,
-    "upstreamMergeOrDeployment": false
-  }
+    "upstreamMergeOrDeployment": false,
+    "newProofOrPublicInputCases": false,
+    "auxiliaryStateReencoding": true,
+    "auxiliaryReencodingAuthorization": "Allow auxiliary reencoding",
+    "paddingTargetOrCutChanges": false,
+    "originalArchivedProofPayloadsModified": false
+  },
+  "additionalPositiveReferences": [
+    {
+      "profile": "default BLS one-chunk Fp6 full ordered graph",
+      "artifact": "artifacts/bls-default-fp6-reencoded-v2/encoded-vectors-v1.json",
+      "qualification": "artifacts/bls-default-fp6-reencoded-v2/qualification.json",
+      "existingProofs": 3,
+      "inputsPerProof": 35,
+      "arithmeticOracleAccepted": 105,
+      "consensusAccepted": 101,
+      "standardAccepted": 101,
+      "nativeResourceHold": "Case 2 GLV inputs 1-4 exceed operation-cost density; no layout or padding adjustment attempted.",
+      "boundary": "One shared fixed-compiler reference program set; complete ordered input graph is a deployment premise. Per-input VM evidence only."
+    },
+    {
+      "profile": "BN grouped nonprojective final GLV component",
+      "artifact": "artifacts/bn254-grouped-glv-component/encoded-vectors.json",
+      "qualification": "artifacts/bn254-grouped-glv-component/qualification.json",
+      "existingPublicInputPairs": 3,
+      "inputsPerPair": 2,
+      "consensusAccepted": 6,
+      "standardAccepted": 6,
+      "independentExpectedValue": "noble G1 aggregation using the existing public VK; second logical pair [439832,401604].",
+      "boundary": "Two-step aggregation component; no Groth16 or rooted covenant claim."
+    },
+    {
+      "profile": "current BN covenant producer fixed-cut reference",
+      "artifact": "artifacts/bn254-covenant-reencoded/encoded-vectors.json",
+      "qualification": "artifacts/bn254-covenant-reencoded/qualification.json",
+      "existingProofs": 3,
+      "inputsPerProof": 27,
+      "arithmeticOracleAccepted": 81,
+      "consensusAccepted": 75,
+      "standardAccepted": 75,
+      "nativeResourceHold": "Two Miller stages per case exceed the 10000-byte unlocking limit.",
+      "boundary": "Actual fullSpecs/bindContract path with one fixed default compiler policy and shared graph; no whole-transaction/relay claim."
+    },
+    {
+      "profile": "current BLS covenant producer fixed-cut reference",
+      "artifact": "artifacts/bls-covenant-reencoded/encoded-vectors.json",
+      "qualification": "artifacts/bls-covenant-reencoded/qualification.json",
+      "existingProofs": 3,
+      "inputsPerProof": 35,
+      "arithmeticOracleAccepted": 105,
+      "consensusAccepted": 101,
+      "standardAccepted": 101,
+      "nativeResourceHold": "Case 2 GLV inputs 1-4 exceed the density limit at fixed 10000-byte frames.",
+      "boundary": "Actual fullSpecs/bindContract path with one fixed raw compiler policy; witness checks repeating the encoder are not counted as independent evidence."
+    }
+  ],
+  "archivedCompatibility": {
+    "originalBytes": "Archived BN48/BLS86 whole graphs remain codec-incompatible with the corrected current producers. The original artifacts are unchanged.",
+    "correctedReferences": "Separate reencoded graphs preserve existing mathematical proofs and logical public inputs; program, auxiliary and state-transport encodings are explicitly qualified.",
+    "genericGlv": "Aggregation component only; proof points are not inputs to this component."
+  },
+  "retiredEvidence": [
+    "An earlier current-BLS evidence wrapper selected raw/rescheduled variants and tuned padding. It is excluded and replaced by the supplied fixed-policy artifact.",
+    "An earlier grouped-GLV evidence snapshot reversed the second logical input pair. It is excluded; supplied raw-v2 uses the unchanged archived [439832,401604] statement."
+  ]
 }
