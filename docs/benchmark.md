@@ -161,7 +161,20 @@ all, see *Why these measures* in the README.)
   and `standard`, which is true only if every honest run's figure is
   standard. The worst case is over the shipped honest proofs only; an honest
   witness outside them can be heavier (e.g. intratx-residue-large's
-  max-density GLV witness, which is not shipped). Transaction sizes use the
+  max-density GLV witness, which is not shipped). Current not-paddable
+  entries: both `sound-si-gls-single` builds (BN254 and BLS12-381) pin
+  `DEPTH == 2` at entry, so their TXv5 figure is "not paddable as shipped;
+  estimate X"; the reviewed artifacts are left as shipped. The
+  residue-large max-density GLV witness (all four decomposition scalars
+  2^128 − 1, ≈104,860 B consensus on TXv5 against 101,215 B for the heaviest
+  shipped proof) is not exported as its `worstCaseProof`: a full honest proof
+  for it exists (`groth16-singleton-multiproof-vectors.json`
+  `glvDensityProof`, same public input `(s + s·λ) mod r`), but shipping it
+  means rebuilding the entry's vectors with `build_vectors_residue_large.mjs`
+  (the compiler-fork build and the entry's gates), and it would also change
+  the entry's bch-spec worst case, which is a builder change for that entry,
+  not a grading change. The site carries the measured bound instead
+  (`TXV5_BEYOND_SHIPPED`). Transaction sizes use the
   harness's v1/v2 serialization; TXv5's v5 encoding is a few bytes smaller
   per input and output, so the figures slightly overstate a v5 transaction
   (no current standardness verdict is within that margin). Assumptions: the standard unlocking cap is 100,000 B (TXv5's
