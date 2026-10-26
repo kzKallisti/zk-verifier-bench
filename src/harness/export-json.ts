@@ -14,8 +14,10 @@
 import { REVIEW_STATUS, reviewStatusOf } from './review-status.js';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 
-import type { BenchmarkResult } from './types.js';
-import { computeResults, isSkipped } from './benchmark.js';
+import type { BenchmarkResult, Implementation } from './types.js';
+import { computeResults, isSkipped, REGISTRY } from './benchmark.js';
+import { runImplementation } from './benchmark.js';
+import { HARNESS_VERSION, dependenciesOf, implementationModules, inputHashOf } from './input-hash.js';
 import { STANDARD_UNLOCKING_CAP, SPEC_SCRIPT_SIZE_CAP, realOpCostBudget, specOpCostBudget } from './vm.js';
 
 const SCHEMA_VERSION = 1;
@@ -120,8 +122,12 @@ const bchCell = (r: BenchmarkResult) => {
   return { compatible: r.bchCompatible, blockers, detail, standard };
 };
 
-const isBsvSeed = (r: BenchmarkResult): boolean =>
-  r.impl.reference === true || /BSV mainnet/.test(r.impl.source);
+const isBsvSeed = (impl: Implementation): boolean =>
+  impl.reference === true || /BSV mainnet/.test(impl.source);
+// BSV prior art: a single huge transaction that is correct but does not fit BCH.
+// Only the seeded BSV verifiers carry this framing (not BCH-native sub-steps).
+const isBsvSingleton = (impl: Implementation, validPassed: boolean, bchCompatible: boolean): boolean =>
+  isBsvSeed(impl) && impl.structure === 'single-tx' && validPassed && !bchCompatible;
 
 // Rolled-up soundness for the entry — the single "is this a valid verifier" signal the
 // per-dimension cells (bch / generality / inputValidation / packaging) never summarized. Also the
@@ -196,8 +202,8 @@ const entryOf = (r: BenchmarkResult) => ({
   id: r.impl.id,
   name: r.impl.name,
   category: categoryOf(r),
-  official: isBsvSeed(r), // seeded baseline, not a community submission
-  solver: isBsvSeed(r) ? { handle: r.impl.id, model: null, official: true } : null,
+  official: isBsvSeed(r.impl), // seeded baseline, not a community submission
+  solver: isBsvSeed(r.impl) ? { handle: r.impl.id, model: null, official: true } : null,
   curve: r.impl.field,
   structure: r.impl.structure,
   proofSystem: r.impl.proofSystem,
@@ -273,8 +279,7 @@ const entryOf = (r: BenchmarkResult) => ({
     0,
   ),
   // BSV prior art: a single huge transaction that is correct but does not fit BCH.
-  // Only the seeded BSV verifiers carry this framing (not BCH-native sub-steps).
-  bsvSingleton: isBsvSeed(r) && r.impl.structure === 'single-tx' && r.validPassed && !r.bchCompatible,
+  bsvSingleton: isBsvSingleton(r.impl, r.validPassed, r.bchCompatible),
   // correctness was judged under BSV's post-Genesis OP_RETURN-terminator rule, which
   // BCH treats as failure (so the success case is scored differently per chain)
   bsvOpReturn: r.bsvOpReturn,
@@ -335,31 +340,136 @@ const entryOf = (r: BenchmarkResult) => ({
   source: r.impl.source,
 });
 
-type Entry = ReturnType<typeof entryOf>;
+// `inputHash` (harness/input-hash.ts) is appended to every row: the hash of the inputs that
+// produced its measurements. The incremental export re-runs a row only when it changes.
+type Entry = ReturnType<typeof entryOf> & { inputHash?: string };
 
 const anchor = (e: Entry | undefined, label: string) =>
   e === undefined
     ? null
     : { id: e.id, label, curve: e.curve, bytes: e.score, bchCompatible: e.bch.compatible };
 
+// Presentation metadata is never measured, so a row carried forward from the previous artifact
+// gets the CURRENT registry metadata re-attached (in place, so the key order is unchanged):
+// name, source text, the fields derived from them, and the review status (re-stamped in main()).
+const attachMetadata = (e: Entry, impl: Implementation): void => {
+  e.name = impl.name;
+  e.official = isBsvSeed(impl);
+  e.solver = isBsvSeed(impl) ? { handle: impl.id, model: null, official: true } : null;
+  e.bsvSingleton = isBsvSingleton(impl, e.correctness.validAccepted, e.bch.compatible);
+  e.source = impl.source;
+};
+
+const envList = (name: string): string[] | undefined => {
+  const raw = process.env[name];
+  if (raw === undefined) return undefined;
+  return raw.split(',').map((s) => s.trim()).filter((s) => s.length > 0);
+};
+
+// Incremental export. Each registered entry is either RE-RUN (fresh measurement) or CARRIED
+// forward from the previous artifact unchanged except for its metadata:
+//   default        re-run entries that are new, lack an inputHash, or whose inputHash changed
+//   FULL=1         re-run every entry (except SKIP_IMPLS ones, see below)
+//   ONLY_IMPLS=a,b re-run exactly these ids (exact match, bypasses SKIP_IMPLS); carry every
+//                  other row as is, even a stale one (its old inputHash keeps it marked stale)
+//   SKIP_IMPLS     (default 'genpow') never re-run unless forced; carried only while their
+//                  inputs are unchanged (or, for a legacy row without inputHash, while the
+//                  registered name/source still match), otherwise dropped with a warning
+//   STAMP_HASHES=1 bootstrap: give previous rows that have no inputHash the current hash
+//                  without re-running (only when the artifact is known to match the sources)
+// An entry whose data/ file is missing (e.g. the nChain / sCrypt mainnet tx hex, fetched by
+// `pnpm fetch`) is carried forward with a warning; with no previous row to carry it fails loudly.
+// A failing load is an error, never a silently dropped row.
+type Plan = { impl: Implementation; action: 'run' | 'carry' | 'drop' | 'absent'; reason: string; hash: string; previous?: Entry };
+
+const planExport = async (previous: Map<string, Entry>): Promise<Plan[]> => {
+  const full = process.env.FULL === '1';
+  const stamp = process.env.STAMP_HASHES === '1';
+  const only = envList('ONLY_IMPLS');
+  const registered = new Set(REGISTRY.map((impl) => impl.id));
+  const unknown = (only ?? []).filter((id) => !registered.has(id));
+  if (unknown.length > 0) throw new Error(`ONLY_IMPLS names unregistered id(s): ${unknown.join(', ')}`);
+  const modules = await implementationModules(REGISTRY);
+  // include demos so the artifact is complete; the site filters by category.
+  return REGISTRY.filter((impl) => !SITE_EXCLUDE.has(impl.id)).map((impl): Plan => {
+    const deps = dependenciesOf(impl.id, modules.get(impl.id)!);
+    const hash = inputHashOf(impl.id, deps);
+    const prev = previous.get(impl.id);
+    const missingData = deps.filter((d) => d.missing && d.path.startsWith('data/')).map((d) => d.path);
+    const forced = only?.includes(impl.id) === true;
+    const plan = (action: Plan['action'], reason: string): Plan => ({ impl, action, reason, hash, previous: prev });
+    if (missingData.length > 0) {
+      if (forced || prev === undefined) {
+        throw new Error(`${impl.id}: missing data file(s) ${missingData.join(', ')} and ${forced ? 'ONLY_IMPLS forces a re-run' : 'no previous row to carry forward'}; run \`pnpm fetch\``);
+      }
+      return plan('carry', `data missing (${missingData.join(', ')}); carried forward, run \`pnpm fetch\` to re-measure`);
+    }
+    if (only !== undefined) return forced ? plan('run', 'ONLY_IMPLS') : prev === undefined ? plan('absent', 'not in ONLY_IMPLS, no previous row') : plan('carry', prev.inputHash === hash ? 'unchanged' : 'not in ONLY_IMPLS (STALE: inputs changed)');
+    if (stamp && prev !== undefined && prev.inputHash === undefined) {
+      prev.inputHash = hash;
+      return plan('carry', 'STAMP_HASHES: adopted current input hash');
+    }
+    if (isSkipped(impl.id)) {
+      if (prev === undefined) return plan('absent', 'SKIP_IMPLS, no previous row');
+      const current = prev.inputHash === undefined
+        // legacy row: the PR #50 metadata-identity guard (same registered name and source)
+        ? prev.name === impl.name && prev.source === impl.source
+        : prev.inputHash === hash;
+      return current ? plan('carry', 'SKIP_IMPLS, inputs unchanged') : plan('drop', 'SKIP_IMPLS but its inputs changed: the old row does not measure the current program; re-run it with ONLY_IMPLS');
+    }
+    if (full) return plan('run', 'FULL=1');
+    if (prev === undefined) return plan('run', 'new entry');
+    if (prev.inputHash === undefined) return plan('run', 'no input hash in previous row');
+    if (prev.inputHash !== hash) return plan('run', 'inputs changed');
+    return plan('carry', 'unchanged');
+  });
+};
+
 const main = async () => {
   const outfile = process.argv[2] ?? 'results.json';
-  // include demos so the artifact is complete; the site filters by category.
-  const results = await computeResults(true);
-  const entries = results.map(entryOf).filter((e) => !SITE_EXCLUDE.has(e.id));
+  const registered = new Map(REGISTRY.map((implementation) => [implementation.id, implementation]));
 
-  // SKIP_IMPLS-matched implementations (e.g. the genpow verifiers, too slow to re-run
-  // every time) are not re-evaluated; carry their last-known entries forward from the
-  // existing artifact so the entry list and everything derived from it (frontier leader,
-  // score history) stays complete rather than silently dropping them.
+  const previous = new Map<string, Entry>();
   if (existsSync(outfile)) {
     try {
-      const previous = JSON.parse(readFileSync(outfile, 'utf8')) as { entries?: Entry[] };
-      const have = new Set(entries.map((e) => e.id));
-      for (const entry of previous.entries ?? []) {
-        if (!have.has(entry.id) && isSkipped(entry.id)) entries.push(entry);
-      }
-    } catch { /* unreadable previous artifact: proceed with fresh entries only */ }
+      const artifact = JSON.parse(readFileSync(outfile, 'utf8')) as { entries?: Entry[] };
+      for (const entry of artifact.entries ?? []) previous.set(entry.id, entry);
+    } catch { /* unreadable previous artifact: everything is re-run */ }
+  }
+
+  const plans = await planExport(previous);
+  const runs = plans.filter((p) => p.action === 'run');
+  console.error(`incremental export (harness v${HARNESS_VERSION}): ${runs.length} to run, ${plans.filter((p) => p.action === 'carry').length} carried forward`);
+  for (const p of plans) if (p.action !== 'carry' || p.reason !== 'unchanged') console.error(`  ${p.action.padEnd(6)} ${p.impl.id}: ${p.reason}`);
+  // rows of ids that are no longer registered leave the feed (e.g. a withdrawal, PR #50)
+  const unregistered = [...previous.keys()].filter((id) => !registered.has(id) || SITE_EXCLUDE.has(id));
+  if (unregistered.length > 0) console.error(`  removed (no longer registered/listed): ${unregistered.join(', ')}`);
+
+  const fresh = new Map<string, Entry>();
+  const failures: string[] = [];
+  for (const p of runs) {
+    const t = Date.now();
+    try {
+      fresh.set(p.impl.id, { ...entryOf(await runImplementation(p.impl)), inputHash: p.hash });
+      console.error(`  ran    ${p.impl.id} (${((Date.now() - t) / 1000).toFixed(1)} s)`);
+    } catch (error) {
+      failures.push(`${p.impl.id}: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+  if (failures.length > 0) {
+    // never drop a row silently: refuse to write a partial artifact
+    console.error(`export FAILED, ${outfile} left unchanged:\n  ${failures.join('\n  ')}`);
+    process.exit(1);
+  }
+
+  // merged rows, always in registry order
+  const entries: Entry[] = [];
+  for (const p of plans) {
+    if (p.action === 'run') entries.push(fresh.get(p.impl.id)!);
+    else if (p.action === 'carry') {
+      attachMetadata(p.previous!, p.impl);
+      entries.push(p.previous!);
+    }
   }
 
   // re-stamp the review status (entries carried forward from an older artifact may predate it)
@@ -407,7 +517,7 @@ const main = async () => {
     curveOfId,
     standardOf,
     generatedAt,
-    (id) => entries.find((e) => e.id === id)?.correctness?.verdict !== 'fail',
+    (id) => registered.has(id) && entries.some((e) => e.id === id && e.correctness?.verdict !== 'fail'),
   );
 
   const artifact = {
