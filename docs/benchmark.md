@@ -133,15 +133,32 @@ all, see *Why these measures* in the README.)
   10,000, which TXv5 does not propose, so a bch-spec entry can be valid on
   `BCH_SPEC` and refused on TXv5. The grade records whether the shipped
   transaction validates (consensus and standard) and, if not, the minimal zero
-  padding that makes every input fit `(41 + len) × 800` and the padded score.
-  Padding follows the `padBytes` convention: the entry's existing all-zero pad
-  push is lengthened, or a new one is inserted (before the redeem script under
-  P2SH, last otherwise). The padding is a least fixpoint measured on a TXv5 VM
-  with the budget lifted, then replayed on the real TXv5 VM. An entry whose
-  script rejects any pad push (a pinned push layout, e.g. `DEPTH == 2`) is
-  reported as not paddable as shipped, with an estimate for a pad slot
-  (measured op-cost plus one push and one `OP_DROP`). `pnpm txv5 [id ...]`
-  prints the grade without touching `results.json`.
+  padding that makes every input fit both the op-cost limit `(41 + len) × 800`
+  and the hash-iteration limit `floor(f × (41 + len))` (f = 0.5 standard, 3.5
+  consensus), and the padded score. Padding follows the `padBytes` convention:
+  one all-zero push at the pad position (before the redeem script under P2SH,
+  last otherwise) is lengthened, or a new one is inserted there; an all-zero
+  push anywhere else is never treated as a pad. The scripts do not check the
+  pad's content (any bytes of the same length are accepted); the grade uses
+  zeros. The padding is a least fixpoint measured on a TXv5 VM with the budget
+  lifted, then replayed on the real TXv5 VM. An entry whose script rejects any
+  pad push (a pinned push layout, e.g. `DEPTH == 2`) is reported as not
+  paddable as shipped, with an estimate for a pad slot: the measured op-cost
+  plus one push and one `OP_DROP`. The estimate leaves out the few bytes of
+  script a pad slot needs (an `OP_DROP` or a changed `DEPTH` constant) and,
+  for multi-input entries, the extra introspection cost of a larger sibling.
+  Every honest run is graded (fixture 0, each extra valid proof, the
+  worst-case proof). On TXv5 the binding witness is the one needing the most
+  pad, which need not be the bch-spec worst case (largest op-cost), so
+  `txv5.honest` lists each run's figure and `txv5.summary` gives fixture 0's
+  figure, the TXv5 worst case (`worst`, the largest figure among runs that do
+  not validate as shipped), `mixed` when honest runs fall on both sides of the
+  budget, and `standard`, which is true only if every honest run's figure is
+  standard. Assumptions: the standard unlocking cap is 100,000 B (TXv5's
+  rationale, not its text), and the VM number limit stays 10,000 B because
+  TXv5 v1.0.0 does not mention it (`BCH_SPEC` uses 100,000); no current grade
+  depends on the latter. `pnpm txv5 [id ...]` prints the grade without
+  touching `results.json`.
 - **standardness** = every complete transaction also passes the standard/relay
   VM. An intra-tx bundle can be standard when its total transaction size remains
   below policy limits; grouped entries report standardness for every group.

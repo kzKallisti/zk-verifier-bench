@@ -10,19 +10,29 @@
 //      and what is the padded score?
 //
 // Padding follows the harness's existing convention (benchmark.ts zeroPadBytes): one all-zero
-// data push that the script ignores. If an input already carries such a pad (non-empty, all
-// zero, not the last push) it is lengthened; otherwise a new zero push is inserted where the
-// convention puts it (just before the redeem script under P2SH, last for a bare/P2S locking).
+// data push that the script ignores, at the convention's pad position (just before the redeem
+// script under P2SH, last for a bare/P2S locking). If an input already carries a pad there
+// (non-empty, all zero) it is lengthened; otherwise a new zero push is inserted there. An
+// all-zero push anywhere else is never touched (it could be a real zero-valued witness element).
+// The scripts do not inspect the pad's bytes (any content of the same length is accepted); the
+// grade uses zero bytes, as padBytes does.
 // Nothing is rebuilt: an entry that pins its push layout (e.g. DEPTH == 2 at entry) rejects
 // the pad, and is reported "not paddable as shipped". For those, an ESTIMATE of the padding a
 // pad slot would need is given (measured op-cost + the pad's own push and drop), clearly
 // labelled as such.
 //
-// The padding is computed by a least fixpoint: measure each input's op-cost on the TXv5 VM with
-// the density budget lifted (every other TXv5 limit applies), grow the short inputs' pads to the
-// smallest length that covers it, re-measure (a pad's bytes are themselves pushed and sibling
+// The padding is computed by a least fixpoint: measure each input's op-cost and hash-digest
+// iterations on the TXv5 VM with the density budget lifted (every other TXv5 limit applies), grow
+// the short inputs' pads to the smallest length whose op-cost AND hash-iteration limits cover
+// them, re-measure (a pad's bytes are themselves pushed and sibling
 // inputs may read a padded input via introspection), and repeat until every input fits. The
 // result is then replayed on the real TXv5 VM, which must accept every input.
+//
+// Every honest run the entry ships is graded (the valid run = fixture 0, every extraValidProof,
+// and the bch-spec worstCaseProof). On TXv5 the binding witness is the one needing the most pad
+// (op-cost minus (41 + len) * 800), which need not be the bch-spec worst case (the largest
+// op-cost), so the summary reports fixture 0 next to the largest figure over all honest runs, and
+// calls the TXv5 figure standard only if EVERY honest run's figure is standard.
 import {
   decodeAuthenticationInstructions,
   encodeAuthenticationInstruction,
@@ -47,8 +57,15 @@ import {
 const DENSITY_BASE = 41;
 const PER_BYTE = 800;
 const budgetOf = (unlockingLen: number) => (DENSITY_BASE + unlockingLen) * PER_BYTE;
-/** Smallest unlocking length whose budget covers `opCost`. */
-const neededUnlockingLen = (opCost: number) => Math.ceil(opCost / PER_BYTE) - DENSITY_BASE;
+// hash-digest iteration limit per input: floor(perByte * (41 + unlockingLen)), perByte 0.5 in
+// standard mode and 3.5 in consensus (libauth bch-2023-instruction-set initialize)
+const HASH_PER_BYTE = { standard: 0.5, consensus: 3.5 } as const;
+/** Smallest unlocking length whose op-cost budget AND hash-iteration limit cover the measured
+ * use (iters <= floor(f * (41 + L))  <=>  41 + L >= ceil(iters / f), iters being an integer). */
+const neededUnlockingLen = (m: { opCost: number; iters: number }, standard: boolean) => Math.max(
+  Math.ceil(m.opCost / PER_BYTE) - DENSITY_BASE,
+  Math.ceil(m.iters / HASH_PER_BYTE[standard ? 'standard' : 'consensus']) - DENSITY_BASE,
+);
 
 type Instr = ReturnType<typeof decodeAuthenticationInstructions>[number];
 const dataOf = (i: Instr): Uint8Array | undefined => ('data' in i ? (i as { data: Uint8Array }).data : undefined);
@@ -75,15 +92,15 @@ const padSlots = (step: Step): PadSlot[] => {
   const enc = ins.map((i) => encodeAuthenticationInstruction(i));
   const zeroPush = (n: number) => encodeDataPush(new Uint8Array(n));
   const slots: PadSlot[] = [];
-  // grow: the last existing zero pad that is not the final push (the redeem under P2SH)
-  let at = -1;
-  ins.forEach((x, k) => { if (k < ins.length - 1 && isZeroPad(x)) at = k; });
-  if (at >= 0) {
+  // the convention's pad position: second-to-last under a P2SH envelope (the redeem is pushed
+  // last), else last. grow: an existing zero pad AT that position (never another all-zero push,
+  // which could be a real zero-valued witness element); insert: a new zero push there.
+  const p2sh = isP2sh32Locking(step.lockingBytecode) || isP2sh20Locking(step.lockingBytecode);
+  const at = p2sh ? ins.length - 2 : ins.length - 1;
+  if (at >= 0 && isZeroPad(ins[at]!)) {
     const base = dataOf(ins[at]!)!.length;
     slots.push({ kind: 'grow', base, build: (n) => concat(enc.map((e, k) => (k === at ? zeroPush(n) : e))) });
   }
-  // insert: second-to-last under a P2SH envelope (the redeem is pushed last), else last
-  const p2sh = isP2sh32Locking(step.lockingBytecode) || isP2sh20Locking(step.lockingBytecode);
   const pos = p2sh ? Math.max(0, enc.length - 1) : enc.length;
   slots.push({ kind: 'insert', base: 0, build: (n) => concat([...enc.slice(0, pos), zeroPush(n), ...enc.slice(pos)]) });
   return slots;
@@ -100,7 +117,7 @@ const padLenFor = (slot: PadSlot, target: number, min: number): number => {
 
 const accepts = (vm: Bch2026Vm, s: Step, bsv: boolean) => {
   const o = evaluatePair(vm, s.lockingBytecode, s.unlockingBytecode, s.covenant, s.intraTx, s.grouped);
-  return { ok: bsv ? o.bsvAccepted : o.accepted, opCost: o.operationCost, error: o.error };
+  return { ok: bsv ? o.bsvAccepted : o.accepted, opCost: o.operationCost, iters: o.hashDigestIterations, error: o.error };
 };
 
 export interface Txv5PadResult {
@@ -136,8 +153,13 @@ export interface Txv5Grade {
   /** not-paddable only: the padding a pad slot WOULD need (estimate, not measured: assumes
    * the pad costs one push of its bytes plus one OP_DROP, on top of the measured op-cost). */
   estimate?: { padBytes: number; score: number; mode: 'standard' };
-  /** the worst-case honest witness (when shipped), graded the same way */
-  worstCase?: { consensus: Txv5ModeGrade; standard: Txv5ModeGrade };
+  /** the bch-spec worst-case witness (worstCaseProof: the largest op-cost, picked for bch-spec;
+   * on TXv5 the binding witness is the one needing the most pad, see `honest`), graded the same
+   * way */
+  worstCase?: { consensus: Txv5ModeGrade; standard: Txv5ModeGrade & { fits: boolean; policyReason?: string }; padding: Txv5Grade['padding']; estimate?: Txv5Grade['estimate'] };
+  /** the TXv5 figure of every honest run: fixture 0 first, then each extraValidProof, then the
+   * worst-case proof */
+  honest?: Txv5RunFigure[];
 }
 
 type ScoreOf = (run: Step[]) => { score: number; txBytes: number };
@@ -181,7 +203,7 @@ const minimalPadding = (run: Step[], c: ModeContext, slots: (PadSlot | undefined
     if (bad >= 0) return { error: `input ${bad} rejects on the unbudgeted TXv5 VM after padding: ${out[bad]!.error ?? 'not accepted'}` };
     let changed = false;
     cur.forEach((s, i) => {
-      const target = neededUnlockingLen(out[i]!.opCost);
+      const target = neededUnlockingLen(out[i]!, c.standard);
       if (s.unlockingBytecode.length >= target) return;
       const slot = slots[i];
       if (slot === undefined) return; // an unpadded input that falls short: caught below
@@ -189,7 +211,7 @@ const minimalPadding = (run: Step[], c: ModeContext, slots: (PadSlot | undefined
       changed = true;
     });
     if (!changed) {
-      const short = cur.findIndex((s, i) => s.unlockingBytecode.length < neededUnlockingLen(out[i]!.opCost));
+      const short = cur.findIndex((s, i) => s.unlockingBytecode.length < neededUnlockingLen(out[i]!, c.standard));
       if (short >= 0) return { error: `input ${short} exceeds its budget and has no pad slot` };
       // replay on the real TXv5 VM: every input must accept within its own budget
       const realBad = cur.map((s) => accepts(c.real, s, bsv)).findIndex((o) => !o.ok);
@@ -225,15 +247,19 @@ const standardPolicy = (run: Step[], scoreOf: ScoreOf): string | undefined => {
 };
 
 /** Estimated padding for an input layout that cannot take a pad as shipped: a new push of
- * `added` encoded bytes (header + L data bytes) costs one push (100 + L) and one OP_DROP (100). */
+ * `added` encoded bytes (header + L data bytes) costs one push (100 + L) and one OP_DROP (100).
+ * Not counted (hence an estimate): the script change a pad slot needs (an OP_DROP or a changed
+ * DEPTH constant, a few bytes of redeem script) and, for multi-input entries, the extra
+ * introspection cost when a sibling input grows. */
 const pushHeader = (encoded: number) => (encoded <= 76 ? 1 : encoded <= 257 ? 2 : encoded <= 65_538 ? 3 : 5);
 const estimatePadding = (run: Step[], c: ModeContext, bsv: boolean): number[] =>
   run.map((s) => {
-    const cost = accepts(c.unbudgeted, s, bsv).opCost;
+    const m = accepts(c.unbudgeted, s, bsv);
     const u = s.unlockingBytecode.length;
-    if (budgetOf(u) >= cost) return 0;
-    let added = neededUnlockingLen(cost) - u;
-    while (budgetOf(u + added) < cost + 200 + (added - pushHeader(added))) added++;
+    if (u >= neededUnlockingLen(m, c.standard)) return 0;
+    let added = Math.max(1, neededUnlockingLen(m, c.standard) - u);
+    while (budgetOf(u + added) < m.opCost + 200 + (added - pushHeader(added))
+      || u + added < neededUnlockingLen(m, c.standard)) added++;
     return added;
   });
 
@@ -252,7 +278,7 @@ const gradeRun = (run: Step[], bsv: boolean, scoreOf: ScoreOf, ctx: ModeContext[
   if (consFail === undefined && stdFail === undefined) return { consensus, standard, padding: 'not-needed' as const };
 
   // which inputs need budget (in either mode), and does each tolerate a pad?
-  const need = run.map((s) => ctx.some((c) => s.unlockingBytecode.length < neededUnlockingLen(accepts(c.unbudgeted, s, bsv).opCost)));
+  const need = run.map((s) => ctx.some((c) => s.unlockingBytecode.length < neededUnlockingLen(accepts(c.unbudgeted, s, bsv), c.standard)));
   const unbudgetedOk = ctx.every((c) => run.every((s) => accepts(c.unbudgeted, s, bsv).ok));
   if (!unbudgetedOk || !need.some(Boolean)) {
     return { consensus, standard, padding: 'not-paddable' as const, notPaddableReason: 'rejects on TXv5 for a reason other than the density budget' };
@@ -287,42 +313,120 @@ const gradeRun = (run: Step[], bsv: boolean, scoreOf: ScoreOf, ctx: ModeContext[
   return { consensus, standard, padding: 'paddable' as const };
 };
 
-/** Grade one bch-spec entry on TXv5 as written. `scoreOf` is the harness's own score model. */
+/** The one figure a graded run yields: what that honest run costs on TXv5. */
+export interface Txv5RunFigure {
+  /** which honest run: 'fixture 0' (the valid run), 'extra proof #k', 'worst-case proof' */
+  run: string;
+  status: 'as-shipped' | 'padded' | 'not-paddable' | 'invalid';
+  /** shipped score, padded score (standard-mode padding when that tx is standard, else
+   * consensus), or the estimate (not-paddable); null when invalid */
+  score: number | null;
+  /** bytes of pad behind `score` (same mode as score); estimate when `estimated` */
+  padBytes: number;
+  /** which TXv5 mode `score` is measured in: standard when that figure is standard (or an
+   * estimate, which targets standard mode), else consensus */
+  mode: 'standard' | 'consensus';
+  /** the figure is relayable (standard) under the assumed 100,000 B unlocking cap */
+  standard: boolean;
+  /** why not standard (policy, or the standard VM), when it is not */
+  nonStandardReason?: string;
+  estimated: boolean;
+}
+
+const figureOf = (run: string, g: ReturnType<typeof gradeRun>, shippedScore: number): Txv5RunFigure => {
+  if (g.padding === 'not-needed') {
+    return { run, status: 'as-shipped', score: shippedScore, padBytes: 0, mode: g.standard.fits ? 'standard' : 'consensus', standard: g.standard.fits, ...(g.standard.fits ? {} : { nonStandardReason: g.standard.policyReason ?? g.standard.reason }), estimated: false };
+  }
+  if (g.padding === 'paddable') {
+    const stdPadded = g.standard.fits && g.standard.padded !== undefined;
+    // standard needs no pad while consensus does: not expected (standard is stricter), kept total
+    const stdShipped = g.standard.fits && g.standard.padded === undefined;
+    const score = stdPadded ? g.standard.padded!.score
+      : stdShipped ? shippedScore
+      : g.consensus.padded?.score ?? (g.consensus.asShipped ? shippedScore : null);
+    const padBytes = stdPadded ? g.standard.padded!.padBytes : stdShipped ? 0 : g.consensus.padded?.padBytes ?? 0;
+    return { run, status: 'padded', score, padBytes, mode: g.standard.fits ? 'standard' : 'consensus', standard: g.standard.fits, ...(g.standard.fits ? {} : { nonStandardReason: g.standard.policyReason ?? g.standard.reason }), estimated: false };
+  }
+  if (g.estimate) {
+    return { run, status: 'not-paddable', score: g.estimate.score, padBytes: g.estimate.padBytes, mode: 'standard', standard: false, nonStandardReason: 'not paddable as shipped', estimated: true };
+  }
+  return { run, status: 'invalid', score: null, padBytes: 0, mode: 'consensus', standard: false, nonStandardReason: g.notPaddableReason ?? 'rejects on TXv5', estimated: false };
+};
+
+/** Grade one bch-spec entry on TXv5 as written. `scoreOf` is the harness's own score model.
+ * The top-level fields grade the valid run (fixture 0); `worstCase` grades the bch-spec
+ * worst-case witness (largest op-cost, which is not necessarily the TXv5 worst case); `honest`
+ * gives the figure of every honest run (fixture 0, each extraValidProof, the worst-case proof). */
 export const txv5Grade = (scenario: Scenario, bsv: boolean, scoreOf: ScoreOf): Txv5Grade => {
   const ctx: ModeContext[] = [
     { standard: false, real: createRealVmTxv5(), unbudgeted: createUnbudgetedVmTxv5(false) },
     { standard: true, real: createStandardVmTxv5(), unbudgeted: createUnbudgetedVmTxv5(true) },
   ];
-  const main = gradeRun(scenario.valid, bsv, scoreOf, ctx);
-  const wc = scenario.worstCaseProof?.length ? gradeRun(scenario.worstCaseProof, bsv, scoreOf, ctx) : undefined;
+  const runs: [string, Step[]][] = [
+    ['fixture 0', scenario.valid],
+    ...(scenario.extraValidProofs ?? []).map((r, k): [string, Step[]] => [`extra proof #${k + 1}`, r]),
+    ...(scenario.worstCaseProof?.length ? [['worst-case proof', scenario.worstCaseProof] as [string, Step[]]] : []),
+  ];
+  const graded = runs.map(([label, run]) => ({ label, run, g: gradeRun(run, bsv, scoreOf, ctx) }));
+  const main = graded[0]!.g;
+  const wc = graded.find((x) => x.label === 'worst-case proof')?.g;
   return {
     vm: 'txv5',
     ...main,
-    ...(wc ? { worstCase: { consensus: wc.consensus, standard: wc.standard } } : {}),
+    ...(wc ? { worstCase: { consensus: wc.consensus, standard: wc.standard, padding: wc.padding, ...(wc.estimate ? { estimate: wc.estimate } : {}) } } : {}),
+    honest: graded.map((x) => figureOf(x.label, x.g, scoreOf(x.run).score)),
   };
 };
 
-/** One-line summary of a TXv5 grade for the site: the figure to show next to the bch-spec score.
+/** Summary of a TXv5 grade for the site: the figure to show next to the bch-spec score.
+ * status / score / padBytes / estimated describe fixture 0 (the valid run):
  *   'as-shipped'   - validates on TXv5 as shipped; score = the shipped score.
  *   'padded'       - measured: the minimal zero padding validates; score = the padded score
  *                    (standard-mode padding when the padded tx is standard, else consensus).
- *   'not-paddable' - the entry pins its push layout; score = the ESTIMATE for a pad slot (or null).
- *   'invalid'      - rejects on TXv5 for a reason padding cannot fix; score = null. */
+ *   'not-paddable' - the entry pins its push layout; score = the ESTIMATE for a pad slot.
+ *   'invalid'      - rejects on TXv5 for a reason padding cannot fix; score = null.
+ * standard is true only if EVERY honest run's figure is standard (liveness: the worst-case
+ * honest witness must be relayable too). worst is the TXv5 worst case when it is not fixture 0:
+ * an invalid honest run, else the largest figure among the honest runs that do not validate as
+ * shipped (the binding witness on TXv5 is the one needing the most pad); mixed is true when honest runs land on
+ * different sides of the TXv5 budget (some valid as shipped, others not). */
 export interface Txv5Summary {
-  status: 'as-shipped' | 'padded' | 'not-paddable' | 'invalid';
+  status: Txv5RunFigure['status'];
   score: number | null;
-  /** the summarised figure is relayable (standard) under the assumed 100,000 B unlocking cap */
+  /** bytes of pad behind `score` (same mode as score) */
+  padBytes: number;
+  /** TXv5 mode `score` and `padBytes` are measured in (fixture 0) */
+  mode: 'standard' | 'consensus';
   standard: boolean;
-  /** score is an estimate (not-paddable), not a measured validating transaction */
+  /** the first honest run whose figure is not standard, when standard is false */
+  nonStandard?: { run: string; reason?: string };
   estimated: boolean;
+  worst?: Txv5RunFigure;
+  mixed: boolean;
+  /** number of honest runs graded */
+  runs: number;
 }
 export const txv5Summary = (g: Txv5Grade, shippedScore: number): Txv5Summary => {
-  if (g.padding === 'not-needed') return { status: 'as-shipped', score: shippedScore, standard: g.standard.fits, estimated: false };
-  if (g.padding === 'paddable') {
-    const std = g.standard.fits && g.standard.padded !== undefined;
-    const score = std ? g.standard.padded!.score : g.consensus.padded?.score ?? (g.consensus.asShipped ? shippedScore : null);
-    return { status: 'padded', score, standard: g.standard.fits, estimated: false };
-  }
-  if (g.estimate) return { status: 'not-paddable', score: g.estimate.score, standard: false, estimated: true };
-  return { status: 'invalid', score: null, standard: false, estimated: false };
+  const honest = g.honest ?? [];
+  const f0 = honest[0] ?? figureOf('fixture 0', g as ReturnType<typeof gradeRun>, shippedScore);
+  const all = honest.length ? honest : [f0];
+  const nonStd = all.find((f) => !f.standard);
+  // TXv5 worst case: an invalid run if any, else the largest figure among the runs that do NOT
+  // validate as shipped (a run that fits as shipped is never the binding one)
+  const needy = all.filter((f) => f.status !== 'as-shipped');
+  const worst = needy.find((f) => f.status === 'invalid')
+    ?? needy.reduce<Txv5RunFigure | undefined>((w, f) => (w === undefined || (f.score ?? 0) > (w.score ?? 0) ? f : w), undefined);
+  const shipped = all.filter((f) => f.status === 'as-shipped').length;
+  return {
+    status: f0.status,
+    score: f0.score,
+    padBytes: f0.padBytes,
+    mode: f0.mode,
+    standard: nonStd === undefined,
+    ...(nonStd ? { nonStandard: { run: nonStd.run, ...(nonStd.nonStandardReason ? { reason: nonStd.nonStandardReason } : {}) } } : {}),
+    estimated: f0.estimated,
+    ...(worst !== undefined && worst !== f0 ? { worst } : {}),
+    mixed: shipped > 0 && shipped < all.length,
+    runs: all.length,
+  };
 };

@@ -83,7 +83,10 @@ export const consensusBch2026 = {
  * base stays 41, so an input's op-cost budget is (41 + unlockingLen) * 800, exactly as on BCH
  * 2026; only libauth's BCH_SPEC raises that base to 10,000. The standard unlocking cap of
  * 100,000 B is an ASSUMPTION (TXv5's rationale, not its text); the consensus grade does not
- * depend on it. */
+ * depend on it. maximumVmNumberByteLength is kept at BCH 2026's 10,000 B: TXv5 v1.0.0 does not
+ * mention the VM number limit (libauth's BCH_SPEC raises it to 100,000), so this is our reading
+ * of the CHIP text; no current entry's grade depends on it (none rejects on the unbudgeted TXv5
+ * VM). */
 export const consensusTxv5 = {
   ...consensusBch2026,
   maximumBytecodeLength: 100_000,
@@ -137,6 +140,8 @@ export interface EvalOutcome {
   instructionCount: number;
   arithmeticCost: number;
   stackPushedBytes: number;
+  /** hash digest iterations (limited per input by floor(perByte * (densityBase + unlockingLen))) */
+  hashDigestIterations: number;
 }
 
 const OP_RETURN_ERR = 'Program called an OP_RETURN operation.';
@@ -310,6 +315,7 @@ export const evaluatePair = (
     instructionCount: m.evaluatedInstructionCount,
     arithmeticCost: m.arithmeticCost,
     stackPushedBytes: m.stackPushedBytes,
+    hashDigestIterations: m.hashDigestIterations,
   };
 };
 

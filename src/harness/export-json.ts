@@ -338,7 +338,9 @@ const entryOf = (r: BenchmarkResult) => ({
   // so (41 + len) * 800. Records whether the shipped tx validates on that VM (consensus /
   // standard) and, if not, the minimal zero padding (lengthening the entry's existing pad push,
   // or inserting one where the scripts ignore it) and the padded score; an entry that pins its
-  // push layout is 'not-paddable' with an estimate only. `summary` is the figure the site shows.
+  // push layout is 'not-paddable' with an estimate only. Every honest run is graded (`honest`);
+  // `summary` is the figure the site shows (fixture 0, the TXv5 worst case, standard only if
+  // every honest run's figure is standard).
   txv5: r.txv5 ? { summary: txv5Summary(r.txv5, r.totalBytes + r.totalTxOverheadBytes), ...r.txv5 } : null,
   source: r.impl.source,
 });
