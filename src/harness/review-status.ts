@@ -34,6 +34,19 @@ export const REVIEW_STATUS: Record<string, ReviewStatus> = {
   'bch-groth16-singleton': { status: 'unreviewed', reason: 'jacAddG1 right-identity (P + O = P) fixed and rebuilt in bench 15bf0fe.' },
   'bch-groth16-singleton-opcode-optimized': { status: 'unreviewed', reason: 'jacAddG1 right-identity (P + O = P) fixed and rebuilt in bench 15bf0fe.' },
 
+  // BLS12-381 singletons: the maintainer hold (no range/curve/subgroup checks) is resolved by the
+  // domain checks added to groth16.cash; rebuilt with the same pipelines.
+  'bch-groth16-bls12381-singleton': {
+    status: 'unreviewed',
+    reason: 'Domain checks added (range, curve, G2 subgroup) to groth16.cash and rebuilt; previously held by maintainer review.',
+    refs: [`${SRC}/blob/main/singleton/bls12-381/README.md`],
+  },
+  'bch-groth16-bls12381-singleton-opcode-optimized': {
+    status: 'unreviewed',
+    reason: 'Domain checks added (range, curve, G2 subgroup) to groth16.cash and rebuilt; previously held by maintainer review.',
+    refs: [`${SRC}/blob/main/singleton/bls12-381/README.md`],
+  },
+
   // withdrawn: author withdrawals (F1/F4/F5/F6/F9)
   'bch-groth16-singleton-genpow': {
     status: 'unreviewed',
@@ -90,14 +103,6 @@ export const REVIEW_STATUS: Record<string, ReviewStatus> = {
   ),
 
   // withdrawn: maintainer holds (open findings, held until resolved)
-  'bch-groth16-bls12381-singleton': withdrawn(
-    'Held by maintainer review: no coordinate range, curve-equation or G2 subgroup checks in groth16.cash.',
-    [`${SRC}/blob/main/singleton/bls12-381/README.md`],
-  ),
-  'bch-groth16-bls12381-singleton-opcode-optimized': withdrawn(
-    'Held by maintainer review: same source as the BLS12-381 singleton (no range/curve/subgroup checks).',
-    [`${SRC}/blob/main/singleton/bls12-381/README.md`],
-  ),
   'bch-groth16-intratx-pairfold7': withdrawn(
     'Held (F9 class): public-statement binding not established; the harness red-team already fails it.',
     [...FINDINGS, `${BENCH}/pull/50`],
