@@ -131,6 +131,10 @@ export const REVIEW_STATUS: Record<string, ReviewStatus> = {
     'Held (F1 pattern): chunks are generated without enforceExactInputLength (prefix-only forward checks).',
     [...FINDINGS, `${BENCH}/pull/50`],
   ),
+  'bch-pairing-intratx': withdrawn(
+    'Held partial connected Miller component: raw carrier byte ownership is not proved; no standalone full-verifier claim is asserted.',
+    [...FINDINGS, `${BENCH}/pull/50`],
+  ),
 };
 
 export const reviewStatusOf = (impl: Pick<Implementation, 'id' | 'reviewStatus'>): ReviewStatus =>
