@@ -71,22 +71,30 @@ SHA-256 over
   pinned digest (and must match it when present);
 - its red-team file `src/bch/redteam/<id>.json` (its absence too);
 - the **harness fingerprint**, computed automatically: the printed AST of every
-  `src/harness/*.ts` except `review-status.ts`, `export-json.ts`,
-  `input-hash.ts` and `audit-deps.ts` (in `benchmark.ts` the implementation
-  imports and the `REGISTRY` list are left out, so registering an entry re-runs
-  only that entry). The row builder `entryOf` lives in `entry.ts` and is
-  covered;
-- the installed versions of every dependency and build tool in `package.json`
-  (libauth, `@noble/curves`, typescript, tsx; not `@types/*`), and
+  code file under `src/harness` (recursively) except `review-status.ts`,
+  `export-json.ts`, `input-hash.ts` and `audit-deps.ts`, plus every local module
+  those files import, transitively and wherever it lives, plus every repo file
+  they name by literal path (in `benchmark.ts` the implementation imports and
+  the `REGISTRY` list are left out, so registering an entry re-runs only that
+  entry). The row builder `entryOf` lives in `entry.ts` and is covered;
+- the toolchain: the installed versions of every dependency and build tool in
+  `package.json` (libauth, `@noble/curves`, typescript, tsx; not `@types/*`),
+  `sha256(pnpm-lock.yaml)` (every transitive version, e.g. the esbuild that tsx
+  transpiles with), `sha256(tsconfig.json)`, the Node.js version, and
   `HARNESS_VERSION`.
 
 So any code edit to the measurement harness (VM wrapper, benchmark, gates,
-red-team, adversarial, tamper, row shape) re-runs every entry, with no version
-bump to remember. A typescript upgrade also re-runs everything, because the
-normalized code is the typescript printer's output. `HARNESS_VERSION` remains as
-a manual knob for changes the fingerprint cannot see (for example a Node.js
-upgrade). `export-json.ts` is excluded because it only plans the export and
-recomputes the frontier and history from the rows on every run.
+red-team, adversarial, tamper, row shape, or a helper they import), any lockfile
+change and any Node.js upgrade re-runs every entry, with no version bump to
+remember. A typescript upgrade also re-runs everything, because the normalized
+code is the typescript printer's output. `HARNESS_VERSION` remains as a manual
+knob for a change none of these can see. `export-json.ts` is excluded because it
+only plans the export and recomputes the frontier and history from the rows on
+every run.
+
+The implementation modules and their vectors are loaded before the hashes are
+computed, so the export refuses to write (exit 1, files untouched) if any file
+that went into a hash was modified after the export process started.
 
 Metadata is never an input: renaming an entry, editing its source text or
 comments, or changing `review-status.ts` re-attaches the new metadata to the
@@ -98,16 +106,33 @@ registry order. A no-op run leaves `results.json` untouched, including
 | variable | effect |
 |----------|--------|
 | (none) | re-run new entries, rows without `inputHash`, and rows whose hash changed |
-| `FULL=1` | re-run every entry (SKIP_IMPLS ones still skipped) |
-| `ONLY_IMPLS=a,b` | re-run exactly these ids (exact match; bypasses SKIP_IMPLS) and carry every other row. A carried row whose inputs changed is **STALE**: the artifact is written, but the history and frontier are frozen at their previous values and the export exits 2. Never publish from such a run; the next default run re-runs the stale rows |
-| `SKIP_IMPLS=genpow` (default) | never re-run these unless forced. Their last row is carried forward while its inputs are unchanged (a legacy row without `inputHash`: while its registered name and source still match). Once their inputs change (including any harness edit), the export **fails** and leaves `results.json` and `score-history.json` untouched: re-run with `SKIP_IMPLS='' pnpm benchmark:json` |
-| `ALLOW_DROP=1` | write the artifact even though a SKIP_IMPLS row is dropped or a row is absent; history and frontier are frozen so no false point enters the append-only `score-history.json` |
+| `FULL=1` | re-run every entry (SKIP_IMPLS ones still skipped); not combinable with `ONLY_IMPLS` |
+| `ONLY_IMPLS=a,b` | re-run exactly these ids (exact match; bypasses SKIP_IMPLS; an unregistered or `FEED_OMIT` id is an error) and carry every other row. A carried row whose inputs changed is **STALE**: the artifact is written, but the history and frontier are frozen at their previous values and the export exits 2. Never publish from such a run; the next default run re-runs the stale rows |
+| `SKIP_IMPLS=genpow` (default) | never re-run these unless forced. Their last row is carried forward only while its stored `inputHash` equals the current one. Once their inputs change (including any harness or toolchain change), or when the row has no `inputHash` at all (a legacy row, inputs unknown), the export **fails** and leaves `results.json` and `score-history.json` untouched: re-run with `SKIP_IMPLS='' pnpm benchmark:json` (or `ONLY_IMPLS=<id>`) |
+| `ALLOW_DROP=1` | one-off escape hatch: write the artifact even though a SKIP_IMPLS row is dropped or a row is absent; history and frontier are frozen so no false point enters the append-only `score-history.json`, frozen-frontier ids without a row are named, and the export **exits 2**. Never publish from it, and never use it as a standing omission (that is `FEED_OMIT`) |
 | `ALLOW_MISSING_DATA=1` | under `FULL=1`, carry an unchanged row whose `data/` file is missing instead of failing |
-| `STAMP_HASHES=1` | bootstrap: give rows that have no `inputHash` the current hash without re-running. Only use it when the artifact is known to match the sources |
 | `SKIP_DEPS_AUDIT=1` | skip the dependency audit that `pnpm benchmark:json` runs first |
 
 `SKIP_IMPLS='' FULL=1 pnpm benchmark:json` is the old complete export. A publish
-uses the default (or `FULL=1`) mode, never `ONLY_IMPLS`.
+uses the default (or `FULL=1`) mode, never `ONLY_IMPLS` or `ALLOW_DROP`.
+(`STAMP_HASHES`, the one-time bootstrap that adopted hashes without re-running,
+was removed; setting it is an error.)
+
+**Deliberate omissions (`FEED_OMIT` in `export-json.ts`).** A registered entry
+can be kept out of the feed on purpose: it gets no row and no history point, is
+never run by the export, is not counted as missing, and is logged as `omit` on
+every export (`ONLY_IMPLS` refuses it). Each id carries its reason:
+
+| id | reason |
+|----|--------|
+| `bch-vkx-scalarmult` | site-exclude: a single scalarMult sub-step on the old EC codegen, still benchmarked by `pnpm benchmark` |
+| `bch-groth16-bls12381-singleton-genpow` | hold: the corrected BLS12-381 genpow artifact (PR #48) is unreviewed and under a native HOLD (see the Leaderboards paragraph below); deleting the id from `FEED_OMIT` makes the next default export measure and publish it |
+
+**Experiments.** `pnpm benchmark:json <outfile>` writes its history next to the
+outfile: `results.json` uses `score-history.json` in the same directory; any
+other name, e.g. `scratch.json`, uses `scratch.score-history.json`, seeded
+read-only from `./score-history.json`, so an experiment never appends to the real
+history.
 
 Rows are never dropped silently, and the score history only ever gets points
 computed from a complete, current row set. A row whose id is no longer
@@ -123,8 +148,11 @@ traces every file the implementations actually read or list (at import and in
 `load()`: `readFileSync`, `openSync`, `readFile`, `createReadStream`,
 `fs.promises.readFile` / `open`, and directory listings) and fails if any read
 is missing from that entry's input hash, for example a file opened through a
-computed path. Reads by the ESM loader (JSON imports) are not traced; those are
-hashed statically.
+computed path. Every read made from an implementation frame is checked, wherever
+the file lives (an absolute or `../groth16_cashscript/...` path) and whatever its
+type (a `.ts` / `.mjs` read as text too); only a package's own reads inside
+`node_modules` are ignored. Reads by the ESM loader (JSON imports) are not
+traced; those are hashed statically.
 
 ## Leaderboards
 
