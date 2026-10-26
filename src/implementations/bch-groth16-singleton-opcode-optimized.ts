@@ -6,12 +6,16 @@
 // multi-item ops, followed by an auto-outlining pass that factors repeated instruction
 // sequences into OP_DEFINE bodies. Semantics are identical (same runtime witnesses, same
 // verdict) -> 7,622 -> 5,853 B on cashc compiler-optimizations-7, 5,820 B on -8 (with the in < r input range
-// check), 5,839 B with the jacAddG1 right-identity (P + O = P) fix, far under BCH's 10,000-byte standard script-size
-// cap. Op-cost grows slightly from the outline call overhead (~750M -> ~796M), so it
-// still does not fit one input -- the win is purely byte size.
+// check), 5,839 B with the jacAddG1 right-identity (P + O = P) fix, 5,878 B with the
+// 0 <= v < p proof-coordinate range checks (cashc golf-base 7,953 B -> scheduling 7,539 B
+// -> outlining 5,878 B), far under BCH's 10,000-byte standard script-size cap. Op-cost
+// grows slightly from the outline call overhead (771M plain -> 800M), so it still does
+// not fit one input -- the win is purely byte size.
 //
 // Every rewritten subroutine is differential-tested against the cashc original on the
-// loosened BCH-2026 VM, and the whole contract is verified accept-valid / reject-tampered.
+// loosened BCH-2026 VM, and the whole contract is verified accept-valid / reject-tampered,
+// plus the 18 non-canonical-coordinate cases (rangeInvalid), which the recompiler once
+// silently dropped (zero-output require-only calls; fixed in recompiler/decompile.mjs).
 //
 // Pipeline + vectors:
 //   groth16_contract/singleton/bn254/recompiler/  (decompile.mjs, schedule.mjs, recompiler.mjs)
@@ -27,6 +31,8 @@ const v = JSON.parse(readFileSync('src/bch/groth16-singleton-opcode-optimized-ve
   lockingOK: string;
   unlocking: string;
   invalidUnlocking: string;
+  // non-canonical proof coordinates (v + p / v - p), same cases as bch-groth16-singleton
+  rangeInvalid: { label: string; unlocking: string }[];
 };
 
 const mp = JSON.parse(readFileSync('src/bch/groth16-singleton-opcode-optimized-multiproof-vectors.json', 'utf8')) as {
@@ -59,10 +65,11 @@ export const bchGroth16SingletonOpcodeOptimized: Implementation = {
     'pass. It eliminates cashc\'s altstack park/restore (its emitReplace reassignment ' +
     'routine, ~2,150 alt-ops in the Miller loop alone), minimizes ROLL/PICK depth ' +
     'addressing, folds adjacent stack ops into multi-item ops, and outlines repeated ' +
-    'instruction sequences into OP_DEFINE bodies -- 7,622 -> 5,853 B (far under ' +
+    'instruction sequences into OP_DEFINE bodies -- 7,953 -> 5,878 B (far under ' +
     'the 10,000-byte standard cap). Identical semantics + runtime witnesses; each ' +
-    'subroutine differential-tested vs the cashc original and every outline rewrite ' +
-    'verified accept/reject. Op-cost ~796M, so still not one-input-standard. ' +
+    'subroutine differential-tested vs the cashc original, every outline rewrite ' +
+    'verified accept/reject, and the non-canonical-coordinate cases re-checked on the ' +
+    'final artifact. Op-cost ~800M, so still not one-input-standard. ' +
     'Pipeline: singleton/bn254/recompiler/.',
   load: async () => {
     const valid: Step[] = [
@@ -77,6 +84,8 @@ export const bchGroth16SingletonOpcodeOptimized: Implementation = {
       [{ ...valid[0]!, unlockingBytecode: hexToBin(v.invalidUnlocking) }],
       // tampered zero-input statements (n0/n1 flipped off zero, or the other input bumped)
       ...zero.proofs.flatMap((p) => p.invalid.map((t) => [{ ...valid[0]!, unlockingBytecode: hexToBin(t.unlocking) }])),
+      // non-canonical proof coordinates (v + p / v - p): rejected by the 0 <= v < p range checks
+      ...v.rangeInvalid.map((c) => [{ ...valid[0]!, unlockingBytecode: hexToBin(c.unlocking) }]),
     ];
     const extraValidProofs: Step[][] = mp.proofs
       .filter((p) => !p.committed)
