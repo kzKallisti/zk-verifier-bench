@@ -886,5 +886,13 @@
     "steps": 1,
     "transactions": 1,
     "fits": false
+  },
+  {
+    "t": "2026-10-26T16:45:25.606Z",
+    "score": 4613,
+    "id": "bch-groth16-singleton-genpow",
+    "steps": 1,
+    "transactions": 1,
+    "fits": false
   }
 ]

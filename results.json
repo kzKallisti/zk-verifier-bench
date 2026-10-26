@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-26T15:27:01.130Z",
+  "generatedAt": "2026-10-26T16:45:25.606Z",
   "statement": {
     "proofSystem": "Groth16",
     "curve": "BN254",
@@ -26,10 +26,10 @@
       "bytes": 10000
     },
     "leader": {
-      "id": "bch-groth16-singleton-opcode-optimized",
+      "id": "bch-groth16-singleton-genpow",
       "label": "BCH-native full verifier",
       "curve": "BN254",
-      "bytes": 6198,
+      "bytes": 4613,
       "bchCompatible": false
     },
     "current": {
@@ -928,6 +928,14 @@
       "steps": 1,
       "transactions": 1,
       "fits": false
+    },
+    {
+      "t": "2026-10-26T16:45:25.606Z",
+      "score": 4613,
+      "id": "bch-groth16-singleton-genpow",
+      "steps": 1,
+      "transactions": 1,
+      "fits": false
     }
   ],
   "entries": [
@@ -1309,7 +1317,7 @@
     },
     {
       "id": "bch-groth16-singleton-genpow",
-      "name": "BCH Groth16 verifier singleton, BN254 genpow (shared P, range-checked inputs, source-assembled 4,183 B, G1 parity)",
+      "name": "BCH Groth16 verifier singleton, BN254 genpow (shared P, range-checked inputs, source-assembled 4,320 B, G1 parity)",
       "category": "full",
       "official": false,
       "solver": null,
@@ -1341,8 +1349,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "withdrawn",
-        "reason": "F4: ships the 4,183 B program whose outline_32 identity addition can drop a term; corrected successor pending.",
+        "status": "unreviewed",
+        "reason": "Corrected successor (4,320 B program, outline_32 P + O = P and neutral-point handling) merged via groth16_cashscript #30 / bench #47; the original 4,183 B program was withdrawn under F4.",
         "refs": [
           "https://github.com/mr-zwets/groth16_cashscript/issues/32",
           "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
@@ -1350,12 +1358,12 @@
           "https://github.com/mr-zwets/zk-verifier-bench/pull/47"
         ]
       },
-      "score": 4476,
+      "score": 4613,
       "size": {
-        "scriptBytes": 4391,
+        "scriptBytes": 4528,
         "txOverheadBytes": 85,
         "transactions": 1,
-        "total": 4476
+        "total": 4613
       },
       "padding": {
         "bytes": 0,
@@ -1363,9 +1371,9 @@
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 5519594621,
+          "opCost": 5519652719,
           "steps": 1,
-          "heaviestStepOpCost": 5519594621,
+          "heaviestStepOpCost": 5519652719,
           "inputsForHeaviestStep": 688
         }
       },
@@ -1401,7 +1409,7 @@
         "secure": true,
         "type": "p2s"
       },
-      "source": "Explicit symbolic assembly in singleton/bn254/genpow-reconstructed/verifier.asm. The fixed proof A/C y coordinates use parity pushes, reducing the witness from 272 to 208 bytes. The verifier reconstructs each canonical y with a shared posttest remaining-exponent loop, checks the curve equation and requested parity, and retains the original x and remaining witness data. The 4,183-byte program has sha256 332fdd4dbbd5468afc997a49571e15ed88d04c6dda6ccff5863e1dfb0568e3dd. The 72-function program retains its 32-byte scalar guard, G2 checks and source-owned helpers. Three rotations after successful depth-nine disposal guards are omitted because they form an identity. The power loop shifts its remaining exponent before testing for zero; all archived proof and public-input integers are preserved. The original CashScript/stackcert lineage remains missing. Actual finite proof/cost gates are recorded separately; relaxed VM limits are required."
+      "source": "Explicit symbolic assembly in singleton/bn254/genpow-reconstructed/verifier.asm. Original finite A/C parity witnesses and all proof/public bytes remain unchanged. Canonical coordinate/Fr guards, complete MSM identity addition, and neutral G1/G2 Miller branches bind the fixed-key equation, including neutral vk_x. The 72 helper IDs and 2,790-step final exponent schedule are unchanged. Neutral G1 uses parity2,x0; neutral G2 uses four zero limbs. All four unchanged 208-byte original positives passed the pinned arithmetic oracle. All eight default BCH2026 consensus/standard runs rejected at operation-cost density. Native resource HOLD remains; arithmetic-oracle success does not establish native or relay acceptance."
     },
     {
       "id": "bch-groth16-singleton-minop",

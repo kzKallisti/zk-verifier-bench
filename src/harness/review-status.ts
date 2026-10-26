@@ -35,10 +35,11 @@ export const REVIEW_STATUS: Record<string, ReviewStatus> = {
   'bch-groth16-singleton-opcode-optimized': { status: 'unreviewed', reason: 'jacAddG1 right-identity (P + O = P) fixed and rebuilt in bench 15bf0fe.' },
 
   // withdrawn: author withdrawals (F1/F4/F5/F6/F9)
-  'bch-groth16-singleton-genpow': withdrawn(
-    'F4: ships the 4,183 B program whose outline_32 identity addition can drop a term; corrected successor pending.',
-    [...FINDINGS, `${SRC}/pull/30`, `${BENCH}/pull/47`],
-  ),
+  'bch-groth16-singleton-genpow': {
+    status: 'unreviewed',
+    reason: 'Corrected successor (4,320 B program, outline_32 P + O = P and neutral-point handling) merged via groth16_cashscript #30 / bench #47; the original 4,183 B program was withdrawn under F4.',
+    refs: [...FINDINGS, `${SRC}/pull/30`, `${BENCH}/pull/47`],
+  },
   'bch-groth16-bls12381-singleton-genpow': withdrawn(
     'F5: ships the unchecked 3,295 B leader-recovered program (decompressG1/G2); corrected successor pending.',
     [...FINDINGS, `${SRC}/pull/31`, `${BENCH}/pull/48`],
