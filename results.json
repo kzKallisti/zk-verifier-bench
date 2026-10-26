@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-26T16:45:25.606Z",
+  "generatedAt": "2026-10-26T19:11:22.271Z",
   "statement": {
     "proofSystem": "Groth16",
     "curve": "BN254",
@@ -936,6 +936,14 @@
       "steps": 1,
       "transactions": 1,
       "fits": false
+    },
+    {
+      "t": "2026-10-26T19:11:22.271Z",
+      "score": 5999,
+      "id": "bch-groth16-bls12381-singleton-opcode-optimized",
+      "steps": 1,
+      "transactions": 1,
+      "fits": false
     }
   ],
   "entries": [
@@ -1135,8 +1143,8 @@
         "verdict": "pass",
         "validAccepted": true,
         "invalid": {
-          "tested": 7,
-          "rejected": 7
+          "tested": 25,
+          "rejected": 25
         },
         "worstCaseAccepted": true,
         "crossStageBinding": {
@@ -1155,15 +1163,19 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed",
-        "reason": "jacAddG1 right-identity (P + O = P) fixed and rebuilt in bench 15bf0fe."
+        "status": "reviewed",
+        "reason": "independent review 2026-10-26: no soundness break; coordinate range checks added (review LOW finding: encoding malleability only).",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/commit/521460c014bafe45b33b67dd061615141be8f37a",
+          "https://github.com/mr-zwets/groth16_cashscript/commit/78a42542451f7bf64072a89358e0bf0acc03a774"
+        ]
       },
-      "score": 8164,
+      "score": 8206,
       "size": {
-        "scriptBytes": 8077,
+        "scriptBytes": 8119,
         "txOverheadBytes": 87,
         "transactions": 1,
-        "total": 8164
+        "total": 8206
       },
       "padding": {
         "bytes": 0,
@@ -1171,16 +1183,16 @@
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 771291495,
+          "opCost": 771300238,
           "steps": 1,
-          "heaviestStepOpCost": 771291495,
+          "heaviestStepOpCost": 771300238,
           "inputsForHeaviestStep": 97
         },
         "worstCase": {
           "accepted": true,
-          "opCost": 831103123,
+          "opCost": 831111866,
           "steps": 1,
-          "heaviestStepOpCost": 831103123,
+          "heaviestStepOpCost": 831111866,
           "inputsForHeaviestStep": 104
         }
       },
@@ -1216,7 +1228,7 @@
         "secure": true,
         "type": "p2s"
       },
-      "source": "BCH-native CashScript: the COMPLETE Groth16 verifier in ONE contract (Groth16Verify, singleton/bn254/groth16.cash). Computes vk_x = IC0 + in0*IC1 + in1*IC2 on-chain (G1 Jacobian double-and-add + Fermat inverse), then the full BN254 pairing e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) and require()s == 1. VK hardcoded; proof (A,B,C) + public inputs (in0,in1) at RUNTIME; A negated in-script. Sound (vk_x recomputed on-chain). Verified vs @noble/curves bn254. Same curve as scrypt-bn256 -> ~543x smaller bytecode, but ~1.26B op-cost (~157 BCH inputs); ~21.7 KB does NOT fit one input -- motivates the chunked multi-tx verifier."
+      "source": "BCH-native CashScript: the COMPLETE Groth16 verifier in ONE contract (Groth16Verify, singleton/bn254/groth16.cash). Computes vk_x = IC0 + in0*IC1 + in1*IC2 on-chain (G1 Jacobian double-and-add + Fermat inverse), then the full BN254 pairing e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) and require()s == 1. VK hardcoded; proof (A,B,C) + public inputs (in0,in1) at RUNTIME; A negated in-script; public inputs in [0, r), proof coordinates in [0, p), A/C on-curve, B on the twist and in G2. Sound (vk_x recomputed on-chain). Verified vs @noble/curves bn254. Same curve as scrypt-bn256. Plain cashc output (7,847-byte locking), ~771M op-cost (~97 BCH inputs) -- does NOT fit one input; motivates the chunked multi-tx verifier."
     },
     {
       "id": "bch-groth16-singleton-opcode-optimized",
@@ -1232,8 +1244,8 @@
         "verdict": "pass",
         "validAccepted": true,
         "invalid": {
-          "tested": 7,
-          "rejected": 7
+          "tested": 25,
+          "rejected": 25
         },
         "worstCaseAccepted": true,
         "crossStageBinding": {
@@ -1252,15 +1264,20 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed",
-        "reason": "jacAddG1 right-identity (P + O = P) fixed and rebuilt in bench 15bf0fe."
+        "status": "reviewed",
+        "reason": "independent review 2026-10-26: no soundness break; coordinate range checks added (review LOW finding: encoding malleability only).",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/commit/521460c014bafe45b33b67dd061615141be8f37a",
+          "https://github.com/mr-zwets/groth16_cashscript/commit/35fe0f702794f5686238f43ed2bd4c8dd3ac32c4",
+          "https://github.com/mr-zwets/groth16_cashscript/commit/78a42542451f7bf64072a89358e0bf0acc03a774"
+        ]
       },
-      "score": 6198,
+      "score": 6237,
       "size": {
-        "scriptBytes": 6111,
+        "scriptBytes": 6150,
         "txOverheadBytes": 87,
         "transactions": 1,
-        "total": 6198
+        "total": 6237
       },
       "padding": {
         "bytes": 0,
@@ -1268,16 +1285,16 @@
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 800130190,
+          "opCost": 800155122,
           "steps": 1,
-          "heaviestStepOpCost": 800130190,
+          "heaviestStepOpCost": 800155122,
           "inputsForHeaviestStep": 100
         },
         "worstCase": {
           "accepted": true,
-          "opCost": 855389414,
+          "opCost": 855414346,
           "steps": 1,
-          "heaviestStepOpCost": 855389414,
+          "heaviestStepOpCost": 855414346,
           "inputsForHeaviestStep": 107
         }
       },
@@ -1313,7 +1330,7 @@
         "secure": true,
         "type": "p2s"
       },
-      "source": "Same complete Groth16 verifier as bch-groth16-singleton (Groth16Verify, singleton/bn254/groth16.cash: vk_x = IC0 + in0*IC1 + in1*IC2 on-chain, then e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) == 1), but the locking bytecode is a custom decompile->reschedule->recompile of the cashc output plus an auto-outlining pass. It eliminates cashc's altstack park/restore (its emitReplace reassignment routine, ~2,150 alt-ops in the Miller loop alone), minimizes ROLL/PICK depth addressing, folds adjacent stack ops into multi-item ops, and outlines repeated instruction sequences into OP_DEFINE bodies -- 7,622 -> 5,853 B (far under the 10,000-byte standard cap). Identical semantics + runtime witnesses; each subroutine differential-tested vs the cashc original and every outline rewrite verified accept/reject. Op-cost ~796M, so still not one-input-standard. Pipeline: singleton/bn254/recompiler/."
+      "source": "Same complete Groth16 verifier as bch-groth16-singleton (Groth16Verify, singleton/bn254/groth16.cash: vk_x = IC0 + in0*IC1 + in1*IC2 on-chain, then e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) == 1), but the locking bytecode is a custom decompile->reschedule->recompile of the cashc output plus an auto-outlining pass. It eliminates cashc's altstack park/restore (its emitReplace reassignment routine, ~2,150 alt-ops in the Miller loop alone), minimizes ROLL/PICK depth addressing, folds adjacent stack ops into multi-item ops, and outlines repeated instruction sequences into OP_DEFINE bodies -- 7,953 -> 5,878 B (far under the 10,000-byte standard cap). Identical semantics + runtime witnesses; each subroutine differential-tested vs the cashc original, every outline rewrite verified accept/reject, and the non-canonical-coordinate cases re-checked on the final artifact. Op-cost ~800M, so still not one-input-standard. Pipeline: singleton/bn254/recompiler/."
     },
     {
       "id": "bch-groth16-singleton-genpow",
@@ -1522,8 +1539,8 @@
         "verdict": "pass",
         "validAccepted": true,
         "invalid": {
-          "tested": 1,
-          "rejected": 1
+          "tested": 14,
+          "rejected": 14
         },
         "worstCaseAccepted": null,
         "crossStageBinding": {
@@ -1542,18 +1559,18 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "withdrawn",
-        "reason": "Held by maintainer review: no coordinate range, curve-equation or G2 subgroup checks in groth16.cash.",
+        "status": "unreviewed",
+        "reason": "Domain checks added (range, curve, G2 subgroup) to groth16.cash and rebuilt; previously held by maintainer review.",
         "refs": [
           "https://github.com/mr-zwets/groth16_cashscript/blob/main/singleton/bls12-381/README.md"
         ]
       },
-      "score": 7347,
+      "score": 7510,
       "size": {
-        "scriptBytes": 7260,
+        "scriptBytes": 7423,
         "txOverheadBytes": 87,
         "transactions": 1,
-        "total": 7347
+        "total": 7510
       },
       "padding": {
         "bytes": 0,
@@ -1561,10 +1578,10 @@
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 978824303,
+          "opCost": 994589979,
           "steps": 1,
-          "heaviestStepOpCost": 978824303,
-          "inputsForHeaviestStep": 122
+          "heaviestStepOpCost": 994589979,
+          "inputsForHeaviestStep": 124
         }
       },
       "opCostBudget": 350400,
@@ -1575,7 +1592,7 @@
         "blockers": [
           "op-cost"
         ],
-        "detail": "heaviest step ~122× one input's op-cost budget",
+        "detail": "heaviest step ~124× one input's op-cost budget",
         "standard": {
           "fits": false,
           "detail": "1/1 locking >201 B; a step is non-standard under the standard VM; shipped valid proof(s) non-standard under the standard VM: extra proof #1, extra proof #2, extra proof #3"
@@ -1599,7 +1616,7 @@
         "secure": true,
         "type": "p2s"
       },
-      "source": "BCH-native CashScript: the COMPLETE Groth16 verifier in ONE contract on BLS12-381 -- the SAME curve as nchain (Groth16Verify, singleton/bls12-381/groth16.cash). Computes vk_x = IC0 + in0*IC1 + in1*IC2 on-chain (one MSB-first Shamir/Straus pass with shared Jacobian doublings + Fermat inverse), then the full BLS12-381 pairing e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) (M-twist Miller, |x| NAF, conjugate, Hayashida-Scott final exp) and require()s == 1. VK hardcoded; proof (A,B,C) + public inputs (in0,in1) at RUNTIME; A negated in-script. Sound (vk_x recomputed on-chain). Verified vs @noble/curves bls12-381. Locking is plain compiler output (size objective + rescheduleStacks, no post-passes; 7,698-byte locking) -- the honest baseline vs the nchain single-tx reference, and the other end of the bytesize-vs-opcost tradeoff from the -opcode-optimized entry. ~966M op-cost (~121 BCH inputs) does NOT fit one input."
+      "source": "BCH-native CashScript: the COMPLETE Groth16 verifier in ONE contract on BLS12-381 -- the SAME curve as nchain (Groth16Verify, singleton/bls12-381/groth16.cash). Computes vk_x = IC0 + in0*IC1 + in1*IC2 on-chain (one MSB-first Shamir/Straus pass with shared Jacobian doublings + Fermat inverse), then the full BLS12-381 pairing e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) (M-twist Miller, |x| NAF, conjugate, Hayashida-Scott final exp) and require()s == 1. VK hardcoded; proof (A,B,C) + public inputs (in0,in1) at RUNTIME; A negated in-script; proof points validated (coordinate range, curve equations, G2 subgroup via psi(B) == [-x]B fused into the Miller walk). Verified vs @noble/curves bls12-381. Locking is plain compiler output (size objective + rescheduleStacks, no post-passes; 7,026-byte locking) -- the honest baseline vs the nchain single-tx reference, and the other end of the bytesize-vs-opcost tradeoff from the -opcode-optimized entry. ~995M op-cost (~124 BCH inputs) does NOT fit one input."
     },
     {
       "id": "bch-groth16-bls12381-singleton-opcode-optimized",
@@ -1615,8 +1632,8 @@
         "verdict": "pass",
         "validAccepted": true,
         "invalid": {
-          "tested": 1,
-          "rejected": 1
+          "tested": 14,
+          "rejected": 14
         },
         "worstCaseAccepted": null,
         "crossStageBinding": {
@@ -1635,18 +1652,18 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "withdrawn",
-        "reason": "Held by maintainer review: same source as the BLS12-381 singleton (no range/curve/subgroup checks).",
+        "status": "unreviewed",
+        "reason": "Domain checks added (range, curve, G2 subgroup) to groth16.cash and rebuilt; previously held by maintainer review.",
         "refs": [
           "https://github.com/mr-zwets/groth16_cashscript/blob/main/singleton/bls12-381/README.md"
         ]
       },
-      "score": 5828,
+      "score": 5999,
       "size": {
-        "scriptBytes": 5741,
+        "scriptBytes": 5912,
         "txOverheadBytes": 87,
         "transactions": 1,
-        "total": 5828
+        "total": 5999
       },
       "padding": {
         "bytes": 0,
@@ -1654,9 +1671,9 @@
       },
       "benchmarks": {
         "smallProof": {
-          "opCost": 1002455753,
+          "opCost": 1003512299,
           "steps": 1,
-          "heaviestStepOpCost": 1002455753,
+          "heaviestStepOpCost": 1003512299,
           "inputsForHeaviestStep": 125
         }
       },
@@ -1692,7 +1709,7 @@
         "secure": true,
         "type": "p2s"
       },
-      "source": "Same complete BLS12-381 Groth16 verifier as bch-groth16-bls12381-singleton (Groth16Verify, singleton/bls12-381/groth16.cash: vk_x = IC0 + in0*IC1 + in1*IC2 on-chain in one shared-doubling Shamir/Straus pass, then e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) == 1), but the locking bytecode is byte-optimized: the smaller of a custom decompile->reschedule->recompile of the cashc output and the rescheduled compile, then repeated instruction sequences outlined into OP_DEFINE bodies. Identical semantics + runtime witnesses; each subroutine differential-tested and every outline rewrite verified accept/reject. The plain entry keeps the other end of the bytesize-vs-opcost tradeoff. Pipeline: singleton/bls12-381/build_vectors_optimized.mjs + singleton/bn254/recompiler/."
+      "source": "Same complete BLS12-381 Groth16 verifier as bch-groth16-bls12381-singleton (Groth16Verify, singleton/bls12-381/groth16.cash: vk_x = IC0 + in0*IC1 + in1*IC2 on-chain in one shared-doubling Shamir/Straus pass, then e(-A,B)*e(alpha,beta)*e(vk_x,gamma)*e(C,delta) == 1, with the same proof-point validation: coordinate range, curve equations, G2 subgroup), but the locking bytecode is byte-optimized: the smaller of a custom decompile->reschedule->recompile of the cashc output and the rescheduled compile, then repeated instruction sequences outlined into OP_DEFINE bodies. Identical semantics + runtime witnesses; each subroutine differential-tested and every outline rewrite verified accept/reject. The plain entry keeps the other end of the bytesize-vs-opcost tradeoff. Pipeline: singleton/bls12-381/build_vectors_optimized.mjs + singleton/bn254/recompiler/."
     },
     {
       "id": "bch-groth16-bls12381-singleton-genpow",
