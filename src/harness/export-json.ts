@@ -16,11 +16,12 @@
 // harness/review-status.ts); withdrawn entries stay listed but never count for the frontier.
 import { REVIEW_STATUS, reviewStatusOf } from './review-status.js';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-
-import type { BenchmarkResult, Implementation } from './types.js';
-import { computeResults, isSkipped, REGISTRY } from './benchmark.js';
+import type { Implementation } from './types.js';
 import { runImplementation } from './benchmark.js';
 import { HARNESS_VERSION, dependenciesOf, implementationModules, inputHashOf } from './input-hash.js';
+
+import type { BenchmarkResult } from './types.js';
+import { computeResults, isSkipped, REGISTRY } from './benchmark.js';
 import { STANDARD_UNLOCKING_CAP, SPEC_SCRIPT_SIZE_CAP, realOpCostBudget, specOpCostBudget } from './vm.js';
 
 const SCHEMA_VERSION = 1;
@@ -393,7 +394,6 @@ const planExport = async (previous: Map<string, Entry>): Promise<Plan[]> => {
   const unknown = (only ?? []).filter((id) => !registered.has(id));
   if (unknown.length > 0) throw new Error(`ONLY_IMPLS names unregistered id(s): ${unknown.join(', ')}`);
   const modules = await implementationModules(REGISTRY);
-  // include demos so the artifact is complete; the site filters by category.
   return REGISTRY.filter((impl) => !SITE_EXCLUDE.has(impl.id)).map((impl): Plan => {
     const deps = dependenciesOf(impl.id, modules.get(impl.id)!);
     const hash = inputHashOf(impl.id, deps);
@@ -432,6 +432,7 @@ const planExport = async (previous: Map<string, Entry>): Promise<Plan[]> => {
 
 const main = async () => {
   const outfile = process.argv[2] ?? 'results.json';
+  // include demos so the artifact is complete; the site filters by category.
   const registered = new Map(REGISTRY.map((implementation) => [implementation.id, implementation]));
 
   const previous = new Map<string, Entry>();
