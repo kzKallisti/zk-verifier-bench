@@ -3,9 +3,17 @@
 //   'reviewed'   - an independent soundness review of the exact shipped artifact found no gaps.
 //   'unreviewed' - the author's / maintainer's claim only, with no open finding (the default).
 //   'withdrawn'  - the author withdrew the claim, or a finding applies to the shipped artifact;
-//                  a finding that is open but not yet confirmed is also held here. A withdrawn
-//                  entry stays in results.json entries[] and the score history, but never
-//                  counts for the frontier leader / current or new history points.
+//                  a finding that is open but not yet confirmed is also held here. Never counts
+//                  for the frontier leader / current or new history points.
+//   'baseline'   - a third-party reference verifier (nChain, sCrypt), measured for comparison.
+//   'demo'       - a harness self-test, not a verifier.
+//   'component'  - a partial pairing / vk_x checkpoint (category 'partial'), not a full verifier.
+//   'archived'   - a superseded legacy entry kept as history only; like 'withdrawn' it is never
+//                  ranked (frontier leader / current, new history points), but its row stays.
+// Withdrawn implementations are normally removed from REGISTRY (bench #50 removed the 15 rows of
+// the reset); their rows then leave results.json entries[] too. The site keeps a frozen copy of
+// those last rows (zk-verifier-competition src/data/withdrawn-archive.json). Only ids still in
+// REGISTRY belong in this table.
 // Kept as one table keyed by id (not on each implementation module) so registry removals
 // stay independent edits; benchmark.ts attaches it to every REGISTRY entry.
 import type { Implementation, ReviewStatus } from './types.js';
@@ -14,7 +22,16 @@ const SRC = 'https://github.com/mr-zwets/groth16_cashscript';
 const BENCH = 'https://github.com/mr-zwets/zk-verifier-bench';
 const FINDINGS = [`${SRC}/issues/32`, `${BENCH}/issues/49`];
 
-const withdrawn = (reason: string, refs: string[]): ReviewStatus => ({ status: 'withdrawn', reason, refs });
+const baseline: ReviewStatus = { status: 'baseline', reason: 'Third-party reference verifier, measured for comparison; not a verifier.cash entry.' };
+const component: ReviewStatus = { status: 'component', reason: 'Partial pairing / vk_x component (checkpoint), not a full Groth16 verifier.' };
+const archived: ReviewStatus = {
+  status: 'archived',
+  reason: 'Legacy large chain, superseded by the reviewed sound native and SI-GLS builds; kept as history, not ranked.',
+};
+
+/** statuses that never count for the frontier leader / current or new score-history points */
+export const UNRANKED_STATUSES: ReadonlySet<ReviewStatus['status']> = new Set(['withdrawn', 'archived']);
+export const isRanked = (status: ReviewStatus): boolean => !UNRANKED_STATUSES.has(status.status);
 
 export const DEFAULT_REVIEW_STATUS: ReviewStatus = { status: 'unreviewed' };
 
@@ -100,7 +117,7 @@ export const REVIEW_STATUS: Record<string, ReviewStatus> = {
     refs: [`${SRC}/commit/974a6910eb6924cfdbb547ea2556f229d9790421`, `${SRC}/commit/47c1ab15bd837d21c016e2e61b948f0e94b5862b`, `${SRC}/blob/main/singleton/bls12-381/README.md#proof-point-validation`],
   },
 
-  // withdrawn: author withdrawals (F1/F4/F5/F6/F9)
+  // unreviewed successors of withdrawn claims (bench #47 / #48)
   'bch-groth16-singleton-genpow': {
     status: 'unreviewed',
     reason: 'Corrected successor (4,320 B program, outline_32 P + O = P and neutral-point handling) merged via groth16_cashscript #30 / bench #47; the original 4,183 B program was withdrawn under F4.',
@@ -111,68 +128,33 @@ export const REVIEW_STATUS: Record<string, ReviewStatus> = {
     reason: 'Corrected successor (5,675 B program): canonical points, complete root chart and cofactor-equivalent G1/G2 projections from source #31 / benchmark #48. Native HOLD remains; original-G2 subgroup rejection is not asserted.',
     refs: [...FINDINGS, `${SRC}/pull/31`, `${BENCH}/pull/48`],
   },
-  'bch-groth16-intratx': withdrawn(
-    'F1 (BN42): the final vk_x chunk reads in1 without an exact-length gate.',
-    FINDINGS,
-  ),
-  'bch-groth16-intratx-authenticated-p2s': withdrawn(
-    'F1 (authenticated42): no byte-owner gates on state/table bytes.',
-    [...FINDINGS, `${BENCH}/pull/50`],
-  ),
-  'bch-groth16-grouped': withdrawn(
-    'F1 (grouped42): in0/in1 are trailing limbs without an exact-length gate.',
-    FINDINGS,
-  ),
-  'bch-groth16-grouped-residue': withdrawn(
-    'F1 (grouped26): no carrier / terminal-state byte owner.',
-    [...FINDINGS, `${BENCH}/pull/50`],
-  ),
-  'bch-groth16-bls12381-intratx-residue': withdrawn(
-    'F1 (BLS24): no GLV-carrier / terminal-state byte owner.',
-    [...FINDINGS, `${BENCH}/pull/50`],
-  ),
-  'bch-groth16-intratx-pairfold5': withdrawn(
-    'F9: genesis byte-identical to the withdrawn pevalfuse genesis; the public MSM is not established.',
-    FINDINGS,
-  ),
-  'bch-groth16-intratx-pairfold5-pevalfuse': withdrawn(
-    'F9: the auxiliary relation does not establish the public MSM.',
-    [...FINDINGS, `${BENCH}/pull/50`],
-  ),
-  'bch-groth16-intratx-pairfold5-densless': withdrawn(
-    'F6: same millerEvent and terminal bytes as the withdrawn densless constructions; no soundness argument.',
-    [...FINDINGS, `${SRC}/issues/28`],
-  ),
-  'bch-groth16-intratx-pairfold5-densless-msm': withdrawn(
-    'F6: densless executors and terminal; no soundness argument.',
-    [...FINDINGS, `${SRC}/issues/28`, `${BENCH}/pull/50`],
-  ),
-  'bch-groth16-intratx-pairfold5-densless-msm-slim': withdrawn(
-    'F6: ships the withdrawn densless-msm-slim head; no soundness argument.',
-    [...FINDINGS, `${SRC}/issues/28`, `${BENCH}/pull/50`],
-  ),
-  'bch-groth16-intratx-pairfold5-densless-msm-spec': withdrawn(
-    'F6: same densless executors and terminal; no soundness argument.',
-    [...FINDINGS, `${SRC}/issues/28`, `${BENCH}/pull/50`],
-  ),
 
-  // withdrawn: maintainer holds (open findings, held until resolved)
-  'bch-groth16-intratx-pairfold7': withdrawn(
-    'Held (F9 class): public-statement binding not established; the harness red-team already fails it.',
-    [...FINDINGS, `${BENCH}/pull/50`],
-  ),
-  'bch-vkx-bls12381-chunked-covenant': withdrawn(
-    'Held (F3 class): each covenant step pins only commitment + category, not its successor locking.',
-    [`${BENCH}/pull/50`],
-  ),
-  'bch-groth16-bls12381-intratx-residue-large': withdrawn(
-    'Held (F1 pattern): chunks are generated without enforceExactInputLength (prefix-only forward checks).',
-    [...FINDINGS, `${BENCH}/pull/50`],
-  ),
-  'bch-pairing-intratx': withdrawn(
-    'Held partial connected Miller component: raw carrier byte ownership is not proved; no standalone full-verifier claim is asserted.',
-    [...FINDINGS, `${BENCH}/pull/50`],
-  ),
+  // baselines: third-party reference verifiers (nChain sCrypt, sCrypt bn256), measured for comparison only
+  'nchain': baseline,
+  'scrypt-bn256': baseline,
+
+  // demo: harness self-test, not a verifier
+  'bch-multistep-demo': { status: 'demo', reason: 'Harness self-test (multi-step covenant demo), not a Groth16 verifier.' },
+
+  // components: partial pairing / vk_x checkpoints (category 'partial'), not full verifiers
+  'bch-vkx-singleton': component,
+  'bch-vkx-bls12381-singleton': component,
+  'bch-vkx-chunked-twoloop': component,
+  'bch-vkx-chunked-shamir': component,
+  'bch-vkx-chunked-covenant': component,
+  'bch-pairing-singleton': component,
+  'bch-pairing-bls12381-singleton': component,
+  'bch-pairing-chunked': component,
+  'bch-pairing-bls12381-chunked': component,
+  'bch-pairing-bls12381-intratx': component,
+
+  // archived: legacy large chains, superseded by the reviewed sound-native / SI-GLS builds; kept as history, not ranked
+  'bch-groth16-chunked': archived,
+  'bch-groth16-chunked-covenant': archived,
+  'bch-groth16-bls12381-intratx': archived,
+  'bch-groth16-bls12381-grouped': archived,
+  'bch-groth16-bls12381-chunked': archived,
+  'bch-groth16-bls12381-chunked-covenant': archived,
 };
 
 export const reviewStatusOf = (impl: Pick<Implementation, 'id' | 'reviewStatus'>): ReviewStatus =>
