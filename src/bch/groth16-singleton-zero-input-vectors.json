@@ -1,5 +1,5 @@
 {
-  "description": "Valid Groth16 proofs with canonical zero public inputs (n0 = 0, n1 = 0, both) under the committed BN254 fixture VK, each with ordinary tampered-input rejections. Locking-independent: any BN254 singleton built for this VK must accept every proof and reject every invalid entry.",
+  "description": "Valid Groth16 proofs with canonical zero public inputs (n0 = 0, n1 = 0, both) under the committed BN254 fixture VK, each with ordinary tampered-input rejections. The unlocking data uses the uncompressed spend(Ax,Ay,Bxa,Bxb,Bya,Byb,Cx,Cy,in0,in1) ABI: any BN254 singleton built for this VK with that ABI (standard / opcode-optimized) must accept every proof and reject every invalid entry. Builds with a different unlocking layout (e.g. genpow compressed, minop with hints) are out of scope and reject these by layout mismatch.",
   "proofs": [
     {
       "label": "n0 = 0",
