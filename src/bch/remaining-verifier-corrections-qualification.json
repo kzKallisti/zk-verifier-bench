@@ -1,0 +1,104 @@
+{
+  "schema": "remaining-verifier-corrections-qualification/v1",
+  "sourceRevision": "f8b16b221fb039f0ed04636b195a5deb8379f13c",
+  "benchmarkBase": "b140f64ca073c6d0466083fe14b5d9c83776d844",
+  "status": "STANDALONE_CORRECTED_REFERENCES_DEFAULT_REGISTRY_AND_FEED_UNCHANGED",
+  "frameProfiles": {
+    "profiles": 5,
+    "existingPositiveRunsAcrossTwoModes": 52,
+    "inputEvaluations": 908,
+    "allAccepted": true,
+    "modes": [
+      "BCH2026 consensus",
+      "BCH2026 standard per-input"
+    ],
+    "groupLockingAndTokenSeams": 15,
+    "limits": "The pairing profile is a component. Full-equation claims retain their mathematical, exact-program-graph and ledger-ancestry premises. Per-input observations are not whole-transaction or relay admission."
+  },
+  "bnLegacyEquationReferences": {
+    "profiles": 7,
+    "existingProofGraphs": 35,
+    "arithmeticOracleInputEvaluations": 185,
+    "allArithmeticInputsAccepted": true,
+    "completeDeclaredConsensusGraphsAccepted": 0,
+    "completeDeclaredStandardGraphsAccepted": 0,
+    "nativeResourceAdmission": "HOLD",
+    "keyScope": "Six original source lineages match the known checker VK; original PairFold-7 VK intent is unestablished. Its successor is checked only against the known checker VK.",
+    "soundnessOwner": "Mandatory full fixed-key equation checker; legacy PIT/slope/table predicates receive no independent soundness credit."
+  },
+  "blsLarge": {
+    "existingProofGraphs": 3,
+    "inputEvaluations": 27,
+    "modes": [
+      "resource-loosened arithmetic oracle",
+      "proposed-spec consensus",
+      "proposed-spec standard per-input"
+    ],
+    "allAccepted": true,
+    "entryGuards": [
+      {
+        "input": 0,
+        "bytes": 288,
+        "depth": 1,
+        "hex": "7c7682770220019d7c"
+      },
+      {
+        "input": 2,
+        "bytes": 1632,
+        "depth": 0,
+        "hex": "7682770260069d"
+      }
+    ],
+    "limits": "Proposed-spec profile only; current BCH, whole-transaction and relay admission remain HOLD."
+  },
+  "blsVkx": {
+    "scope": "public-input aggregation component only",
+    "existingGraphs": 2,
+    "inputEvaluations": 66,
+    "allAccepted": true,
+    "modes": [
+      "resource-loosened arithmetic oracle",
+      "BCH2026 consensus",
+      "BCH2026 standard per-input"
+    ],
+    "successorPinsPerGraph": 10,
+    "terminalSuccessorPredicate": false,
+    "limits": "Connected designated NFT lineage and valid ancestry remain premises; no complete pairing or token lifecycle claim."
+  },
+  "sourceOnlyQualifications": [
+    {
+      "profile": "default BLS one-chunk Fp6 terminal",
+      "incomingBytes": 1728,
+      "witnessFields": 6,
+      "actualProgramCompiles": true,
+      "existingFullFixture": "NO_MATCHING_EXISTING_FIXTURE"
+    },
+    {
+      "profile": "BN grouped nonprojective final GLV",
+      "equalFiniteOperands": "corrected within mixed-add helper",
+      "actualProgramCompiles": true,
+      "existingFullFixture": "NO_MATCHING_EXISTING_FIXTURE"
+    },
+    {
+      "profile": "legacy connected BN48/BLS86",
+      "existingFullFixture": "INCOMPATIBLE_ARCHIVED_STATE_CODEC; no payload reencoding or replacement fixture is supplied"
+    }
+  ],
+  "mergedSourceProvenance": {
+    "sourceRevision": "8eb2c5dd6b1fd88dce3cdf90acc2bb19bfa78db7",
+    "files": [
+      "groth16-bls12381-singleton-genpow-vectors.json",
+      "groth16-bls12381-singleton-genpow-multiproof-vectors.json"
+    ],
+    "allNonProvenanceFieldsUnchanged": true
+  },
+  "constraints": {
+    "existingPositiveFixturesOnly": true,
+    "newProofGeneration": false,
+    "negativeFixtureExecution": false,
+    "cybersecurityTesting": false,
+    "byteOptimization": false,
+    "proofPublicStateTablePaddingReencoding": false,
+    "upstreamMergeOrDeployment": false
+  }
+}
