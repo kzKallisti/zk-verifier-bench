@@ -1,0 +1,128 @@
+{
+  "schema": "bn254-exact-frame-correction-catalog/v1",
+  "sourceBaseRevision": "8eb2c5dd6b1fd88dce3cdf90acc2bb19bfa78db7",
+  "benchmarkBase": "b140f64ca073c6d0466083fe14b5d9c83776d844",
+  "sourceHelper": {
+    "file": "chunked/intratx/repair_exact_frames.mjs",
+    "sha256": "edf882efee8a66284f0df88be24fd455b9000bcecf796968a3e0853a1ddab409"
+  },
+  "positiveOnly": true,
+  "admission": "HOLD",
+  "profiles": [
+    {
+      "id": "bch-groth16-intratx-exact-frame-corrected",
+      "originalId": "bch-groth16-intratx",
+      "vectorFile": "bn-exact-frame-bch-groth16-intratx-vectors.json",
+      "originalFixtureSha256": "d40e1f8d5135d400f6b2857425f3e136537566661429aa0aed64e273efbb20ae",
+      "correctedVectorSha256": "0337491b3e6a25cf53b35c725eb04f15d74b63fff5b6de0db089f36b75857b4d",
+      "numInputs": 31,
+      "positiveRuns": 3,
+      "gateCount": 93,
+      "gateCertificateSha256": "64204ee70e29cdacabd16c74eb0cace887412652f0d3b0a8433570a35c50288e",
+      "gateSizeBytes": [
+        6,
+        7,
+        9,
+        10
+      ],
+      "lockingHashTransfers": 0,
+      "lockingBytecodeTransfers": 0,
+      "frameOwner": "chunked/intratx/transform.mjs exact inBlob frame predicate; chunked/intratx/build_vectors.mjs caller binding",
+      "structure": "single-tx",
+      "claim": "full BN254 Groth16 intra-tx profile, subject to the existing mathematical and ledger premises"
+    },
+    {
+      "id": "bch-groth16-grouped-exact-frame-corrected",
+      "originalId": "bch-groth16-grouped",
+      "vectorFile": "bn-exact-frame-bch-groth16-grouped-vectors.json",
+      "originalFixtureSha256": "1aac568c7ea1e1ef36c2ba3631be90f768e24095a5e1b71f305164fd0d29057e",
+      "correctedVectorSha256": "f870743cbb8343f386e32825f49a01beb1707c19df97a0d548bd68abeecf3f1e",
+      "numInputs": 31,
+      "positiveRuns": 3,
+      "gateCount": 93,
+      "gateCertificateSha256": "64204ee70e29cdacabd16c74eb0cace887412652f0d3b0a8433570a35c50288e",
+      "gateSizeBytes": [
+        6,
+        7,
+        9,
+        10
+      ],
+      "lockingHashTransfers": 0,
+      "lockingBytecodeTransfers": 0,
+      "frameOwner": "chunked/intratx/transform.mjs exact inBlob frame predicate; chunked/grouped/build_vectors.mjs grouped caller binding",
+      "structure": "multi-tx",
+      "claim": "full BN254 Groth16 grouped profile, subject to the existing mathematical and ledger premises"
+    },
+    {
+      "id": "bch-pairing-intratx-exact-frame-corrected",
+      "originalId": "bch-pairing-intratx",
+      "vectorFile": "bn-exact-frame-bch-pairing-intratx-vectors.json",
+      "originalFixtureSha256": "67d41af69ee26915c87d69dc09f2ce49db63ef02296c418cfe546a1ff2446860",
+      "correctedVectorSha256": "d45afcc7845c1edc6bd6bb16e1a2cd3dc94449678fdc0529ad383311cb9df230",
+      "numInputs": 12,
+      "positiveRuns": 3,
+      "gateCount": 36,
+      "gateCertificateSha256": "9e64d10e84692b858e10b21290e4bd2c3d1cfa8f48b0aa35179d1fca842b5720",
+      "gateSizeBytes": [
+        7
+      ],
+      "lockingHashTransfers": 0,
+      "lockingBytecodeTransfers": 0,
+      "frameOwner": "chunked/intratx/transform.mjs exact inBlob frame predicate; chunked/intratx/build_vectors.mjs caller binding",
+      "structure": "single-tx-component",
+      "claim": "pairing component only; no full Groth16 disposition is asserted by this profile"
+    },
+    {
+      "id": "bch-groth16-intratx-residue-exact-frame-corrected",
+      "originalId": "bch-groth16-intratx-residue",
+      "vectorFile": "bn-exact-frame-bch-groth16-intratx-residue-vectors.json",
+      "originalFixtureSha256": "593111c80eab0c8c933430770e8d622eeadf6df1f4bd08b7e2ed2c69aad17367",
+      "correctedVectorSha256": "bf9d5c618b553322425645eb8b1e22c18ca26a237b0d869019700767082c6945",
+      "numInputs": 11,
+      "positiveRuns": 14,
+      "gateCount": 154,
+      "gateCertificateSha256": "3135281c35708c30910c1113a490477c188e95be805dcc05eea1efce573d7e3c",
+      "gateSizeBytes": [
+        7,
+        9,
+        11
+      ],
+      "lockingHashTransfers": 84,
+      "lockingBytecodeTransfers": 56,
+      "frameOwner": "chunked/intratx/transform.mjs exact inBlob frame predicate; chunked/intratx/build_vectors_residue.mjs caller plus successor binding transfer",
+      "structure": "single-tx",
+      "claim": "full BN254 Groth16 residue profile, subject to the existing mathematical and ledger premises"
+    },
+    {
+      "id": "bch-groth16-grouped-residue-exact-frame-corrected",
+      "originalId": "bch-groth16-grouped-residue",
+      "vectorFile": "bn-exact-frame-bch-groth16-grouped-residue-vectors.json",
+      "originalFixtureSha256": "8edb47b609f7339007af7922ffe0ec5105da90dd0335d388540a9a5fd786d190",
+      "correctedVectorSha256": "c9931a57ad6e37f8eae865df329a6f3982080a2ee26d14f55b2c137a580b12c5",
+      "numInputs": 26,
+      "positiveRuns": 3,
+      "gateCount": 78,
+      "gateCertificateSha256": "237a11dcc5bdc366f3b6082db857c706e380755a096681a1d008c7de7542a110",
+      "gateSizeBytes": [
+        7,
+        10
+      ],
+      "lockingHashTransfers": 0,
+      "lockingBytecodeTransfers": 0,
+      "frameOwner": "chunked/intratx/transform.mjs exact inBlob frame predicate; chunked/grouped/build_vectors_residue.mjs grouped caller binding",
+      "structure": "multi-tx",
+      "claim": "full BN254 grouped residue profile, subject to the existing mathematical and ledger premises"
+    }
+  ],
+  "validation": {
+    "vmModes": [
+      "consensus",
+      "standard"
+    ],
+    "fixtureRuns": 52,
+    "evaluatedInputs": 908,
+    "allAccepted": true,
+    "invalidCasesLoaded": false,
+    "cybersecurityTesting": false
+  }
+}
