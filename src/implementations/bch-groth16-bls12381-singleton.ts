@@ -19,7 +19,9 @@
 // The proof points are validated before any pairing work: coordinates in [0, p), A and C
 // on y^2 = x^3 + 4, B on the twist y^2 = x^3 + 4(1+u), and B in G2 (psi(B) == [-x]B fused
 // into B's Miller walk, with a Z != 0 guard). Points at infinity have no encoding and are
-// rejected. The vectors ship 13 out-of-domain proofs as extra invalid runs.
+// rejected. The vectors ship 17 out-of-domain proofs as extra invalid runs (including +p on
+// every coordinate). A and C are not G1-subgroup checked: cofactor variants also verify,
+// which is malleability only (see the source README).
 //
 // Same curve (BLS12-381) as nchain -> a direct comparison. At ~995M op-cost
 // (~124 standard BCH inputs) and a 7,026-byte locking script it does not fit one
