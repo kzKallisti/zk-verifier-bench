@@ -82,6 +82,7 @@ import { layoutGate, publicInputGate } from './gates.js';
 import { redTeam } from './redteam.js';
 import { reviewStatusOf } from './review-status.js';
 import { tamperProof } from './tamper.js';
+import { txv5Grade } from './txv5.js';
 import type { BenchmarkResult, Implementation, PackagingType, Scenario, Step, StepMetrics } from './types.js';
 import {
   createLoosenedVm,
@@ -220,6 +221,18 @@ const packagingSecurity = (steps: Step[]): { secure: boolean; type: PackagingTyp
   return n === 0
     ? { secure: true, type }
     : { secure: false, type, reason: `${n}/${steps.length} step(s) use an insecure P2SH20 envelope (OP_HASH160, ~2^80 collision security) — use P2SH32` };
+};
+
+/** Score (scripts + tx overhead) and modelled serialized tx size of a run, as the headline
+ * score and the standardness check compute them. Used by the TXv5 grade for padded runs. */
+export const runScore = (run: Step[]): { score: number; txBytes: number } => {
+  const overheads = run.map(stepTxOverhead);
+  const overhead = overheads.reduce((a, b) => a + b, 0);
+  const score = run.reduce((a, s) => a + s.lockingBytecode.length + s.unlockingBytecode.length, 0) + overhead;
+  const txBytes = txCountOf(run) === 1
+    ? run.reduce((a, s) => a + s.unlockingBytecode.length, 0) + overhead
+    : Math.max(0, ...run.map((s, i) => s.unlockingBytecode.length + s.lockingBytecode.length + overheads[i]!));
+  return { score, txBytes };
 };
 
 const runStep = (vm: Bch2026Vm, step: Step, bsv: boolean): StepMetrics => {
@@ -599,6 +612,8 @@ export const benchmark = (impl: Implementation, scenario: Awaited<ReturnType<Imp
     securePackaging: env.secure,
     packagingType: env.type,
     insecurePackagingReason: env.reason,
+    // bch-spec entries: also grade on TXv5 as written (density base 41; issue #35 option 2)
+    ...(isSpec ? { txv5: txv5Grade(scenario, bsv, runScore) } : {}),
   };
 };
 
@@ -760,6 +775,15 @@ const main = async () => {
       }
       if (r.impl.vm === 'bch-spec') {
         console.log(`    > VM target: PROPOSED bch-spec upgrade (100,000-byte scripts, op-cost budget (10000+len)x800 = up to 88,000,000/input) — NOT valid on current BCH (BCH_2026 caps scripts at 10,000 B). "BCH compatible" above = validates on the bch-spec VM.`);
+        const t = r.txv5;
+        if (t) {
+          const mode = (m: { asShipped: boolean; padded?: { padBytes: number; score: number } }) =>
+            m.asShipped ? 'valid as shipped' : m.padded ? `+${fmt(m.padded.padBytes)} B pad -> ${fmt(m.padded.score)}` : 'rejects';
+          const tail = t.padding === 'not-paddable'
+            ? `not paddable as shipped (${t.notPaddableReason})${t.estimate ? `; estimate with a pad slot ${fmt(t.estimate.score)}` : ''}`
+            : `consensus ${mode(t.consensus)}, standard ${mode(t.standard)}${t.standard.fits ? '' : ` (non-standard: ${t.standard.policyReason ?? t.standard.reason})`}`;
+          console.log(`    > TXv5 as written (density base 41, budget (41+len)x800): ${tail}`);
+        }
       }
       if (!r.profileOnly) {
         console.log(`    > standardness: ${r.fitsBchStandardness ? 'standard — relayable under default mempool policy' : `non-standard (${r.bchStandardnessReason ?? 'relay limit'}); valid at consensus, must be mined directly`}`);

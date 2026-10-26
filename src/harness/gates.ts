@@ -43,7 +43,7 @@ const valueOf = (i: Instr): bigint | undefined => {
 };
 
 /** The valid run with some inputs' unlockings replaced (intra-tx aware). */
-const withUnlockings = (valid: Step[], replace: Map<number, Uint8Array>): Step[] => {
+export const withUnlockings = (valid: Step[], replace: Map<number, Uint8Array>): Step[] => {
   const unlockings = valid.map((s, i) => replace.get(i) ?? s.unlockingBytecode);
   if (valid.every((s) => s.intraTx !== undefined)) {
     const inputs = valid.map((s, i) => ({ ...s.intraTx!.inputs[i]!, unlockingBytecode: unlockings[i]! }));

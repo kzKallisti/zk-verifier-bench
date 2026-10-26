@@ -38,7 +38,7 @@ artifacts.
 
 ## The VMs
 
-Five constructors in `src/harness/vm.ts`:
+The VM constructors in `src/harness/vm.ts`:
 
 | VM | used for |
 |----|----------|
@@ -46,6 +46,7 @@ Five constructors in `src/harness/vm.ts`:
 | `createRealVm` | consensus limits → the `BCH compatible` verdict |
 | `createStandardVm` | mempool-relay policy → the `fitsBchStandardness` verdict |
 | `createRealVmSpec` / `createStandardVmSpec` | the proposed **bch-spec** VM (100,000-byte scripts, op-cost budget `(10,000 + len) × 800`); grades `vm: 'bch-spec'` entries |
+| `createRealVmTxv5` / `createStandardVmTxv5` | **TXv5 as written** (CHIP-2025-01 v1.0.0): BCH 2026 rules with 100,000-byte scripts and stack elements, density base still 41, so the op-cost budget is `(41 + len) × 800`; the standard unlocking cap of 100,000 B is an assumption. Adds the `txv5` grade to `vm: 'bch-spec'` entries (bench issue #35) |
 
 `no (reason; ~N steps by op-cost)` on the compatibility column gives the first
 consensus limit hit (`script-size`, `op-cost`, `stack-depth`, ...) and how many
@@ -127,6 +128,20 @@ all, see *Why these measures* in the README.)
   proof run. For `vm: 'bch-spec'` entries the budget uses the spec formula.
 - **BCH compatible** = every step of the valid run validates on the real VM
   for the entry's target (`bch-2026` or `bch-spec`).
+- **txv5** (bch-spec entries only) = the same transaction graded on TXv5 as
+  written. libauth's `BCH_SPEC` also raises the density-control base from 41 to
+  10,000, which TXv5 does not propose, so a bch-spec entry can be valid on
+  `BCH_SPEC` and refused on TXv5. The grade records whether the shipped
+  transaction validates (consensus and standard) and, if not, the minimal zero
+  padding that makes every input fit `(41 + len) × 800` and the padded score.
+  Padding follows the `padBytes` convention: the entry's existing all-zero pad
+  push is lengthened, or a new one is inserted (before the redeem script under
+  P2SH, last otherwise). The padding is a least fixpoint measured on a TXv5 VM
+  with the budget lifted, then replayed on the real TXv5 VM. An entry whose
+  script rejects any pad push (a pinned push layout, e.g. `DEPTH == 2`) is
+  reported as not paddable as shipped, with an estimate for a pad slot
+  (measured op-cost plus one push and one `OP_DROP`). `pnpm txv5 [id ...]`
+  prints the grade without touching `results.json`.
 - **standardness** = every complete transaction also passes the standard/relay
   VM. An intra-tx bundle can be standard when its total transaction size remains
   below policy limits; grouped entries report standardness for every group.

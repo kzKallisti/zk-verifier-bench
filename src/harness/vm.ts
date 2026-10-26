@@ -66,6 +66,46 @@ export const createRealVmSpec = () => createVirtualMachineBchSpec(false);
 /** bch-spec VM in STANDARD (relay-policy) mode. */
 export const createStandardVmSpec = () => createVirtualMachineBchSpec(true);
 
+/** ConsensusBch2026 as libauth defines it (ConsensusBch2025 + ConsensusBch2026Overrides; the
+ * merged object is not exported by libauth 3.1.0-next.8, so it is rebuilt here). */
+export const consensusBch2026 = {
+  ...ConsensusBch2025,
+  baseInstructionCost: 100,
+  maximumFunctionIdentifierLength: 7,
+  maximumMemorySlots: 1000,
+  maximumStandardLockingBytecodeLength: 201,
+  maximumStandardUnlockingBytecodeLength: 10_000,
+  maximumTokenCommitmentLength: 128,
+};
+
+/** TXv5 as written (CHIP-2025-01 v1.0.0, bench issue #35 option 2): BCH 2026 rules with the
+ * per-script bytecode cap and the stack element cap raised to 100,000 B. The density-control
+ * base stays 41, so an input's op-cost budget is (41 + unlockingLen) * 800, exactly as on BCH
+ * 2026; only libauth's BCH_SPEC raises that base to 10,000. The standard unlocking cap of
+ * 100,000 B is an ASSUMPTION (TXv5's rationale, not its text); the consensus grade does not
+ * depend on it. */
+export const consensusTxv5 = {
+  ...consensusBch2026,
+  maximumBytecodeLength: 100_000,
+  maximumStackItemLength: 100_000,
+  maximumStandardUnlockingBytecodeLength: 100_000,
+};
+if (consensusTxv5.densityControlBaseLength !== 41) throw new Error('txv5: densityControlBaseLength must stay 41');
+
+const txv5Vm = (standard: boolean, consensus: typeof consensusTxv5) =>
+  createVirtualMachine(createInstructionSetBch2026(standard, { consensus, ripemd160, secp256k1, sha1, sha256 }));
+/** TXv5-as-written VM (consensus mode). */
+export const createRealVmTxv5 = () => txv5Vm(false, consensusTxv5);
+/** TXv5-as-written VM in STANDARD mode. */
+export const createStandardVmTxv5 = () => txv5Vm(true, consensusTxv5);
+/** TXv5 rules with the density budget lifted (a huge density base): every other TXv5 limit
+ * applies, so an input that fails here fails for a reason padding cannot fix. Used to measure
+ * the op-cost a padded input needs and to probe whether an entry tolerates a pad push. */
+export const createUnbudgetedVmTxv5 = (standard: boolean) =>
+  txv5Vm(standard, { ...consensusTxv5, densityControlBaseLength: 1_000_000_000 });
+/** TXv5 standard per-input unlocking cap (assumed 100,000 B, see consensusTxv5). */
+export const TXV5_STANDARD_UNLOCKING_CAP = consensusTxv5.maximumStandardUnlockingBytecodeLength;
+
 // --- BCH 2026 standard (relay-policy) limits, from ConsensusBch2026Overrides ---
 /** Max standard locking bytecode (scriptPubKey) length; a longer output is non-standard. */
 export const MAX_STANDARD_LOCKING_BYTECODE = 201;

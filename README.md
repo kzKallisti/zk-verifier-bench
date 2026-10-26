@@ -130,6 +130,11 @@ Five VMs (`src/harness/vm.ts`):
 - **real + standard bch-spec VMs** — the proposed upgrade (100,000-byte
   scripts, op-cost budget `(10,000 + len) × 800`); grades `vm: 'bch-spec'`
   entries only.
+- **real + standard TXv5 VMs** — TXv5 as written: BCH 2026 rules with
+  100,000-byte scripts and stack elements, but the density base stays 41, so
+  the budget is `(41 + len) × 800`. bch-spec entries get a second `txv5` grade
+  (valid as shipped, or the minimal zero padding and padded score, or not
+  paddable as shipped); see `docs/benchmark.md` and bench issue #35.
 
 ### Grading dimensions
 

@@ -17,6 +17,7 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import type { BenchmarkResult } from './types.js';
 import { computeResults, isSkipped } from './benchmark.js';
 import { STANDARD_UNLOCKING_CAP, SPEC_SCRIPT_SIZE_CAP, realOpCostBudget, specOpCostBudget } from './vm.js';
+import { txv5Summary } from './txv5.js';
 
 const SCHEMA_VERSION = 1;
 const SIZE_CAP = STANDARD_UNLOCKING_CAP; // 10,000 B per locking/unlocking script
@@ -332,6 +333,13 @@ const entryOf = (r: BenchmarkResult) => ({
     type: r.packagingType,
     ...(r.securePackaging ? {} : { detail: `DISALLOWED: ${r.insecurePackagingReason}` }),
   },
+  // bch-spec entries only (null otherwise): the TXv5-as-written grade (bench issue #35). BCH_SPEC
+  // gives each input (10,000 + len) * 800 op-cost; TXv5 as written keeps the density base at 41,
+  // so (41 + len) * 800. Records whether the shipped tx validates on that VM (consensus /
+  // standard) and, if not, the minimal zero padding (lengthening the entry's existing pad push,
+  // or inserting one where the scripts ignore it) and the padded score; an entry that pins its
+  // push layout is 'not-paddable' with an estimate only. `summary` is the figure the site shows.
+  txv5: r.txv5 ? { summary: txv5Summary(r.txv5, r.totalBytes + r.totalTxOverheadBytes), ...r.txv5 } : null,
   source: r.impl.source,
 });
 
