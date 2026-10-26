@@ -6,7 +6,7 @@
 // multi-item ops, followed by an auto-outlining pass that factors repeated instruction
 // sequences into OP_DEFINE bodies. Semantics are identical (same runtime witnesses, same
 // verdict) -> 7,622 -> 5,853 B on cashc compiler-optimizations-7, 5,820 B on -8 (with the in < r input range
-// check), far under BCH's 10,000-byte standard script-size
+// check), 5,839 B with the jacAddG1 right-identity (P + O = P) fix, far under BCH's 10,000-byte standard script-size
 // cap. Op-cost grows slightly from the outline call overhead (~750M -> ~796M), so it
 // still does not fit one input -- the win is purely byte size.
 //
@@ -33,6 +33,13 @@ const mp = JSON.parse(readFileSync('src/bch/groth16-singleton-opcode-optimized-m
   lockingOK: string;
   proofs: { publicInputs: string[]; unlocking: string; invalidUnlocking: string; committed: boolean }[];
   worstCaseProof?: { unlocking: string };
+};
+
+// Canonical ZERO public inputs (n0 = 0, n1 = 0, both) under the same VK. A zero scalar makes its
+// MSM term the point at infinity; the verifier must still keep IC0 in vk_x, so each valid proof
+// must verify and each tampered input must be rejected. Built by src/bch/gen-zero-input-proofs.mjs.
+const zero = JSON.parse(readFileSync('src/bch/groth16-singleton-zero-input-vectors.json', 'utf8')) as {
+  proofs: { label: string; publicInputs: string[]; unlocking: string; invalid: { label: string; unlocking: string }[] }[];
 };
 
 export const bchGroth16SingletonOpcodeOptimized: Implementation = {
@@ -68,10 +75,14 @@ export const bchGroth16SingletonOpcodeOptimized: Implementation = {
     ];
     const invalid: Step[][] = [
       [{ ...valid[0]!, unlockingBytecode: hexToBin(v.invalidUnlocking) }],
+      // tampered zero-input statements (n0/n1 flipped off zero, or the other input bumped)
+      ...zero.proofs.flatMap((p) => p.invalid.map((t) => [{ ...valid[0]!, unlockingBytecode: hexToBin(t.unlocking) }])),
     ];
     const extraValidProofs: Step[][] = mp.proofs
       .filter((p) => !p.committed)
-      .map((p) => [{ ...valid[0]!, unlockingBytecode: hexToBin(p.unlocking) }]);
+      .map((p) => [{ ...valid[0]!, unlockingBytecode: hexToBin(p.unlocking) }])
+      // valid proofs for n0 = 0, n1 = 0 and n0 = n1 = 0 (vk_x must keep IC0)
+      .concat(zero.proofs.map((p) => [{ ...valid[0]!, unlockingBytecode: hexToBin(p.unlocking) }]));
     // worst-case run: dense (near-r) proof through the SAME locking; vk_x is proof-dependent (see
     // bch-groth16-singleton). Keeps the op-cost column apples-to-apples with the chunked entries.
     const worstCaseProof: Step[] | undefined = mp.worstCaseProof

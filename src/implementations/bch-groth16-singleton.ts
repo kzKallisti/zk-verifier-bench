@@ -45,6 +45,13 @@ const mp = JSON.parse(readFileSync('src/bch/groth16-singleton-multiproof-vectors
   worstCaseProof?: { unlocking: string };
 };
 
+// Canonical ZERO public inputs (n0 = 0, n1 = 0, both) under the same VK. A zero scalar makes its
+// MSM term the point at infinity; the verifier must still keep IC0 in vk_x, so each valid proof
+// must verify and each tampered input must be rejected. Built by src/bch/gen-zero-input-proofs.mjs.
+const zero = JSON.parse(readFileSync('src/bch/groth16-singleton-zero-input-vectors.json', 'utf8')) as {
+  proofs: { label: string; publicInputs: string[]; unlocking: string; invalid: { label: string; unlocking: string }[] }[];
+};
+
 export const bchGroth16Singleton: Implementation = {
   id: 'bch-groth16-singleton',
   // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
@@ -76,12 +83,16 @@ export const bchGroth16Singleton: Implementation = {
     // invalid run: tampered public input -> different vk_x -> product != 1 -> reject
     const invalid: Step[][] = [
       [{ ...valid[0]!, unlockingBytecode: hexToBin(v.invalidUnlocking) }],
+      // tampered zero-input statements (n0/n1 flipped off zero, or the other input bumped)
+      ...zero.proofs.flatMap((p) => p.invalid.map((t) => [{ ...valid[0]!, unlockingBytecode: hexToBin(t.unlocking) }])),
     ];
     // extra DISTINCT proofs (proofs[1..]) against the SAME locking -- a
     // runtime-general verifier must accept every one of them.
     const extraValidProofs: Step[][] = mp.proofs
       .filter((p) => !p.committed)
-      .map((p) => [{ ...valid[0]!, unlockingBytecode: hexToBin(p.unlocking) }]);
+      .map((p) => [{ ...valid[0]!, unlockingBytecode: hexToBin(p.unlocking) }])
+      // valid proofs for n0 = 0, n1 = 0 and n0 = n1 = 0 (vk_x must keep IC0)
+      .concat(zero.proofs.map((p) => [{ ...valid[0]!, unlockingBytecode: hexToBin(p.unlocking) }]));
 
     // worst-case run: the dense (near-r) proof from the multiproof fixture, through the SAME
     // locking. vk_x is a variable-scalar MSM, so op-cost is proof-DEPENDENT (dense inputs pay for
