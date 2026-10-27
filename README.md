@@ -184,7 +184,7 @@ verifier, and the partial pairing intra-tx component. See [benchmark issue
 excludes those fifteen observations. The BLS12-381 genpow descriptor now
 identifies the corrected artifact from [PR
 #48](https://github.com/mr-zwets/zk-verifier-bench/pull/48) (source #31), and the
-feed carries its measurement (5,965 B, unreviewed). The corrected BN254
+feed carries its measurement (5,965 B, reviewed 2026-10-27 with a cofactor-equivalent G2 domain). The corrected BN254
 genpow observation from merged [PR
 #47](https://github.com/mr-zwets/zk-verifier-bench/pull/47) is retained at
 4,613 B. The three separately corrected standalone descriptors retain distinct
@@ -195,7 +195,7 @@ and score-history points are retained as historical measurements, not current
 qualification. Separately corrected standalone profiles retain their stated
 scope and resource holds and are not registered by their presence on disk.
 As of the 2026-10-27 export the feed names `bch-groth16-singleton-genpow`
-as the 4,613 B leader (not BCH-compatible, unreviewed) and
+as the 4,613 B leader (not BCH-compatible, reviewed 2026-10-27) and
 `bch-groth16-bn254-sound-native` as the 27,624 B BCH-compatible current anchor
 (independently reviewed).
 
@@ -206,8 +206,11 @@ sCrypt third-party references), `demo` (the harness self-test), `component`
 large chains: BN254 chunked and chunked-covenant, BLS12-381 intratx, grouped,
 chunked and chunked-covenant). Archived rows stay in `entries[]`, but like
 withdrawn ones they never count for the frontier or new history points.
-Withdrawn implementations leave the registry, so their rows leave the feed; the
-website keeps a frozen copy of the last rows of the fifteen removed ids.
+Withdrawn implementations normally leave the registry, so their rows leave the
+feed; the website keeps a frozen copy of the last rows of the fifteen removed
+ids. A withdrawal from a later review (2026-10-27: `bch-groth16-bls12381-grouped-residue`,
+an unpinned token-category hand-off) keeps its row, labeled `withdrawn`, until
+the descriptor is removed.
 
 | category | meaning |
 |----------|---------|
