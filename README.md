@@ -151,6 +151,11 @@ pinned digests, still matches its row; if anything else about it changed, or
 with no previous row, the export fails and asks for `pnpm fetch`. A load failure
 during a re-run aborts the export and leaves `results.json` untouched.
 
+A merge conflict in `results.json` (two branches both re-exported) is resolved
+by taking either side and running the default export: rows whose stored
+`inputHash` does not match the merged sources (or that have none) are re-run,
+so no side's stale row survives.
+
 `pnpm benchmark:json` first runs `pnpm benchmark:deps`, the dependency audit: it
 traces every file the implementations actually read or list (at import and in
 `load()`: `readFileSync`, `openSync`, `readFile`, `createReadStream`,

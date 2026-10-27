@@ -250,7 +250,7 @@ const main = async () => {
   const missing = plans.filter((p) => p.action === 'absent');
   const allowDrop = process.env.ALLOW_DROP === '1';
   if (missing.length > 0 && !allowDrop) {
-    console.error(`export FAILED, ${outfile} and ${HISTORY_FILE} left unchanged: ${missing.length} row(s) would be missing:\n  ${missing.map((p) => `${p.impl.id}: ${p.reason}`).join('\n  ')}\n(ALLOW_DROP=1 writes the artifact without them, with the history and frontier frozen and exit 2)`);
+    console.error(`export FAILED, ${outfile} and ${HISTORY_FILE} left unchanged: ${missing.length} row(s) would be missing:\n  ${missing.map((p) => `${p.impl.id}: ${p.reason}`).join('\n  ')}\n(ALLOW_DROP=1 writes a degraded artifact without them: history and frontier frozen, exit 2, never publish)`);
     process.exit(1);
   }
 
