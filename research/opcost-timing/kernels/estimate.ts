@@ -33,8 +33,15 @@ for (const [eng, key] of [['bchd', '--bchd'], ['libauth', '--libauth']] as const
     add(engines[eng]!, r.name, r.evalMedianNs);
   }
 const full: Record<string, Times> = { bchd: new Map(), libauth: new Map() };
+const shape = new Map<string, { txBytes: number; budget: number }>();
+const optNum = (k: string, d: number) => { const i = args.indexOf(k); return i >= 0 ? Number(args[i + 1]) : d; };
+// BCHN reference: worst VM-limits vector l0fhm3 in the calibration run (BCHN.md run 2)
+const REF_NS_PER_BUDGET = optNum('--ref-ns-per-budget', 1.251), REF_NS_PER_BYTE = optNum('--ref-ns-per-byte', 1000.2);
 for (const [eng, key] of [['bchd', '--full-bchd'], ['libauth', '--full-libauth']] as const)
-  for (const f of all(key)) for (const r of JSON.parse(readFileSync(f, 'utf8')) as any[]) if (r.evalMedianNs) add(full[eng]!, r.name, r.evalMedianNs);
+  for (const f of all(key)) for (const r of JSON.parse(readFileSync(f, 'utf8')) as any[]) {
+    if (r.evalMedianNs) add(full[eng]!, r.name, r.evalMedianNs);
+    if (r.txBytes && r.budget) shape.set(r.name, { txBytes: r.txBytes, budget: r.budget });
+  }
 
 const summary: any[] = [];
 const md: string[] = [];
@@ -78,7 +85,15 @@ for (const dir of all('--cut')) {
   }
   summary.push(s);
 }
+for (const s of summary) { const sh = shape.get(s.unit); if (sh) Object.assign(s, sh); }
 writeFileSync(out, JSON.stringify(summary, null, 1));
+// on-chain score bytes (locking + unlocking, results.json), for the per-byte comparison used in BCHN.md
+const score: Record<string, number> = Object.fromEntries(all('--score').map((x) => x.split('=')).map(([k, v]) => [k!, Number(v)]));
+md.push('| singleton | tx B | score B | BCH 2026 budget | op-cost / budget | BCHN estimate | ns per budget unit | x l0fhm3 per budget unit | µs per tx byte | x l0fhm3 per tx byte | µs per score byte | x l0fhm3 per score byte |', '|---|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|');
+for (const s of summary) { const e = s.engines.bchn; if (!e || !s.budget) continue;
+  const sc = score[s.tag];
+  md.push(`| ${s.tag} | ${s.txBytes} | ${sc ? sc.toLocaleString('en') : '-'} | ${s.budget.toLocaleString('en')} | ${Math.round(s.totalOpCost / s.budget).toLocaleString('en')} | ${fmtT(e.est)} | ${(e.est / s.budget).toFixed(0)} | ${Math.round((e.est / s.budget) / REF_NS_PER_BUDGET).toLocaleString('en')} | ${(e.est / s.txBytes / 1e3).toFixed(0)} | ${Math.round((e.est / s.txBytes) / REF_NS_PER_BYTE).toLocaleString('en')} | ${sc ? (e.est / sc / 1e3).toFixed(1) : '-'} | ${sc ? Math.round((e.est / sc) / REF_NS_PER_BYTE).toLocaleString('en') : '-'} |`); }
+md.push('');
 md.push('| singleton | op-cost | engine | estimate | (rest at min / max rate) | count-based | ns/op-cost | measured full run | estimate / measured |', '|---|--:|---|--:|--:|--:|--:|--:|--:|');
 for (const s of summary) for (const [eng, e] of Object.entries<any>(s.engines))
   md.push(`| ${s.tag} | ${(s.totalOpCost / 1e6).toFixed(0)}M | ${eng} | ${fmtT(e.est)} | ${fmtT(e.estLo)} / ${fmtT(e.estHi)} | ${fmtT(e.estCount)} | ${e.nsPerOpCost.toFixed(3)} | ${e.fullMeasured ? fmtT(e.fullMeasured) : '-'} | ${e.estOverFull ? e.estOverFull.toFixed(3) : '-'} |`);
@@ -93,6 +108,23 @@ for (const s of summary) {
     const ctl = Object.keys(engines).map((eng) => { const x = s.engines[eng]?.samples.find((y: any) => y.id === id); return x ? (x.tc / 1e3).toFixed(1) : '-'; });
     const op = (Object.values<any>(s.engines)[0].samples.find((y: any) => y.id === id)).op;
     md.push(`| ${id} | ${op} | ${row.join(' | ')} | ${ctl.join(' | ')} |`);
+  }
+}
+// ---- per-function kernel table (labels: --labels file {tag: {fn: role}})
+const labels = all('--labels').length ? JSON.parse(readFileSync(all('--labels')[0]!, 'utf8')) : {};
+const engs = Object.keys(engines).filter((e) => summary.some((s) => s.engines[e]));
+md.push('', '| singleton | kernel fn | role (inferred) | share of op-cost | kernel calls | op-cost per call | ' + engs.map((e) => `${e} µs/call | ${e} ns/op`).join(' | ') + ' |');
+md.push('|---|---|---|--:|--:|--:|' + engs.map(() => '--:|--:|').join(''));
+for (const s of summary) {
+  const cut = JSON.parse(readFileSync(`${all('--cut').find((d) => d.endsWith('/' + s.tag))}/cut.json`, 'utf8'));
+  const fns = [...new Set(cut.kernels.map((k: any) => k.fn))] as string[];
+  for (const fn of fns) {
+    const calls = cut.classes.filter((c: any) => c.fn === fn).reduce((a: number, c: any) => a + c.count, 0);
+    const op = cut.classes.filter((c: any) => c.fn === fn).reduce((a: number, c: any) => a + c.opCost, 0);
+    const cells = engs.map((e) => { const xs = s.engines[e]?.samples.filter((x: any) => x.fn === fn) ?? []; if (!xs.length) return '- | -';
+      const t = mean(xs.map((x: any) => x.call)), o = mean(xs.map((x: any) => x.op)); return `${(t / 1e3).toFixed(1)} | ${(t / o).toFixed(3)}`; });
+    const per = mean(cut.kernels.filter((k: any) => k.fn === fn).map((k: any) => k.sampleOpCost));
+    md.push(`| ${s.tag} | 0x${fn} | ${labels[s.tag]?.[fn] ?? ''} | ${(100 * op / s.totalOpCost).toFixed(1)}% | ${calls} | ${Math.round(per).toLocaleString('en')} | ${cells.join(' | ')} |`);
   }
 }
 console.log(md.join('\n'));
