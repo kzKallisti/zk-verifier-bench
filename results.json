@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-27T07:43:35.253Z",
+  "generatedAt": "2026-10-27T07:44:07.341Z",
   "statement": {
     "proofSystem": "Groth16",
     "curve": "BN254",
@@ -1961,7 +1961,7 @@
         "type": "p2s"
       },
       "txv5": null,
-      "source": "BCH-native CashScript: the COMPLETE BLS12-381 Groth16 verifier in ONE contract, op-optimized — same curve as nchain. Lazy field tower for the Miller loop; QUOTIENT-TORUS residue final exponentiation (ePrint 2024/640 in Fp12*/Fp6*: lambda = p+|x|, one gated 6-limb root u with [c]=[1+u*W], terminal [fF]=[frob(c,1)] cross-product with [0:0] rejected) replacing the hard part; e(alpha,beta) baked as its torus coordinate and the (vk_x,gamma)/(C,delta) line coefficients baked (only (-A,B) runs on-chain G2 math); psi G2 subgroup check fused into the Miller tail; A and C checked on-curve, with their redundant G1 subgroup checks omitted because they are paired only against order-r G2 points; GLV 4-scalar vk_x with mixed Jacobian-affine fixed-table additions. All extra inputs (torus root u; GLV k-decomposition + zInv) are prover-supplied and gated on-chain. Sound (vk_x recomputed on-chain; all proof points checked on-curve and B subgroup-checked). Verified vs @noble/curves bls12-381. Single-tx like bch-groth16-bls12381-singleton but ~86% less op-cost. Still over the 10,000 B / per-input op limits.",
+      "source": "BCH-native CashScript: the COMPLETE BLS12-381 Groth16 verifier in ONE contract, op-optimized — same curve as nchain. Lazy field tower for the Miller loop; QUOTIENT-TORUS residue final exponentiation (ePrint 2024/640 in Fp12*/Fp6*: lambda = p+|x|, one gated 6-limb root u with [c]=[1+u*W], terminal [fF]=[frob(c,1)] cross-product with [0:0] rejected) replacing the hard part; e(alpha,beta) baked as its torus coordinate and the (vk_x,gamma)/(C,delta) line coefficients baked (only (-A,B) runs on-chain G2 math); psi G2 subgroup check fused into the Miller tail; A and C checked on-curve, with their redundant G1 subgroup checks omitted because they are paired only against order-r G2 points; GLV 4-scalar vk_x with mixed Jacobian-affine fixed-table additions. All extra inputs (torus root u; GLV k-decomposition + zInv) are prover-supplied and gated on-chain. Sound (vk_x recomputed on-chain; all proof points checked on-curve and B subgroup-checked). Verified vs @noble/curves bls12-381. Single-tx like bch-groth16-bls12381-singleton but ~85% less op-cost. Still over the 10,000 B / per-input op limits.",
       "inputHash": "sha256:bba15e6cd3035911e26e94b4ff5adcb07a1b32eadd190e3b2064352b24ec6324"
     },
     {
