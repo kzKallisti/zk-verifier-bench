@@ -401,6 +401,7 @@ export const txv5Grade = (scenario: Scenario, bsv: boolean, scoreOf: ScoreOf): T
     invalid: v.invalid?.length ?? 0,
     invalidRejected: (v.invalid ?? []).filter((run) => ctx.every((c) => run.some((s) => !accepts(c.unbudgeted, s, bsv).ok))).length,
   } : undefined;
+  if (variant && variant.invalidRejected !== variant.invalid) throw new Error(`txv5Variant: ${variant.invalid - variant.invalidRejected} of ${variant.invalid} invalid runs are not rejected on TXv5 (budget lifted)`);
   const graded = runs.map(([label, run]) => ({ label, run, g: gradeRun(run, bsv, scoreOf, ctx) }));
   const main = graded[0]!.g;
   const wc = graded.find((x) => x.label === 'worst-case proof')?.g;
