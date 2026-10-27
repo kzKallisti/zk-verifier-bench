@@ -1,6 +1,6 @@
 {
   "schema": "remaining-verifier-corrections-qualification/v2",
-  "sourceRevision": "e8f3e0a5488631e42178e15f44a2371eab8bee36",
+  "sourceRevision": "ab5c0a9ba5e755d190ff2ad43a8b659f92407ebe",
   "benchmarkBase": "b140f64ca073c6d0466083fe14b5d9c83776d844",
   "status": "STANDALONE_CORRECTED_REFERENCES_DEFAULT_REGISTRY_AND_FEED_UNCHANGED",
   "frameProfiles": {
@@ -183,5 +183,17 @@
     "graphBinding": "Root input index and exact count; five reverse successor-lock chains; BN13 root absolute pins preserve its input3-lock dependencies. Applies when spending the pinned root under ordinary ledger input validation and P2SH32 binding.",
     "nativeHolds": "BN27:24 evaluations at unchanged10000-byte limits, including next-input-bytecode pushes; BN13:2 existing standard density holds. No tuning.",
     "mathematicalScope": "Transfers the prior necessary finite-domain equation theorem by exact body and argument-stack preservation. Grouped ancestry and neutral-proof domains remain outside these derivatives."
+  },
+  "blsPlainSingletonNeutralVkx": {
+    "artifactDirectory": "artifacts/bls-singleton-neutral-vkx",
+    "qualification": "artifacts/bls-singleton-neutral-vkx/qualification.json",
+    "sourceFile": "singleton/bls12-381/groth16.cash",
+    "sourceSha256": "7162dffe5226bfe93ca82d9b98ecd86efcd555495fd08ebb96dc49d6c0a93197",
+    "existingPositiveProofs": 5,
+    "oracleAccepted": 5,
+    "nativeAdmission": "HOLD",
+    "scope": "Two canonical Fr public inputs, finite canonical external A/C points in the G1 pairing quotient, finite strict-r B. Neutral computed vk_x is supported; external infinity encodings are not added.",
+    "proofBoundary": "Independent fixed-key/group algebra and source peer review support the changed neutral-vkx source branch. Actual branch code and stack transport are separately inspected with explicit input-owner/ABI premises; five fixture executions cannot establish a complete new whole-bytecode Groth16 theorem.",
+    "neutralExistingCase": "benchmark PR14 extraValidProofs[13], public inputs [1,r-1]; reversible auxiliary encoding only"
   }
 }
