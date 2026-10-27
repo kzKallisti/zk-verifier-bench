@@ -10,8 +10,9 @@
 //   'component'  - a partial pairing / vk_x checkpoint (category 'partial'), not a full verifier.
 //   'archived'   - a superseded legacy entry kept as history only; like 'withdrawn' it is never
 //                  ranked (frontier leader / current, new history points), but its row stays.
-// Withdrawn implementations are normally removed from REGISTRY (bench #50 removed the 15 rows of
-// the reset); their rows then leave results.json entries[] too. The site keeps a frozen copy of
+// Withdrawn implementations are removed from REGISTRY (bench #50 removed the 15 rows of the reset;
+// bch-groth16-bls12381-grouped-residue followed after the 2026-10-27 review); their rows then leave
+// results.json entries[] too. The site keeps a frozen copy of
 // those last rows (zk-verifier-competition src/data/withdrawn-archive.json). Only ids still in
 // REGISTRY belong in this table.
 // Kept as one table keyed by id (not on each implementation module) so registry removals
@@ -212,11 +213,6 @@ export const REVIEW_STATUS: Record<string, ReviewStatus> = {
   'bch-groth16-bls12381-chunked-covenant-residue': {
     status: 'unreviewed',
     reason: 'Review 2026-10-27: bytes reproduce and the math checks out, no owner gap. Open: the same category-genesis and verdict-binding premises as the BN covenant-residue entry; the written architecture (impl header) describes an obsolete chunk layout.',
-  },
-  'bch-groth16-bls12381-grouped-residue': {
-    status: 'withdrawn',
-    reason: 'Owner gap (review 2026-10-27): the tx2/tx3 group roots take their incoming state from tx.inputs[0].nftCommitment but check only capability 0x01 and sibling exclusion, with no pinned token category, so that state is unowned. Fix route: pin the category and hold minting in a covenant.',
-    refs: [`${SRC}/blob/main/chunked/grouped/README.md`, `${SRC}/blob/main/chunked/intratx/transform.mjs`],
   },
 
   // no public source: unreviewed until the author (toorik2) shares the generator source
