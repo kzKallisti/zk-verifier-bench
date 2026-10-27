@@ -1,0 +1,14 @@
+date: 2026-10-27T18:04:11+01:00
+host: Linux 7.2.8-9-omarchy x86_64
+Model name:                              AMD Ryzen 9 7900 12-Core Processor
+Thread(s) per core:                      2
+Core(s) per socket:                      12
+CPU(s) scaling MHz:                      73%
+CPU max MHz:                             5485.4111
+CPU min MHz:                             429.5810
+governor(cpu9): performance driver: amd-pstate-epp epp: performance boost: 1
+bchn: Bitcoin Cash Node Daemon version v29.1.0-b31ed10b4
+node cpu: 9 driver cpu: 8 reps: 11 kernels: /home/mrzwets/BCH-projects/verifier.cash/work/opcost-timing/kernels/all-kernels.json (ec4067c80ce6cc34)
+loadavg start: 0.61 2.09 7.41 2/1644 902166
+{"datadir":"/home/mrzwets/BCH-projects/verifier.cash/work/opcost-timing/bchn-kern-a","rpcport":40038,"cpu":"9","pid":902175}
+loadavg end: 2.43 2.41 6.69 6/1679 903583
