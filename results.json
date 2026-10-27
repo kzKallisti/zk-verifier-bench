@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-27T00:09:38.808Z",
+  "generatedAt": "2026-10-27T00:36:07.521Z",
   "statement": {
     "proofSystem": "Groth16",
     "curve": "BN254",
@@ -1006,7 +1006,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "baseline",
+        "reason": "Third-party reference verifier, measured for comparison; not a verifier.cash entry."
       },
       "score": 522564,
       "size": {
@@ -1098,7 +1099,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "baseline",
+        "reason": "Third-party reference verifier, measured for comparison; not a verifier.cash entry."
       },
       "score": 11717771,
       "size": {
@@ -2817,7 +2819,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "archived",
+        "reason": "Legacy large chain, superseded by the reviewed sound native and SI-GLS builds; kept as history, not ranked."
       },
       "score": 239773,
       "size": {
@@ -2916,7 +2919,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "archived",
+        "reason": "Legacy large chain, superseded by the reviewed sound native and SI-GLS builds; kept as history, not ranked."
       },
       "score": 473475,
       "size": {
@@ -3104,7 +3108,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "component",
+        "reason": "Partial pairing / vk_x component (checkpoint), not a full Groth16 verifier."
       },
       "score": 11051,
       "size": {
@@ -3191,7 +3196,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "component",
+        "reason": "Partial pairing / vk_x component (checkpoint), not a full Groth16 verifier."
       },
       "score": 11228,
       "size": {
@@ -3278,7 +3284,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "component",
+        "reason": "Partial pairing / vk_x component (checkpoint), not a full Groth16 verifier."
       },
       "score": 175823,
       "size": {
@@ -3363,7 +3370,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "component",
+        "reason": "Partial pairing / vk_x component (checkpoint), not a full Groth16 verifier."
       },
       "score": 14874,
       "size": {
@@ -3451,7 +3459,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "component",
+        "reason": "Partial pairing / vk_x component (checkpoint), not a full Groth16 verifier."
       },
       "score": 11351,
       "size": {
@@ -3547,7 +3556,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "component",
+        "reason": "Partial pairing / vk_x component (checkpoint), not a full Groth16 verifier."
       },
       "score": 6640,
       "size": {
@@ -3634,7 +3644,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "component",
+        "reason": "Partial pairing / vk_x component (checkpoint), not a full Groth16 verifier."
       },
       "score": 6652,
       "size": {
@@ -3721,7 +3732,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "component",
+        "reason": "Partial pairing / vk_x component (checkpoint), not a full Groth16 verifier."
       },
       "score": 109305,
       "size": {
@@ -3817,7 +3829,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "component",
+        "reason": "Partial pairing / vk_x component (checkpoint), not a full Groth16 verifier."
       },
       "score": 342331,
       "size": {
@@ -3909,7 +3922,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "archived",
+        "reason": "Legacy large chain, superseded by the reviewed sound native and SI-GLS builds; kept as history, not ranked."
       },
       "score": 357241,
       "size": {
@@ -4008,7 +4022,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "archived",
+        "reason": "Legacy large chain, superseded by the reviewed sound native and SI-GLS builds; kept as history, not ranked."
       },
       "score": 635295,
       "size": {
@@ -5671,7 +5686,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "component",
+        "reason": "Partial pairing / vk_x component (checkpoint), not a full Groth16 verifier."
       },
       "score": 335614,
       "size": {
@@ -5770,7 +5786,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "archived",
+        "reason": "Legacy large chain, superseded by the reviewed sound native and SI-GLS builds; kept as history, not ranked."
       },
       "score": 345471,
       "size": {
@@ -7152,7 +7169,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "archived",
+        "reason": "Legacy large chain, superseded by the reviewed sound native and SI-GLS builds; kept as history, not ranked."
       },
       "score": 345791,
       "size": {
@@ -7347,7 +7365,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "demo",
+        "reason": "Harness self-test (multi-step covenant demo), not a Groth16 verifier."
       },
       "score": 483,
       "size": {
