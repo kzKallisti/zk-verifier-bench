@@ -31,7 +31,7 @@ const archived: ReviewStatus = {
 };
 
 // shared reasons for the BLS12-381 intratx-fs family (FS-PIT argument, chunked/bls12-381/README.md sections 1-6)
-const FS_PIT = 'FS-PIT soundness argument, README sections 1-6, in the SHA-256 random-oracle model (bound (23*q_beta + 160*q_alpha)/2^256 + 3*N(N-1)/2^257 from README section 5: q counts adversary and verifier SHA-256 queries, N adds the < 2^22 + 2^7 setup hashes). A and C are cofactor-equivalent.';
+const FS_PIT = 'FS-PIT soundness argument, README sections 1-6, in the SHA-256 random-oracle model (bound (23*q_beta + 160*q_alpha)/2^256 + 3*N(N-1)/2^257 from README section 5: q counts adversary and verifier SHA-256 queries, q_beta/q_alpha the challenge queries among them, N adds the < 2^22 + 2^7 setup hashes). A and C are cofactor-equivalent.';
 const FS_FAIL_CLOSED = ' The fail-closed binder-order argument in section 6 was accepted.';
 const FS_REBUILD = ' Rebuilds byte-identically from the section 8 reconstructed flags.';
 const FS_BINDER_FIRST = ' The binder runs first, before any loader, with root framing and a bounded prefix cache (section 6).';
