@@ -24,6 +24,7 @@ import {
   secp256k1,
   sha256,
   bigIntToVmNumber,
+  decodeAuthenticationInstructions,
 } from '@bitauth/libauth';
 
 // ---------------------------------------------------------------- types
@@ -34,6 +35,8 @@ export interface WlInput {
   sequenceNumber: number;
   /** if set, the unlocking bytecode is produced after outpoints are known (signature baselines) */
   sign?: { kind: 'p2pkh-ecdsa' | 'p2pkh-schnorr' | 'bms-1of3-ecdsa-bottom' | 'p2pk-schnorr' | 'p2pk-ecdsa'; key: Uint8Array };
+  /** generic re-sign (VMB vectors): unlocking = these pushes, signatures recomputed over `sourceLocking` */
+  resign?: ({ raw: Uint8Array } | { alg: 'ecdsa' | 'schnorr'; key: Uint8Array; hashType: number })[];
 }
 export interface Workload {
   id: string;
@@ -115,6 +118,16 @@ export const p2pkLocking = (pk: Uint8Array) => cat(encodeDataPush(pk), Uint8Arra
 export const bms1of3Locking = (pks: Uint8Array[]) => cat(Uint8Array.of(0x51), ...pks.map(encodeDataPush), Uint8Array.of(0x53, 0xae));
 const signInputs = (tx: Tx, sourceOutputs: any[], inputs: WlInput[]) => {
   inputs.forEach((inp, i) => {
+    if (inp.resign) {
+      const pushes = inp.resign.map((p) => {
+        if ('raw' in p) return encodeDataPush(p.raw);
+        const h = hash256(generateSigningSerializationBch({ inputIndex: i, sourceOutputs, transaction: tx as any } as any, { coveredBytecode: inp.sourceLocking, signingSerializationType: Uint8Array.of(p.hashType) }));
+        const sig = p.alg === 'ecdsa' ? secp256k1.signMessageHashDER(p.key, h) : secp256k1.signMessageHashSchnorr(p.key, h);
+        return encodeDataPush(cat(sig as Uint8Array, Uint8Array.of(p.hashType)));
+      });
+      tx.inputs[i]!.unlockingBytecode = cat(...pushes);
+      return;
+    }
     if (!inp.sign) return;
     const h = sighash(tx, sourceOutputs, i, inp.sourceLocking);
     const { kind, key } = inp.sign;
@@ -330,12 +343,75 @@ export const fromVmb = (v: any[], expect: 'accept' | 'reject', group: string): W
   const tx = decodeTransaction(hexToBin(v[4])); if (typeof tx === 'string') return 'decode tx: ' + tx;
   const so = decodeTransactionOutputs(hexToBin(v[5])); if (typeof so === 'string') return 'decode utxos: ' + so;
   if (so.some((o: any) => o.token) || tx.outputs.some((o: any) => o.token)) return 'uses CashTokens (not replayable without token genesis)';
+  const inputs: WlInput[] = [];
+  for (let i = 0; i < tx.inputs.length; i++) {
+    const r = resignInput(tx as Tx, so as any, i);
+    if (typeof r === 'string') return `input ${i}: ${r}`;
+    inputs.push(r);
+  }
   return {
-    id: v[0], description: v[1], expect, group,
-    version: tx.version, locktime: tx.locktime,
-    inputs: tx.inputs.map((inp, i) => ({ sourceLocking: so[i]!.lockingBytecode, valueSatoshis: so[i]!.valueSatoshis, unlocking: inp.unlockingBytecode, sequenceNumber: inp.sequenceNumber })),
+    id: v[0], description: v[1], expect, group, version: tx.version, locktime: tx.locktime, inputs,
     outputs: tx.outputs.map((o) => ({ locking: o.lockingBytecode, valueSatoshis: o.valueSatoshis })),
   };
+};
+// Signature-bearing inputs commit to their (fake) outpoints, so they cannot be replayed verbatim on a real chain.
+// We re-key them: every original public key P maps to a rig key k(P) = sha256(P); the locking script is rebuilt
+// with k(P)'s public key at the same position, and each signature is re-created with the same algorithm
+// (ECDSA/Schnorr, from the original length), the same sighash type and the same key slot (legacy multisig slots
+// are found by verifying the original signature against each original key). The evaluated opcodes, signature
+// kinds and verification counts are unchanged; only key/signature bytes differ.
+const rigKey = (pk: Uint8Array) => sha256.hash(cat(new TextEncoder().encode('opcost-timing-rig rekey'), pk));
+const pushesOf = (b: Uint8Array) => {
+  const ins = decodeAuthenticationInstructions(b) as any[];
+  if (ins.some((x) => x.malformed || x.opcode > 0x4e && x.opcode !== 0x4f && !(x.opcode >= 0x51 && x.opcode <= 0x60))) return undefined;
+  return ins.map((x) => (x.data !== undefined ? x.data as Uint8Array : x.opcode === 0 ? new Uint8Array(0) : x.opcode === 0x4f ? Uint8Array.of(0x81) : Uint8Array.of(x.opcode - 0x50)));
+};
+const isSigLike = (d: Uint8Array) => d.length === 65 || (d.length >= 9 && d.length <= 73 && d[0] === 0x30);
+const resignInput = (tx: Tx, so: { lockingBytecode: Uint8Array; valueSatoshis: bigint }[], i: number): WlInput | string => {
+  const L = so[i]!.lockingBytecode; const U = tx.inputs[i]!.unlockingBytecode;
+  const plain: WlInput = { sourceLocking: L, valueSatoshis: so[i]!.valueSatoshis, unlocking: U, sequenceNumber: tx.inputs[i]!.sequenceNumber };
+  const pushes = pushesOf(U);
+  if (!pushes || !pushes.some((d) => d && isSigLike(d))) return plain; // no signature: replay verbatim
+  const algOf = (sig: Uint8Array) => (sig.length === 65 ? 'schnorr' as const : 'ecdsa' as const);
+  const origHash = (ht: number) => hash256(generateSigningSerializationBch({ inputIndex: i, sourceOutputs: so, transaction: tx as any } as any, { coveredBytecode: L, signingSerializationType: Uint8Array.of(ht) }));
+  const verifies = (sig: Uint8Array, pk: Uint8Array) => {
+    const body = sig.slice(0, -1); const h = origHash(sig[sig.length - 1]!);
+    return sig.length === 65 ? secp256k1.verifySignatureSchnorr(body, pk, h) : secp256k1.verifySignatureDER(body, pk, h);
+  };
+  // P2PKH
+  if (L.length === 25 && L[0] === 0x76 && L[1] === 0xa9 && L[2] === 0x14 && L[23] === 0x88 && L[24] === 0xac && pushes.length === 2) {
+    const [sig, pk] = pushes as Uint8Array[];
+    if (!verifies(sig!, pk!)) return 'P2PKH signature does not verify against the original tx';
+    const k = rigKey(pk!);
+    return { ...plain, sourceLocking: p2pkhLocking(pubkeyOf(k)), resign: [{ alg: algOf(sig!), key: k, hashType: sig![sig!.length - 1]! }, { raw: pubkeyOf(k) }] };
+  }
+  // bare P2PK (compressed key)
+  if (L.length === 35 && L[0] === 0x21 && L[34] === 0xac && pushes.length === 1) {
+    const sig = pushes[0]!; const pk = L.slice(1, 34);
+    if (!verifies(sig, pk)) return 'P2PK signature does not verify';
+    const k = rigKey(pk);
+    return { ...plain, sourceLocking: p2pkLocking(pubkeyOf(k)), resign: [{ alg: algOf(sig), key: k, hashType: sig[sig.length - 1]! }] };
+  }
+  // bare m-of-n multisig with compressed keys: <m> <pk>... <n> OP_CHECKMULTISIG
+  const lp = decodeAuthenticationInstructions(L) as any[];
+  if (lp.length >= 4 && lp[lp.length - 1].opcode === 0xae && lp.slice(1, -2).every((x) => x.data?.length === 33)) {
+    const pks = lp.slice(1, -2).map((x) => x.data as Uint8Array);
+    const ks = pks.map(rigKey);
+    const newL = cat(L.slice(0, 1), ...ks.map((k) => encodeDataPush(pubkeyOf(k))), L.slice(L.length - 2));
+    const dummy = pushes[0]!; const sigs = pushes.slice(1) as Uint8Array[];
+    let slots: number[];
+    if (dummy.length === 0) {
+      // legacy mode: keys are consumed top-down; assign each sig to the key it verifies against (same order)
+      slots = []; let k = pks.length - 1;
+      for (let s = sigs.length - 1; s >= 0; s--) { while (k >= 0 && !verifies(sigs[s]!, pks[k]!)) k--; if (k < 0) return 'multisig signature slot not found'; slots.unshift(k); k--; }
+    } else {
+      let bits = 0; dummy.forEach((b, j) => (bits |= b << (8 * j)));
+      slots = pks.map((_, j) => j).filter((j) => (bits >> j) & 1);
+      if (slots.length !== sigs.length) return 'checkbits mismatch';
+    }
+    return { ...plain, sourceLocking: newL, resign: [{ raw: dummy }, ...sigs.map((sig, s) => ({ alg: algOf(sig), key: ks[slots[s]!]!, hashType: sig[sig.length - 1]! }))] };
+  }
+  return 'signature-bearing input of an unsupported shape (cannot re-sign)';
 };
 /** generic JSON workload (hex fields), the format other tasks can emit */
 export const fromJson = (w: any): Workload => ({
