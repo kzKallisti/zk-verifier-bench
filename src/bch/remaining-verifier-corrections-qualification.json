@@ -1,6 +1,6 @@
 {
   "schema": "remaining-verifier-corrections-qualification/v2",
-  "sourceRevision": "dbbd0d3763da02720df5891d494a515312dd8636",
+  "sourceRevision": "0645a3726eabc2ab85bb35ae0a944d3fd32b54e5",
   "benchmarkBase": "b140f64ca073c6d0466083fe14b5d9c83776d844",
   "status": "STANDALONE_CORRECTED_REFERENCES_DEFAULT_REGISTRY_AND_FEED_UNCHANGED",
   "frameProfiles": {
@@ -144,5 +144,21 @@
   "retiredEvidence": [
     "An earlier current-BLS evidence wrapper selected raw/rescheduled variants and tuned padding. It is excluded and replaced by the supplied fixed-policy artifact.",
     "An earlier grouped-GLV evidence snapshot reversed the second logical input pair. It is excluded; supplied raw-v2 uses the unchanged archived [439832,401604] statement."
-  ]
+  ],
+  "historicalFrameReferences": {
+    "artifactDirectory": "artifacts/historical-frame-repairs",
+    "qualification": "artifacts/historical-frame-repairs/qualification.json",
+    "sourceHelper": "chunked/intratx/repair_historical_frames.mjs",
+    "profiles": 7,
+    "existingGraphs": 21,
+    "proofPublicStateTablePaddingInstructionsPreserved": true,
+    "arithmeticOracleAccepted": 465,
+    "declaredConsensusAccepted": 465,
+    "declaredStandardAccepted": 463,
+    "totalPerMode": 465,
+    "nativeVersusProposed": "Six historical profiles use BCH2026. BNlarge4 uses proposed bch-spec only; its 12 inputs per mode are reported separately.",
+    "scope": "Conditional finite-equation frame repairs at exact archived program identities; complete ordered graphs and appropriate token ancestry remain explicit premises. Whole-transaction size/fees, relay, neutral completeness and mainnet admission are unclaimed.",
+    "standardResourceHolds": 2,
+    "registryAndHistoricalScoresChanged": false
+  }
 }
