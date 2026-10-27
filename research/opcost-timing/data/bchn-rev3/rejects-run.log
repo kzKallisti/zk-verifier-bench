@@ -1,0 +1,5 @@
+4 workloads
+ok  bch-groth16-bn254-sound-native:invalid0 K=1 op/tx=13788186 verify=undefinedms ns/op=undefined rejected:blk-bad-inputs
+ok  bch-groth16-bls12381-sound-native:invalid0 K=1 op/tx=19646940 verify=undefinedms ns/op=undefined rejected:blk-bad-inputs
+BAD defcharge-gap K=1 op/tx=577192 verify=undefinedms ns/op=undefined rejected:blk-bad-inputs
+ok  defcharge-fits K=347 op/tx=577530 verify=12.62ms ns/op=0.063 accepted

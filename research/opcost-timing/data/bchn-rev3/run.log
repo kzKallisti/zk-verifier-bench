@@ -1,0 +1,26 @@
+25 workloads
+ok  base-op1 K=2000 op/tx=101 verify=2.03ms ns/op=10.050 accepted
+ok  base-trxhzt-like K=2000 op/tx=54521 verify=147.53ms ns/op=1.353 accepted
+ok  bch-groth16-bn254-sound-native:valid K=10 op/tx=20572881 verify=34.9ms ns/op=0.170 accepted
+ok  bch-groth16-bn254-sound-native:extra0 K=11 op/tx=19853545 verify=37.76ms ns/op=0.173 accepted
+ok  bch-groth16-bn254-sound-native:extra1 K=11 op/tx=19845007 verify=37.76ms ns/op=0.173 accepted
+ok  bch-groth16-bn254-sound-native:extra2 K=11 op/tx=19869374 verify=37.94ms ns/op=0.174 accepted
+ok  bch-groth16-bn254-sound-native:worst K=10 op/tx=20760869 verify=35.03ms ns/op=0.169 accepted
+ok  bch-groth16-bn254-sound-native:invalid0 K=1 op/tx=13788186 verify=undefinedms ns/op=undefined rejected:blk-bad-inputs
+ok  bch-groth16-bls12381-sound-native:valid K=9 op/tx=24040286 verify=26.93ms ns/op=0.124 accepted
+ok  bch-groth16-bls12381-sound-native:extra0 K=9 op/tx=24102914 verify=26.98ms ns/op=0.124 accepted
+ok  bch-groth16-bls12381-sound-native:extra1 K=8 op/tx=25822957 verify=25.01ms ns/op=0.121 accepted
+ok  bch-groth16-bls12381-sound-native:extra2 K=9 op/tx=23910110 verify=26.84ms ns/op=0.125 accepted
+ok  bch-groth16-bls12381-sound-native:extra3 K=9 op/tx=24712117 verify=27.55ms ns/op=0.124 accepted
+ok  bch-groth16-bls12381-sound-native:extra4 K=9 op/tx=24510640 verify=27.46ms ns/op=0.124 accepted
+ok  bch-groth16-bls12381-sound-native:extra5 K=9 op/tx=24657345 verify=27.36ms ns/op=0.123 accepted
+ok  bch-groth16-bls12381-sound-native:worst K=8 op/tx=26008890 verify=25.07ms ns/op=0.120 accepted
+ok  bch-groth16-bls12381-sound-native:invalid0 K=1 op/tx=19646940 verify=undefinedms ns/op=undefined rejected:blk-bad-inputs
+BAD defcharge-gap K=1 op/tx=577192 verify=undefinedms ns/op=undefined rejected:blk-bad-inputs
+ok  defcharge-fits K=347 op/tx=577530 verify=11.69ms ns/op=0.058 accepted
+ok  09macl K=1548 op/tx=129226 verify=36.71ms ns/op=0.184 accepted
+ok  ly54y8 K=2000 op/tx=41343 verify=47.79ms ns/op=0.578 accepted
+ok  u83yzg K=2000 op/tx=41208 verify=58.14ms ns/op=0.705 accepted
+ok  trxhzt K=2000 op/tx=54520 verify=147.52ms ns/op=1.353 accepted
+ok  l0fhm3 K=3 op/tx=69949561 verify=289.05ms ns/op=1.377 accepted
+ok  w57j6w K=2000 op/tx=20471 verify=68.53ms ns/op=1.674 accepted
