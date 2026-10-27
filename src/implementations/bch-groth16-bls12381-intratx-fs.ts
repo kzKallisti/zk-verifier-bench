@@ -33,7 +33,10 @@
 //
 // The 24 pre-beta relations have cancellation degree at most 23, and the alpha
 // identity has degree at most 137. In the SHA-256 random-oracle model, the
-// conservative union bound is 160/(2^256-1), less than 161/2^256.
+// conservative union bound is 160/(2^256-1), less than 161/2^256, per oracle
+// query; over q queries add the Merkle collision term q(q+1)/2^256 (written
+// argument: groth16_cashscript chunked/bls12-381/README.md, "FS-PIT soundness
+// argument", section 5).
 //
 // Largest supplied valid fixture:
 //   22 inputs, 78,982 script B, 79,178 wire B, 79,948 challenge-score B
