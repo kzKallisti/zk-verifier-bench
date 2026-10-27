@@ -161,10 +161,19 @@ all, see *Why these measures* in the README.)
   and `standard`, which is true only if every honest run's figure is
   standard. The worst case is over the shipped honest proofs only; an honest
   witness outside them can be heavier (e.g. intratx-residue-large's
-  max-density GLV witness, which is not shipped). Current not-paddable
-  entries: both `sound-si-gls-single` builds (BN254 and BLS12-381) pin
-  `DEPTH == 2` at entry, so their TXv5 figure is "not paddable as shipped;
-  estimate X"; the reviewed artifacts are left as shipped. The
+  max-density GLV witness, which is not shipped). TXv5-grading variants:
+  an entry may ship `Scenario.txv5Variant`, the same program with a
+  documented pad slot, used only for this grade (`txv5.variant` and
+  `txv5.summary.variant` say so; the variant's invalid runs must reject on
+  TXv5 with the budget lifted). Both `sound-si-gls-single` builds (BN254 and
+  BLS12-381) pin `DEPTH == 2` at entry, so as shipped they reject any pad;
+  their TXv5 figure is measured on a variant whose entry check is
+  `DEPTH <3> NUMEQUALVERIFY DROP` (one instruction-level edit of the
+  reviewed redeem, +1 B; unlocking `<WQ> <WS> <pad> <redeem>`; the pad is
+  dropped unread before any other instruction), with the reviewed vectors'
+  witnesses. The reviewed bch-spec artifacts and scores are unchanged.
+  Derivation, argument and checks: groth16_cashscript `chunked/txv5-pad`
+  (`derive.mjs`). The
   residue-large max-density GLV witness (all four decomposition scalars
   2^128 − 1, ≈104,860 B consensus on TXv5 against 101,215 B for the heaviest
   shipped proof) is not exported as its `worstCaseProof`: a full honest proof

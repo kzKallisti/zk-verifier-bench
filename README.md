@@ -285,7 +285,8 @@ Five VMs (`src/harness/vm.ts`):
   100,000-byte scripts and stack elements, but the density base stays 41, so
   the budget is `(41 + len) × 800`. bch-spec entries get a second `txv5` grade
   (valid as shipped, or the minimal zero padding and padded score, or not
-  paddable as shipped) for every honest run; the summary is standard only if
+  paddable as shipped; or measured on the entry's TXv5-grading pad-slot
+  variant, `txv5.variant`) for every honest run; the summary is standard only if
   every honest run is; see `docs/benchmark.md` and bench issue #35.
 
 ### Grading dimensions
