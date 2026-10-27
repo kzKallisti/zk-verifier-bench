@@ -31,7 +31,7 @@ const archived: ReviewStatus = {
 };
 
 // shared reasons for the BLS12-381 intratx-fs family (FS-PIT argument, chunked/bls12-381/README.md sections 1-6)
-const FS_PIT = 'FS-PIT soundness argument, README sections 1-6, in the SHA-256 random-oracle model (160/(2^256-1) per query plus the Merkle term). A and C are cofactor-equivalent.';
+const FS_PIT = 'FS-PIT soundness argument, README sections 1-6, in the SHA-256 random-oracle model (bound (23*q_beta + 160*q_alpha)/2^256 + 3*N(N-1)/2^257 from README section 5: q counts adversary and verifier SHA-256 queries, N adds the < 2^22 + 2^7 setup hashes). A and C are cofactor-equivalent.';
 const FS_FAIL_CLOSED = ' The fail-closed binder-order argument in section 6 was accepted.';
 const FS_REBUILD = ' Rebuilds byte-identically from the section 8 reconstructed flags.';
 const FS_BINDER_FIRST = ' The binder runs first, before any loader, with root framing and a bounded prefix cache (section 6).';
@@ -178,7 +178,7 @@ export const REVIEW_STATUS: Record<string, ReviewStatus> = {
   // reviews 2026-10-27 (groth16_cashscript 9e56c4f, bench cef15cd; notes: verifier.cash work/fs-pit/).
   'bch-groth16-bls12381-intratx-fs': {
     status: 'reviewed',
-    reason: 'FS-PIT soundness argument, groth16_cashscript chunked/bls12-381/README.md sections 1-6 (two reviews signed off 2026-10-27). Sound in the SHA-256 random-oracle model with bound 160/(2^256-1) per oracle query plus the Merkle term q(q+1)/2^256. B is checked in G2; A and C are on-curve and cofactor-equivalent (disclosed). The PIC helper is imported before the binder; this rests on the accepted fail-closed argument in section 6.',
+    reason: 'FS-PIT soundness argument, groth16_cashscript chunked/bls12-381/README.md sections 1-6 (two reviews signed off 2026-10-27). Sound in the SHA-256 random-oracle model with bound (23*q_beta + 160*q_alpha)/2^256 + 3*N(N-1)/2^257 (README section 5: q counts adversary and verifier SHA-256 queries, q_beta/q_alpha the challenge queries among them, N = q + fewer than 2^22 + 2^7 setup hashes). B is checked in G2; A and C are on-curve and cofactor-equivalent (disclosed). The PIC helper is imported before the binder; this rests on the accepted fail-closed argument in section 6.',
     refs: [`${SRC}/blob/main/chunked/bls12-381/README.md`],
   },
   ...Object.fromEntries(
