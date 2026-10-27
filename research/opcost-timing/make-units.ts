@@ -27,7 +27,10 @@ for (const [k, rs] of groups) {
     txHex: r0.txHex, sourceOutputsHex: r0.sourceOutputsHex,
     inputs: rs.map((r) => r.inputIndex),
     expectAccept: looseOk,
-    expectOpCost: rs.map((r) => (r.kind === 'valid' ? r.opCost : -1)),
+    // bchd/BCHN also charge OP_DEFINE body bytes (libauth 3.1.0-next.8 does not), so the engine
+    // check is left to the profile pass, which verifies bchd = libauth + OP_DEFINE body bytes.
+    expectOpCost: rs.map(() => -1),
+    libauthOpCosts: rs.map((r) => r.opCost),
     libauthOpCost: rs.reduce((a, r) => a + r.opCost, 0),
   });
 }
