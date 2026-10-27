@@ -21,7 +21,7 @@ bch-groth16-bls12381-sound-si-gls-single (BLS) without touching the reviewed bch
 - BLS: fixture 0 padded 32,721 std (+6,234) / 32,654 cons; worst = extra proof #2 34,994 std;
   all 7 honest runs standard; variant invalid 19/19 rejected.
 - Equal to the previous estimates (the estimate rule was exact here: size is set by op-cost).
-- Minimality (scratch/minimal.ts): one pad byte less rejects on real TXv5 (both modes, both curves).
+- Minimality (scratch/minimal.ts; drop scratch/ before merge): one pad byte less rejects on real TXv5 (both modes, both curves).
 - bch-spec score unchanged (21,915 BN).
 
 ## Next (Apply step, not this task)
