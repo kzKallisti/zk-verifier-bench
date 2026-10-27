@@ -70,6 +70,7 @@ import { layoutGate, publicInputGate } from './gates.js';
 import { redTeam } from './redteam.js';
 import { reviewStatusOf } from './review-status.js';
 import { tamperProof } from './tamper.js';
+import { txv5Grade, txv5Summary } from './txv5.js';
 import type { BenchmarkResult, Implementation, PackagingType, Scenario, Step, StepMetrics } from './types.js';
 import {
   createLoosenedVm,
@@ -210,6 +211,35 @@ const packagingSecurity = (steps: Step[]): { secure: boolean; type: PackagingTyp
     : { secure: false, type, reason: `${n}/${steps.length} step(s) use an insecure P2SH20 envelope (OP_HASH160, ~2^80 collision security) — use P2SH32` };
 };
 
+/** Score (scripts + tx overhead) and modelled serialized tx size of a run, as the headline
+ * score and the standardness check compute them. Used by the TXv5 grade for padded runs. */
+export const runScore = (run: Step[]): { score: number; txBytes: number } => {
+  const overheads = run.map(stepTxOverhead);
+  const overhead = overheads.reduce((a, b) => a + b, 0);
+  const score = run.reduce((a, s) => a + s.lockingBytecode.length + s.unlockingBytecode.length, 0) + overhead;
+  return { score, txBytes: largestTxBytes(run, overheads) };
+};
+
+/** Largest single transaction of a run (the 100,000-byte standard cap applies per tx), shared by
+ * runScore and standardness():
+ *   - grouped: each group is one tx; its size = sum of its inputs' scriptSig (unlocking) + that
+ *     group's tx overhead (envelope + outpoints + the single token/OP_RETURN output). Lockings
+ *     live in the funding UTXOs, not the spend.
+ *   - intra-tx bundle / single tx (txCount 1): the one tx = sum of all unlockings + overhead.
+ *   - covenant chain: max single 1-in/1-out step tx. */
+const largestTxBytes = (run: Step[], overheads: number[] = run.map(stepTxOverhead)): number => {
+  if (run.some((s) => s.grouped !== undefined)) {
+    const byGroup = new Map<number, number>();
+    run.forEach((s, i) => {
+      const g = s.grouped!.group;
+      byGroup.set(g, (byGroup.get(g) ?? 0) + s.unlockingBytecode.length + overheads[i]!);
+    });
+    return Math.max(0, ...byGroup.values());
+  }
+  if (txCountOf(run) === 1) return run.reduce((a, s) => a + s.unlockingBytecode.length, 0) + overheads.reduce((a, b) => a + b, 0);
+  return Math.max(0, ...run.map((s, i) => s.unlockingBytecode.length + s.lockingBytecode.length + overheads[i]!));
+};
+
 const runStep = (vm: Bch2026Vm, step: Step, bsv: boolean): StepMetrics => {
   const o = evaluatePair(vm, step.lockingBytecode, step.unlockingBytecode, step.covenant, step.intraTx, step.grouped);
   return {
@@ -322,8 +352,6 @@ const SCRIPT_SIZE_CAP = 10_000; // BCH maximumBytecodeLength (per locking/unlock
 const standardness = (
   scenario: Awaited<ReturnType<Implementation['load']>>,
   steps: StepMetrics[],
-  txCount: number,
-  totalTxOverheadBytes: number,
   bsv: boolean,
   isSpec: boolean,
 ): { fits: boolean; reason?: string } => {
@@ -332,26 +360,7 @@ const standardness = (
   const maxStdUnlock = isSpec ? SPEC_STANDARD_UNLOCKING_CAP : MAX_STANDARD_UNLOCKING_BYTECODE;
   const overLock = steps.filter((s) => s.lockingBytes > MAX_STANDARD_LOCKING_BYTECODE).length;
   const overUnlock = steps.filter((s) => s.unlockingBytes > maxStdUnlock).length;
-  // Largest single transaction in the run (the 100,000-byte standard cap applies per tx):
-  //   - grouped: each group is one tx; its size = sum of its inputs' scriptSig (unlocking) +
-  //     that group's tx overhead (envelope + outpoints + the single token/OP_RETURN output).
-  //     Lockings live in the funding UTXOs, not the spend.
-  //   - intra-tx bundle (txCount 1): the one tx = sum of all unlockings + overhead.
-  //   - covenant chain: max single 1-in/1-out step tx.
-  const grouped = scenario.valid.some((s) => s.grouped !== undefined);
-  let txBytes: number;
-  if (grouped) {
-    const byGroup = new Map<number, number>();
-    scenario.valid.forEach((s, i) => {
-      const g = s.grouped!.group;
-      byGroup.set(g, (byGroup.get(g) ?? 0) + steps[i]!.unlockingBytes + steps[i]!.txOverheadBytes);
-    });
-    txBytes = Math.max(0, ...byGroup.values());
-  } else if (txCount === 1) {
-    txBytes = steps.reduce((a, s) => a + s.unlockingBytes, 0) + totalTxOverheadBytes;
-  } else {
-    txBytes = Math.max(0, ...steps.map((s) => s.unlockingBytes + s.lockingBytes + s.txOverheadBytes));
-  }
+  const txBytes = largestTxBytes(scenario.valid);
 
   const vm = isSpec ? createStandardVmSpec() : createStandardVm();
   const runRejectsStd = (run: Step[]) => run.some((s) => {
@@ -547,7 +556,7 @@ export const benchmark = (impl: Implementation, scenario: Awaited<ReturnType<Imp
   const totalTxOverheadBytes = steps.reduce((a, s) => a + s.txOverheadBytes, 0);
   const txCount = txCountOf(scenario.valid);
   // BCH standard (relay) policy: stricter than the consensus `bchCompatible` above.
-  const std = standardness(scenario, steps, txCount, totalTxOverheadBytes, bsv, isSpec);
+  const std = standardness(scenario, steps, bsv, isSpec);
 
   return {
     impl,
@@ -587,6 +596,8 @@ export const benchmark = (impl: Implementation, scenario: Awaited<ReturnType<Imp
     securePackaging: env.secure,
     packagingType: env.type,
     insecurePackagingReason: env.reason,
+    // bch-spec entries: also grade on TXv5 as written (density base 41; issue #35 option 2)
+    ...(isSpec ? { txv5: txv5Grade(scenario, bsv, runScore) } : {}),
   };
 };
 
@@ -753,6 +764,20 @@ const main = async () => {
       }
       if (r.impl.vm === 'bch-spec') {
         console.log(`    > VM target: PROPOSED bch-spec upgrade (100,000-byte scripts, op-cost budget (10000+len)x800 = up to 88,000,000/input) — NOT valid on current BCH (BCH_2026 caps scripts at 10,000 B). "BCH compatible" above = validates on the bch-spec VM.`);
+        const t = r.txv5;
+        if (t) {
+          const mode = (m: { asShipped: boolean; padded?: { padBytes: number; score: number } }) =>
+            m.asShipped ? 'valid as shipped' : m.padded ? `+${fmt(m.padded.padBytes)} B pad -> ${fmt(m.padded.score)}` : 'rejects';
+          const tail = t.padding === 'not-paddable'
+            ? `not paddable as shipped (${t.notPaddableReason})${t.estimate ? `; estimate with a pad slot ${fmt(t.estimate.score)}` : ''}`
+            : `consensus ${mode(t.consensus)}, standard ${mode(t.standard)}${t.standard.fits ? '' : ` (non-standard: ${t.standard.policyReason ?? t.standard.reason})`}`;
+          console.log(`    > TXv5 as written (density base 41, budget (41+len)x800): ${tail}`);
+          const sum = txv5Summary(t, r.totalBytes + r.totalTxOverheadBytes);
+          const w = sum.worst;
+          console.log(`    > TXv5 over all ${sum.runs} honest runs: ${sum.standard ? 'every figure standard' : `NOT standard (${sum.nonStandard?.run}: ${sum.nonStandard?.reason ?? 'non-standard'})`}`
+            + `${w ? `; worst case ${w.run} ${w.status}${w.score !== null ? ` ${w.estimated ? '~' : ''}${fmt(w.score)} (${w.mode})` : ''}` : ''}`
+            + `${sum.mixed ? '; honest runs fall on both sides of the budget (some valid as shipped)' : ''}`);
+        }
       }
       if (!r.profileOnly) {
         console.log(`    > standardness: ${r.fitsBchStandardness ? 'standard — relayable under default mempool policy' : `non-standard (${r.bchStandardnessReason ?? 'relay limit'}); valid at consensus, must be mined directly`}`);

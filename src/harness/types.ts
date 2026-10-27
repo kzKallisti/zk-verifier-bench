@@ -399,5 +399,7 @@ export interface BenchmarkResult {
   packagingType: PackagingType;
   /** short reason the packaging is disallowed (how many steps use P2SH20); undefined when secure */
   insecurePackagingReason?: string;
+  /** bch-spec entries only: the TXv5-as-written grade (harness/txv5.ts, bench issue #35). */
+  txv5?: import('./txv5.js').Txv5Grade;
   error?: string;
 }
