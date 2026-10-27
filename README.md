@@ -206,11 +206,11 @@ sCrypt third-party references), `demo` (the harness self-test), `component`
 large chains: BN254 chunked and chunked-covenant, BLS12-381 intratx, grouped,
 chunked and chunked-covenant). Archived rows stay in `entries[]`, but like
 withdrawn ones they never count for the frontier or new history points.
-Withdrawn implementations normally leave the registry, so their rows leave the
-feed; the website keeps a frozen copy of the last rows of the fifteen removed
-ids. A withdrawal from a later review (2026-10-27: `bch-groth16-bls12381-grouped-residue`,
-an unpinned token-category hand-off) keeps its row, labeled `withdrawn`, until
-the descriptor is removed.
+Withdrawn implementations leave the registry, so their rows leave the feed; the
+website keeps a frozen copy of the last rows of the removed ids (the fifteen of
+the reset, plus `bch-groth16-bls12381-grouped-residue`, withdrawn by the
+2026-10-27 review for an unpinned token-category hand-off). The `withdrawn`
+status remains for a finding that applies before its descriptor is removed.
 
 | category | meaning |
 |----------|---------|
@@ -251,7 +251,7 @@ variant*:
 | singletons | `bch-groth16[-bls12381]-singleton[-opcode-optimized\|-genpow\|-minop]` | full verifier in ONE script — runtime-general correctness oracles; exceed one input's op-cost budget on current BCH |
 | chunked / covenant | `…-chunked`, `…-chunked-covenant[-residue]` | computation split into chunks; state threaded through an NFT commitment across a chain of transactions |
 | intra-tx | `…-intratx[-residue]` | all chunks are inputs of ONE transaction, binding each other via `OP_INPUTBYTECODE`; the BN254 quotient-torus fixture is below standard policy's 100 kB transaction limit |
-| grouped | `…-grouped[-residue]` | the hybrid: intra-tx binding inside a handful of standard (<100 kB) transactions, with NFT hand-off between them; standard-relayable for graphs that exceed one standard transaction |
+| grouped | `…-grouped` | the hybrid: intra-tx binding inside a handful of standard (<100 kB) transactions, with NFT hand-off between them; standard-relayable for graphs that exceed one standard transaction |
 | spec | `…-intratx-residue-large` | 100,000-byte-script builds for the proposed bch-spec VM |
 | partials | `bch-vkx-*`, `bch-pairing-*` | vk_x MSM and pairing-check milestones in the same structures |
 | demo | `bch-multistep-demo` | hash-chained multi-tx demo |
@@ -285,7 +285,8 @@ Five VMs (`src/harness/vm.ts`):
   100,000-byte scripts and stack elements, but the density base stays 41, so
   the budget is `(41 + len) × 800`. bch-spec entries get a second `txv5` grade
   (valid as shipped, or the minimal zero padding and padded score, or not
-  paddable as shipped) for every honest run; the summary is standard only if
+  paddable as shipped; or measured on the entry's TXv5-grading pad-slot
+  variant, `txv5.variant`) for every honest run; the summary is standard only if
   every honest run is; see `docs/benchmark.md` and bench issue #35.
 
 ### Grading dimensions

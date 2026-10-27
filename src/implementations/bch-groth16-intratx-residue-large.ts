@@ -12,8 +12,8 @@
 // fold only the ordinary fixed-key e(alpha,beta) and e(IC0,gamma) factors; they do not use the
 // fixture's published scalar relations to collapse the statement.
 //
-// Committed fixture: 58,446 script B; 58,498 serialized B; 58,638 verifier.cash score;
-// 67,456,340 op. The dense worst-case fixture is 68,315 serialized B / 80,858,092 op.
+// Committed fixture: 58,268 script B; 58,320 serialized B; 58,460 verifier.cash score;
+// 67,309,488 op. The dense worst-case fixture is 68,068 serialized B / 80,757,210 op.
 // All 14 accepting fixture families use the same locking graph and pass the bch-spec consensus
 // and standard-policy VMs with default-minimum-fee-funded deterministic templates. This requires
 // the proposed VM because
@@ -30,13 +30,15 @@
 // Input fixture SHA-256:
 //   multiproof d513f1fe45d7aba20f289cbc38439d5ebdb05a9975950a5e32d2bf21239d4abc
 //   pairing checkpoint e393e8b6af6f528c93f97f37656802bf44daefa5819640a557fbff95e236739e
-// Vector SHA-256: de0ee49676e26adeba338a6f3979902be186286398a4d51809ce44d0170bd13e
+// (shipped vectors: bench 2f0a920, the compiler-optimizations-8 recompile; two independent reviews
+// on 2026-10-27 regenerated them byte-identically from the source and compiler above)
+// Vector SHA-256: 8d9deb752b01e6078b27091d9518da578a5b0b9c78466bdc08ffd4d1e54d061c
 // Locking graph SHA-256 (UTF-8 concatenated locking-hex text):
-// 97873357b18110717b88b2511063e51f216712160a651cfbcd79e8b924e4a30a
+// 5d7431b8f0608246498a68e130047e82d5f5ec28f19c15699602f033870c64bd
 // Locking-bytecode SHA-256 values, in input order:
-//   00 74e6287705c81cc95018163d179dfd0d64550f98940c69c6208d2f59efee3134
-//   01 822a5de1d8cec6492f9a3fbb6757bd672f697b0cbd454e48407586ba35a417e7
-//   02 7633668e49057be3c9ebde39e1b4201b170a66dd699ef243ab696fd96bd08742
+//   00 7fd7de660072bd00df6a14189a8488a5897063b7264ba314d7a5e9ae9b643cdf
+//   01 2beb47fb5a90bb0184ec1a76ec1225f09887cbb674dbc5b0855328a3d07f9135
+//   02 0145d50329a32951e1be90c212422afaae1f1f6d8ce1005d78700cd8a62e1829
 //   03 164c3c54959bc72b2dbd1d943984511a0d12c9c838eaee49610f4f72bce50fac
 import { readFileSync } from 'node:fs';
 import { hexToBin } from '@bitauth/libauth';
