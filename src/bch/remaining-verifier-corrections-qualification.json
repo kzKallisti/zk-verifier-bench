@@ -1,6 +1,6 @@
 {
-  "schema": "remaining-verifier-corrections-qualification/v2",
-  "sourceRevision": "b4a14a8fb91e3bc25995f26334f04eb0cbd19072",
+  "schema": "remaining-verifier-corrections-qualification/v3",
+  "sourceRevision": "b305051e769196f93f203e867a4366ee402a5c22",
   "benchmarkBase": "b140f64ca073c6d0466083fe14b5d9c83776d844",
   "status": "STANDALONE_CORRECTED_REFERENCES_DEFAULT_REGISTRY_AND_FEED_UNCHANGED",
   "frameProfiles": {
@@ -98,7 +98,8 @@
       "consensusAccepted": 101,
       "standardAccepted": 101,
       "nativeResourceHold": "Case 2 GLV inputs 1-4 exceed operation-cost density; no layout or padding adjustment attempted.",
-      "boundary": "One shared fixed-compiler reference program set; complete ordered input graph is a deployment premise. Per-input VM evidence only."
+      "boundary": "The original unrooted packet requires the full ordered graph as a deployment premise. A separate rooted derivative and whole-transaction observations are qualified in graphAncestryCorrections.",
+      "graphBoundSuccessor": "artifacts/graph-ancestry-corrections"
     },
     {
       "profile": "BN grouped nonprojective final GLV component",
@@ -121,7 +122,8 @@
       "consensusAccepted": 75,
       "standardAccepted": 75,
       "nativeResourceHold": "Two Miller stages per case exceed the 10000-byte unlocking limit.",
-      "boundary": "Actual fullSpecs/bindContract path with one fixed default compiler policy and shared graph; no whole-transaction/relay claim."
+      "boundary": "Actual fullSpecs/bindContract path, one fixed default compiler policy and shared graph. Linked whole-transaction observations are now qualified in graphAncestryCorrections; relay admission remains unestablished.",
+      "wholeTransactionLinkedEvidence": "artifacts/graph-ancestry-corrections/validation-report.json"
     },
     {
       "profile": "current BLS covenant producer fixed-cut reference",
@@ -133,7 +135,8 @@
       "consensusAccepted": 101,
       "standardAccepted": 101,
       "nativeResourceHold": "Case 2 GLV inputs 1-4 exceed the density limit at fixed 10000-byte frames.",
-      "boundary": "Actual fullSpecs/bindContract path with one fixed raw compiler policy; witness checks repeating the encoder are not counted as independent evidence."
+      "boundary": "Actual fullSpecs/bindContract path with one fixed raw compiler policy; witness checks repeating the encoder are not counted as independent evidence.",
+      "wholeTransactionLinkedEvidence": "artifacts/graph-ancestry-corrections/validation-report.json"
     }
   ],
   "archivedCompatibility": {
@@ -223,5 +226,100 @@
     "terminalFactorLimbsMatched": 12,
     "historicalExporterLink": "UNESTABLISHED",
     "historicalWithdrawalsUnchanged": true
+  },
+  "graphAncestryCorrections": {
+    "artifactDirectory": "artifacts/graph-ancestry-corrections",
+    "qualification": "artifacts/graph-ancestry-corrections/qualification.json",
+    "qualificationSha256": "b893fa6529e7f470ffe418d0e0fc7345710dc160b784500a4f811faf70ffa404",
+    "mathematicalDisposition": "artifacts/graph-ancestry-corrections/mathematical-disposition.json",
+    "mathematicalDispositionSha256": "a5968e524982b71337e98ce24974cbdbd0b6a06f43ff5a5edcbee415258e00c3",
+    "replay": "artifacts/graph-ancestry-corrections/replay.mjs",
+    "replaySha256": "1353f5149c0f7d7707571941b4ab649bda649a321b013b119d9c691c051a4eaa",
+    "validationReport": "artifacts/graph-ancestry-corrections/validation-report.json",
+    "validationReportSha256": "a8dae67dfc7afb6f319b13c95a9412a8b41da48fa5a9f42acb1976a5966ad55d",
+    "sourceHelper": "chunked/intratx/bind_reference_graphs.mjs",
+    "sourceHelperSha256": "21da67414e46c66fcefd9935ccc423483283873e012be881705f91eb27b65d75",
+    "existingCaseScenarios": 12,
+    "wholeTransactions": 198,
+    "modeChecks": 594,
+    "arithmeticOracleAccepted": 198,
+    "consensusAccepted": 176,
+    "standardAccepted": 176,
+    "resourceHoldsPerNativeMode": 22,
+    "familyModeCounts": {
+      "bls-default-fp6": {
+        "oracle": {
+          "accepted": 3,
+          "total": 3,
+          "failures": 0
+        },
+        "consensus": {
+          "accepted": 0,
+          "total": 3,
+          "failures": 3
+        },
+        "standard": {
+          "accepted": 0,
+          "total": 3,
+          "failures": 3
+        }
+      },
+      "bn254-grouped": {
+        "oracle": {
+          "accepted": 9,
+          "total": 9,
+          "failures": 0
+        },
+        "consensus": {
+          "accepted": 0,
+          "total": 9,
+          "failures": 9
+        },
+        "standard": {
+          "accepted": 0,
+          "total": 9,
+          "failures": 9
+        }
+      },
+      "bn254-covenant": {
+        "oracle": {
+          "accepted": 81,
+          "total": 81,
+          "failures": 0
+        },
+        "consensus": {
+          "accepted": 75,
+          "total": 81,
+          "failures": 6
+        },
+        "standard": {
+          "accepted": 75,
+          "total": 81,
+          "failures": 6
+        }
+      },
+      "bls-covenant": {
+        "oracle": {
+          "accepted": 105,
+          "total": 105,
+          "failures": 0
+        },
+        "consensus": {
+          "accepted": 101,
+          "total": 105,
+          "failures": 4
+        },
+        "standard": {
+          "accepted": 101,
+          "total": 105,
+          "failures": 4
+        }
+      }
+    },
+    "linkedParentOutputs": 186,
+    "syntheticInitialFundingAnchors": 186,
+    "graphBinding": "Default BLS uses one 35-input transaction whose root pins 34 sibling programs. Grouped BN27 uses three 9-input transactions; each root pins 8 siblings, with mutable NFT continuity to the next exact root and a terminal burn. All old arithmetic bodies and payloads are preserved.",
+    "sequentialCovenants": "Existing BN/BLS programs use 27/35 successive single-input transactions. Source is unchanged; the new whole-transaction replay validates their linked topology and saved BLS token categories.",
+    "limits": "Conditional transfer of prior finite-domain arithmetic only. Initial funding anchors are synthetic; designated instance/genesis/funding, fixed-VK/setup, native resource, relay and mainnet premises remain. Native holds are not tuned away. Historical original withdrawals remain."
   }
 }
