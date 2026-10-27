@@ -46,7 +46,8 @@
 // than minting batons at the genesis locking, and the bench category 0xcd..cd is a placeholder
 // (a deployment regenerates the graph with its real category). The verdict is an unspendable
 // immutable NFT with an empty commitment; a consumer reads the statement (n0, n1) from the genesis
-// unlocking at the end of the verdict's unique one-input ancestry.
+// unlocking at the end of the verdict's unique one-input ancestry: push 6 is in0 (n0) and push 5
+// is in1 (n1).
 //
 // Reproduction (byte-identical; both 2026-10-27 reviews): groth16_cashscript
 // 35561c7a7d7f07920a6b1a3d1f3dac8906c55837 (0cff585 also reproduces it), cashc
@@ -123,7 +124,13 @@ const toStep = (s: RawStep): Step => ({
 
 export const bchGroth16ChunkedCovenantResidue: Implementation = {
   id: 'bch-groth16-chunked-covenant-residue',
-  // where the claimed public inputs live (public-input binding gate, harness/gates.ts)
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts), located by
+  // the maintainers. In each GLV input the pushes are k11, k20, k10, in1, in0 in ascending order
+  // (genesis: 2..6; inputs 1-2: 10, 11, 12, 13, 14; input 3: 38..42). The slots named n0/n1 at the
+  // in0/in1 pushes (6/5, 14/13, 42/41) are the statement; the ones at the k10/k11 pushes (4/2,
+  // 12/10, 40/38) are GLV witnesses that equal n0/n1 only for small scalars, as in the committed
+  // fixture, so grouping them under the same name makes each mutation change all copies together.
+  // This is a mutation-test list, not a statement locator.
   publicInputs: [{ input: 0, push: 4, name: 'n0' }, { input: 0, push: 6, name: 'n0' }, { input: 1, push: 12, name: 'n0' }, { input: 1, push: 14, name: 'n0' }, { input: 2, push: 12, name: 'n0' }, { input: 2, push: 14, name: 'n0' }, { input: 3, push: 40, name: 'n0' }, { input: 3, push: 42, name: 'n0' }, { input: 0, push: 2, name: 'n1' }, { input: 0, push: 5, name: 'n1' }, { input: 1, push: 10, name: 'n1' }, { input: 1, push: 13, name: 'n1' }, { input: 2, push: 10, name: 'n1' }, { input: 2, push: 13, name: 'n1' }, { input: 3, push: 38, name: 'n1' }, { input: 3, push: 41, name: 'n1' }],
   name: 'BCH Groth16 covenant quotient-torus verifier (12 standard transactions)',
   proofSystem: 'Groth16',

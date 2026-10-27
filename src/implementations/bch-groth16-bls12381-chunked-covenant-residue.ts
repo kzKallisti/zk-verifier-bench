@@ -24,10 +24,12 @@
 // chunked/bls12-381/README.md, "Covenant-residue composition"): the category genesis must create
 // no NFT of the category other than minting batons at the genesis locking, and the bench category
 // 0xbe..be is a placeholder. The verdict is unspendable and names no statement; a consumer reads
-// (n0, n1) from the genesis unlocking at the end of the verdict's unique one-input ancestry.
+// (n0, n1) from the genesis unlocking at the end of the verdict's unique one-input ancestry:
+// push 6 is in0 (n0) and push 5 is in1 (n1).
 //
 // Committed proof: 207,633 script B (945 locking + 206,688 unlocking) across 27 transactions;
-// 156,963,474 op; largest step 7,845,354 op. Evaluated on the standard BCH 2026 VM. The
+// 156,963,474 op; largest step 7,592,796 op. The vector file's worst-case run (not loaded here)
+// totals 190,454,163 op with largest step 7,845,354 op (the file's maxStepOperationCost). Evaluated on the standard BCH 2026 VM. The
 // synthetic-key caveat of the BLS12-381 checkpoint applies.
 //
 // Reproduction (byte-identical; both 2026-10-27 reviews): groth16_cashscript
@@ -76,8 +78,13 @@ const toStep = (s: RawStep): Step => ({
 
 export const bchGroth16Bls12381ChunkedCovenantResidue: Implementation = {
   id: 'bch-groth16-bls12381-chunked-covenant-residue',
-  // where the claimed public inputs live (public-input binding gate, harness/gates.ts): every copy
-  // of n0, n1 in the valid run, located by the maintainers
+  // where the claimed public inputs live (public-input binding gate, harness/gates.ts), located by
+  // the maintainers. In each GLV input the pushes are k11, k20, k10, in1, in0 in ascending order
+  // (genesis: 2, 3, 4, 5, 6). The slots named n0/n1 at pushes 6/5 (input 4: 15/14) are in0/in1;
+  // the ones at pushes 4/2 (input 4: 13/11) are the GLV witnesses k10/k11. Those equal n0/n1
+  // only for small scalars, as in the committed fixture, so grouping them under the same name
+  // makes each mutation change all copies together. This is a mutation-test list, not a statement
+  // locator; a consumer reads the statement from in0/in1 only.
   publicInputs: [
     { input: 0, push: 2, name: 'n1' }, { input: 0, push: 4, name: 'n0' }, { input: 0, push: 5, name: 'n1' },
     { input: 0, push: 6, name: 'n0' }, { input: 1, push: 2, name: 'n1' }, { input: 1, push: 4, name: 'n0' },
