@@ -1,7 +1,7 @@
 {
   "schema": "bls-plain-singleton-full-proof-domain-qualification/v1",
-  "sourceRevision": "b4a14a8fb91e3bc25995f26334f04eb0cbd19072",
-  "sourceFile": "singleton/bls12-381/groth16.cash",
+  "sourceRevision": "c0b0a824fc9018b4ef344d2b68538f7159ffffdd",
+  "sourceFile": "singleton/bls12-381/groth16_strict.cash",
   "sourceSha256": "4cd3efad1c050a11b2d13c189ffb9335d8ec130d76e3b1257e43b74ea83d610d",
   "sourceImports": {
     "singleton/bls12-381/lib/FinalExp.cash": "d97f9d54b0818cc850fcca0a1abbf16ec556eb8ebb3c4598c54cd7ac49d0a9ef",
@@ -59,5 +59,12 @@
     "externalInfinityFixtureCoverage": "The newly added infinity branches are proved symbolically; the five existing proof fixtures have finite external points. No external-infinity proof fixture was generated."
   },
   "mathematicalDisposition": "mathematical-disposition.json",
-  "mathematicalDispositionSha256": "7ec2a72a4bfd7c2f91f665308447318df4c2887aafe1074e998d680c5764a055"
+  "mathematicalDispositionSha256": "1d073609c51bb6600a48270cbbcfe2c2d663b46aa9dde1e4135c565b22d98642",
+  "compiledArtifactOrigin": {
+    "sourceRevision": "b4a14a8fb91e3bc25995f26334f04eb0cbd19072",
+    "sourceFile": "singleton/bls12-381/groth16.cash",
+    "sourceSha256": "4cd3efad1c050a11b2d13c189ffb9335d8ec130d76e3b1257e43b74ea83d610d",
+    "lockingSha256": "c34b223e101f14b5a53bb9d6ab9fed3fd6a7174501a9a4fb1ddc36897f466ca1",
+    "boundary": "Same strict source bytes, imports, compiler policy and raw locking artifact; source moved verbatim, no recompilation."
+  }
 }

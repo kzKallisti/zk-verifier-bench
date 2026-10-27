@@ -1,8 +1,8 @@
 {
   "schema": "bls-full-subgroup-proof-domain-mathematical-disposition/v1",
   "status": "CONDITIONALLY_CONFIRMED_FIXED_VK_FULL_SUBGROUP_POINT_DOMAIN_INCLUDING_INFINITY",
-  "sourceRevision": "b4a14a8fb91e3bc25995f26334f04eb0cbd19072",
-  "sourceFile": "singleton/bls12-381/groth16.cash",
+  "sourceRevision": "c0b0a824fc9018b4ef344d2b68538f7159ffffdd",
+  "sourceFile": "singleton/bls12-381/groth16_strict.cash",
   "sourceSha256": "4cd3efad1c050a11b2d13c189ffb9335d8ec130d76e3b1257e43b74ea83d610d",
   "artifact": "compiled-locking.hex",
   "lockingSha256": "c34b223e101f14b5a53bb9d6ab9fed3fd6a7174501a9a4fb1ddc36897f466ca1",
@@ -589,5 +589,12 @@
       "receipt": "g1-loop-operands.json",
       "receiptSha256": "0e7cd8a05c220533f1f9e2a217658eae34b44b42dfba60061d92c518f38ee7df"
     }
+  },
+  "compiledArtifactOrigin": {
+    "sourceRevision": "b4a14a8fb91e3bc25995f26334f04eb0cbd19072",
+    "sourceFile": "singleton/bls12-381/groth16.cash",
+    "sourceSha256": "4cd3efad1c050a11b2d13c189ffb9335d8ec130d76e3b1257e43b74ea83d610d",
+    "lockingSha256": "c34b223e101f14b5a53bb9d6ab9fed3fd6a7174501a9a4fb1ddc36897f466ca1",
+    "boundary": "Same strict source bytes, imports, compiler policy and raw locking artifact; source moved verbatim, no recompilation."
   }
 }

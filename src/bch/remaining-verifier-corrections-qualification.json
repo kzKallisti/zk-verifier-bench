@@ -1,6 +1,6 @@
 {
-  "schema": "remaining-verifier-corrections-qualification/v3",
-  "sourceRevision": "b305051e769196f93f203e867a4366ee402a5c22",
+  "schema": "remaining-verifier-corrections-qualification/v4",
+  "sourceRevision": "c0b0a824fc9018b4ef344d2b68538f7159ffffdd",
   "benchmarkBase": "b140f64ca073c6d0466083fe14b5d9c83776d844",
   "status": "STANDALONE_CORRECTED_REFERENCES_DEFAULT_REGISTRY_AND_FEED_UNCHANGED",
   "frameProfiles": {
@@ -23,13 +23,34 @@
     "completeDeclaredConsensusGraphsAccepted": 0,
     "completeDeclaredStandardGraphsAccepted": 0,
     "nativeResourceAdmission": "HOLD",
-    "keyScope": "The checker VK has an explicit pinned public owner. All 20 checker coordinates and original PairFold-7 twelve raw Miller coefficients match. Original PairFold-7 individual alpha/beta declaration and legacy role bindings remain unestablished; withdrawal unchanged.",
+    "catalogSha256": "51ef1509eca342bc931b1f92ef57fc1af719948654399faeef5e4a9986d337c0",
+    "catalogSourceSha256": "51ef1509eca342bc931b1f92ef57fc1af719948654399faeef5e4a9986d337c0",
+    "slimTerminalRepair": {
+      "profileId": "bch-groth16-intratx-pairfold5-densless-msm-slim-equation-checked",
+      "sourceRepairHelperSha256": "cb676275cc4a8775151d9c4e12f9961f987c48afe5c633fa9a7faf6c567c9a77",
+      "adapterSha256": "a840a7cf1575b4163b8f33b704fa3a845b0f0e0a24e81324888bda512ea2eadc",
+      "terminalRedeemBytes": 4831,
+      "terminalRedeemSha256": "df390dd4cc36f80242c6126c211b87d42b0e61b242ca1869b87eb9f081357aae",
+      "terminalRedeemHash256": "9fbcbf907fed26e32014dff541f9dbc68213d587e44867901f9c3dfdc5f24ef6",
+      "positiveReplay": "artifacts/maintainer-review-followup/replay-slim.json",
+      "positiveReplaySha256": "cad2d72d68841779b7b08d52cfff16aee3b651e5bbef91cc700e7164efd38238",
+      "nativeAdmission": "HOLD: current BCH rejects the 10,990-byte terminal locking before execution",
+      "scope": "Only the slim terminal locking changed: HASH256 <hash256(redeem)> EQUALVERIFY is followed by the existing guard and unchanged redeem program; all other six catalog profiles and all archived proof/public/state bytes remain unchanged.",
+      "replayTool": "artifacts/maintainer-review-followup/replay-slim.mjs",
+      "replayToolSha256": "4b70111b8dbeb5292fbbe126334e9b6f8ac0e088d47bfc740d4964eef7cad051"
+    },
+    "keyScope": "The public checker VK has a pinned owner. All 20 coordinate-role assignments in the pre-existing PairFold-7 declaration and all 12 terminal raw Miller coefficients match. Original exporter/setup linkage and historical algorithm soundness remain unestablished; withdrawals stand.",
     "soundnessOwner": "Mandatory full fixed-key equation checker; legacy PIT/slope/table predicates receive no independent soundness credit.",
     "keyProvenance": "src/bch/bn254-legacy-key-provenance.json"
   },
   "blsLarge": {
     "existingProofGraphs": 3,
     "inputEvaluations": 27,
+    "checkedVectorSha256": "9b0ca5517eacf50d52a7991b90a89ded64e10c907fce9f2273c735a5a18af5d1",
+    "repairManifestSha256": "48f4b0efa19935e1b09df630036e470e007fad79dd6f493e96ef746ead8fcffb",
+    "repairHelperSha256": "db44031eef5c85985dbf38f524f8774525ea8d4e1107a152083df676a011f071",
+    "positiveReplay": "artifacts/maintainer-review-followup/replay-large.json",
+    "positiveReplaySha256": "8bafb9bfdc3aeff30049d120a5d3ac1e53bc516565e1339eb1d91f23f49face1",
     "modes": [
       "resource-loosened arithmetic oracle",
       "proposed-spec consensus",
@@ -44,13 +65,22 @@
         "hex": "7c7682770220019d7c"
       },
       {
+        "input": 1,
+        "bytes": 768,
+        "depth": 0,
+        "hex": "7682770200039d"
+      },
+      {
         "input": 2,
         "bytes": 1632,
         "depth": 0,
         "hex": "7682770260069d"
       }
     ],
-    "limits": "Proposed-spec profile only; current BCH, whole-transaction and relay admission remain HOLD."
+    "limits": "Proposed-spec profile only; the 288-byte GLV, 768-byte input-validation, and 1632-byte terminal frames require the proposed per-script limits. Current BCH, whole-transaction and relay admission remain HOLD.",
+    "graphPremises": "The three-input intra-transaction graph preserves the archived input order, exact OP_INPUTBYTECODE successor links, state-carrier ownership, and P2SH32 locking transport. The positive replay is an existing-fixture artifact check, not a live ancestry or deployment claim.",
+    "replayTool": "artifacts/maintainer-review-followup/replay-large.mjs",
+    "replayToolSha256": "a16d4cfb4aa64568f888bb4f44399270a6ddb7647dc28c2c344f390bfffe1fc0"
   },
   "blsVkx": {
     "scope": "public-input aggregation component only",
@@ -206,8 +236,9 @@
   "blsPlainSingletonFullProofDomain": {
     "artifactDirectory": "artifacts/bls-singleton-full-proof-domain",
     "qualification": "artifacts/bls-singleton-full-proof-domain/qualification.json",
-    "qualificationSha256": "903af57937e7f67923656fa0edce82e12056313260717d2d62d688046d16a2a8",
-    "sourceRevision": "b4a14a8fb91e3bc25995f26334f04eb0cbd19072",
+    "qualificationSha256": "09a7e89ab9d2b58bc705741436d6a8709575476b66a58bdd4d2070b0e5f5ee0d",
+    "sourceRevision": "c0b0a824fc9018b4ef344d2b68538f7159ffffdd",
+    "sourceFile": "singleton/bls12-381/groth16_strict.cash",
     "sourceSha256": "4cd3efad1c050a11b2d13c189ffb9335d8ec130d76e3b1257e43b74ea83d610d",
     "lockingSha256": "c34b223e101f14b5a53bb9d6ab9fed3fd6a7174501a9a4fb1ddc36897f466ca1",
     "lockingBytes": 17465,
@@ -216,7 +247,14 @@
     "nativeAdmission": "HOLD",
     "scope": "All canonical points of G1 and G2 including infinity, under the documented uncompressed integer-coordinate sentinels; two canonical Fr public inputs, including neutral computed vk_x. Exact fixed synthetic VK only.",
     "mathematicalDisposition": "artifacts/bls-singleton-full-proof-domain/mathematical-disposition.json",
-    "mathematicalDispositionSha256": "7ec2a72a4bfd7c2f91f665308447318df4c2887aafe1074e998d680c5764a055"
+    "mathematicalDispositionSha256": "1d073609c51bb6600a48270cbbcfe2c2d663b46aa9dde1e4135c565b22d98642",
+    "compiledArtifactOrigin": {
+      "sourceRevision": "b4a14a8fb91e3bc25995f26334f04eb0cbd19072",
+      "sourceFile": "singleton/bls12-381/groth16.cash",
+      "sourceSha256": "4cd3efad1c050a11b2d13c189ffb9335d8ec130d76e3b1257e43b74ea83d610d",
+      "lockingSha256": "c34b223e101f14b5a53bb9d6ab9fed3fd6a7174501a9a4fb1ddc36897f466ca1",
+      "boundary": "Same strict source bytes, imports, compiler policy and raw locking artifact; source moved verbatim, no recompilation."
+    }
   },
   "pairfold7KeyProvenance": {
     "artifactDirectory": "artifacts/pairfold7-key-provenance",
@@ -321,5 +359,15 @@
     "graphBinding": "Default BLS uses one 35-input transaction whose root pins 34 sibling programs. Grouped BN27 uses three 9-input transactions; each root pins 8 siblings, with mutable NFT continuity to the next exact root and a terminal burn. All old arithmetic bodies and payloads are preserved.",
     "sequentialCovenants": "Existing BN/BLS programs use 27/35 successive single-input transactions. Source is unchanged; the new whole-transaction replay validates their linked topology and saved BLS token categories.",
     "limits": "Conditional transfer of prior finite-domain arithmetic only. Initial funding anchors are synthetic; designated instance/genesis/funding, fixed-VK/setup, native resource, relay and mainnet premises remain. Native holds are not tuned away. Historical original withdrawals remain."
+  },
+  "maintainerReviewFollowup": {
+    "sourceRevision": "c0b0a824fc9018b4ef344d2b68538f7159ffffdd",
+    "scope": "Existing positive fixtures and mathematical/static source review only. No new proof/public-input or negative cases, cybersecurity tests, byte/padding/cut optimization, upstream PR merge or deployment.",
+    "normalBlsSource": "singleton/bls12-381/groth16.cash equals upstream17b05a7 exactly; stronger domain exists only in separate strict file/reference.",
+    "slimRuntimeOwner": "The bare terminal HASH256/EQUALVERIFY authenticates its retained redeem before the unchanged equation guard. Under push-only/minimal-push VM rules this binds the canonical wire suffix. Five existing arithmetic graphs / 25 inputs accept; the 10990-byte native locking HOLD remains.",
+    "exactFrameCatalog": "Current source-helper/compiler metadata was regenerated; all 454 positive locking/unlocking records are unchanged. The module seal matches the actual catalog. Earlier 52 runs / 908 VM observations apply to these exact same programs.",
+    "bnLarge4Input2Owner": "After P2SH consumes the redeem and OP_DROP removes the 64548-byte table, the surviving state is checked at offset 1949. The 33 fixed 32-byte splits imply length >= 1056; the <65536 gate fixes its PUSHDATA2 header class under minimal-push rules. This is not exact-1088 length or content authentication; finite-domain/frame premises remain.",
+    "fsPitReview": "All 13 intratx root binders and program sets across 130 existing positive scenarios were statically decoded. Independent field/kernel and polynomial-support calculations reproduce degree 137 and 132 quotient coefficients. Two binders precede imports; 11 use the conditional call-frame argument with the genuine PIC shared-stack ABI. Notes count all relevant challenge queries and separate Adv_bind. No FS fixture execution, new rebuild or universal compiled arithmetic theorem is claimed.",
+    "frozenResults": "results.json is unchanged upstream measurement/review snapshot; live source review explanations carry clarified query counters."
   }
 }

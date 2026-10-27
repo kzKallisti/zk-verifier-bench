@@ -35,7 +35,7 @@ interface Catalog {schema: string; sourceBaseRevision: string; benchmarkBase: st
 
 const catalogBytes = readFileSync('src/bch/bn-exact-frame-corrected-catalog.json');
 const catalogHash = createHash('sha256').update(catalogBytes).digest('hex');
-const EXPECTED_CATALOG_SHA256 = 'abe6e0e0ad8556bcb6fc74bd6d45bbee8f0d4189c23d958a1c42376ed8ee176e';
+const EXPECTED_CATALOG_SHA256 = '4def718ae32d905504053ea30e73df6b274c36722142c1597bef3e97c2bb179d';
 assert.equal(catalogHash, EXPECTED_CATALOG_SHA256, 'catalog seal mismatch');
 const catalog = JSON.parse(catalogBytes.toString('utf8')) as Catalog;
 assert.equal(catalog.schema, 'bn254-exact-frame-correction-catalog/v1');

@@ -12,7 +12,7 @@ import {
 
 const [source, output] = process.argv.slice(2);
 assert(source && output && process.argv.length === 4,
-  'usage: node artifacts/bls-singleton-neutral-vkx/replay.mjs source-checkout new-report.json');
+  'usage: node artifacts/bls-singleton-full-proof-domain/replay.mjs source-checkout new-report.json');
 const read = name => readFileSync(new URL(name, import.meta.url));
 const sha = data => createHash('sha256').update(data).digest('hex');
 const q = JSON.parse(read('./qualification.json'));

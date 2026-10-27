@@ -24,7 +24,11 @@ export function adaptExistingPositives(artifactBytes, profile) {
     const program = Buffer.from(profile.programs[i], 'hex');
     const locking = Buffer.from(profile.lockings[i], 'hex');
     if (profile.guardPlacement === 'locking' && i === profile.guardInput) {
-      assert.equal(locking[0], 0x75);
+      // The slim terminal keeps the original redeem hash prefix, then appends
+      // the mandatory equation guard and the unchanged legacy locking tail.
+      // Other profiles use the ordinary hash-wrapped transport below.
+      const terminalHashPrefix = Buffer.concat([Buffer.from([0xaa, 0x20]), hash256(program), Buffer.from([0x88])]);
+      assert(locking.subarray(0, terminalHashPrefix.length).equals(terminalHashPrefix));
       assert(locking.subarray(-program.length).equals(program));
       assert.equal(profile.programs[i], profile.originalPrograms[i]);
     } else {

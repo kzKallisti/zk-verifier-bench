@@ -24,7 +24,7 @@ interface Vectors {
 }
 
 const vectorBytes = readFileSync('src/bch/groth16-bls12381-intratx-residue-large-checked-vectors.json');
-assert.equal(createHash('sha256').update(vectorBytes).digest('hex'), 'a47402668a513b6f596721dfc743665b816a9a3d6f26c31bbf78bee8d7a7bff7');
+assert.equal(createHash('sha256').update(vectorBytes).digest('hex'), '9b0ca5517eacf50d52a7991b90a89ded64e10c907fce9f2273c735a5a18af5d1');
 const vectors = JSON.parse(vectorBytes.toString('utf8')) as Vectors;
 
 const toRun = (raw: RawStep[]): Step[] => {
@@ -54,7 +54,7 @@ export const bchGroth16Bls12381IntratxResidueLargeCorrected: Implementation = {
   ],
   vm: 'bch-spec',
   source:
-    'Frozen positive-only BLS12-381 residue-large artifact with exact 288-byte GLV carrier and 1632-byte quotient-terminal frame guards. ' +
+    'Frozen positive-only BLS12-381 residue-large artifact with exact 288-byte GLV carrier, 768-byte input-validation carrier, and 1632-byte quotient-terminal frame guards. ' +
     'The arithmetic program suffix and all proof/public/witness/state/table/padding bytes are preserved; only executable code and its coherent P2SH32 locking are corrected. ' +
     'The fixed-key arithmetic and complete ordered graph remain premises of the conditional equation claim. This is a proposed-spec profile; current-BCH, whole-transaction and relay admission remain HOLD.',
   load: async () => ({
