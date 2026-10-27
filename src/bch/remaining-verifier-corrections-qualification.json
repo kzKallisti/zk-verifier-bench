@@ -1,6 +1,6 @@
 {
   "schema": "remaining-verifier-corrections-qualification/v2",
-  "sourceRevision": "0645a3726eabc2ab85bb35ae0a944d3fd32b54e5",
+  "sourceRevision": "e8f3e0a5488631e42178e15f44a2371eab8bee36",
   "benchmarkBase": "b140f64ca073c6d0466083fe14b5d9c83776d844",
   "status": "STANDALONE_CORRECTED_REFERENCES_DEFAULT_REGISTRY_AND_FEED_UNCHANGED",
   "frameProfiles": {
@@ -160,5 +160,28 @@
     "scope": "Conditional finite-equation frame repairs at exact archived program identities; complete ordered graphs and appropriate token ancestry remain explicit premises. Whole-transaction size/fees, relay, neutral completeness and mainnet admission are unclaimed.",
     "standardResourceHolds": 2,
     "registryAndHistoricalScoresChanged": false
+  },
+  "historicalRootedReferences": {
+    "artifactDirectory": "artifacts/historical-rooted-graphs",
+    "qualification": "artifacts/historical-rooted-graphs/qualification.json",
+    "profiles": 6,
+    "existingGraphs": 18,
+    "perMode": 384,
+    "oracleAccepted": 384,
+    "declaredConsensusAccepted": 372,
+    "declaredStandardAccepted": 370,
+    "bch2026": {
+      "perMode": 372,
+      "consensusAccepted": 360,
+      "standardAccepted": 358
+    },
+    "proposedBchSpec": {
+      "perMode": 12,
+      "consensusAccepted": 12,
+      "standardAccepted": 12
+    },
+    "graphBinding": "Root input index and exact count; five reverse successor-lock chains; BN13 root absolute pins preserve its input3-lock dependencies. Applies when spending the pinned root under ordinary ledger input validation and P2SH32 binding.",
+    "nativeHolds": "BN27:24 evaluations at unchanged10000-byte limits, including next-input-bytecode pushes; BN13:2 existing standard density holds. No tuning.",
+    "mathematicalScope": "Transfers the prior necessary finite-domain equation theorem by exact body and argument-stack preservation. Grouped ancestry and neutral-proof domains remain outside these derivatives."
   }
 }
