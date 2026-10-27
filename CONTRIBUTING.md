@@ -44,11 +44,15 @@ claim and assumptions in [docs/submission-claims.md](docs/submission-claims.md):
 
 - the valid run must be ACCEPTED, and every invalid run REJECTED, on the
   loosened BCH 2026 VM;
-- if you claim `proofBinding: 'runtime'`, supply `extraValidProofs` — distinct
-  proofs under the same VK — and the harness verifies your one fixed locking
-  accepts all of them (a baked program can't fake this);
+- for `proofBinding: 'runtime'` entries whose setup permits minting, supply
+  `extraValidProofs` — distinct proofs under the same VK and ordered programs.
+  The harness executes the supplied runs; the submitter and reviewer must
+  check program identity, step counts and proof distinctness. It does not
+  enforce those comparisons. If only one proof is available, disclose that
+  coverage limit rather than claiming empirical generality;
 - adversarial `invalidInputs` (off-curve / out-of-subgroup points) must be
-  rejected if you claim input validation;
+  rejected if you claim input validation. Rejection alone does not identify
+  the rejecting predicate or prove that a domain check exists;
 - for chunked entries whose op-cost depends on the proof, supply a
   valid `worstCaseProof` (dense, near-r public inputs). It is a measured case,
   not a universal worst-case theorem; that supplied run must accept.
@@ -103,7 +107,7 @@ ranked:
   proposed 100 kB-script VM; spec entries rank in their own category.
 - **`tokenSafetyEnforced`** — for covenant entries, only set true if the
   covenant genuinely pins category/capability continuity (and you provide the
-  rejection vectors to prove it).
+  supporting rejection vectors and owner argument).
 
 The score is total on-chain bytes (locking + unlocking + serialized-tx
 overhead); all-zero padding pushes count toward it and are reported as dead
@@ -134,7 +138,7 @@ holds up. A reviewed disposition requires a written argument plus independent
 constructive review: rebuild the exact bytes, pin their hashes, and check the
 owner of every acceptance-dependent value, including multi-input bindings.
 The same pipeline or agent's agreement is not independent assurance; ordinary
-field and hash assumptions may still be shared. Any executed-artifact byte,
+field and hash assumptions may still be shared. Any verifier-program byte,
 VK, domain, or deployment-premise change requires a new review. Update pins
 when the bytes change.
 The entry should not require harness changes (if it does — a genuinely new

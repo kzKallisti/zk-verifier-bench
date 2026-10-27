@@ -35,11 +35,11 @@ resource bound. See the [submission claim sheet](submission-claims.md).
 Each `Implementation` declares a `proofBinding: 'runtime' | 'baked'`
 (`src/harness/types.ts`). For verifiers whose trusted setup we control, the
 scenario also carries `extraValidProofs: Step[][]` — additional *distinct* valid
-proofs to run against the **same** locking. The harness
+proofs intended to run against the **same** ordered programs. The harness
 (`src/harness/benchmark.ts`):
 
 1. runs the main valid proof (proof #0),
-2. runs every `extraValidProofs` run against the identical locking bytecode,
+2. executes each supplied `extraValidProofs` run using that run's own steps,
 3. reports `proofsTested` / `proofsPassed` and a one-line verdict:
    - `runtime` + N/N pass → **"runtime-general — one fixed locking verifies N/N
      distinct proofs"** (a coverage label for those supplied proofs),
@@ -54,6 +54,13 @@ A program that *claimed* runtime-generality but had the proof baked in would be
 exposed by this supplied sweep if it accepted only 1 of N. That result is
 coverage, not a universal theorem. The `generality` block is also emitted into
 `results.json` (`src/harness/export-json.ts`) for the website.
+
+**Current implementation limit:** the harness does not compare extra runs'
+locking bytecode, step counts or proof distinctness with the primary run. The
+same-program/distinct-proof conditions are requirements of the scenario
+contract, which submitters and reviewers must check separately. The displayed
+counts alone do not establish even that finite fixed-program coverage. The
+same identity check is needed for a supplied `worstCaseProof`.
 
 ## How the extra proofs are minted
 

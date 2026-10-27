@@ -7,7 +7,7 @@ verifier is one Step; every other structure is an ordered list of Steps whose
 cross-step continuity the harness reproduces faithfully (see *Structures*
 below).
 
-For each implementation the harness:
+For each executable implementation the harness:
 
 1. **checks fixtures** — the valid run is fully ACCEPTED and every
    supplied invalid run REJECTED, on the BCH 2026 VM with limits loosened (so
@@ -33,6 +33,11 @@ supporting evidence, not the admission basis. See the authoritative
 [submission claim sheet](submission-claims.md). Results are grouped into separate
 leaderboards by category (`full` / `partial` / `spec` / `demo`) and curve; the
 score is total on-chain bytes.
+
+`profileOnly` entries receive byte/packaging and script-cap accounting without
+VM execution. Their `bchCompatible` flag is size-based, `validPassed` is false,
+and standardness is not demonstrated; they provide no fixture-acceptance or
+executed-deployability evidence.
 
 Run it: `pnpm benchmark`. Positional args are substring filters on the entry id
 (`pnpm benchmark genpow`, `pnpm benchmark singleton chunked`); `--demos`
@@ -91,16 +96,23 @@ Register it in `REGISTRY` in `src/harness/benchmark.ts`.
   if any of its steps fails.
 - **Proof-generality.** `proofBinding: 'runtime'` claims one deployed program
   verifies any proof in its declared VK/input domain; where `extraValidProofs`
-  are supplied the harness reports coverage (N/N distinct proofs accepted against
-  the one fixed locking). This is not a universal proof over all proofs in the
-  declared domain. See `docs/proof-generality.md`.
+  are supplied the harness counts their acceptance. It does not compare their
+  lockings, step counts or proof distinctness against the primary run. Those
+  are scenario-contract requirements for the submitter and constructive
+  reviewer, not facts established by the count. See `proof-generality.md`.
 - **Worst case.** Op-cost is proof-dependent for the chunked verifiers, so the
   committed proof alone understates it; a valid `worstCaseProof` runs dense
   inputs through the same locking and the result is reported as `worstCase`.
   This is a measured supplied case, not a universal bound; it must be accepted.
+  The harness does not check locking/step-count identity here either; review
+  must establish that it measures the same construction.
 - **Input validation.** `invalidInputs` carry well-formed witnesses with
   structurally invalid curve points (off-curve, or on-curve but outside the
   order-r subgroup); a claim of EIP-197-style validation must reject them all.
+  `inputValidation.enforced` currently means that all supplied runs rejected;
+  the harness does not identify the rejecting predicate or verify unchanged
+  lockings. Review must establish the intended isolated validation check.
+  Rejection by the final pairing equation alone does not demonstrate it.
   A cofactor-equivalent equation domain is a separate policy, not a claim of
   strict subgroup rejection.
 

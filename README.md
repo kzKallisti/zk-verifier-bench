@@ -2,7 +2,8 @@
 
 A benchmark harness for **Groth16 proof verifiers on the Bitcoin Cash VM**.
 Executable entries run on their applicable BCH virtual machines (libauth);
-profile-only entries receive size measurements without execution. The harness
+profile-only entries receive size measurements without execution. For
+executable entries, the harness
 
 1. **checks fixtures** — the valid and supplied worst-case proof runs
    are ACCEPTED, while supplied tampered and adversarial-input runs are
@@ -300,14 +301,16 @@ Beyond accept/reject on the committed proof, entries are graded on:
 
 - **proof-generality** — for `proofBinding: 'runtime'` entries the harness runs
   several distinct valid proofs minted under the same verifying key against the
-  one fixed locking (N/N must verify). This is coverage, not a universal proof over all
-  valid proofs. See `docs/proof-generality.md`.
+  intended ordered program set (N/N must verify). The harness executes the
+  supplied runs; program identity and proof distinctness require review.
+  See `docs/proof-generality.md`.
 - **worst-case proof** — a dense, near-r-input proof run through the same
   locking. It must be a valid proof and be accepted; it is a measured dense
   case, not a universal worst-case bound.
 - **input validation** — supplied off-curve or out-of-subgroup witnesses test
-  claimed EIP-197-style validation. A disclosed cofactor-equivalent equation
-  domain does not imply strict subgroup rejection.
+  claimed EIP-197-style validation. The harness counts whole-run rejection;
+  the existence and ownership of a domain check require separate review. A
+  cofactor-equivalent domain does not imply strict subgroup rejection.
 - **standardness** — does every step also relay (`fitsBchStandardness`), or is
   the entry consensus-valid but non-standard (e.g. bare intra-tx bundles)?
 - **secure packaging** — P2SH20-packaged entries are flagged (collision-attack
@@ -323,8 +326,10 @@ quality:
 
 - **Curve.** BLS12-381 field elements are 1.5× BN254's; bigger curve, bigger
   scripts. Compare within a curve line first.
-- **Statement.** Each verifies a different circuit with a different verifying
-  key and public-input count (which sets the vk_x MSM size).
+- **Statement.** Native Groth16 entries use the published benchmark VK and two
+  public inputs for their curve. Reference baselines may use other keys and
+  input counts. These synthetic equation fixtures do not establish circuit
+  knowledge; compare the exact statement and domain before comparing totals.
 - **Deployment model — proof at runtime vs baked per-proof.** A
   *runtime-general* entry receives its proof at spend time and is intended to
   verify any proof in its declared VK/input domain. An *instance-specific*

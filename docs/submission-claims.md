@@ -12,8 +12,8 @@ Every submission should state these claims separately:
   expected. Fixtures are supporting evidence, not the admission basis.
 - **Equation-reviewed:** acceptance of the exact shipped artifact implies the
   fixed-VK Groth16 equation below, over the declared input and curve domain,
-  under the named assumptions and with any stated probabilistic error. This requires a written argument and an
-  independent constructive review.
+  under the named assumptions and with any stated probabilistic error. This
+  requires a written argument and an independent constructive review.
 - **Application/protocol claims:** circuit knowledge soundness, zero knowledge
   for an application transcript, independent setup, application state binding,
   or live relay guarantees are separate claims and are outside this
@@ -46,7 +46,9 @@ be relabeled as strict-subgroup enforcement.
 Copy this checklist into the implementation's provenance/header or PR:
 
 ```text
-Artifact: exact locking/unlocking vector identifiers and SHA-256 pins
+Artifact: ordered locking/redeem/imported-code hashes; fixture vector IDs/hashes
+Dependencies: exact VK and preprocessing/table commitments; compiler revision
+              and build flags; VM/libauth and harness revisions
 Equation/VK: fixed verifying key and the equation above, with its exact
            point/scalar encoding and neutral-point checks
 Domain: curve, scalar encoding, public-input range, neutral-point policy,
@@ -61,8 +63,8 @@ Fiat-Shamir: transcript commit order, challenge inputs, error bound per query,
              and whether queries are adaptive
 Generality: runtime or baked; multiproof coverage and supplied dense case
 Deployment: VM/relay/transaction/state assumptions and measured limits
-Review: byte-identical rebuild method, owner checks, reviewer, and date
-Re-review: any executed-artifact byte change, changed cryptographic premise or
+Review: pending, or byte-identical rebuild method, owner checks, reviewer/date
+Re-review: any verifier-program byte change, changed cryptographic premise or
            domain, or changed deployment assumption; update hashes only when
            the pinned bytes change
 ```
@@ -90,12 +92,18 @@ byte-identical rebuild method. The reviewer checks ownership for every
 acceptance-dependent value. Independent assurance means independent reasoning
 and constructive checks, not different choices of ordinary field/hash
 assumptions; agreement from the same pipeline or agent alone is insufficient.
-Any executed-artifact byte change requires a new review and updated hashes.
+Any verifier-program byte change requires a new review and updated hashes,
+including code imported from unlocking data. New ordinary proof/witness values
+within an already reviewed domain are not program changes; identify and
+validate the changed fixture corpus separately. Changes to code or framing
+cannot be treated as ordinary witness variation.
 Changed cryptographic premises, domains, or deployment assumptions require a
 new review, but do not change byte hashes unless the bytes change.
 
 For `proofBinding: 'runtime'`, distinguish supplied multiproof coverage from a
-universal claim. The dense `worstCaseProof` is a measured case and must be a
+universal claim. Check equal ordered programs and step counts plus actual proof
+distinctness; current harness acceptance counts do not enforce these facts.
+The dense `worstCaseProof` is a measured case and must be a
 valid proof that the verifier accepts; it is not a universal worst-case bound.
 State a universal bound only when the mathematics and resource analysis prove
 one. A baked verifier is instance-specific by construction.
