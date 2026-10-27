@@ -220,15 +220,18 @@ export interface Implementation {
   /**
    * Evidence-based soundness review status (default 'unreviewed'): 'reviewed' = an
    * independent review of the exact artifact found no gaps; 'withdrawn' = the author
-   * withdrew the claim or a finding applies (kept in results/history, but never counts
-   * for the frontier). Normally resolved from harness/review-status.ts by id.
+   * withdrew the claim or a finding applies (never counts for the frontier; withdrawn
+   * implementations are normally removed from REGISTRY); 'baseline' / 'demo' /
+   * 'component' label third-party references, the harness self-test and partial
+   * checkpoints; 'archived' = superseded, kept as a row but never ranked.
+   * Normally resolved from harness/review-status.ts by id.
    */
   reviewStatus?: ReviewStatus;
   load: () => Promise<Scenario>;
 }
 
 export interface ReviewStatus {
-  status: 'reviewed' | 'unreviewed' | 'withdrawn';
+  status: 'reviewed' | 'unreviewed' | 'withdrawn' | 'baseline' | 'demo' | 'component' | 'archived';
   /** short human-readable reason (finding, fix commit, review pointer) */
   reason?: string;
   /** issue / PR / document links backing the status */
