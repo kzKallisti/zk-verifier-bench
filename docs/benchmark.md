@@ -85,16 +85,19 @@ Register it in `REGISTRY` in `src/harness/benchmark.ts`.
   given explicitly and/or, if `tamperable`, derived by flipping a bit in each
   step's witness (works when witnesses are push-only data). A run is "rejected"
   if any of its steps fails.
-- **Proof-generality.** `proofBinding: 'runtime'` claims one deployed program
-  verifies any proof for its VK; where `extraValidProofs` are supplied the
-  harness proves it (N/N distinct proofs accepted against the one fixed
-  locking). See `docs/proof-generality.md`.
-- **Worst case.** Op-cost is proof-dependent for the chunked verifiers, so the
-  committed proof alone understates it; `worstCaseProof` runs dense inputs
-  through the same locking and the result is reported as `worstCase`.
-- **Input validation.** `invalidInputs` carry well-formed witnesses with
-  structurally invalid curve points (off-curve, or on-curve but outside the
-  order-r subgroup); EIP-197-style validation must reject them all.
+- **Proof-generality.** `proofBinding` is a declaration. The harness checks the
+  same program/context across honest runs and requires reviewed `proofInputs`
+  locators before crediting distinct-proof fixture evidence. All supplied honest
+  runs must accept; missing proof identity is unconfirmed. Finite samples do not
+  establish universal correctness. See [proof generality](proof-generality.md).
+- **Worst case.** `worstCaseProof` must be nonempty and match the primary run's
+  step count, programs and transaction topology before its resource use is
+  measured. Acceptance is part of the correctness verdict. Its name/density does
+  not prove a universal resource maximum.
+- **Input validation.** `invalidInputs` outcomes record whole-run rejection only.
+  The harness cannot attribute rejection to an isolated domain predicate and
+  therefore does not award the legacy `inputValidation.enforced` badge. This is
+  missing evidence, not proof that domain checks are absent.
 
 ## Structures
 

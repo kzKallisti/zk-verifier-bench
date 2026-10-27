@@ -16,29 +16,82 @@ Both genuinely verify on-chain (an invalid proof cannot satisfy either). But the
 deployment models differ, so their byte totals are not directly comparable — see
 "Not every Groth16 is alike" in the [README](../README.md).
 
-The benchmark **proves this distinction empirically** instead of just asserting it.
+Fixture acceptance supports a finite claim; it does not prove correctness for every
+proof or establish that proof data is actually consumed by the verifier. Those are
+separate mathematical review obligations.
 
 ## How the harness checks it
 
-Each `Implementation` declares a `proofBinding: 'runtime' | 'baked'`
-(`src/harness/types.ts`). For verifiers whose trusted setup we control, the
-scenario also carries `extraValidProofs: Step[][]` — additional *distinct* valid
-proofs to run against the **same** locking. The harness
-(`src/harness/benchmark.ts`):
+`Implementation.proofBinding` declares runtime or baked binding. Before executing
+or measuring a scenario, the harness requires:
 
-1. runs the main valid proof (proof #0),
-2. runs every `extraValidProofs` run against the identical locking bytecode,
-3. reports `proofsTested` / `proofsPassed` and a one-line verdict:
-   - `runtime` + N/N pass → **"runtime-general — one fixed locking verifies N/N
-     distinct proofs"**,
-   - `runtime` + only 1 proof available → **"runtime-general by construction"**
-     (the references; we cannot mint proofs for a VK whose setup we do not hold),
-   - `baked` → **"instance-specific — the proof is baked into the program"** (the
-     per-step tamper test already confirms only the baked witness is accepted).
+- a nonempty primary run;
+- every extra and supplied worst-case run to have the same step count, ordered
+  locking bytecode, context kind, transaction topology, and successor programs;
+- intra-transaction/grouped sibling scripts to match the actual run being evaluated.
 
-A program that *claimed* runtime-generality but had the proof baked in would be
-caught here: it would accept 1 of N. The `generality` block is also emitted into
-`results.json` (`src/harness/export-json.ts`) for the website.
+Proof-dependent token commitments and unlocking witnesses may change. These checks
+establish program/context consistency, not enforcement of cross-transaction state
+continuity by the scripts themselves. A malformed honest-run contract throws before
+VM execution; the exporter cannot silently treat it as a successful measurement.
+The CLI reports the error and exits with a nonzero status.
+
+Distinctness additionally requires reviewed `Implementation.proofInputs` locators:
+
+```ts
+proofInputs: [
+  { input: 0, push: 2 }, // VM-number value, normalized across push encodings
+  { input: 0, push: 3, encoding: 'bytes', offset: 0, length: 48 },
+]
+```
+
+Indices are zero-based unlocking instruction positions (as with `publicInputs`).
+Declare genuine proof components only: exclude public scalars, pads, auxiliary
+roots, carried state and redeem scripts. A differing component establishes distinct
+encoded proofs only when its field ownership and encoding are reviewed. Numeric
+pushes compare decoded VM-number values. Packed byte fields require explicit,
+bounded, canonical slices. These locators do not validate curve points, subgroups,
+canonical field encodings, or consumption by the verifier.
+
+Missing locators mean identity is unknown: accepted extra runs still contribute to
+`proofsTested`/`proofsPassed`, but cannot earn `runtimeGeneral`. Duplicate declared
+fingerprints and malformed locators are explicit contract errors. The worst-case
+run may reuse an honest proof, but must match the same program and locator layout.
+
+`runtimeGeneral` requires runtime binding, declared-distinct extra proofs, and
+acceptance of every supplied primary/extra run. It is finite fixture evidence,
+never a universal theorem. A rejected extra is a completeness failure in both the
+CLI and JSON correctness verdict. Profile-only entries execute zero runs.
+
+The four affine BN254/BLS12-381 baseline and opcode singleton descriptors declare
+proof-coordinate pushes 2–9. Other layouts remain identity-unconfirmed until their
+owners supply reviewed locators; a different full witness alone is insufficient.
+
+Multi-input intra-transaction seam checks require an accepted, qualified distinct
+extra. Missing evidence is reported as untested (`bound: null`, correctness
+`valid-only`), rather than credited as a passing seam check. Missing named checkpoint boundaries also leave this sampler untested. A finite set of rejected seams does not prove universal
+stage binding. Covenant/grouped state continuity remains outside this seam check.
+
+The independently callable TXv5 grader also enforces honest-run program/context
+consistency, separately within shipped and pad-slot variant programs. It does not
+infer proof distinctness or mathematical soundness from those resource measurements.
+
+## Input-domain observations
+
+`inputValidation.tested`/`rejected` report only whole-run outcomes of supplied
+`invalidInputs`. They do not identify an isolated rejecting predicate: an equation,
+resource limit, or unrelated stage may reject. The legacy `enforced` field remains
+false, with `evidence: 'run-rejection-only'` (or `not-executed` for profile-only).
+This means **not demonstrated by this metric**, not that domain checks are absent.
+The actual accepted domain and its enforcement require independent review of the
+exact verifier bytes and argument.
+
+## Checking the contracts
+
+Run `pnpm test:scenario-contract` and `pnpm typecheck`. The focused tests reuse
+archived fixture byte arrays and alter only run/locator/context metadata. They do
+not generate proofs, run negative VM cases, or invoke benchmark gates. The full
+benchmark retains its existing VM/gate behavior; these tests are a separate check.
 
 ## How the extra proofs are minted
 
@@ -105,4 +158,4 @@ pnpm benchmark:json     # refresh results.json (adds the generality block)
 
 Set `EXTRA_PROOFS=N` to mint more/fewer (each extra proof is a full singleton VM
 evaluation, ~3.5–4 s, so the default of 3 keeps the benchmark snappy while still
-proving N≥2 generality).
+sampling at least two proofs).
