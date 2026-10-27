@@ -236,7 +236,7 @@
   "blsPlainSingletonFullProofDomain": {
     "artifactDirectory": "artifacts/bls-singleton-full-proof-domain",
     "qualification": "artifacts/bls-singleton-full-proof-domain/qualification.json",
-    "qualificationSha256": "09a7e89ab9d2b58bc705741436d6a8709575476b66a58bdd4d2070b0e5f5ee0d",
+    "qualificationSha256": "90c01832de620b2fd68dde9a02c863f0c2df0718401ae276ad21774cbf3f7c2a",
     "sourceRevision": "c0b0a824fc9018b4ef344d2b68538f7159ffffdd",
     "sourceFile": "singleton/bls12-381/groth16_strict.cash",
     "sourceSha256": "4cd3efad1c050a11b2d13c189ffb9335d8ec130d76e3b1257e43b74ea83d610d",
