@@ -30,6 +30,12 @@ const archived: ReviewStatus = {
   reason: 'Legacy large chain, superseded by the reviewed sound native and SI-GLS builds; kept as history, not ranked.',
 };
 
+// shared reasons for the BLS12-381 intratx-fs family (FS-PIT argument, chunked/bls12-381/README.md sections 1-6)
+const FS_PIT = 'FS-PIT soundness argument, README sections 1-6, in the SHA-256 random-oracle model (160/(2^256-1) per query plus the Merkle term). A and C are cofactor-equivalent.';
+const FS_FAIL_CLOSED = ' The fail-closed binder-order argument in section 6 was accepted.';
+const FS_REBUILD = ' Rebuilds byte-identically from the section 8 reconstructed flags.';
+const FS_BINDER_FIRST = ' The binder runs first, before any loader, with root framing and a bounded prefix cache (section 6).';
+
 /** statuses that never count for the frontier leader / current or new score-history points */
 export const UNRANKED_STATUSES: ReadonlySet<ReviewStatus['status']> = new Set(['withdrawn', 'archived']);
 export const isRanked = (status: ReviewStatus): boolean => !UNRANKED_STATUSES.has(status.status);
@@ -167,32 +173,33 @@ export const REVIEW_STATUS: Record<string, ReviewStatus> = {
     refs: [`${SRC}/blob/main/singleton/bls12-381/README.md`],
   },
 
-  // BLS12-381 intratx-fs family (13 ids): three-lens review 2026-10-27 (notes: verifier.cash work/review-bls-fs-1..3/).
-  // No owner gap found; held unreviewed until the FS-PIT soundness argument is in chunked/bls12-381/README.md
-  // and the math reviewer confirms the rebuild (Q1) and code-import (Q3) closure.
+  // BLS12-381 intratx-fs family (13 ids): three-lens review 2026-10-27 (notes: verifier.cash work/review-bls-fs-1..3/),
+  // then the FS-PIT soundness argument was written in chunked/bls12-381/README.md and signed off by two
+  // reviews 2026-10-27 (groth16_cashscript 9e56c4f, bench cef15cd; notes: verifier.cash work/fs-pit/).
+  'bch-groth16-bls12381-intratx-fs': {
+    status: 'reviewed',
+    reason: 'FS-PIT soundness argument, groth16_cashscript chunked/bls12-381/README.md sections 1-6 (two reviews signed off 2026-10-27). Sound in the SHA-256 random-oracle model with bound 160/(2^256-1) per oracle query plus the Merkle term q(q+1)/2^256. B is checked in G2; A and C are on-curve and cofactor-equivalent (disclosed). The PIC helper is imported before the binder; this rests on the accepted fail-closed argument in section 6.',
+    refs: [`${SRC}/blob/main/chunked/bls12-381/README.md`],
+  },
   ...Object.fromEntries(
-    [
-      'bch-groth16-bls12381-intratx-fs',
-      'bch-groth16-bls12381-intratx-fs-compact',
-      'bch-groth16-bls12381-intratx-fs-fused-final',
-      'bch-groth16-bls12381-intratx-fs-fused-regular',
-      'bch-groth16-bls12381-intratx-fs-fused-regular-pairs',
-      'bch-groth16-bls12381-intratx-fs-fused-regular-pairs-packed',
-      'bch-groth16-bls12381-intratx-fs-fused-regular-triples',
-      'bch-groth16-bls12381-intratx-fs-fused-carrier-pair',
-      'bch-groth16-bls12381-intratx-fs-fused-middle-pair',
-      'bch-groth16-bls12381-intratx-fs-regular-initializer',
-      'bch-groth16-bls12381-intratx-fs-fused-first-tail',
-      'bch-groth16-bls12381-intratx-fs-fused-coordinator-head',
-      'bch-groth16-bls12381-intratx-fs-fused-coordinator-head-fields',
-    ].map((id): [string, ReviewStatus] => [
-      id,
-      {
-        status: 'unreviewed',
-        reason: 'Three-lens review 2026-10-27: rebuilt byte-identically, no owner or domain gap found. Open: the FS-PIT soundness argument is not yet written in chunked/bls12-381/README.md, and the math reviewer has to confirm the rebuild and code-import closure.',
-        refs: [`${SRC}/blob/main/chunked/bls12-381/README.md`],
-      },
-    ]),
+    (
+      [
+        ['bch-groth16-bls12381-intratx-fs-compact', FS_PIT + FS_FAIL_CLOSED + FS_REBUILD],
+        ['bch-groth16-bls12381-intratx-fs-fused-final', FS_PIT + FS_FAIL_CLOSED + FS_REBUILD],
+        ...[
+          'bch-groth16-bls12381-intratx-fs-fused-regular',
+          'bch-groth16-bls12381-intratx-fs-fused-regular-pairs',
+          'bch-groth16-bls12381-intratx-fs-fused-regular-pairs-packed',
+          'bch-groth16-bls12381-intratx-fs-fused-regular-triples',
+          'bch-groth16-bls12381-intratx-fs-fused-carrier-pair',
+          'bch-groth16-bls12381-intratx-fs-fused-middle-pair',
+          'bch-groth16-bls12381-intratx-fs-fused-first-tail',
+          'bch-groth16-bls12381-intratx-fs-regular-initializer',
+        ].map((id) => [id, FS_PIT + FS_FAIL_CLOSED]),
+        ['bch-groth16-bls12381-intratx-fs-fused-coordinator-head', FS_PIT + FS_BINDER_FIRST],
+        ['bch-groth16-bls12381-intratx-fs-fused-coordinator-head-fields', FS_PIT + FS_BINDER_FIRST],
+      ] as [string, string][]
+    ).map(([id, reason]): [string, ReviewStatus] => [id, { status: 'reviewed', reason, refs: [`${SRC}/blob/main/chunked/bls12-381/README.md`] }]),
   ),
 
   // residue family: two independent reviews 2026-10-27 (notes: verifier.cash work/review-residue-1, -2/).
@@ -206,13 +213,18 @@ export const REVIEW_STATUS: Record<string, ReviewStatus> = {
     reason: 'Two independent reviews 2026-10-27: vectors regenerate byte-identically; same Miller/torus/endpoint kernels as intratx-residue with a 4-input root, position gates, exact frames and sha256 successor pins; the mixed add has an equal-point branch.',
     refs: [`${SRC}/blob/main/chunked/intratx/README.md`],
   },
+  // covenant-residue: review 2026-10-27, then the composition argument, deployment premises P1/P2 and the
+  // statement locator were written down and the reviewer signed off (groth16_cashscript 76a30ce, bench c0ce30e;
+  // notes: verifier.cash work/covenant-residue/).
   'bch-groth16-chunked-covenant-residue': {
-    status: 'unreviewed',
-    reason: 'Review 2026-10-27: bytes reproduce and the math checks out, no owner gap. Open: the category-genesis premise is not written down (vectors use a placeholder category), and the empty-commitment verdict NFT binds the public inputs only through ledger ancestry, which must be stated as the consumer check.',
+    status: 'reviewed',
+    reason: 'The reviewer signed off once B1 was fixed, and B1 is now fixed. Every value the verdict depends on has an owner across the 12-transaction graph: one input per step, fixed-width hash256 state commitments, a pinned successor locking, and an immutable terminal verdict. This rests on two deployment premises. P1: the category genesis spends an outpoint with output index 0, creates no NFT of C except minting batons at L_0, and the graph is regenerated with the real C (the bench uses the placeholder 0xcd..cd). P2: the verdict is an unspendable, empty-commitment immutable NFT that an off-chain consumer reads through its unique one-input ancestry; the statement is in0 (push 6) and in1 (push 5) of the genesis unlocking. A consumer that checks every spent locking does not need P1.',
+    refs: [`${SRC}/blob/main/chunked/pairing/README.md#covenant-residue-composition-what-the-scripts-enforce-and-what-the-deployment-supplies`],
   },
   'bch-groth16-bls12381-chunked-covenant-residue': {
-    status: 'unreviewed',
-    reason: 'Review 2026-10-27: bytes reproduce and the math checks out, no owner gap. Open: the same category-genesis and verdict-binding premises as the BN covenant-residue entry; the written architecture (impl header) describes an obsolete chunk layout.',
+    status: 'reviewed',
+    reason: 'Same composition argument as BN254, over 27 single-input transactions with 48-byte limbs. All 17 isolated invalid-input runs are loaded and rejected. Premises: P1, the category genesis creates only L_0 minting batons and the graph is regenerated with the real C (the bench uses the placeholder 0xbe..be), with an index-0 outpoint. P2, an off-chain consumer reads the unspendable empty-commitment verdict through its one-input ancestry, and the statement is in0 (push 6) and in1 (push 5) of the genesis unlocking.',
+    refs: [`${SRC}/blob/main/chunked/bls12-381/README.md#covenant-residue-composition-and-deployment-premises`],
   },
 
   // no public source: unreviewed until the author (toorik2) shares the generator source

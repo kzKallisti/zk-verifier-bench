@@ -62,7 +62,7 @@ export const bchGroth16Bls12381SingletonMinOp: Implementation = {
     'fixed-table additions. All extra inputs (torus root u; ' +
     'GLV k-decomposition + zInv) are prover-supplied and gated on-chain. Sound (vk_x ' +
     'recomputed on-chain; all proof points checked on-curve and B subgroup-checked). Verified vs ' +
-    '@noble/curves bls12-381. Single-tx like bch-groth16-bls12381-singleton but ~86% less ' +
+    '@noble/curves bls12-381. Single-tx like bch-groth16-bls12381-singleton but ~85% less ' +
     'op-cost. Still over the 10,000 B / per-input op limits.',
   load: async () => {
     const valid: Step[] = [
