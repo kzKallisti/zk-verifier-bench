@@ -38,7 +38,7 @@ artifacts.
 
 ## The VMs
 
-Five constructors in `src/harness/vm.ts`:
+The VM constructors in `src/harness/vm.ts`:
 
 | VM | used for |
 |----|----------|
@@ -46,6 +46,7 @@ Five constructors in `src/harness/vm.ts`:
 | `createRealVm` | consensus limits → the `BCH compatible` verdict |
 | `createStandardVm` | mempool-relay policy → the `fitsBchStandardness` verdict |
 | `createRealVmSpec` / `createStandardVmSpec` | the proposed **bch-spec** VM (100,000-byte scripts, op-cost budget `(10,000 + len) × 800`); grades `vm: 'bch-spec'` entries |
+| `createRealVmTxv5` / `createStandardVmTxv5` | **TXv5 as written** (CHIP-2025-01 v1.0.0): BCH 2026 rules with 100,000-byte scripts and stack elements, density base still 41, so the op-cost budget is `(41 + len) × 800`; the standard unlocking cap of 100,000 B is an assumption. Adds the `txv5` grade to `vm: 'bch-spec'` entries (bench issue #35) |
 
 `no (reason; ~N steps by op-cost)` on the compatibility column gives the first
 consensus limit hit (`script-size`, `op-cost`, `stack-depth`, ...) and how many
@@ -127,6 +128,69 @@ all, see *Why these measures* in the README.)
   proof run. For `vm: 'bch-spec'` entries the budget uses the spec formula.
 - **BCH compatible** = every step of the valid run validates on the real VM
   for the entry's target (`bch-2026` or `bch-spec`).
+- **txv5** (bch-spec entries only) = the same transaction graded on TXv5 as
+  written. libauth's `BCH_SPEC` also raises the density-control base from 41 to
+  10,000, which TXv5 does not propose, so a bch-spec entry can be valid on
+  `BCH_SPEC` and refused on TXv5. The grade records whether the shipped
+  transaction validates (consensus and standard) and, if not, the minimal zero
+  padding that makes every input fit both the op-cost limit `(41 + len) × 800`
+  and the hash-iteration limit `floor(f × (41 + len))` (f = 0.5 standard, 3.5
+  consensus), and the padded score. Padding follows the `padBytes` convention:
+  one all-zero push at the pad position (before the redeem script under P2SH,
+  last otherwise) is lengthened, or a new one is inserted there; an all-zero
+  push anywhere else is never treated as a pad. The scripts do not check the
+  pad's content (any bytes of the same length are accepted); the grade uses
+  zeros. The padding is a least fixpoint measured on a TXv5 VM with the budget
+  lifted, then replayed on the real TXv5 VM. An entry whose script rejects any
+  pad push (a pinned push layout, e.g. `DEPTH == 2`) is reported as not
+  paddable as shipped, with an estimate for a pad slot: the measured op-cost
+  plus one push and one `OP_DROP`. The estimate leaves out the few bytes of
+  script a pad slot needs (an `OP_DROP` or a changed `DEPTH` constant) and,
+  for multi-input entries, the extra introspection cost of a larger sibling.
+  Every honest run is graded (fixture 0, each extra valid proof, the
+  worst-case proof). On TXv5 a padded run's size is set by its op-cost (each
+  padded input ends near `ceil(op / 800) − 41` bytes whatever its shipped
+  length) and a run that validates as shipped costs its shipped size, so the
+  TXv5 worst case is the honest run with the largest TXv5 figure, which need
+  not be the bch-spec worst-case witness. `txv5.honest` lists each run's
+  figure (score, mode, and the `txBytes` of the same mode) and `txv5.summary`
+  gives fixture 0's figure, the TXv5 worst case (`worst`: an invalid run if
+  any, else the largest figure over ALL honest runs, as-shipped ones
+  included), `worstPadded` (the heaviest run that needs padding, when it is
+  not `worst`), `mixed` when honest runs fall on both sides of the budget,
+  and `standard`, which is true only if every honest run's figure is
+  standard. The worst case is over the shipped honest proofs only; an honest
+  witness outside them can be heavier (e.g. intratx-residue-large's
+  max-density GLV witness, which is not shipped). TXv5-grading variants:
+  an entry may ship `Scenario.txv5Variant`, the same program with a
+  documented pad slot, used only for this grade (`txv5.variant` and
+  `txv5.summary.variant` say so; the variant's invalid runs must reject on
+  TXv5 with the budget lifted). Both `sound-si-gls-single` builds (BN254 and
+  BLS12-381) pin `DEPTH == 2` at entry, so as shipped they reject any pad;
+  their TXv5 figure is measured on a variant whose entry check is
+  `DEPTH <3> NUMEQUALVERIFY DROP` (one instruction-level edit of the
+  reviewed redeem, +1 B; unlocking `<WQ> <WS> <pad> <redeem>`; the pad is
+  dropped unread before any other instruction), with the reviewed vectors'
+  witnesses. The reviewed bch-spec artifacts and scores are unchanged.
+  Derivation, argument and checks: groth16_cashscript `chunked/txv5-pad`
+  (`derive.mjs`). The
+  residue-large max-density GLV witness (all four decomposition scalars
+  2^128 − 1, ≈104,860 B consensus on TXv5 against 101,215 B for the heaviest
+  shipped proof) is not exported as its `worstCaseProof`: a full honest proof
+  for it exists (`groth16-singleton-multiproof-vectors.json`
+  `glvDensityProof`, same public input `(s + s·λ) mod r`), but shipping it
+  means rebuilding the entry's vectors with `build_vectors_residue_large.mjs`
+  (the compiler-fork build and the entry's gates), and it would also change
+  the entry's bch-spec worst case, which is a builder change for that entry,
+  not a grading change. The site carries the measured bound instead
+  (`TXV5_BEYOND_SHIPPED`). Transaction sizes use the
+  harness's v1/v2 serialization; TXv5's v5 encoding is a few bytes smaller
+  per input and output, so the figures slightly overstate a v5 transaction
+  (no current standardness verdict is within that margin). Assumptions: the standard unlocking cap is 100,000 B (TXv5's
+  rationale, not its text), and the VM number limit stays 10,000 B because
+  TXv5 v1.0.0 does not mention it (`BCH_SPEC` uses 100,000); no current grade
+  depends on the latter. `pnpm txv5 [id ...]` prints the grade without
+  touching `results.json`.
 - **standardness** = every complete transaction also passes the standard/relay
   VM. An intra-tx bundle can be standard when its total transaction size remains
   below policy limits; grouped entries report standardness for every group.

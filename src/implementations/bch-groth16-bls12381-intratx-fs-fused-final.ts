@@ -6,7 +6,9 @@
 // move13->113,15->115,16->116 with inverse-checked code transformations.
 // B receives the exact G2 subgroup check. A/C are on-curve and pairing-equivalent;
 // unique G1 encodings and the separate harness input-validation grade are not claimed.
-// The unchanged FS-PIT soundness bound is less than161/2^256 in the SHA-256 ROM.
+// The unchanged FS-PIT soundness bound is less than 161/2^256 per oracle query in the
+// SHA-256 ROM, plus the Merkle collision term q(q+1)/2^256 over q queries
+// (groth16_cashscript chunked/bls12-381/README.md, "FS-PIT soundness argument").
 // Qualified source: groth16_cashscript 1003775dc379e0232ca7302d3f0964066b88e8ce.
 // Owner SHA256: 3fac418a06ffc8a009d01ba400a76e0593d2d3b15fe4b2f185248cc62ccf88d6.
 // Compiler: zk-language efc6ab80d9cbbea06c3c364b8fd5e915b9da84b4.

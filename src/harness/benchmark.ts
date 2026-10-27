@@ -15,6 +15,7 @@ import { bchGroth16Bls12381SingletonFs } from '../implementations/bch-groth16-bl
 import { bchGroth16Bls12381SingletonFsSpec } from '../implementations/bch-groth16-bls12381-singleton-fs-spec.js';
 import { bchGroth16Bls12381SingletonFsSpecShared } from '../implementations/bch-groth16-bls12381-singleton-fs-spec-shared.js';
 import { bchGroth16Bls12381SingletonFsSpecZero } from '../implementations/bch-groth16-bls12381-singleton-fs-spec-zero.js';
+import { bchGroth16Bls12381SoundNative } from '../implementations/bch-groth16-bls12381-sound-native.js';
 import { bchGroth16Chunked } from '../implementations/bch-groth16-chunked.js';
 import { bchGroth16ChunkedCovenant } from '../implementations/bch-groth16-chunked-covenant.js';
 import { bchGroth16ChunkedCovenantResidue } from '../implementations/bch-groth16-chunked-covenant-residue.js';
@@ -32,8 +33,9 @@ import { bchGroth16IntratxGeneral } from '../implementations/bch-groth16-intratx
 import { bchGroth16IntratxResidueLarge } from '../implementations/bch-groth16-intratx-residue-large.js';
 import { bchGroth16IntratxCrown8Rawchain } from '../implementations/bch-groth16-intratx-crown8-rawchain.js';
 import { bchGroth16SoundSiGlsSingle } from '../implementations/bch-groth16-sound-si-gls-single.js';
+import { bchGroth16Bls12381SoundSiGlsSingle } from '../implementations/bch-groth16-bls12381-sound-si-gls-single.js';
+import { bchGroth16Bn254SoundNative } from '../implementations/bch-groth16-bn254-sound-native.js';
 import { bchGroth16Bls12381Grouped } from '../implementations/bch-groth16-bls12381-grouped.js';
-import { bchGroth16Bls12381GroupedResidue } from '../implementations/bch-groth16-bls12381-grouped-residue.js';
 import { bchPairingBls12381Intratx } from '../implementations/bch-pairing-bls12381-intratx.js';
 import { bchGroth16Bls12381Intratx } from '../implementations/bch-groth16-bls12381-intratx.js';
 import { bchGroth16Bls12381IntratxFs } from '../implementations/bch-groth16-bls12381-intratx-fs.js';
@@ -67,6 +69,7 @@ import { layoutGate, publicInputGate } from './gates.js';
 import { redTeam } from './redteam.js';
 import { reviewStatusOf } from './review-status.js';
 import { tamperProof } from './tamper.js';
+import { txv5Grade, txv5Summary } from './txv5.js';
 import type { BenchmarkResult, Implementation, PackagingType, Scenario, Step, StepMetrics } from './types.js';
 import {
   createLoosenedVm,
@@ -99,7 +102,7 @@ const limitReason = (error: string): string => {
   return 'limit';
 };
 
-export const REGISTRY: Implementation[] = [nchain, scryptBn256, bchGroth16Singleton, bchGroth16SingletonOpcodeOptimized, bchGroth16SingletonGenpow, bchGroth16SingletonMinOp, bchGroth16Bls12381Singleton, bchGroth16Bls12381SingletonOpcodeOptimized, bchGroth16Bls12381SingletonGenpow, bchGroth16Bls12381SingletonMinOp, bchGroth16Bls12381SingletonFs, bchGroth16Bls12381SingletonFsSpec, bchGroth16Bls12381SingletonFsSpecShared, bchGroth16Bls12381SingletonFsSpecZero, bchGroth16Chunked, bchGroth16ChunkedCovenant, bchGroth16ChunkedCovenantResidue, bchVkxScalarmult, bchVkxSingleton, bchVkxBls12381Singleton, bchVkxChunkedTwoloop, bchVkxChunkedShamir, bchVkxChunkedCovenant, bchPairingSingleton, bchPairingBls12381Singleton, bchPairingChunked, bchPairingBls12381Chunked, bchGroth16Bls12381Chunked, bchGroth16Bls12381ChunkedCovenant, bchGroth16Bls12381ChunkedCovenantResidue, bchGroth16IntratxDirectStatePublic, bchGroth16IntratxResidue, bchGroth16IntratxResidueLarge, bchGroth16IntratxCrown8Rawchain, bchGroth16SoundSiGlsSingle, bchGroth16IntratxGeneral, bchPairingBls12381Intratx, bchGroth16Bls12381Intratx, bchGroth16Bls12381IntratxFs, bchGroth16Bls12381IntratxFsCompact, bchGroth16Bls12381IntratxFsFusedFinal, bchGroth16Bls12381IntratxFsFusedRegular, bchGroth16Bls12381IntratxFsFusedRegularPairs, bchGroth16Bls12381IntratxFsFusedRegularPairsPacked, bchGroth16Bls12381IntratxFsFusedRegularTriples, bchGroth16Bls12381IntratxFsFusedCarrierPair, bchGroth16Bls12381IntratxFsFusedMiddlePair, bchGroth16Bls12381IntratxFsRegularInitializer, bchGroth16Bls12381IntratxFsFusedFirstTail, bchGroth16Bls12381IntratxFsFusedCoordinatorHead, bchGroth16Bls12381IntratxFsFusedCoordinatorHeadFields, bchGroth16Bls12381Grouped, bchGroth16Bls12381GroupedResidue, bchMultistepDemo];
+export const REGISTRY: Implementation[] = [nchain, scryptBn256, bchGroth16Singleton, bchGroth16SingletonOpcodeOptimized, bchGroth16SingletonGenpow, bchGroth16SingletonMinOp, bchGroth16Bls12381Singleton, bchGroth16Bls12381SingletonOpcodeOptimized, bchGroth16Bls12381SingletonGenpow, bchGroth16Bls12381SingletonMinOp, bchGroth16Bls12381SingletonFs, bchGroth16Bls12381SingletonFsSpec, bchGroth16Bls12381SingletonFsSpecShared, bchGroth16Bls12381SingletonFsSpecZero, bchGroth16Chunked, bchGroth16ChunkedCovenant, bchGroth16ChunkedCovenantResidue, bchVkxScalarmult, bchVkxSingleton, bchVkxBls12381Singleton, bchVkxChunkedTwoloop, bchVkxChunkedShamir, bchVkxChunkedCovenant, bchPairingSingleton, bchPairingBls12381Singleton, bchPairingChunked, bchPairingBls12381Chunked, bchGroth16Bls12381Chunked, bchGroth16Bls12381ChunkedCovenant, bchGroth16Bls12381ChunkedCovenantResidue, bchGroth16IntratxDirectStatePublic, bchGroth16IntratxResidue, bchGroth16IntratxResidueLarge, bchGroth16IntratxCrown8Rawchain, bchGroth16SoundSiGlsSingle, bchGroth16Bls12381SoundSiGlsSingle, bchGroth16Bn254SoundNative, bchGroth16Bls12381SoundNative, bchGroth16IntratxGeneral, bchPairingBls12381Intratx, bchGroth16Bls12381Intratx, bchGroth16Bls12381IntratxFs, bchGroth16Bls12381IntratxFsCompact, bchGroth16Bls12381IntratxFsFusedFinal, bchGroth16Bls12381IntratxFsFusedRegular, bchGroth16Bls12381IntratxFsFusedRegularPairs, bchGroth16Bls12381IntratxFsFusedRegularPairsPacked, bchGroth16Bls12381IntratxFsFusedRegularTriples, bchGroth16Bls12381IntratxFsFusedCarrierPair, bchGroth16Bls12381IntratxFsFusedMiddlePair, bchGroth16Bls12381IntratxFsRegularInitializer, bchGroth16Bls12381IntratxFsFusedFirstTail, bchGroth16Bls12381IntratxFsFusedCoordinatorHead, bchGroth16Bls12381IntratxFsFusedCoordinatorHeadFields, bchGroth16Bls12381Grouped, bchMultistepDemo];
 
 // Zero-padding accounting: the chunked/intra-tx steps append one big all-zero push to each
 // unlocking purely to buy op-cost budget ((41+len)*800). Its full encoded length (push
@@ -205,6 +208,35 @@ const packagingSecurity = (steps: Step[]): { secure: boolean; type: PackagingTyp
   return n === 0
     ? { secure: true, type }
     : { secure: false, type, reason: `${n}/${steps.length} step(s) use an insecure P2SH20 envelope (OP_HASH160, ~2^80 collision security) — use P2SH32` };
+};
+
+/** Score (scripts + tx overhead) and modelled serialized tx size of a run, as the headline
+ * score and the standardness check compute them. Used by the TXv5 grade for padded runs. */
+export const runScore = (run: Step[]): { score: number; txBytes: number } => {
+  const overheads = run.map(stepTxOverhead);
+  const overhead = overheads.reduce((a, b) => a + b, 0);
+  const score = run.reduce((a, s) => a + s.lockingBytecode.length + s.unlockingBytecode.length, 0) + overhead;
+  return { score, txBytes: largestTxBytes(run, overheads) };
+};
+
+/** Largest single transaction of a run (the 100,000-byte standard cap applies per tx), shared by
+ * runScore and standardness():
+ *   - grouped: each group is one tx; its size = sum of its inputs' scriptSig (unlocking) + that
+ *     group's tx overhead (envelope + outpoints + the single token/OP_RETURN output). Lockings
+ *     live in the funding UTXOs, not the spend.
+ *   - intra-tx bundle / single tx (txCount 1): the one tx = sum of all unlockings + overhead.
+ *   - covenant chain: max single 1-in/1-out step tx. */
+const largestTxBytes = (run: Step[], overheads: number[] = run.map(stepTxOverhead)): number => {
+  if (run.some((s) => s.grouped !== undefined)) {
+    const byGroup = new Map<number, number>();
+    run.forEach((s, i) => {
+      const g = s.grouped!.group;
+      byGroup.set(g, (byGroup.get(g) ?? 0) + s.unlockingBytecode.length + overheads[i]!);
+    });
+    return Math.max(0, ...byGroup.values());
+  }
+  if (txCountOf(run) === 1) return run.reduce((a, s) => a + s.unlockingBytecode.length, 0) + overheads.reduce((a, b) => a + b, 0);
+  return Math.max(0, ...run.map((s, i) => s.unlockingBytecode.length + s.lockingBytecode.length + overheads[i]!));
 };
 
 const runStep = (vm: Bch2026Vm, step: Step, bsv: boolean): StepMetrics => {
@@ -319,8 +351,6 @@ const SCRIPT_SIZE_CAP = 10_000; // BCH maximumBytecodeLength (per locking/unlock
 const standardness = (
   scenario: Awaited<ReturnType<Implementation['load']>>,
   steps: StepMetrics[],
-  txCount: number,
-  totalTxOverheadBytes: number,
   bsv: boolean,
   isSpec: boolean,
 ): { fits: boolean; reason?: string } => {
@@ -329,26 +359,7 @@ const standardness = (
   const maxStdUnlock = isSpec ? SPEC_STANDARD_UNLOCKING_CAP : MAX_STANDARD_UNLOCKING_BYTECODE;
   const overLock = steps.filter((s) => s.lockingBytes > MAX_STANDARD_LOCKING_BYTECODE).length;
   const overUnlock = steps.filter((s) => s.unlockingBytes > maxStdUnlock).length;
-  // Largest single transaction in the run (the 100,000-byte standard cap applies per tx):
-  //   - grouped: each group is one tx; its size = sum of its inputs' scriptSig (unlocking) +
-  //     that group's tx overhead (envelope + outpoints + the single token/OP_RETURN output).
-  //     Lockings live in the funding UTXOs, not the spend.
-  //   - intra-tx bundle (txCount 1): the one tx = sum of all unlockings + overhead.
-  //   - covenant chain: max single 1-in/1-out step tx.
-  const grouped = scenario.valid.some((s) => s.grouped !== undefined);
-  let txBytes: number;
-  if (grouped) {
-    const byGroup = new Map<number, number>();
-    scenario.valid.forEach((s, i) => {
-      const g = s.grouped!.group;
-      byGroup.set(g, (byGroup.get(g) ?? 0) + steps[i]!.unlockingBytes + steps[i]!.txOverheadBytes);
-    });
-    txBytes = Math.max(0, ...byGroup.values());
-  } else if (txCount === 1) {
-    txBytes = steps.reduce((a, s) => a + s.unlockingBytes, 0) + totalTxOverheadBytes;
-  } else {
-    txBytes = Math.max(0, ...steps.map((s) => s.unlockingBytes + s.lockingBytes + s.txOverheadBytes));
-  }
+  const txBytes = largestTxBytes(scenario.valid);
 
   const vm = isSpec ? createStandardVmSpec() : createStandardVm();
   const runRejectsStd = (run: Step[]) => run.some((s) => {
@@ -544,7 +555,7 @@ export const benchmark = (impl: Implementation, scenario: Awaited<ReturnType<Imp
   const totalTxOverheadBytes = steps.reduce((a, s) => a + s.txOverheadBytes, 0);
   const txCount = txCountOf(scenario.valid);
   // BCH standard (relay) policy: stricter than the consensus `bchCompatible` above.
-  const std = standardness(scenario, steps, txCount, totalTxOverheadBytes, bsv, isSpec);
+  const std = standardness(scenario, steps, bsv, isSpec);
 
   return {
     impl,
@@ -584,6 +595,8 @@ export const benchmark = (impl: Implementation, scenario: Awaited<ReturnType<Imp
     securePackaging: env.secure,
     packagingType: env.type,
     insecurePackagingReason: env.reason,
+    // bch-spec entries: also grade on TXv5 as written (density base 41; issue #35 option 2)
+    ...(isSpec ? { txv5: txv5Grade(scenario, bsv, runScore) } : {}),
   };
 };
 
@@ -620,6 +633,11 @@ export const computeResults = async (includeDemos = false): Promise<BenchmarkRes
   }
   return results;
 };
+
+/** Load and benchmark ONE implementation. Unlike computeResults, a load failure THROWS instead of
+ * silently omitting the entry (the incremental exporter must never drop a row unnoticed). */
+export const runImplementation = async (impl: Implementation): Promise<BenchmarkResult> =>
+  benchmark(impl, await impl.load());
 
 const fmt = (n: number) => n.toLocaleString();
 const padR = (s: string, w: number) => s.padEnd(w);
@@ -745,6 +763,21 @@ const main = async () => {
       }
       if (r.impl.vm === 'bch-spec') {
         console.log(`    > VM target: PROPOSED bch-spec upgrade (100,000-byte scripts, op-cost budget (10000+len)x800 = up to 88,000,000/input) — NOT valid on current BCH (BCH_2026 caps scripts at 10,000 B). "BCH compatible" above = validates on the bch-spec VM.`);
+        const t = r.txv5;
+        if (t) {
+          const mode = (m: { asShipped: boolean; padded?: { padBytes: number; score: number } }) =>
+            m.asShipped ? 'valid as shipped' : m.padded ? `+${fmt(m.padded.padBytes)} B pad -> ${fmt(m.padded.score)}` : 'rejects';
+          const tail = t.padding === 'not-paddable'
+            ? `not paddable as shipped (${t.notPaddableReason})${t.estimate ? `; estimate with a pad slot ${fmt(t.estimate.score)}` : ''}`
+            : `consensus ${mode(t.consensus)}, standard ${mode(t.standard)}${t.standard.fits ? '' : ` (non-standard: ${t.standard.policyReason ?? t.standard.reason})`}`;
+          console.log(`    > TXv5 as written (density base 41, budget (41+len)x800): ${tail}`);
+          if (t.variant) console.log(`    > TXv5 measured on the TXv5-grading variant: ${t.variant.description} (variant invalid runs rejected on TXv5, budget lifted: ${t.variant.invalidRejected}/${t.variant.invalid})`);
+          const sum = txv5Summary(t, r.totalBytes + r.totalTxOverheadBytes);
+          const w = sum.worst;
+          console.log(`    > TXv5 over all ${sum.runs} honest runs: ${sum.standard ? 'every figure standard' : `NOT standard (${sum.nonStandard?.run}: ${sum.nonStandard?.reason ?? 'non-standard'})`}`
+            + `${w ? `; worst case ${w.run} ${w.status}${w.score !== null ? ` ${w.estimated ? '~' : ''}${fmt(w.score)} (${w.mode})` : ''}` : ''}`
+            + `${sum.mixed ? '; honest runs fall on both sides of the budget (some valid as shipped)' : ''}`);
+        }
       }
       if (!r.profileOnly) {
         console.log(`    > standardness: ${r.fitsBchStandardness ? 'standard — relayable under default mempool policy' : `non-standard (${r.bchStandardnessReason ?? 'relay limit'}); valid at consensus, must be mined directly`}`);

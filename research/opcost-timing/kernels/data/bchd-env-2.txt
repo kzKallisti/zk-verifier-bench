@@ -1,0 +1,6 @@
+date: 2026-10-27T18:21:10+01:00
+bchd-fork worktree ~/BCH-projects/bchd-fork-wt/opcost-kernels 4629051d
+go version go1.27.1 linux/amd64
+cpu 2, GOMAXPROCS=1, -steady -batches 7 -batchtime 300ms -warmtime 300ms; singletons -batches 3 -batchtime 1ms -warmtime 1ms; kernel order reversed vs pass 1
+loadavg: 2.15 2.19 4.02 3/1649 910163
+loadavg end: 2.20 2.24 2.94 4/1635 915785

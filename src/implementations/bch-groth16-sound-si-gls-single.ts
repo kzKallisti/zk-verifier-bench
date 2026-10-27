@@ -28,6 +28,17 @@ interface Vectors {
 const vectors = JSON.parse(
   readFileSync('src/bch/groth16-sound-si-gls-single-vectors.json', 'utf8'),
 ) as Vectors;
+// TXv5-grading variant (used only for the txv5 field; Scenario.txv5Variant): the reviewed redeem with its
+// entry check DEPTH <2> NUMEQUALVERIFY replaced by DEPTH <3> NUMEQUALVERIFY DROP, so the unlocking takes a pad
+// <WQ> <WS> <pad> <redeem> that is dropped unread before any other instruction. Same WQ / WS witnesses as above.
+// Derived and checked by chunked/txv5-pad/derive.mjs in groth16_cashscript (bn254.json).
+const txv5Vectors = JSON.parse(
+  readFileSync('src/bch/groth16-sound-si-gls-single-txv5pad-vectors.json', 'utf8'),
+) as Vectors;
+const TXV5_VARIANT =
+  'pad slot: entry check DEPTH <2> NUMEQUALVERIFY -> DEPTH <3> NUMEQUALVERIFY DROP (one instruction-level edit of the ' +
+  'reviewed redeem, +1 B; unlocking <WQ> <WS> <pad> <redeem>, the pad dropped unread before any other instruction; ' +
+  'groth16_cashscript chunked/txv5-pad)';
 
 const toRun = (raw: RawStep[]): Step[] => {
   const inputs = raw.map((step) => ({
@@ -70,5 +81,12 @@ export const bchGroth16SoundSiGlsSingle: Implementation = {
     extraValidProofs: (vectors.extraValidProofs ?? []).map(toRun),
     worstCaseProof: vectors.worstCaseProof ? toRun(vectors.worstCaseProof) : undefined,
     invalid: (vectors.invalid ?? []).map(toRun),
+    txv5Variant: {
+      description: TXV5_VARIANT,
+      valid: toRun(txv5Vectors.steps),
+      extraValidProofs: (txv5Vectors.extraValidProofs ?? []).map(toRun),
+      worstCaseProof: txv5Vectors.worstCaseProof ? toRun(txv5Vectors.worstCaseProof) : undefined,
+      invalid: (txv5Vectors.invalid ?? []).map(toRun),
+    },
   }),
 };

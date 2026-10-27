@@ -9,7 +9,8 @@
     "fetch:nchain": "tsx src/fetch-data.ts nchain",
     "fetch:scrypt-bn256": "tsx src/fetch-data.ts scrypt-bn256",
     "benchmark": "tsx --max-old-space-size=8192 src/harness/benchmark.ts",
-    "benchmark:json": "tsx --max-old-space-size=8192 src/harness/export-json.ts",
+    "benchmark:json": "tsx --max-old-space-size=8192 src/harness/audit-deps.ts && tsx --max-old-space-size=8192 src/harness/export-json.ts",
+    "benchmark:deps": "tsx --max-old-space-size=8192 src/harness/audit-deps.ts",
     "gen:multiproof": "node src/bch/gen-multiproof.mjs",
     "gen:zero-input": "node src/bch/gen-zero-input-proofs.mjs",
     "gen:multiproof-bls": "node src/bch/gen-multiproof-bls12381.mjs",
@@ -28,6 +29,7 @@
     "scrypt-bn256:run": "tsx --max-old-space-size=4096 src/scrypt-bn256/run.ts",
     "scrypt-bn256:verify": "tsx --max-old-space-size=8192 src/scrypt-bn256/verify-proofs.ts",
     "scrypt-bn256:find-vkx": "tsx --max-old-space-size=8192 src/scrypt-bn256/find-vkx.ts",
+    "txv5": "tsx --max-old-space-size=8192 src/harness/txv5-report.ts",
     "typecheck": "tsc --noEmit"
   },
   "keywords": [],

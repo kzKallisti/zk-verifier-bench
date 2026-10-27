@@ -1,0 +1,133 @@
+From 9e88cf898394acaeb03fb05e7095bf75e68d77ab Mon Sep 17 00:00:00 2001
+From: Mathieu Geukens <mr-zwets@protonmail.com>
+Date: Tue, 27 Oct 2026 18:02:16 +0100
+Subject: [PATCH 1/2] opcostbench: -steady mode (no forced GC, batch means) for
+ short kernel units
+
+---
+ cmd/opcostbench/main.go | 49 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 48 insertions(+), 1 deletion(-)
+
+diff --git a/cmd/opcostbench/main.go b/cmd/opcostbench/main.go
+index 4c219bc0..5aa0e745 100644
+--- a/cmd/opcostbench/main.go
++++ b/cmd/opcostbench/main.go
+@@ -60,6 +60,9 @@ type Result struct {
+ 	EvalMedNs  float64             `json:"evalMedianNs"`
+ 	EvalMinNs  int64               `json:"evalMinNs"`
+ 	EvalMaxNs  int64               `json:"evalMaxNs"`
++	// -steady mode: per-batch mean eval time (no forced GC; GC cost amortized as in long runs)
++	BatchMeansNs []float64 `json:"batchMeansNs,omitempty"`
++	BatchEvals   []int     `json:"batchEvals,omitempty"`
+ 	SetupMedNs float64             `json:"setupMedianNs"`
+ 	NsPerCost  float64             `json:"nsPerOpCost"`
+ 	Profile    map[string][3]int64 `json:"profile,omitempty"`         // opcode hex -> [count, ns, opcost]
+@@ -164,6 +167,10 @@ func main() {
+ 	only := flag.String("only", "", "substring filter on unit name/group")
+ 	tracePath := flag.String("trace", "", "profile mode: write per-step opcode and op-cost delta of the first evaluated input")
+ 	noCostCheck := flag.Bool("nocostcheck", false, "report op-cost mismatches without aborting")
++	steady := flag.Bool("steady", false, "no forced GC per rep; time -batches batches of >= -batchtime each, report median of batch means")
++	batches := flag.Int("batches", 7, "steady mode: number of batches")
++	batchTime := flag.Duration("batchtime", 300*time.Millisecond, "steady mode: min eval time per batch")
++	warmTime := flag.Duration("warmtime", 300*time.Millisecond, "steady mode: warm-up eval time")
+ 	flag.Parse()
+ 	debug.SetGCPercent(400)
+ 
+@@ -201,7 +208,9 @@ func main() {
+ 			res.Budget += (base + int64(len(p0.tx.TxIn[i].SignatureScript))) * 800
+ 		}
+ 		run := func(prof map[byte]*[3]int64) (Rep, bool, string, []int64) {
+-			runtime.GC()
++			if !*steady {
++				runtime.GC()
++			}
+ 			t0 := time.Now()
+ 			p, err := setup(txb, sob, inputs)
+ 			t1 := time.Now()
+@@ -276,6 +285,44 @@ func main() {
+ 			for _, c := range costs {
+ 				res.OpCost += c
+ 			}
++		} else if *steady {
++			r, ok, first, costs := run(nil)
++			check(ok, first, costs)
++			res.Accepted, res.FirstErr, res.InputCosts = ok, first, costs
++			for _, c := range costs {
++				res.OpCost += c
++			}
++			for w := r.EvalNs; w < warmTime.Nanoseconds(); {
++				r, ok, first, costs := run(nil)
++				check(ok, first, costs)
++				w += r.EvalNs
++			}
++			var all []int64
++			for b := 0; b < *batches; b++ {
++				var sum int64
++				n := 0
++				for sum < batchTime.Nanoseconds() || n == 0 {
++					r, ok, first, costs := run(nil)
++					check(ok, first, costs)
++					sum += r.EvalNs
++					n++
++					all = append(all, r.EvalNs)
++				}
++				res.BatchMeansNs = append(res.BatchMeansNs, float64(sum)/float64(n))
++				res.BatchEvals = append(res.BatchEvals, n)
++			}
++			bm := append([]float64(nil), res.BatchMeansNs...)
++			sort.Float64s(bm)
++			if len(bm)%2 == 1 {
++				res.EvalMedNs = bm[len(bm)/2]
++			} else {
++				res.EvalMedNs = (bm[len(bm)/2-1] + bm[len(bm)/2]) / 2
++			}
++			sort.Slice(all, func(a, b int) bool { return all[a] < all[b] })
++			res.EvalMinNs, res.EvalMaxNs = all[0], all[len(all)-1]
++			if res.OpCost > 0 {
++				res.NsPerCost = res.EvalMedNs / float64(res.OpCost)
++			}
+ 		} else {
+ 			// warm-up
+ 			r, ok, first, costs := run(nil)
+-- 
+2.56.0
+
+
+From 4629051d2b2b5ababbda546091136bd32fc2ac3a Mon Sep 17 00:00:00 2001
+From: Mathieu Geukens <mr-zwets@protonmail.com>
+Date: Tue, 27 Oct 2026 18:06:40 +0100
+Subject: [PATCH 2/2] opcostbench -steady: bound batches and warm-up by wall
+ time too
+
+---
+ cmd/opcostbench/main.go | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/cmd/opcostbench/main.go b/cmd/opcostbench/main.go
+index 5aa0e745..9d53f0e1 100644
+--- a/cmd/opcostbench/main.go
++++ b/cmd/opcostbench/main.go
+@@ -292,7 +292,8 @@ func main() {
+ 			for _, c := range costs {
+ 				res.OpCost += c
+ 			}
+-			for w := r.EvalNs; w < warmTime.Nanoseconds(); {
++			warmWall := time.Now()
++			for w := r.EvalNs; w < warmTime.Nanoseconds() && time.Since(warmWall) < *warmTime; {
+ 				r, ok, first, costs := run(nil)
+ 				check(ok, first, costs)
+ 				w += r.EvalNs
+@@ -301,7 +302,9 @@ func main() {
+ 			for b := 0; b < *batches; b++ {
+ 				var sum int64
+ 				n := 0
+-				for sum < batchTime.Nanoseconds() || n == 0 {
++				wall := time.Now()
++				// a batch ends after -batchtime of eval time or of wall time (setup dominates tiny units)
++				for n == 0 || (sum < batchTime.Nanoseconds() && time.Since(wall) < *batchTime) {
+ 					r, ok, first, costs := run(nil)
+ 					check(ok, first, costs)
+ 					sum += r.EvalNs
+-- 
+2.56.0
+

@@ -152,6 +152,24 @@ export interface Scenario {
    * column, not the BCH verdict.
    */
   bsvOpReturnTerminator?: boolean;
+  /**
+   * bch-spec entries only: a TXv5-grading VARIANT of this entry, graded for the `txv5` field
+   * (harness/txv5.ts) in place of the runs above. For an entry whose shipped layout rejects a
+   * pad push (e.g. DEPTH == 2 at entry), the variant is the same program with a documented pad
+   * slot that is consumed and dropped before any accept-relevant computation, so the TXv5 figure
+   * is measured instead of estimated. Its honest runs carry the same witnesses as the shipped
+   * ones plus a small zero pad (which the TXv5 grade grows). It never affects the bch-spec score
+   * or any other gate.
+   */
+  txv5Variant?: {
+    /** what the variant changes, and where it is derived and checked */
+    description: string;
+    valid: Step[];
+    extraValidProofs?: Step[][];
+    worstCaseProof?: Step[];
+    /** must reject on TXv5 with the density budget lifted (a reason other than op-cost) */
+    invalid?: Step[][];
+  };
 }
 
 export interface Implementation {
@@ -220,15 +238,18 @@ export interface Implementation {
   /**
    * Evidence-based soundness review status (default 'unreviewed'): 'reviewed' = an
    * independent review of the exact artifact found no gaps; 'withdrawn' = the author
-   * withdrew the claim or a finding applies (kept in results/history, but never counts
-   * for the frontier). Normally resolved from harness/review-status.ts by id.
+   * withdrew the claim or a finding applies (never counts for the frontier; withdrawn
+   * implementations are normally removed from REGISTRY); 'baseline' / 'demo' /
+   * 'component' label third-party references, the harness self-test and partial
+   * checkpoints; 'archived' = superseded, kept as a row but never ranked.
+   * Normally resolved from harness/review-status.ts by id.
    */
   reviewStatus?: ReviewStatus;
   load: () => Promise<Scenario>;
 }
 
 export interface ReviewStatus {
-  status: 'reviewed' | 'unreviewed' | 'withdrawn';
+  status: 'reviewed' | 'unreviewed' | 'withdrawn' | 'baseline' | 'demo' | 'component' | 'archived';
   /** short human-readable reason (finding, fix commit, review pointer) */
   reason?: string;
   /** issue / PR / document links backing the status */
@@ -396,5 +417,7 @@ export interface BenchmarkResult {
   packagingType: PackagingType;
   /** short reason the packaging is disallowed (how many steps use P2SH20); undefined when secure */
   insecurePackagingReason?: string;
+  /** bch-spec entries only: the TXv5-as-written grade (harness/txv5.ts, bench issue #35). */
+  txv5?: import('./txv5.js').Txv5Grade;
   error?: string;
 }

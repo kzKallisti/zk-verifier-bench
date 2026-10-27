@@ -1,0 +1,520 @@
+diff --git a/cmd/opcostbench/main.go b/cmd/opcostbench/main.go
+new file mode 100644
+index 00000000..4c219bc0
+--- /dev/null
++++ b/cmd/opcostbench/main.go
+@@ -0,0 +1,325 @@
++// opcostbench times BCH VM evaluation (bchd txscript) per transaction and reports ns per
++// op-cost unit. Input: a JSON array of units (see Unit). Each unit is one transaction with
++// its source outputs; every input listed is evaluated. Modes per unit:
++//
++//	bch2026 – consensus limits (block validation, non-standard flags)
++//	bchspec – bch-spec: density base 10,000, 100 kB scripts / items / numbers
++//	loose   – every resource limit lifted (op-cost/hash budgets, sizes, depths)
++//
++// Timing: per repetition, "setup" = tx + utxo decode, sighash midstate, NewEngine for each
++// input; "eval" = Execute() for each input. Every repetition's accept/reject verdict and
++// op-cost is checked against the expectation; a mismatch aborts.
++package main
++
++import (
++	"bufio"
++	"bytes"
++	"encoding/hex"
++	"encoding/json"
++	"flag"
++	"fmt"
++	"os"
++	"runtime"
++	"runtime/debug"
++	"sort"
++	"time"
++
++	"github.com/gcash/bchd/txscript"
++	"github.com/gcash/bchd/wire"
++)
++
++type Unit struct {
++	Name          string  `json:"name"`
++	Group         string  `json:"group"`
++	Mode          string  `json:"mode"`
++	TxHex         string  `json:"txHex"`
++	SourceOutputs string  `json:"sourceOutputsHex"`
++	Inputs        []int   `json:"inputs"`       // nil = all inputs
++	ExpectAccept  bool    `json:"expectAccept"` // tx-level verdict
++	ExpectOpCost  []int64 `json:"expectOpCost"` // per evaluated input (optional; -1 = skip)
++	Reps          int     `json:"reps"`         // optional override
++}
++
++type Rep struct {
++	SetupNs int64 `json:"setupNs"`
++	EvalNs  int64 `json:"evalNs"`
++}
++
++type Result struct {
++	Name       string              `json:"name"`
++	Group      string              `json:"group"`
++	Mode       string              `json:"mode"`
++	TxBytes    int                 `json:"txBytes"`
++	NInputs    int                 `json:"nInputs"`
++	Accepted   bool                `json:"accepted"`
++	FirstErr   string              `json:"firstErr,omitempty"`
++	OpCost     int64               `json:"opCost"`
++	InputCosts []int64             `json:"inputOpCosts"`
++	Budget     int64               `json:"budget"` // sum of BCH-2026 (or spec) per-input budgets
++	Reps       []Rep               `json:"reps"`
++	EvalMedNs  float64             `json:"evalMedianNs"`
++	EvalMinNs  int64               `json:"evalMinNs"`
++	EvalMaxNs  int64               `json:"evalMaxNs"`
++	SetupMedNs float64             `json:"setupMedianNs"`
++	NsPerCost  float64             `json:"nsPerOpCost"`
++	Profile    map[string][3]int64 `json:"profile,omitempty"`         // opcode hex -> [count, ns, opcost]
++	TimerNs    float64             `json:"timerOverheadNs,omitempty"` // median empty-span time of the profiler hook
++}
++
++var flagsBlock = txscript.StandardVerifyFlags | txscript.ScriptAllowCashTokens |
++	txscript.ScriptAllowMay2025 | txscript.ScriptAllowMay2026
++
++func setMode(m string) {
++	l := txscript.DefaultBenchLimits
++	switch m {
++	case "bch2026":
++	case "bchspec":
++		l.DensityBase = 10000
++		l.MaxScriptSize, l.MaxElementSize, l.MaxNumLen = 100000, 100000, 100000
++	case "loose":
++		l.Unbudgeted = true
++		l.MaxScriptSize, l.MaxElementSize, l.MaxNumLen = 1<<30, 1<<30, 1<<30
++		l.MaxStackSize, l.MaxControlDepth = 1<<30, 1<<30
++	default:
++		panic("mode " + m)
++	}
++	txscript.SetBenchLimits(l)
++}
++
++type prepared struct {
++	tx     *wire.MsgTx
++	cache  *txscript.UtxoCache
++	utxos  []wire.TxOut
++	hashes *txscript.TxSigHashes
++	vms    []*txscript.Engine
++}
++
++func mustHex(s string) []byte {
++	b, err := hex.DecodeString(s)
++	if err != nil {
++		panic(err)
++	}
++	return b
++}
++
++func setup(txb, sob []byte, inputs []int) (*prepared, error) {
++	p := &prepared{tx: &wire.MsgTx{}}
++	if err := p.tx.BchDecode(bytes.NewReader(txb), 0, 0); err != nil {
++		return nil, err
++	}
++	r := bytes.NewReader(sob)
++	n, err := wire.ReadVarInt(r, 0)
++	if err != nil {
++		return nil, err
++	}
++	p.utxos = make([]wire.TxOut, n)
++	p.cache = txscript.NewUtxoCache()
++	for i := range p.utxos {
++		if _, err := wire.ReadTxOut(r, 0, 0, &p.utxos[i]); err != nil {
++			return nil, err
++		}
++		p.cache.AddEntry(i, p.utxos[i])
++	}
++	p.hashes = txscript.NewTxSigHashes(p.tx)
++	for _, i := range inputs {
++		vm, err := txscript.NewEngine(p.utxos[i].PkScript, p.tx, i, flagsBlock, nil, p.hashes, p.cache, p.utxos[i].Value)
++		if err != nil {
++			return nil, fmt.Errorf("input %d: NewEngine: %w", i, err)
++		}
++		p.vms = append(p.vms, vm)
++	}
++	return p, nil
++}
++
++func median(xs []int64) float64 {
++	s := append([]int64(nil), xs...)
++	sort.Slice(s, func(a, b int) bool { return s[a] < s[b] })
++	n := len(s)
++	if n%2 == 1 {
++		return float64(s[n/2])
++	}
++	return float64(s[n/2-1]+s[n/2]) / 2
++}
++
++// timerOverhead measures the median duration the profiler hook reports for an empty span
++// (op-cost read + two clock reads), to subtract per instruction.
++func timerOverhead() float64 {
++	vm := &txscript.Engine{}
++	_ = vm
++	xs := make([]int64, 200000)
++	for i := range xs {
++		t0 := time.Now()
++		xs[i] = int64(time.Since(t0))
++	}
++	return median(xs)
++}
++
++func main() {
++	in := flag.String("in", "", "units JSON")
++	out := flag.String("out", "", "results JSON")
++	minTime := flag.Duration("mintime", 3*time.Second, "min total eval time per unit")
++	minReps := flag.Int("minreps", 5, "min repetitions")
++	maxReps := flag.Int("maxreps", 2000, "max repetitions")
++	profile := flag.Bool("profile", false, "per-opcode profile run (1 rep, ExecuteProfiled)")
++	only := flag.String("only", "", "substring filter on unit name/group")
++	tracePath := flag.String("trace", "", "profile mode: write per-step opcode and op-cost delta of the first evaluated input")
++	noCostCheck := flag.Bool("nocostcheck", false, "report op-cost mismatches without aborting")
++	flag.Parse()
++	debug.SetGCPercent(400)
++
++	var units []Unit
++	b, err := os.ReadFile(*in)
++	if err != nil {
++		panic(err)
++	}
++	if err := json.Unmarshal(b, &units); err != nil {
++		panic(err)
++	}
++	var results []Result
++	for _, u := range units {
++		if *only != "" && !bytes.Contains([]byte(u.Name+" "+u.Group), []byte(*only)) {
++			continue
++		}
++		setMode(u.Mode)
++		txb, sob := mustHex(u.TxHex), mustHex(u.SourceOutputs)
++		p0, err := setup(txb, sob, nil)
++		if err != nil {
++			panic(err)
++		}
++		inputs := u.Inputs
++		if inputs == nil {
++			for i := range p0.tx.TxIn {
++				inputs = append(inputs, i)
++			}
++		}
++		res := Result{Name: u.Name, Group: u.Group, Mode: u.Mode, TxBytes: len(txb), NInputs: len(inputs)}
++		for _, i := range inputs {
++			base := int64(txscript.DefaultBenchLimits.DensityBase)
++			if u.Mode == "bchspec" {
++				base = 10000
++			}
++			res.Budget += (base + int64(len(p0.tx.TxIn[i].SignatureScript))) * 800
++		}
++		run := func(prof map[byte]*[3]int64) (Rep, bool, string, []int64) {
++			runtime.GC()
++			t0 := time.Now()
++			p, err := setup(txb, sob, inputs)
++			t1 := time.Now()
++			if err != nil {
++				return Rep{SetupNs: int64(t1.Sub(t0))}, false, err.Error(), nil
++			}
++			ok, first := true, ""
++			costs := make([]int64, len(p.vms))
++			var evalNs int64
++			for k, vm := range p.vms {
++				var e error
++				if prof != nil {
++					var tw *bufio.Writer
++					if *tracePath != "" && k == 0 {
++						f, _ := os.Create(*tracePath)
++						defer f.Close()
++						tw = bufio.NewWriter(f)
++						defer tw.Flush()
++					}
++					e = vm.ExecuteProfiled(func(s txscript.StepProfile) {
++						if tw != nil {
++							fmt.Fprintf(tw, "%02x %d\n", s.Opcode, s.OpCost)
++						}
++						a := prof[s.Opcode]
++						if a == nil {
++							a = &[3]int64{}
++							prof[s.Opcode] = a
++						}
++						a[0]++
++						a[1] += s.Nanos
++						a[2] += s.OpCost
++					})
++				} else {
++					ts := time.Now()
++					e = vm.Execute()
++					evalNs += int64(time.Since(ts))
++				}
++				costs[k] = vm.CompositeOpCost()
++				if e != nil {
++					ok = false
++					if first == "" {
++						first = fmt.Sprintf("input %d: %v", inputs[k], e)
++					}
++				}
++			}
++			return Rep{SetupNs: int64(t1.Sub(t0)), EvalNs: evalNs}, ok, first, costs
++		}
++		check := func(ok bool, first string, costs []int64) {
++			if ok != u.ExpectAccept {
++				fmt.Fprintf(os.Stderr, "VERDICT MISMATCH %s: got %v (%s) want %v\n", u.Name, ok, first, u.ExpectAccept)
++				os.Exit(2)
++			}
++			for k, c := range u.ExpectOpCost {
++				if c >= 0 && k < len(costs) && costs[k] != c {
++					fmt.Fprintf(os.Stderr, "OPCOST MISMATCH %s input#%d: got %d want %d\n", u.Name, k, costs[k], c)
++					if !*noCostCheck {
++						os.Exit(3)
++					}
++				}
++			}
++		}
++		if *profile {
++			prof := map[byte]*[3]int64{}
++			_, ok, first, costs := run(prof)
++			check(ok, first, costs)
++			res.TimerNs = timerOverhead()
++			res.Profile = map[string][3]int64{}
++			for op, a := range prof {
++				res.Profile[fmt.Sprintf("%02x", op)] = *a
++			}
++			res.Accepted, res.FirstErr, res.InputCosts = ok, first, costs
++			for _, c := range costs {
++				res.OpCost += c
++			}
++		} else {
++			// warm-up
++			r, ok, first, costs := run(nil)
++			check(ok, first, costs)
++			res.Accepted, res.FirstErr, res.InputCosts = ok, first, costs
++			for _, c := range costs {
++				res.OpCost += c
++			}
++			reps := *minReps
++			if r.EvalNs > 0 {
++				if n := int(minTime.Nanoseconds() / r.EvalNs); n > reps {
++					reps = n
++				}
++			}
++			if reps > *maxReps {
++				reps = *maxReps
++			}
++			if u.Reps > 0 {
++				reps = u.Reps
++			}
++			var ev, st []int64
++			for k := 0; k < reps; k++ {
++				r, ok, first, costs := run(nil)
++				check(ok, first, costs)
++				res.Reps = append(res.Reps, r)
++				ev = append(ev, r.EvalNs)
++				st = append(st, r.SetupNs)
++			}
++			res.EvalMedNs, res.SetupMedNs = median(ev), median(st)
++			sort.Slice(ev, func(a, b int) bool { return ev[a] < ev[b] })
++			res.EvalMinNs, res.EvalMaxNs = ev[0], ev[len(ev)-1]
++			if res.OpCost > 0 {
++				res.NsPerCost = res.EvalMedNs / float64(res.OpCost)
++			}
++			if len(res.Reps) > 50 {
++				res.Reps = nil // keep the file small; summary stats kept
++			}
++		}
++		fmt.Fprintf(os.Stderr, "%-60s %-8s ok=%v cost=%d eval=%.3fms setup=%.3fms ns/cost=%.4f\n",
++			u.Name, u.Mode, res.Accepted, res.OpCost, res.EvalMedNs/1e6, res.SetupMedNs/1e6, res.NsPerCost)
++		results = append(results, res)
++	}
++	ob, _ := json.MarshalIndent(results, "", " ")
++	if err := os.WriteFile(*out, ob, 0o644); err != nil {
++		panic(err)
++	}
++}
+diff --git a/txscript/benchlimits.go b/txscript/benchlimits.go
+new file mode 100644
+index 00000000..feca35f6
+--- /dev/null
++++ b/txscript/benchlimits.go
+@@ -0,0 +1,70 @@
++package txscript
++
++import "time"
++
++// BenchLimits holds the VM limits that the opcost-timing benchmark driver may raise. The
++// defaults equal the BCH 2026 consensus constants, so a node or test that never calls
++// SetBenchLimits evaluates exactly as before. Benchmark use only: the values are global
++// and not synchronised.
++type BenchLimits struct {
++	// DensityBase replaces the 41-byte per-input credit in the op-cost and hash-iteration
++	// budgets ((DensityBase + scriptSigLen) * 800). bch-spec uses 10,000.
++	DensityBase int
++	// Unbudgeted disables the op-cost and hash-iteration density checks (the metrics are
++	// still accumulated).
++	Unbudgeted      bool
++	MaxScriptSize   int
++	MaxElementSize  int
++	MaxNumLen       int
++	MaxStackSize    int
++	MaxControlDepth int
++}
++
++// DefaultBenchLimits are the BCH 2026 consensus values.
++var DefaultBenchLimits = BenchLimits{
++	DensityBase:     InputScriptSizeFixedCredit,
++	MaxScriptSize:   MaxScriptSize,
++	MaxElementSize:  MaxScriptElementSize,
++	MaxNumLen:       defaultBigIntScriptNumLen,
++	MaxStackSize:    MaxStackSize,
++	MaxControlDepth: MaxConditionalStackDepth,
++}
++
++var benchLimits = DefaultBenchLimits
++
++// SetBenchLimits replaces the active VM limits (benchmark drivers only).
++func SetBenchLimits(l BenchLimits) { benchLimits = l }
++
++// StepProfile is one evaluated instruction as seen by ExecuteProfiled.
++type StepProfile struct {
++	Opcode byte
++	Nanos  int64
++	OpCost int64 // composite op-cost added by this instruction
++}
++
++// Metrics exposes the composite op-cost so far (benchmark drivers only).
++func (vm *Engine) CompositeOpCost() int64 {
++	return vm.metrics.GetCompositeOPCost(vm.hasFlag(ScriptAllowMay2025StandardOnly))
++}
++
++// ExecuteProfiled is Execute with a per-instruction callback (opcode, wall ns, op-cost
++// delta). It adds two clock reads per instruction, so absolute times are inflated by the
++// timer overhead; drivers calibrate and subtract it. Execute itself is unchanged.
++func (vm *Engine) ExecuteProfiled(cb func(StepProfile)) (err error) {
++	done := false
++	for !done {
++		var op byte = 0xff
++		if vm.validPC() == nil {
++			op = vm.scripts[vm.scriptIdx][vm.scriptOff].opcode.value
++		}
++		c0 := vm.CompositeOpCost()
++		t0 := time.Now()
++		done, err = vm.Step()
++		dt := time.Since(t0)
++		cb(StepProfile{Opcode: op, Nanos: int64(dt), OpCost: vm.CompositeOpCost() - c0})
++		if err != nil {
++			return err
++		}
++	}
++	return vm.CheckErrorCondition(true)
++}
+diff --git a/txscript/engine.go b/txscript/engine.go
+index ba15e004..c873fc3a 100644
+--- a/txscript/engine.go
++++ b/txscript/engine.go
+@@ -495,7 +495,7 @@ func (vm *Engine) Step() (done bool, err error) {
+ 		// Control stack may not exceed depth of 100. Post-upgrade12 this includes
+ 		// OP_INVOKE frames and saved conditionals from outer frames, not just the
+ 		// current frame's condStack.
+-		if depth := vm.controlStackDepth(); depth > MaxConditionalStackDepth {
++		if depth := vm.controlStackDepth(); depth > benchLimits.MaxControlDepth {
+ 			str := fmt.Sprintf("control stack depth %d is larger than max allowed depth: %d",
+ 				depth, MaxConditionalStackDepth)
+ 			return false, scriptError(ErrConditionalStackDepth, str)
+@@ -512,9 +512,9 @@ func (vm *Engine) Step() (done bool, err error) {
+ 		// be less than Maximum Memory Slots, set to 1000.
+ 		combinedStackSize += int32(vm.definedFunctionCount)
+ 	}
+-	if combinedStackSize > MaxStackSize {
++	if combinedStackSize > int32(benchLimits.MaxStackSize) {
+ 		str := fmt.Sprintf("combined stack size %d > max allowed %d",
+-			combinedStackSize, MaxStackSize)
++			combinedStackSize, benchLimits.MaxStackSize)
+ 		return false, scriptError(ErrStackOverflow, str)
+ 	}
+ 
+@@ -1173,9 +1173,9 @@ func NewEngine(scriptPubKey []byte, tx *wire.MsgTx, txIdx int, flags ScriptFlags
+ 	scripts := [][]byte{scriptSig, scriptPubKey}
+ 	vm.scripts = make([][]parsedOpcode, len(scripts))
+ 	for i, scr := range scripts {
+-		if len(scr) > MaxScriptSize {
++		if len(scr) > benchLimits.MaxScriptSize {
+ 			str := fmt.Sprintf("script size %d is larger than max "+
+-				"allowed size %d", len(scr), MaxScriptSize)
++				"allowed size %d", len(scr), benchLimits.MaxScriptSize)
+ 			return nil, scriptError(ErrScriptTooBig, str)
+ 		}
+ 		var err error
+@@ -1222,10 +1222,10 @@ func NewEngine(scriptPubKey []byte, tx *wire.MsgTx, txIdx int, flags ScriptFlags
+ 
+ 	if vm.hasFlag(ScriptAllowMay2025) {
+ 
+-		vm.maxScriptElementSize = MaxScriptElementSize
++		vm.maxScriptElementSize = benchLimits.MaxElementSize
+ 
+-		vm.dstack.defaultScriptNumLen = defaultBigIntScriptNumLen
+-		vm.astack.defaultScriptNumLen = defaultBigIntScriptNumLen
++		vm.dstack.defaultScriptNumLen = benchLimits.MaxNumLen
++		vm.astack.defaultScriptNumLen = benchLimits.MaxNumLen
+ 	} else if vm.hasFlag(ScriptVerify64BitIntegers) {
+ 		vm.dstack.defaultScriptNumLen = defaultBigScriptNumLen
+ 		vm.astack.defaultScriptNumLen = defaultBigScriptNumLen
+diff --git a/txscript/opcode.go b/txscript/opcode.go
+index 9ba7232b..946ff494 100644
+--- a/txscript/opcode.go
++++ b/txscript/opcode.go
+@@ -1726,7 +1726,7 @@ func opcodeBin2num(op *parsedOpcode, vm *Engine) error {
+ 		defaultScriptNumLen = defaultBigScriptNumLen
+ 	}
+ 	if vm.hasFlag(ScriptAllowMay2025) {
+-		defaultScriptNumLen = defaultBigIntScriptNumLen
++		defaultScriptNumLen = benchLimits.MaxNumLen
+ 	}
+ 	if len(n.Bytes()) > defaultScriptNumLen {
+ 		return scriptError(ErrNumberTooBig,
+@@ -1978,10 +1978,10 @@ func opcodeDefine(op *parsedOpcode, vm *Engine) error {
+ 	newDefinedCount := vm.definedFunctionCount + 1
+ 	total := vm.dstack.Depth() + vm.astack.Depth() + int32(newDefinedCount)
+ 
+-	if total > MaxStackSize {
++	if total > int32(benchLimits.MaxStackSize) {
+ 		return scriptError(ErrStackOverflow, fmt.Sprintf(
+ 			"combined stack size + function count %d > max allowed %d",
+-			total, MaxStackSize))
++			total, benchLimits.MaxStackSize))
+ 	}
+ 
+ 	bodyCopy := make([]byte, len(body))
+diff --git a/txscript/vmlimits.go b/txscript/vmlimits.go
+index 1f547cf1..08959e18 100644
+--- a/txscript/vmlimits.go
++++ b/txscript/vmlimits.go
+@@ -33,13 +33,13 @@ func GetInputHashIterationsLimit(scriptSigSize int, isStandard bool) int {
+ 		bonusFactor = HashIterBonusForNonStandardTxns
+ 	}
+ 
+-	return ((InputScriptSizeFixedCredit + scriptSigSize) * bonusFactor) / 2
++	return ((benchLimits.DensityBase + scriptSigSize) * bonusFactor) / 2
+ }
+ 
+ // Returns the op cost limit for an input, given an input's scriptSig size.
+ // See: https://github.com/bitjson/bch-vm-limits?tab=readme-ov-file#operation-cost-limit
+ func GetInputOperationCostLimit(scriptSigSize int) int {
+-	return (scriptSigSize + InputScriptSizeFixedCredit) * OpCostBudgetPerInputByte
++	return (scriptSigSize + benchLimits.DensityBase) * OpCostBudgetPerInputByte
+ }
+ 
+ // Returns the pre-hash iteration op cost, either 64 if isStandard == false or 192 if isStandard == true flag is set.
+@@ -126,9 +126,15 @@ func (scriptExecutionMetrics *ScriptExecutionMetrics) GetCompositeOPCost(isStand
+ }
+ 
+ func (scriptExecutionMetrics *ScriptExecutionMetrics) IsOverOpCostLimit(isStandard bool) bool {
++	if benchLimits.Unbudgeted {
++		return false
++	}
+ 	return scriptExecutionMetrics.GetCompositeOPCost(isStandard) > scriptExecutionMetrics.opCostLimit
+ }
+ 
+ func (scriptExecutionMetrics *ScriptExecutionMetrics) IsOverHashIterationsLimit(isStandard bool) bool {
++	if benchLimits.Unbudgeted {
++		return false
++	}
+ 	return scriptExecutionMetrics.numHashDigestIterations > scriptExecutionMetrics.hashDigestIterationsLimit
+ }
