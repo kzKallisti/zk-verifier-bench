@@ -33,7 +33,10 @@
 //
 // The 24 pre-beta relations have cancellation degree at most 23, and the alpha
 // identity has degree at most 137. In the SHA-256 random-oracle model, the
-// conservative union bound is 160/(2^256-1), less than 161/2^256.
+// conservative union bound is 160/(2^256-1), less than 161/2^256, per oracle
+// query; over q queries add the Merkle collision term q(q+1)/2^256 (written
+// argument: groth16_cashscript chunked/bls12-381/README.md, "FS-PIT soundness
+// argument", section 5).
 //
 // Largest supplied valid fixture:
 //   22 inputs, 78,982 script B, 79,178 wire B, 79,948 challenge-score B
@@ -49,7 +52,12 @@
 // classes pass with minimum universal margins 23,838 / 122,142.
 //
 // Source revision:
-//   groth16_cashscript d15ed7038b541593b0e57e6d0236ab730da73208 (local candidate)
+//   groth16_cashscript 77ab0acdd5c1d17d34e8751a6840fbafed70cf4b (the artifact sha256 below
+//   is this file at that revision;
+//   the previously cited d15ed7038b541593b0e57e6d0236ab730da73208 "local candidate"
+//   is not in groth16_cashscript). Arithmetic cashc: CashScript 1c707c1d.
+//   Written soundness argument: groth16_cashscript chunked/bls12-381/README.md,
+//   "FS-PIT soundness argument".
 // Source artifact:
 //   groth16_cashscript/chunked/bls12-381/measure_d3_two_chart_binary.mjs
 //   sha256 83d2b28f27ead5a89e595a9a645492cb677f68f0f05c001f3a86d555d9860024
