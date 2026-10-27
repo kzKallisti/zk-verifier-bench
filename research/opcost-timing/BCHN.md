@@ -12,6 +12,12 @@ and accepted. The other 2 were the expected rejections. Run 1 predates re-signin
 vectors were rejected (`blk-bad-inputs`) as expected for relocated signatures. For the 291 workloads timed in both
 runs, the run 2 / run 1 time ratio has a median of 1.022, with p5 0.959 and p95 1.066.
 
+> **Status (opcost-finalize, 2026-10-27).** The measurements here stand and were reproduced within ±4% on two fresh
+> nodes (REVIEW-1/2, `raw/bchn-rev3`). The singleton extrapolation in "Reading" item 3 is superseded by KERNELS.md
+> (measured kernels; BLS genpow 6.06 s, not 3.1–4.6 s). REPORT.md is the synthesis and states every multiple with its
+> budget base. The "op-cost / budget" column uses libauth op-cost, which is 0.2% below BCHN's for these chains
+> (OP_DEFINE bodies, KERNELS.md).
+
 ## Method
 
 - **Node.** Regtest with a fresh datadir `work/opcost-timing/bchn-<name>`. Ports are derived from the name. Settings:
@@ -75,7 +81,7 @@ reproduces the calibration's main ratio.
 | bls12381-sound-native, 6 extra proofs | 34.0–36.1 k | 4 | 23.9–25.8 M | 0.86–0.91 | 3,039–3,163 | ≤3.9% | 0.122–0.128 | 87–91 | 40–41 |
 | bn254 / bls12381 tampered proof (`invalid[0]`) | – | 3 / 4 | – | – | – | – | – | – | BCHN rejects: `blk-bad-inputs` (expected) |
 
-"× baseline tx" means time per tx divided by the `trxhzt`-shaped baseline (76.8 µs). The CHIP uses the same
+"× baseline tx" means time per tx divided by the `trxhzt` baseline (77.3 µs). The CHIP uses the same
 normalization, which it calls RelCost.
 
 ### VM-limits worst cases (2026 benchmark vectors)
@@ -130,9 +136,11 @@ BCHN's actual big-number cost.
    | BN genpow | 4,613 | 5.52 B | 0.66–0.99 s | 144 k–215 k | 144–215× |
    | BN opcode-optimized | 6,237 | 800 M | 96–144 ms | 15 k–23 k | 15–23× |
    | BLS opcode-optimized | 5,999 | 1.0 B | 120–180 ms (≈125 ms at the BLS-chain rate) | 20 k–30 k | 20–30× |
-   | BLS genpow | – | 25.6 B | 3.1–4.6 s | – | – |
+   | BLS genpow | 5,965 | 25.6 B | 3.1–4.6 s (KERNELS.md: 6.06 s) | 520 k–770 k | 520–770× |
 
-   So the 30–1000× op-cost overrun is part accounting and part real work. About one order of magnitude of it is
+   (Superseded by KERNELS.md; REPORT.md has the final figures and their budget bases.) The singletons' op-cost is
+   117–5,327× a P2SH32-style BCH 2026 budget ((44 + score bytes) × 800), or 2,838–130,130× the bare-locking budget.
+   About one order of magnitude of that is
    op-cost overcharging bignum arithmetic relative to signature checks. What remains after that is real CPU. The
    opcode-optimized singletons would still cost 15–30× the worst per-byte validation time BCHN accepts today, and
    genpow about 150–200×. In absolute terms, one opcode-optimized verification would take about 0.1 s of BCHN CPU,

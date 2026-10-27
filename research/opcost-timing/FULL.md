@@ -2,21 +2,31 @@
 
 Task: opcost-full (Track 1, "what does op-cost cost in real CPU time?"). Engines: bchd-fork (Go, `txscript`, the 2026 VM incl. OP_DEFINE/OP_INVOKE, loops, vmlimits) and libauth 3.1.0-next.8 (the bench harness VM). BCHN is covered separately (BCHN.md, opcost-bchn).
 
+> **Status (opcost-finalize, 2026-10-27).** Read REPORT.md for the synthesis. Three caveats from review apply to this
+> file: (1) the "x l0fhm3 per budget unit" multiples below divide by the *bare-locking* budget (the singleton script sits
+> in the spent output's locking bytecode, which is non-standard over 201 B and which the VM-limits CHIP leaves out of the
+> budget on purpose). Under a P2SH32 deployment the multiples are about 20× smaller (REPORT.md, `report-multiples.md`).
+> (2) The libauth absolute times here ran under contention (CPU 10 shared the CCD's L3 with BCHN and bchd) and with
+> forced GC per repetition: a quiet re-run gave 20–33% lower times (sound-native 67.8 vs 86 ms, l0fhm3 4,771 vs
+> 6,077 ms) with the same ratios. Use libauth figures as ratios, or ±30%. (3) bchd and libauth here use forced GC per
+> repetition; KERNELS.md uses steady state. For bchd this moves sound-native from 7.6 to 9.0 ms (l0fhm3 unchanged),
+> about 17% on the verifier/l0fhm3 ratio. Headline multiples come from BCHN only (KERNELS.md, BCHN.md).
+
 ## Answer
 
-**The excess op-cost of the byte-floor singletons is real validation work, not an accounting artefact.** On both engines the time per op-cost unit of every verifier sits in the same narrow band as the VM-limits arithmetic benchmarks (bchd 0.28 to 0.60 ns per op-cost unit; the arithmetic worst cases 0.6 to 0.9; signature checking 2.4 to 7.7). Op-cost slightly *over*-charges our bignum workloads relative to the signature-checking worst cases, so a verifier that needs 30 to 130,000 times its budget in op-cost needs about that multiple in CPU time too:
+**The excess op-cost of the byte-floor singletons is real validation work, not an accounting artefact.** On both engines the time per op-cost unit of every verifier sits in the same narrow band as the VM-limits arithmetic benchmarks (bchd 0.28 to 0.60 ns per op-cost unit; the arithmetic worst cases 0.6 to 0.9; signature checking 2.4 to 7.7). Op-cost over-charges our bignum workloads relative to the signature-checking worst cases by about 13x in bchd (and 8-14x on BCHN, BCHN.md), so a verifier that needs 2,838 to 130,130 times its bare-locking budget in op-cost needs roughly a tenth of that multiple in CPU time; the rest of the overrun is real CPU work:
 
 - BN genpow (268 B tx, 5.52 G op-cost): **1.99 s** in bchd, **13.0 s** in libauth. Its BCH 2026 budget is 199,200 op-cost units; per budget unit it costs 9,974 ns in bchd, **2,365 times** the worst VM-limits vector (l0fhm3, packed 1-of-3 ECDSA bare multisig, 4.22 ns per budget unit).
 - BLS genpow (265 B, 25.6 G op-cost): **14.3 s** bchd, **84 s** libauth; 17,200 times the worst case per budget unit.
 - Plain and opcode-optimized singletons (BN 0.77 to 0.80 G, BLS 0.99 to 1.00 G op-cost): 0.28 to 0.31 s bchd, 2.0 to 2.3 s libauth; 187 to 294 times the worst case per budget unit.
 - The sound-native chains (BCH 2026 consensus-valid, 3 and 4 inputs) and the bch-spec SI-GLS singles: 7 to 9 ms bchd (86 to 111 ms libauth), 0.26 to 0.36 ns per budget unit, i.e. **12 to 16 times below** the worst VM-limits vector in bchd and 17 to 25 times below libauth's worst. They fit the budget in op-cost and in time.
 
-So the byte-tied budget is doing what it was calibrated to do: the singletons would make a block validator spend roughly 190 to 17,000 times more CPU per budget unit (that is, per transaction byte) than the worst case the 2025/2026 limits were designed around (RelCostPerByte against the baseline trxhzt: BN genpow 13,800 and BLS genpow 100,600 in bchd, against 6.3 for l0fhm3; the CHIP reports about 5 for l0fhm3 on BCHN).
+So the byte-tied budget is doing what it was calibrated to do: if such spends were admitted (they are consensus-invalid today), the singletons would make a block validator spend roughly 190 to 17,000 times more CPU per budget unit (bare-locking basis; about 20x less per P2SH32 budget unit, see the status note) than the worst case the 2025/2026 limits were designed around (RelCostPerByte against the baseline trxhzt: BN genpow 13,800 and BLS genpow 100,600 in bchd, against 6.3 for l0fhm3; the CHIP reports about 5 for l0fhm3 on BCHN).
 
 Where op-cost is least accurate (opcode-class profile below):
 - **Small-operand arithmetic is under-priced relative to OP_MUL/OP_MOD on big operands.** In bchd, add/sub/compare cost 1.25 to 1.9 ns per op-cost unit against 0.22 to 0.57 for mul/div/mod; in our verifiers add/sub/cmp is about 21 to 28% of the time for 3 to 9% of the op-cost. It is still well under signature checking (about 4.9 ns per op-cost unit in l0fhm3), so it does not threaten the calibration.
 - **BLS genpow is the most expensive per op-cost unit** (bchd 0.56 vs 0.28 for the other BLS builds): its 13 M OP_MULs are on small operands (600 op-cost each on average) and pay about 545 ns each, the fixed big.Int and number-encoding cost per arithmetic instruction (about 300 ns).
-- libauth is about 6 to 13 times slower than bchd on our workloads (7x on the singletons, 11 to 14x on the multi-input and bch-spec builds, where per-evaluation parsing of 9 to 26 kB redeem scripts, OP_INVOKE overhead and GC show). libauth's own worst case per budget unit is a 1-byte OP_DIV/OP_MOD vector (ly54y8, 85 ns per budget unit), followed by l0fhm3 (76).
+- libauth is about 6 to 13 times slower than bchd on our workloads (7x on the singletons, 11 to 14x on the multi-input and bch-spec builds, where per-evaluation parsing of 9 to 26 kB redeem scripts, OP_INVOKE overhead and GC show). In this contended pass libauth's worst case per budget unit was a 1-byte OP_DIV/OP_MOD vector (ly54y8, 85 ns per budget unit), followed by l0fhm3 (76); a quiet re-run reverses the order (l0fhm3 about 59, ly54y8 about 57).
 
 ## Finding: OP_DEFINE op-cost differs between libauth and bchd/BCHN
 

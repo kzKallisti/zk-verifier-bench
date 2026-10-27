@@ -41,6 +41,8 @@ persistmempool=0
 rpcworkqueue=64
 rpcservertimeout=3600
 CONF
+    # optional extra settings, e.g. EXTRA_CONF='minrelaytxfee=0' so testmempoolaccept reaches script checks
+    if [ -n "${EXTRA_CONF:-}" ]; then printf '%s\n' $EXTRA_CONF >> "$DATA/bitcoin.conf"; fi
     taskset -c "$CPU" "$BIN/bitcoind" -datadir="$DATA" -daemon
     for i in $(seq 1 100); do "${CLI[@]}" getblockcount >/dev/null 2>&1 && break; sleep 0.2; done
     echo "{\"datadir\":\"$DATA\",\"rpcport\":$RPCPORT,\"cpu\":\"$CPU\",\"pid\":$(cat "$DATA/regtest/bitcoind.pid")}"

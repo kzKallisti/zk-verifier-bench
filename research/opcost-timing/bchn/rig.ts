@@ -298,15 +298,26 @@ export const runWorkload = async (chain: Chain, wl: Workload, opts: RunOpts) => 
   // 3) repeated validateblocktemplate
   const verifyMs: number[] = []; const wallMs: number[] = []; const connectMs: number[] = []; const sanityMs: number[] = []; let vbtResult: unknown = undefined; let vbtError: string | undefined;
   const reps = wl.expect === 'reject' ? Math.min(opts.reps, 3) : opts.reps;
+  // per-rep verdict: validateblocktemplate result/error and whether BCHN printed the Verify line (printed only after
+  // all script checks pass) -- recorded for every rep, not only the last
+  const repVerdicts: { ok: boolean; error?: string; verifyLine: boolean }[] = [];
+  // for expected rejections: BCHN's script error string via testmempoolaccept (block validation only reports
+  // "blk-bad-inputs, parallel script check failed"); mempool uses standard flags, so this is the standard-mode verdict
+  let mempoolReject: unknown = undefined;
+  if (wl.expect === 'reject') {
+    try { mempoolReject = await chain.rpc.call('testmempoolaccept', [binToHex(copies[0]!.raw)]); } catch (e) { mempoolReject = { rpcError: String((e as Error).message) }; }
+  }
   for (let r = 0; r < reps; r++) {
     chain.markLog();
     const t0 = process.hrtime.bigint();
-    try { vbtResult = await chain.rpc.call('validateblocktemplate', block.hex); vbtError = undefined; } catch (e) { vbtError = String((e as Error).message); }
+    let repErr: string | undefined;
+    try { vbtResult = await chain.rpc.call('validateblocktemplate', block.hex); vbtError = undefined; } catch (e) { vbtError = String((e as Error).message); repErr = vbtError; }
     const t1 = process.hrtime.bigint();
     await new Promise((res) => setTimeout(res, 5));
     const b = parseBench(chain.readLog());
     wallMs.push(Number(t1 - t0) / 1e6);
     const v = b.verify.find((x) => x.txins === txins);
+    repVerdicts.push({ ok: repErr === undefined && vbtResult === true, error: repErr, verifyLine: !!v });
     if (v) verifyMs.push(v.ms);
     const c = b.connect.find((x) => x.txs === K + 1); if (c) connectMs.push(c.ms);
     if (b.sanity.length) sanityMs.push(b.sanity[b.sanity.length - 1]!);
@@ -326,7 +337,8 @@ export const runWorkload = async (chain: Chain, wl: Workload, opts: RunOpts) => 
   return {
     id: wl.id, group: wl.group, description: wl.description, expect: wl.expect,
     libauthOk: oc.ok, libauthError: oc.error,
-    bchnAccepted, submitResult: sub.result, vbtResult, vbtError, asExpected,
+    bchnAccepted, submitResult: sub.result, vbtResult, vbtError, asExpected, repVerdicts, mempoolReject,
+    repsAllAsExpected: repVerdicts.every((v) => v.ok === (wl.expect === 'accept') && v.verifyLine === (wl.expect === 'accept')),
     txBytes: copies[0]!.raw.length, inputs: wl.inputs.length, copies: K, blockBytes: block.bytes, txinsInBlock: txins,
     opCostPerTx: oc.total, opCostPerInput: oc.perInput, unlockingBytes: oc.unlockingBytes, budgetPerInput: oc.budget,
     opCostOverBudgetMax: Math.max(...oc.perInput.map((c, i) => c / oc.budget[i]!)),

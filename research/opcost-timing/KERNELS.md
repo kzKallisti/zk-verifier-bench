@@ -2,6 +2,11 @@
 
 Task opcost-kernels (track 1). BCHN cannot run the over-budget singletons. Instead, each singleton's execution is cut into the outermost function calls that fit one BCH 2026 input. Those calls run on BCHN as consensus-valid kernels, and the singleton's time is the sum over kernels weighted by op-cost. The same kernels run on bchd-fork and libauth, where the whole singleton can also be timed. On those two engines the kernel sum matches the full run to within 0.4–4.3% for all six singletons.
 
+> **Status (opcost-finalize, 2026-10-27).** REPORT.md is the synthesis. The "per budget unit" multiples in the
+> table use the bare-locking budget, (41 + unlocking) × 800 with the 4.6–8.2 kB script in the spent output's locking
+> bytecode (non-standard). The "per score byte" column is the deployment-adjusted figure (P2SH32 budget gives the same
+> multiples within 1%; REPORT.md and `report-multiples.md`), and it is the one to quote.
+
 ## Result
 
 **Estimated BCHN v29.1.0 script-validation time for one singleton spend.** Times are for one core of a Ryzen 9 7900, extrapolated from the kernels measured on BCHN. The extrapolation's own uncertainty is about ±5%: 2 to 4% kernel-sum bias on the validating engines, plus 1 to 2% run-to-run variation.
@@ -21,11 +26,10 @@ The l0fhm3 reference is the worst VM-limits vector on the same BCHN rig (BCHN.md
 - **Per transaction byte of the 265–459 B spends:** the multiples are 262× (BLS plain) up to 22,851× (BLS genpow). See results/summary.md.
 
 **What this means.**
-- **The overrun is real CPU time.** Under BCHN's own budget, a block validator would spend 275 to 24,600 times more CPU per granted budget unit than on the worst case the 2026 limits were calibrated on. Every kernel runs at 0.08 to 0.26 ns per op-cost unit. That sits close to the sound-native chains (0.172 BN, 0.124 BLS in the same runs) and 5.5 to 18 times below l0fhm3's 1.43 ns per op-cost unit. The 30–130,000× op-cost overrun therefore converts almost one to one into CPU time.
-- **The overrun is not an accounting artefact.** Op-cost overcharges this arithmetic by about one order of magnitude compared with signature checks. That is why the multiples per budget unit are about 5–10× smaller than the op-cost multiples.
-- **BCHN.md's assumption holds for 4 of 6.** BCHN.md assumed the singletons cost what the chains cost per unit (0.12–0.18 ns), and that holds within about ±13% for the plain, opcode-optimized and BN genpow builds.
+- **Most of the overrun is real CPU time; op-cost's slack on this work is about one order of magnitude.** Every kernel runs at 0.08 to 0.26 ns per op-cost unit, close to the sound-native chains (0.172 BN, 0.124 BLS in the same runs) and 5.5 to 18 times below l0fhm3's 1.43 ns per op-cost unit. So op-cost charges this bignum work 5–18× more per ns than signature checks, and the CPU multiples are 5–10× smaller than the op-cost multiples. What remains is real: if such a spend were admitted (the singletons are consensus-invalid today), a validator would spend 16–1,015× more CPU per score byte (≈ per P2SH32 budget unit) than on l0fhm3; on the bare-locking budget that is 275–24,600×.
+- **BCHN.md's assumption holds for 3 of the 4 builds it estimated.** BCHN.md assumed the singletons cost what the chains cost per unit (0.12–0.18 ns); the plain builds, which BCHN.md did not estimate, also fall in that band.
   - BN genpow: 916 ms, inside BCHN.md's 0.66–0.99 s.
-  - BN opcode-optimized: 155 ms, slightly above its 96–144 ms.
+  - BN opcode-optimized: 155 ms, 8% above its 96–144 ms.
   - BLS opcode-optimized: 125 ms, inside 120–180 ms.
   - BLS genpow: the exception, at 0.237 ns per unit, 1.9× the BLS chain rate. Its kernels are dominated by small-operand OP_MULs, which op-cost prices low relative to their fixed per-instruction cost (FULL.md's profile: about 545 ns per OP_MUL in bchd). Its BCHN time, 6.06 s, is 1.3–2× BCHN.md's 3.1–4.6 s extrapolation.
 - **Engines:** on these kernels BCHN is 2.2–2.5× faster than bchd (0.31–0.59 ns per op-cost unit, steady state) and 11–14× faster than libauth (1.7–2.9).
@@ -49,7 +53,7 @@ The l0fhm3 reference is the worst VM-limits vector on the same BCHN rig (BCHN.md
 - **`defcharge-gap`:** budget 826,400, libauth op-cost 577,192. BCHN rejected the block: `blk-bad-inputs`, parallel script check failed.
 - **`defcharge-fits`:** budget 1,096,800. BCHN accepted it.
 
-So BCHN charges at least 249,209 op-cost more than libauth for that script, consistent with charging the 500,000 body bytes. bchd reports exactly 577,530 + 500,000 = 1,077,530 for `defcharge-fits` and fails `defcharge-gap` with "vm opcost limit: 826400, script opcost: 830171". For all 324 kernel and control transactions, bchd's op-cost equals libauth's plus the executed OP_DEFINE body bytes. FULL.md's finding therefore holds on the real node, and libauth 3.1.0-next.8 undercounts OP_DEFINE.
+So BCHN charges at least 249,209 op-cost more than libauth for that script, consistent with charging the 500,000 body bytes. bchd reports exactly 577,530 + 500,000 = 1,077,530 for `defcharge-fits` and fails `defcharge-gap` with "vm opcost limit: 826400, script opcost: 830171". For all 324 kernel and control transactions, bchd's op-cost equals libauth's plus the executed OP_DEFINE body bytes. FULL.md's finding therefore holds on the real node: libauth 3.1.0-next.8's OP_DEFINE accounting differs from BCHN (consensus). A later run with `testmempoolaccept` (`raw/bchn-rev3r`) shows BCHN's script error for `defcharge-gap` directly: `mandatory-script-verify-flag-failed (VM cost limit exceeded)`.
 
 ## Method
 
@@ -133,7 +137,7 @@ The genpow builds spend 2.2× (BLS) and 1.3× (BN) the op-cost of the cashc buil
 ## Limits
 
 - **The BCHN number is an extrapolation.** BCHN never ran a whole singleton. What is measured on BCHN is the 162 kernel calls that make up 95.3–98.6% of each singleton's op-cost (by class). The method's own accuracy is measured on bchd and libauth, with a kernel sum within +4.3% / −0.4% of the full run. A BCHN-specific effect that exists only in long single-input evaluations would not show. One example is memory growth over a 25 G op-cost run.
-- **Interpreting the per-byte multiples.** BCHN's l0fhm3 rate is fast (libsecp256k1), so the multiples per budget unit are about 1.5× larger on BCHN than the bchd figures in FULL.md: 474 vs 281 for BN plain, 3,676 vs 2,365 for BN genpow, 24,601 vs 17,206 for BLS genpow.
+- **Interpreting the per-budget-unit multiples (bare-locking basis; see the status note).** BCHN's l0fhm3 rate is fast (libsecp256k1), so the multiples per budget unit are about 1.5× larger on BCHN than the bchd figures in FULL.md: 474 vs 281 for BN plain, 3,676 vs 2,365 for BN genpow, 24,601 vs 17,206 for BLS genpow.
 - **Roles are inferred**, from arity and call structure, not from the sources. Function ids are the singletons' own.
 - **Machine:** one machine, boost on.
 
