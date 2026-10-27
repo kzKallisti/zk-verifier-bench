@@ -635,6 +635,11 @@ export const computeResults = async (includeDemos = false): Promise<BenchmarkRes
   return results;
 };
 
+/** Load and benchmark ONE implementation. Unlike computeResults, a load failure THROWS instead of
+ * silently omitting the entry (the incremental exporter must never drop a row unnoticed). */
+export const runImplementation = async (impl: Implementation): Promise<BenchmarkResult> =>
+  benchmark(impl, await impl.load());
+
 const fmt = (n: number) => n.toLocaleString();
 const padR = (s: string, w: number) => s.padEnd(w);
 const padL = (s: string, w: number) => s.padStart(w);
