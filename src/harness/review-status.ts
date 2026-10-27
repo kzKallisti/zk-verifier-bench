@@ -117,17 +117,114 @@ export const REVIEW_STATUS: Record<string, ReviewStatus> = {
     refs: [`${SRC}/commit/974a6910eb6924cfdbb547ea2556f229d9790421`, `${SRC}/commit/47c1ab15bd837d21c016e2e61b948f0e94b5862b`, `${SRC}/blob/main/singleton/bls12-381/README.md#proof-point-validation`],
   },
 
-  // unreviewed successors of withdrawn claims (bench #47 / #48)
+  // genpow singletons: corrected successors (source #30/#31, bench #47/#48) reviewed in REVIEW-WF2 §2/§3;
+  // shipped bytes re-confirmed byte for byte 2026-10-27 (notes: verifier.cash work/genpow-promotions/NOTES.md).
   'bch-groth16-singleton-genpow': {
-    status: 'unreviewed',
-    reason: 'Corrected successor (4,320 B program, outline_32 P + O = P and neutral-point handling) merged via groth16_cashscript #30 / bench #47; the original 4,183 B program was withdrawn under F4.',
-    refs: [...FINDINGS, `${SRC}/pull/30`, `${BENCH}/pull/47`],
+    status: 'reviewed',
+    reason: 'Independent review 2026-10-26/27 of the corrected 4,320 B program (sha 022fea80…): canonical coordinate and Fr guards, exact curve and psi G2 checks, complete MSM identity addition and neutral Miller units verified; no soundness gap. Native resource HOLD (op-cost).',
+    refs: [...FINDINGS, `${SRC}/pull/30`, `${BENCH}/pull/47`, `${SRC}/blob/main/singleton/bn254/genpow-reconstructed/README.md`],
   },
   'bch-groth16-bls12381-singleton-genpow': {
-    status: 'unreviewed',
-    reason: 'Corrected successor (5,675 B program): canonical points, complete root chart and cofactor-equivalent G1/G2 projections from source #31 / benchmark #48. Native HOLD remains; original-G2 subgroup rejection is not asserted.',
-    refs: [...FINDINGS, `${SRC}/pull/31`, `${BENCH}/pull/48`],
+    status: 'reviewed',
+    reason: 'Independent review 2026-10-26/27 of the corrected 5,675 B program (sha 6b36b9fe…): canonical decoders with exact curve residuals, complete group operations, and on-chain r-component projection of every G1/G2 pairing operand. Cofactor-equivalent domain: soundness holds by an endpoint argument, but A, B and C are malleable by cofactor torsion and a non-subgroup B is not rejected. Native resource HOLD (op-cost).',
+    refs: [...FINDINGS, `${SRC}/pull/31`, `${BENCH}/pull/48`, `${SRC}/blob/main/singleton/bls12-381/leader-recovered/README.md`],
   },
+
+  // minop singletons: two independent reviews 2026-10-27 (notes: verifier.cash work/review-minop-1, -2/NOTES.md);
+  // documentation follow-ups only (comments, README soundness sections), no status impact.
+  'bch-groth16-singleton-minop': {
+    status: 'reviewed',
+    reason: 'Two independent reviews 2026-10-27: the 50,539 B locking recompiles byte-identically; inputs < r via GLV k >= 0, B in G2 by the exact (6x+2)+psi-psi^2+psi^3 endpoint relation, r | lambda for the residue exponent; no owner gap. Doc follow-ups only.',
+    refs: [`${SRC}/blob/main/singleton/bn254/README.md`],
+  },
+  'bch-groth16-bls12381-singleton-minop': {
+    status: 'reviewed',
+    reason: 'Two independent reviews 2026-10-27: the 58,007 B locking regenerates and recompiles byte-identically; inputs < r, complete jacAddG1, B in G2 by psi(B)=[x]B, r | (p+|x|); A/C on-curve only (cofactor malleability only, documented). Doc follow-ups only.',
+    refs: [`${SRC}/blob/main/singleton/bls12-381/README.md`],
+  },
+
+  // BLS12-381 FS singletons: two independent reviews 2026-10-27 (notes: verifier.cash work/review-bls-fs-singletons-1, -2/).
+  // All hold under the disclosed FS-PIT (SHA-256 random-oracle) model with cofactor-equivalent A/C.
+  'bch-groth16-bls12381-singleton-fs': {
+    status: 'reviewed',
+    reason: 'Two independent reviews 2026-10-27: 53,825 B locking rebuilt byte-exact; FS-PIT transcript, exact B twist/psi subgroup walk, A/C curve checks, inputs < r and the Merkle-authenticated GT table hold under the SHA-256 random-oracle model (A/C cofactor malleability only).',
+    refs: [`${SRC}/blob/main/singleton/bls12-381/README.md`],
+  },
+  'bch-groth16-bls12381-singleton-fs-spec': {
+    status: 'reviewed',
+    reason: 'Two independent reviews 2026-10-27: 47,879 B P2SH32 redeem rebuilt byte-exact; same owner map as singleton-fs, with the delta lines rebuilt in-script from baked constants by exact affine equations (random-oracle model).',
+    refs: [`${SRC}/blob/main/singleton/bls12-381/README.md`],
+  },
+  'bch-groth16-bls12381-singleton-fs-spec-shared': {
+    status: 'reviewed',
+    reason: 'Two independent reviews 2026-10-27: 23,460 B redeem rebuilt byte-exact; the shared authenticatePic and regular bodies keep index, window and root as call-site constants and pass all chained state as parameters (random-oracle model).',
+    refs: [`${SRC}/blob/main/singleton/bls12-381/README.md`],
+  },
+  'bch-groth16-bls12381-singleton-fs-spec-zero': {
+    status: 'reviewed',
+    reason: 'Two independent reviews 2026-10-27: 23,784 B redeem rebuilt byte-exact; the zero-PIC codec only changes the wire encoding (expanded from committed bytes, full consumption required); A, B and C are uncompressed and checked (random-oracle model).',
+    refs: [`${SRC}/blob/main/singleton/bls12-381/README.md`],
+  },
+
+  // BLS12-381 intratx-fs family (13 ids): three-lens review 2026-10-27 (notes: verifier.cash work/review-bls-fs-1..3/).
+  // No owner gap found; held unreviewed until the FS-PIT soundness argument is in chunked/bls12-381/README.md
+  // and the math reviewer confirms the rebuild (Q1) and code-import (Q3) closure.
+  ...Object.fromEntries(
+    [
+      'bch-groth16-bls12381-intratx-fs',
+      'bch-groth16-bls12381-intratx-fs-compact',
+      'bch-groth16-bls12381-intratx-fs-fused-final',
+      'bch-groth16-bls12381-intratx-fs-fused-regular',
+      'bch-groth16-bls12381-intratx-fs-fused-regular-pairs',
+      'bch-groth16-bls12381-intratx-fs-fused-regular-pairs-packed',
+      'bch-groth16-bls12381-intratx-fs-fused-regular-triples',
+      'bch-groth16-bls12381-intratx-fs-fused-carrier-pair',
+      'bch-groth16-bls12381-intratx-fs-fused-middle-pair',
+      'bch-groth16-bls12381-intratx-fs-regular-initializer',
+      'bch-groth16-bls12381-intratx-fs-fused-first-tail',
+      'bch-groth16-bls12381-intratx-fs-fused-coordinator-head',
+      'bch-groth16-bls12381-intratx-fs-fused-coordinator-head-fields',
+    ].map((id): [string, ReviewStatus] => [
+      id,
+      {
+        status: 'unreviewed',
+        reason: 'Three-lens review 2026-10-27: rebuilt byte-identically, no owner or domain gap found. Open: the FS-PIT soundness argument is not yet written in chunked/bls12-381/README.md, and the math reviewer has to confirm the rebuild and code-import closure.',
+        refs: [`${SRC}/blob/main/chunked/bls12-381/README.md`],
+      },
+    ]),
+  ),
+
+  // residue family: two independent reviews 2026-10-27 (notes: verifier.cash work/review-residue-1, -2/).
+  'bch-groth16-intratx-residue': {
+    status: 'reviewed',
+    reason: 'Two independent reviews 2026-10-27: vectors regenerate byte-identically; exact frames on all 11 inputs, count/index and successor pins, inputs < r, exact G2 endpoint test and quotient-torus terminal with r | lambda. Nit: in0=0 has a negative-zero encoding (malleability only).',
+    refs: [`${SRC}/blob/main/chunked/intratx/README.md`],
+  },
+  'bch-groth16-intratx-residue-large': {
+    status: 'reviewed',
+    reason: 'Two independent reviews 2026-10-27: vectors regenerate byte-identically; same Miller/torus/endpoint kernels as intratx-residue with a 4-input root, position gates, exact frames and sha256 successor pins; the mixed add has an equal-point branch.',
+    refs: [`${SRC}/blob/main/chunked/intratx/README.md`],
+  },
+  'bch-groth16-chunked-covenant-residue': {
+    status: 'unreviewed',
+    reason: 'Review 2026-10-27: bytes reproduce and the math checks out, no owner gap. Open: the category-genesis premise is not written down (vectors use a placeholder category), and the empty-commitment verdict NFT binds the public inputs only through ledger ancestry, which must be stated as the consumer check.',
+  },
+  'bch-groth16-bls12381-chunked-covenant-residue': {
+    status: 'unreviewed',
+    reason: 'Review 2026-10-27: bytes reproduce and the math checks out, no owner gap. Open: the same category-genesis and verdict-binding premises as the BN covenant-residue entry; the written architecture (impl header) describes an obsolete chunk layout.',
+  },
+  'bch-groth16-bls12381-grouped-residue': {
+    status: 'withdrawn',
+    reason: 'Owner gap (review 2026-10-27): the tx2/tx3 group roots take their incoming state from tx.inputs[0].nftCommitment but check only capability 0x01 and sibling exclusion, with no pinned token category, so that state is unowned. Fix route: pin the category and hold minting in a covenant.',
+    refs: [`${SRC}/blob/main/chunked/grouped/README.md`, `${SRC}/blob/main/chunked/intratx/transform.mjs`],
+  },
+
+  // no public source: unreviewed until the author (toorik2) shares the generator source
+  ...Object.fromEntries(
+    ['bch-groth16-intratx-crown8-rawchain', 'bch-groth16-intratx-direct-state-public', 'bch-groth16-intratx-general'].map(
+      (id): [string, ReviewStatus] => [id, { status: 'unreviewed', reason: 'No source: the generator source is not public, so the shipped bytes cannot be reviewed; source requested from the author.' }],
+    ),
+  ),
 
   // baselines: third-party reference verifiers (nChain sCrypt, sCrypt bn256), measured for comparison only
   'nchain': baseline,

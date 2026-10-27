@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-27T01:08:31.489Z",
+  "generatedAt": "2026-10-27T01:11:41.640Z",
   "statement": {
     "proofSystem": "Groth16",
     "curve": "BN254",
@@ -1400,13 +1400,14 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed",
-        "reason": "Corrected successor (4,320 B program, outline_32 P + O = P and neutral-point handling) merged via groth16_cashscript #30 / bench #47; the original 4,183 B program was withdrawn under F4.",
+        "status": "reviewed",
+        "reason": "Independent review 2026-10-26/27 of the corrected 4,320 B program (sha 022fea80…): canonical coordinate and Fr guards, exact curve and psi G2 checks, complete MSM identity addition and neutral Miller units verified; no soundness gap. Native resource HOLD (op-cost).",
         "refs": [
           "https://github.com/mr-zwets/groth16_cashscript/issues/32",
           "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
           "https://github.com/mr-zwets/groth16_cashscript/pull/30",
-          "https://github.com/mr-zwets/zk-verifier-bench/pull/47"
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/47",
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/singleton/bn254/genpow-reconstructed/README.md"
         ]
       },
       "score": 4613,
@@ -1498,7 +1499,11 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "reviewed",
+        "reason": "Two independent reviews 2026-10-27: the 50,539 B locking recompiles byte-identically; inputs < r via GLV k >= 0, B in G2 by the exact (6x+2)+psi-psi^2+psi^3 endpoint relation, r | lambda for the residue exponent; no owner gap. Doc follow-ups only.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/singleton/bn254/README.md"
+        ]
       },
       "score": 58073,
       "size": {
@@ -1791,13 +1796,14 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed",
-        "reason": "Corrected successor (5,675 B program): canonical points, complete root chart and cofactor-equivalent G1/G2 projections from source #31 / benchmark #48. Native HOLD remains; original-G2 subgroup rejection is not asserted.",
+        "status": "reviewed",
+        "reason": "Independent review 2026-10-26/27 of the corrected 5,675 B program (sha 6b36b9fe…): canonical decoders with exact curve residuals, complete group operations, and on-chain r-component projection of every G1/G2 pairing operand. Cofactor-equivalent domain: soundness holds by an endpoint argument, but A, B and C are malleable by cofactor torsion and a non-subgroup B is not rejected. Native resource HOLD (op-cost).",
         "refs": [
           "https://github.com/mr-zwets/groth16_cashscript/issues/32",
           "https://github.com/mr-zwets/zk-verifier-bench/issues/49",
           "https://github.com/mr-zwets/groth16_cashscript/pull/31",
-          "https://github.com/mr-zwets/zk-verifier-bench/pull/48"
+          "https://github.com/mr-zwets/zk-verifier-bench/pull/48",
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/singleton/bls12-381/leader-recovered/README.md"
         ]
       },
       "score": 5965,
@@ -1889,7 +1895,11 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "reviewed",
+        "reason": "Two independent reviews 2026-10-27: the 58,007 B locking regenerates and recompiles byte-identically; inputs < r, complete jacAddG1, B in G2 by psi(B)=[x]B, r | (p+|x|); A/C on-curve only (cofactor malleability only, documented). Doc follow-ups only.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/singleton/bls12-381/README.md"
+        ]
       },
       "score": 58841,
       "size": {
@@ -1988,7 +1998,11 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "reviewed",
+        "reason": "Two independent reviews 2026-10-27: 53,825 B locking rebuilt byte-exact; FS-PIT transcript, exact B twist/psi subgroup walk, A/C curve checks, inputs < r and the Merkle-authenticated GT table hold under the SHA-256 random-oracle model (A/C cofactor malleability only).",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/singleton/bls12-381/README.md"
+        ]
       },
       "score": 103861,
       "size": {
@@ -2087,7 +2101,11 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "reviewed",
+        "reason": "Two independent reviews 2026-10-27: 47,879 B P2SH32 redeem rebuilt byte-exact; same owner map as singleton-fs, with the delta lines rebuilt in-script from baked constants by exact affine equations (random-oracle model).",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/singleton/bls12-381/README.md"
+        ]
       },
       "score": 97955,
       "size": {
@@ -2325,7 +2343,11 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "reviewed",
+        "reason": "Two independent reviews 2026-10-27: 23,460 B redeem rebuilt byte-exact; the shared authenticatePic and regular bodies keep index, window and root as call-site constants and pass all chained state as parameters (random-oracle model).",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/singleton/bls12-381/README.md"
+        ]
       },
       "score": 73536,
       "size": {
@@ -2563,7 +2585,11 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "reviewed",
+        "reason": "Two independent reviews 2026-10-27: 23,784 B redeem rebuilt byte-exact; the zero-PIC codec only changes the wire encoding (expanded from committed bytes, full consumption required); A, B and C are uncompressed and checked (random-oracle model).",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/singleton/bls12-381/README.md"
+        ]
       },
       "score": 65218,
       "size": {
@@ -3028,7 +3054,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "unreviewed",
+        "reason": "Review 2026-10-27: bytes reproduce and the math checks out, no owner gap. Open: the category-genesis premise is not written down (vectors use a placeholder category), and the empty-commitment verdict NFT binds the public inputs only through ledger ancestry, which must be stated as the consumer check."
       },
       "score": 93802,
       "size": {
@@ -4143,7 +4170,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "unreviewed",
+        "reason": "Review 2026-10-27: bytes reproduce and the math checks out, no owner gap. Open: the same category-genesis and verdict-binding premises as the BN covenant-residue entry; the written architecture (impl header) describes an obsolete chunk layout."
       },
       "score": 211163,
       "size": {
@@ -4240,7 +4268,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "unreviewed",
+        "reason": "No source: the generator source is not public, so the shipped bytes cannot be reviewed; source requested from the author."
       },
       "score": 83294,
       "size": {
@@ -4340,7 +4369,11 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "reviewed",
+        "reason": "Two independent reviews 2026-10-27: vectors regenerate byte-identically; exact frames on all 11 inputs, count/index and successor pins, inputs < r, exact G2 endpoint test and quotient-torus terminal with r | lambda. Nit: in0=0 has a negative-zero encoding (malleability only).",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/intratx/README.md"
+        ]
       },
       "score": 86950,
       "size": {
@@ -4440,7 +4473,11 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "reviewed",
+        "reason": "Two independent reviews 2026-10-27: vectors regenerate byte-identically; same Miller/torus/endpoint kernels as intratx-residue with a 4-input root, position gates, exact frames and sha256 successor pins; the mixed add has an equal-point branch.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/intratx/README.md"
+        ]
       },
       "score": 58460,
       "size": {
@@ -4778,7 +4815,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "unreviewed",
+        "reason": "No source: the generator source is not public, so the shipped bytes cannot be reviewed; source requested from the author."
       },
       "score": 77193,
       "size": {
@@ -5627,7 +5665,8 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "unreviewed",
+        "reason": "No source: the generator source is not public, so the shipped bytes cannot be reviewed; source requested from the author."
       },
       "score": 95201,
       "size": {
@@ -5926,7 +5965,11 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "unreviewed",
+        "reason": "Three-lens review 2026-10-27: rebuilt byte-identically, no owner or domain gap found. Open: the FS-PIT soundness argument is not yet written in chunked/bls12-381/README.md, and the math reviewer has to confirm the rebuild and code-import closure.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bls12-381/README.md"
+        ]
       },
       "score": 79948,
       "size": {
@@ -6026,7 +6069,11 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "unreviewed",
+        "reason": "Three-lens review 2026-10-27: rebuilt byte-identically, no owner or domain gap found. Open: the FS-PIT soundness argument is not yet written in chunked/bls12-381/README.md, and the math reviewer has to confirm the rebuild and code-import closure.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bls12-381/README.md"
+        ]
       },
       "score": 65696,
       "size": {
@@ -6126,7 +6173,11 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "unreviewed",
+        "reason": "Three-lens review 2026-10-27: rebuilt byte-identically, no owner or domain gap found. Open: the FS-PIT soundness argument is not yet written in chunked/bls12-381/README.md, and the math reviewer has to confirm the rebuild and code-import closure.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bls12-381/README.md"
+        ]
       },
       "score": 65326,
       "size": {
@@ -6226,7 +6277,11 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "unreviewed",
+        "reason": "Three-lens review 2026-10-27: rebuilt byte-identically, no owner or domain gap found. Open: the FS-PIT soundness argument is not yet written in chunked/bls12-381/README.md, and the math reviewer has to confirm the rebuild and code-import closure.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bls12-381/README.md"
+        ]
       },
       "score": 65160,
       "size": {
@@ -6326,7 +6381,11 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "unreviewed",
+        "reason": "Three-lens review 2026-10-27: rebuilt byte-identically, no owner or domain gap found. Open: the FS-PIT soundness argument is not yet written in chunked/bls12-381/README.md, and the math reviewer has to confirm the rebuild and code-import closure.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bls12-381/README.md"
+        ]
       },
       "score": 64783,
       "size": {
@@ -6426,7 +6485,11 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "unreviewed",
+        "reason": "Three-lens review 2026-10-27: rebuilt byte-identically, no owner or domain gap found. Open: the FS-PIT soundness argument is not yet written in chunked/bls12-381/README.md, and the math reviewer has to confirm the rebuild and code-import closure.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bls12-381/README.md"
+        ]
       },
       "score": 64689,
       "size": {
@@ -6526,7 +6589,11 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "unreviewed",
+        "reason": "Three-lens review 2026-10-27: rebuilt byte-identically, no owner or domain gap found. Open: the FS-PIT soundness argument is not yet written in chunked/bls12-381/README.md, and the math reviewer has to confirm the rebuild and code-import closure.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bls12-381/README.md"
+        ]
       },
       "score": 64532,
       "size": {
@@ -6626,7 +6693,11 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "unreviewed",
+        "reason": "Three-lens review 2026-10-27: rebuilt byte-identically, no owner or domain gap found. Open: the FS-PIT soundness argument is not yet written in chunked/bls12-381/README.md, and the math reviewer has to confirm the rebuild and code-import closure.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bls12-381/README.md"
+        ]
       },
       "score": 64159,
       "size": {
@@ -6726,7 +6797,11 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "unreviewed",
+        "reason": "Three-lens review 2026-10-27: rebuilt byte-identically, no owner or domain gap found. Open: the FS-PIT soundness argument is not yet written in chunked/bls12-381/README.md, and the math reviewer has to confirm the rebuild and code-import closure.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bls12-381/README.md"
+        ]
       },
       "score": 63866,
       "size": {
@@ -6826,7 +6901,11 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "unreviewed",
+        "reason": "Three-lens review 2026-10-27: rebuilt byte-identically, no owner or domain gap found. Open: the FS-PIT soundness argument is not yet written in chunked/bls12-381/README.md, and the math reviewer has to confirm the rebuild and code-import closure.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bls12-381/README.md"
+        ]
       },
       "score": 62328,
       "size": {
@@ -6926,7 +7005,11 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "unreviewed",
+        "reason": "Three-lens review 2026-10-27: rebuilt byte-identically, no owner or domain gap found. Open: the FS-PIT soundness argument is not yet written in chunked/bls12-381/README.md, and the math reviewer has to confirm the rebuild and code-import closure.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bls12-381/README.md"
+        ]
       },
       "score": 62252,
       "size": {
@@ -7026,7 +7109,11 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "unreviewed",
+        "reason": "Three-lens review 2026-10-27: rebuilt byte-identically, no owner or domain gap found. Open: the FS-PIT soundness argument is not yet written in chunked/bls12-381/README.md, and the math reviewer has to confirm the rebuild and code-import closure.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bls12-381/README.md"
+        ]
       },
       "score": 60285,
       "size": {
@@ -7126,7 +7213,11 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "unreviewed",
+        "reason": "Three-lens review 2026-10-27: rebuilt byte-identically, no owner or domain gap found. Open: the FS-PIT soundness argument is not yet written in chunked/bls12-381/README.md, and the math reviewer has to confirm the rebuild and code-import closure.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/bls12-381/README.md"
+        ]
       },
       "score": 60308,
       "size": {
@@ -7323,7 +7414,12 @@
         "failures": []
       },
       "reviewStatus": {
-        "status": "unreviewed"
+        "status": "withdrawn",
+        "reason": "Owner gap (review 2026-10-27): the tx2/tx3 group roots take their incoming state from tx.inputs[0].nftCommitment but check only capability 0x01 and sibling exclusion, with no pinned token category, so that state is unowned. Fix route: pin the category and hold minting in a covenant.",
+        "refs": [
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/grouped/README.md",
+          "https://github.com/mr-zwets/groth16_cashscript/blob/main/chunked/intratx/transform.mjs"
+        ]
       },
       "score": 202594,
       "size": {
