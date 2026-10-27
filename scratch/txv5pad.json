@@ -1,0 +1,296 @@
+{
+  "id": "bch-groth16-sound-si-gls-single",
+  "shippedScore": 21915,
+  "seconds": 5.218,
+  "summary": {
+    "status": "padded",
+    "score": 29294,
+    "padBytes": 7376,
+    "mode": "standard",
+    "standard": true,
+    "estimated": false,
+    "worst": {
+      "run": "worst-case proof",
+      "status": "padded",
+      "score": 29307,
+      "padBytes": 7389,
+      "mode": "standard",
+      "standard": true,
+      "txBytes": 29272,
+      "estimated": false
+    },
+    "mixed": false,
+    "runs": 5,
+    "variant": "pad slot: entry check DEPTH <2> NUMEQUALVERIFY -> DEPTH <3> NUMEQUALVERIFY DROP (one instruction-level edit of the reviewed redeem, +1 B; unlocking <WQ> <WS> <pad> <redeem>, the pad dropped unread before any other instruction; groth16_cashscript chunked/txv5-pad)"
+  },
+  "vm": "txv5",
+  "consensus": {
+    "asShipped": false,
+    "reason": "input 0 (single): op-cost over (41 + unlocking) * 800",
+    "padded": {
+      "padBytes": 7320,
+      "perInput": [
+        7320
+      ],
+      "score": 29238,
+      "txBytes": 29203
+    }
+  },
+  "standard": {
+    "asShipped": false,
+    "reason": "input 0 (single): op-cost over (41 + unlocking) * 800",
+    "fits": true,
+    "padded": {
+      "padBytes": 7376,
+      "perInput": [
+        7376
+      ],
+      "score": 29294,
+      "txBytes": 29259
+    }
+  },
+  "padding": "paddable",
+  "worstCase": {
+    "consensus": {
+      "asShipped": false,
+      "reason": "input 0 (single): op-cost over (41 + unlocking) * 800",
+      "padded": {
+        "padBytes": 7334,
+        "perInput": [
+          7334
+        ],
+        "score": 29252,
+        "txBytes": 29217
+      }
+    },
+    "standard": {
+      "asShipped": false,
+      "reason": "input 0 (single): op-cost over (41 + unlocking) * 800",
+      "fits": true,
+      "padded": {
+        "padBytes": 7389,
+        "perInput": [
+          7389
+        ],
+        "score": 29307,
+        "txBytes": 29272
+      }
+    },
+    "padding": "paddable"
+  },
+  "honest": [
+    {
+      "run": "fixture 0",
+      "status": "padded",
+      "score": 29294,
+      "padBytes": 7376,
+      "mode": "standard",
+      "standard": true,
+      "txBytes": 29259,
+      "estimated": false
+    },
+    {
+      "run": "extra proof #1",
+      "status": "padded",
+      "score": 28396,
+      "padBytes": 7054,
+      "mode": "standard",
+      "standard": true,
+      "txBytes": 28361,
+      "estimated": false
+    },
+    {
+      "run": "extra proof #2",
+      "status": "padded",
+      "score": 28390,
+      "padBytes": 7048,
+      "mode": "standard",
+      "standard": true,
+      "txBytes": 28355,
+      "estimated": false
+    },
+    {
+      "run": "extra proof #3",
+      "status": "padded",
+      "score": 28419,
+      "padBytes": 7077,
+      "mode": "standard",
+      "standard": true,
+      "txBytes": 28384,
+      "estimated": false
+    },
+    {
+      "run": "worst-case proof",
+      "status": "padded",
+      "score": 29307,
+      "padBytes": 7389,
+      "mode": "standard",
+      "standard": true,
+      "txBytes": 29272,
+      "estimated": false
+    }
+  ],
+  "variant": {
+    "description": "pad slot: entry check DEPTH <2> NUMEQUALVERIFY -> DEPTH <3> NUMEQUALVERIFY DROP (one instruction-level edit of the reviewed redeem, +1 B; unlocking <WQ> <WS> <pad> <redeem>, the pad dropped unread before any other instruction; groth16_cashscript chunked/txv5-pad)",
+    "invalid": 18,
+    "invalidRejected": 18
+  }
+}
+{
+  "id": "bch-groth16-bls12381-sound-si-gls-single",
+  "shippedScore": 26484,
+  "seconds": 6.689,
+  "summary": {
+    "status": "padded",
+    "score": 32721,
+    "padBytes": 6234,
+    "mode": "standard",
+    "standard": true,
+    "estimated": false,
+    "worst": {
+      "run": "extra proof #2",
+      "status": "padded",
+      "score": 34994,
+      "padBytes": 6491,
+      "mode": "standard",
+      "standard": true,
+      "txBytes": 34959,
+      "estimated": false
+    },
+    "mixed": false,
+    "runs": 7,
+    "variant": "pad slot: entry check DEPTH <2> NUMEQUALVERIFY -> DEPTH <3> NUMEQUALVERIFY DROP (one instruction-level edit of the reviewed redeem, +1 B; unlocking <WQ> <WS> <pad> <redeem>, the pad dropped unread before any other instruction; groth16_cashscript chunked/txv5-pad)"
+  },
+  "vm": "txv5",
+  "consensus": {
+    "asShipped": false,
+    "reason": "input 0 (single): op-cost over (41 + unlocking) * 800",
+    "padded": {
+      "padBytes": 6167,
+      "perInput": [
+        6167
+      ],
+      "score": 32654,
+      "txBytes": 32619
+    }
+  },
+  "standard": {
+    "asShipped": false,
+    "reason": "input 0 (single): op-cost over (41 + unlocking) * 800",
+    "fits": true,
+    "padded": {
+      "padBytes": 6234,
+      "perInput": [
+        6234
+      ],
+      "score": 32721,
+      "txBytes": 32686
+    }
+  },
+  "padding": "paddable",
+  "worstCase": {
+    "consensus": {
+      "asShipped": false,
+      "reason": "input 0 (single): op-cost over (41 + unlocking) * 800",
+      "padded": {
+        "padBytes": 7648,
+        "perInput": [
+          7648
+        ],
+        "score": 34423,
+        "txBytes": 34388
+      }
+    },
+    "standard": {
+      "asShipped": false,
+      "reason": "input 0 (single): op-cost over (41 + unlocking) * 800",
+      "fits": true,
+      "padded": {
+        "padBytes": 7715,
+        "perInput": [
+          7715
+        ],
+        "score": 34490,
+        "txBytes": 34455
+      }
+    },
+    "padding": "paddable"
+  },
+  "honest": [
+    {
+      "run": "fixture 0",
+      "status": "padded",
+      "score": 32721,
+      "padBytes": 6234,
+      "mode": "standard",
+      "standard": true,
+      "txBytes": 32686,
+      "estimated": false
+    },
+    {
+      "run": "extra proof #1",
+      "status": "padded",
+      "score": 32802,
+      "padBytes": 5931,
+      "mode": "standard",
+      "standard": true,
+      "txBytes": 32767,
+      "estimated": false
+    },
+    {
+      "run": "extra proof #2",
+      "status": "padded",
+      "score": 34994,
+      "padBytes": 6491,
+      "mode": "standard",
+      "standard": true,
+      "txBytes": 34959,
+      "estimated": false
+    },
+    {
+      "run": "extra proof #3",
+      "status": "padded",
+      "score": 32587,
+      "padBytes": 6148,
+      "mode": "standard",
+      "standard": true,
+      "txBytes": 32552,
+      "estimated": false
+    },
+    {
+      "run": "extra proof #4",
+      "status": "padded",
+      "score": 33589,
+      "padBytes": 5854,
+      "mode": "standard",
+      "standard": true,
+      "txBytes": 33554,
+      "estimated": false
+    },
+    {
+      "run": "extra proof #5",
+      "status": "padded",
+      "score": 33308,
+      "padBytes": 5285,
+      "mode": "standard",
+      "standard": true,
+      "txBytes": 33273,
+      "estimated": false
+    },
+    {
+      "run": "worst-case proof",
+      "status": "padded",
+      "score": 34490,
+      "padBytes": 7715,
+      "mode": "standard",
+      "standard": true,
+      "txBytes": 34455,
+      "estimated": false
+    }
+  ],
+  "variant": {
+    "description": "pad slot: entry check DEPTH <2> NUMEQUALVERIFY -> DEPTH <3> NUMEQUALVERIFY DROP (one instruction-level edit of the reviewed redeem, +1 B; unlocking <WQ> <WS> <pad> <redeem>, the pad dropped unread before any other instruction; groth16_cashscript chunked/txv5-pad)",
+    "invalid": 19,
+    "invalidRejected": 19
+  }
+}

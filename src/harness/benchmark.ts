@@ -772,6 +772,7 @@ const main = async () => {
             ? `not paddable as shipped (${t.notPaddableReason})${t.estimate ? `; estimate with a pad slot ${fmt(t.estimate.score)}` : ''}`
             : `consensus ${mode(t.consensus)}, standard ${mode(t.standard)}${t.standard.fits ? '' : ` (non-standard: ${t.standard.policyReason ?? t.standard.reason})`}`;
           console.log(`    > TXv5 as written (density base 41, budget (41+len)x800): ${tail}`);
+          if (t.variant) console.log(`    > TXv5 measured on the TXv5-grading variant: ${t.variant.description} (variant invalid runs rejected on TXv5, budget lifted: ${t.variant.invalidRejected}/${t.variant.invalid})`);
           const sum = txv5Summary(t, r.totalBytes + r.totalTxOverheadBytes);
           const w = sum.worst;
           console.log(`    > TXv5 over all ${sum.runs} honest runs: ${sum.standard ? 'every figure standard' : `NOT standard (${sum.nonStandard?.run}: ${sum.nonStandard?.reason ?? 'non-standard'})`}`

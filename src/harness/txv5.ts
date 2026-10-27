@@ -16,7 +16,10 @@
 // all-zero push anywhere else is never touched (it could be a real zero-valued witness element).
 // The scripts do not inspect the pad's bytes (any content of the same length is accepted); the
 // grade uses zero bytes, as padBytes does.
-// Nothing is rebuilt: an entry that pins its push layout (e.g. DEPTH == 2 at entry) rejects
+// An entry may ship a TXv5-grading variant (Scenario.txv5Variant): the same program with a
+// documented pad slot, used for this grade only. The grade is then measured on the variant's
+// runs and says so (Txv5Grade.variant, Txv5Summary.variant).
+// Otherwise nothing is rebuilt: an entry that pins its push layout (e.g. DEPTH == 2 at entry) rejects
 // the pad, and is reported "not paddable as shipped". For those, an ESTIMATE of the padding a
 // pad slot would need is given (measured op-cost + the pad's own push and drop), clearly
 // labelled as such.
@@ -168,6 +171,10 @@ export interface Txv5Grade {
   /** the TXv5 figure of every honest run: fixture 0 first, then each extraValidProof, then the
    * worst-case proof */
   honest?: Txv5RunFigure[];
+  /** set when the grade is measured on the entry's TXv5-grading variant (Scenario.txv5Variant)
+   * instead of its shipped runs; invalidRejected counts the variant's invalid runs rejected on
+   * the TXv5 VM with the density budget lifted, in both modes */
+  variant?: { description: string; invalidRejected: number; invalid: number };
 }
 
 type ScoreOf = (run: Step[]) => { score: number; txBytes: number };
@@ -379,11 +386,21 @@ export const txv5Grade = (scenario: Scenario, bsv: boolean, scoreOf: ScoreOf): T
     { standard: false, real: createRealVmTxv5(), unbudgeted: createUnbudgetedVmTxv5(false) },
     { standard: true, real: createStandardVmTxv5(), unbudgeted: createUnbudgetedVmTxv5(true) },
   ];
+  // an entry with a TXv5-grading variant is graded on that variant's runs (Scenario.txv5Variant)
+  const v = scenario.txv5Variant;
+  const src = v ?? scenario;
   const runs: [string, Step[]][] = [
-    ['fixture 0', scenario.valid],
-    ...(scenario.extraValidProofs ?? []).map((r, k): [string, Step[]] => [`extra proof #${k + 1}`, r]),
-    ...(scenario.worstCaseProof?.length ? [['worst-case proof', scenario.worstCaseProof] as [string, Step[]]] : []),
+    ['fixture 0', src.valid],
+    ...(src.extraValidProofs ?? []).map((r, k): [string, Step[]] => [`extra proof #${k + 1}`, r]),
+    ...(src.worstCaseProof?.length ? [['worst-case proof', src.worstCaseProof] as [string, Step[]]] : []),
   ];
+  if (v && (v.extraValidProofs?.length ?? 0) !== (scenario.extraValidProofs?.length ?? 0)) throw new Error('txv5Variant: extraValidProofs count differs from the shipped entry');
+  if (v && !!v.worstCaseProof?.length !== !!scenario.worstCaseProof?.length) throw new Error('txv5Variant: worstCaseProof presence differs from the shipped entry');
+  const variant = v ? {
+    description: v.description,
+    invalid: v.invalid?.length ?? 0,
+    invalidRejected: (v.invalid ?? []).filter((run) => ctx.every((c) => run.some((s) => !accepts(c.unbudgeted, s, bsv).ok))).length,
+  } : undefined;
   const graded = runs.map(([label, run]) => ({ label, run, g: gradeRun(run, bsv, scoreOf, ctx) }));
   const main = graded[0]!.g;
   const wc = graded.find((x) => x.label === 'worst-case proof')?.g;
@@ -392,6 +409,7 @@ export const txv5Grade = (scenario: Scenario, bsv: boolean, scoreOf: ScoreOf): T
     ...main,
     ...(wc ? { worstCase: { consensus: wc.consensus, standard: wc.standard, padding: wc.padding, ...(wc.estimate ? { estimate: wc.estimate } : {}) } } : {}),
     honest: graded.map((x) => figureOf(x.label, x.g, scoreOf(x.run))),
+    ...(variant ? { variant } : {}),
   };
 };
 
@@ -427,6 +445,8 @@ export interface Txv5Summary {
   mixed: boolean;
   /** number of honest runs graded */
   runs: number;
+  /** the figures are measured on the entry's TXv5-grading variant (Txv5Grade.variant) */
+  variant?: string;
 }
 export const txv5Summary = (g: Txv5Grade, shippedScore: number): Txv5Summary => {
   const honest = g.honest ?? [];
@@ -454,5 +474,6 @@ export const txv5Summary = (g: Txv5Grade, shippedScore: number): Txv5Summary => 
     ...(worstPadded !== undefined && worstPadded !== worst && worstPadded !== f0 ? { worstPadded } : {}),
     mixed: shipped > 0 && shipped < all.length,
     runs: all.length,
+    ...(g.variant ? { variant: g.variant.description } : {}),
   };
 };
