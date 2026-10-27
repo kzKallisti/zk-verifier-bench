@@ -193,7 +193,9 @@
     "oracleAccepted": 5,
     "nativeAdmission": "HOLD",
     "scope": "Two canonical Fr public inputs, finite canonical external A/C points in the G1 pairing quotient, finite strict-r B. Neutral computed vk_x is supported; external infinity encodings are not added.",
-    "proofBoundary": "Independent fixed-key/group algebra and source peer review support the changed neutral-vkx source branch. Actual branch code and stack transport are separately inspected with explicit input-owner/ABI premises; five fixture executions cannot establish a complete new whole-bytecode Groth16 theorem.",
-    "neutralExistingCase": "benchmark PR14 extraValidProofs[13], public inputs [1,r-1]; reversible auxiliary encoding only"
+    "proofBoundary": "Complete conditional arithmetic composition for the exact raw artifact and the declared finite external-point/cofactor-quotient ABI, with every canonical Fr public tuple including neutral vk_x. Standard field/curve/pairing and pinned VM premises remain. No external infinity, arbitrary-key/circuit, setup/knowledge or native-admission theorem.",
+    "neutralExistingCase": "benchmark PR14 extraValidProofs[13], public inputs [1,r-1]; reversible auxiliary encoding only",
+    "mathematicalDisposition": "artifacts/bls-singleton-neutral-vkx/mathematical-disposition.json",
+    "mathematicalDispositionSha256": "2cf6eb40d9002ed8019be69d01c5e99f8feecb88da9f40c6744e63a75e149daf"
   }
 }

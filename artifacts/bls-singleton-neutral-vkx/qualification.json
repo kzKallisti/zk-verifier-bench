@@ -31,7 +31,7 @@
   },
   "mathematicalChange": "The projective neutral public MSM returns a reserved off-curve (0,0) sentinel; that gamma pairing factor is the Fp12 unit. Finite normalization and gamma Miller operand order are preserved.",
   "domain": "Two canonical Fr public inputs, finite canonical external A/C points in the G1 pairing quotient, finite strict-r B. Neutral computed vk_x is supported; external infinity encodings are not added.",
-  "proofBoundary": "Independent fixed-key/group algebra and source peer review support the changed neutral-vkx source branch. Actual branch code and stack transport are separately inspected with explicit input-owner/ABI premises; five fixture executions cannot establish a complete new whole-bytecode Groth16 theorem.",
+  "proofBoundary": "Complete conditional arithmetic composition for the exact raw artifact and the declared finite external-point/cofactor-quotient ABI, with every canonical Fr public tuple including neutral vk_x. Standard field/curve/pairing and pinned VM premises remain. No external infinity, arbitrary-key/circuit, setup/knowledge or native-admission theorem.",
   "nativeAdmission": "HOLD: this raw fixed-policy 14246-byte direct locking exceeds BCH2026 10000-byte locking admission, and is not a standard output. No relay/mainnet claim.",
   "constraints": {
     "existingPositiveProofsOnly": true,
@@ -53,8 +53,10 @@
     "standardAccepted": 0,
     "nativeFailure": "Actual evaluate error:14246-byte direct locking exceeds10000-byte maximum. Standard verify also reports nonstandard source output >201 bytes.",
     "neutralCaseObserved": "The archived neutral-vkx case accepts in the same full arithmetic verifier as all four original singleton proofs.",
-    "fullNewWholeBytecodeTheorem": "UNESTABLISHED",
+    "fullNewWholeBytecodeTheorem": "CONDITIONAL_FINITE_DOMAIN_ARITHMETIC_EQUATION_COMPOSITION",
     "newProofOrPublicInputCases": 0,
     "auxiliaryReencoding": "One archived positive case, same mathematical proof and public inputs; official canonical VM-number pushes."
-  }
+  },
+  "mathematicalDisposition": "mathematical-disposition.json",
+  "mathematicalDispositionSha256": "2cf6eb40d9002ed8019be69d01c5e99f8feecb88da9f40c6744e63a75e149daf"
 }
