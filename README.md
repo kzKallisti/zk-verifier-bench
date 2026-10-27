@@ -199,6 +199,16 @@ as the 4,613 B leader (not BCH-compatible, unreviewed) and
 `bch-groth16-bn254-sound-native` as the 27,624 B BCH-compatible current anchor
 (independently reviewed).
 
+Each entry carries a `reviewStatus` (see `src/harness/review-status.ts`):
+`reviewed`, `unreviewed` (the default), `withdrawn`, `baseline` (the nChain and
+sCrypt third-party references), `demo` (the harness self-test), `component`
+(the partial pairing / vk_x checkpoints) or `archived` (the superseded legacy
+large chains: BN254 chunked and chunked-covenant, BLS12-381 intratx, grouped,
+chunked and chunked-covenant). Archived rows stay in `entries[]`, but like
+withdrawn ones they never count for the frontier or new history points.
+Withdrawn implementations leave the registry, so their rows leave the feed; the
+website keeps a frozen copy of the last rows of the fifteen removed ids.
+
 | category | meaning |
 |----------|---------|
 | `full` | a complete Groth16 verifier |

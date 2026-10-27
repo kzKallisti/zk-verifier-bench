@@ -148,8 +148,11 @@ export const entryOf = (r: BenchmarkResult) => ({
   correctness: correctnessOf(r),
   // Evidence-based soundness review status: 'reviewed' (independent review of this exact
   // artifact), 'unreviewed' (author/maintainer claim, no open finding; the default) or
-  // 'withdrawn' (claim withdrawn or a finding applies). Withdrawn entries stay listed here
-  // and in the history, but are excluded from the frontier leader / current (see main()).
+  // 'withdrawn' (claim withdrawn or a finding applies; the implementation is normally removed
+  // from REGISTRY, so its row leaves this list), 'baseline' / 'demo' / 'component' (labels for
+  // references, the self-test and partial checkpoints) or 'archived' (superseded; the row stays
+  // listed). Withdrawn and archived entries are excluded from the frontier leader / current and
+  // new history points (see main()); their old history points stay in the file.
   reviewStatus: reviewStatusOf(r.impl),
   // headline score = full on-chain footprint (lower is better): the verifier scripts PLUS
   // the serialized transaction overhead (envelope + outpoints + CashToken prefixes + varints).
