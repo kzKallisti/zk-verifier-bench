@@ -1,5 +1,5 @@
 {
-  "schema": "remaining-verifier-corrections-qualification/v5",
+  "schema": "remaining-verifier-corrections-qualification/v6",
   "sourceRevision": "c0b0a824fc9018b4ef344d2b68538f7159ffffdd",
   "benchmarkBase": "b140f64ca073c6d0466083fe14b5d9c83776d844",
   "status": "STANDALONE_CORRECTED_REFERENCES_DEFAULT_REGISTRY_AND_FEED_UNCHANGED",
@@ -468,5 +468,36 @@
     "deliberateNegativeCases": 0,
     "cybersecurityTesting": false,
     "byteOptimization": false
+  },
+  "historicalConnectedGraphReference": {
+    "qualification": "artifacts/pr4-connected-reference/qualification.json",
+    "qualificationSha256": "70c954e74cfe3428e3391530715cc00a4131058737288b42e5b7ff3c70f5d3ff",
+    "sourceDirectory": "chunked/pr4-connected-reference",
+    "sourceRevision": "e18f0cd34f5ad6facf4cbaa7c06040aadd20f7e9",
+    "sourceQualificationSha256": "93c6f8200d4274ffd811291a7d74ffb1b6ca8064bb492be064dc42e43c978da9",
+    "affectedHistoricalPrs": {
+      "source": [
+        4
+      ],
+      "benchmark": [
+        10
+      ]
+    },
+    "programs": {
+      "bn254": 48,
+      "bls12-381": 86
+    },
+    "existingProofGraphs": {
+      "bn254": 3,
+      "bls12-381": 2
+    },
+    "arithmeticOracleInputsAccepted": {
+      "bn254": 144,
+      "bls12-381": 172
+    },
+    "nativeResourceAdmission": "HOLD",
+    "domain": "Finite canonical fixed-key graphs; subgroup/regular-walk/normalization and rooted-ledger premises remain explicit. No neutral/infinity or arbitrary-key claim.",
+    "exactCompilerRebuilds": 134,
+    "successorLocks": 132
   }
 }
