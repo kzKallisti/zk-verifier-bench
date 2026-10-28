@@ -448,5 +448,25 @@
     "negativeCases": 0,
     "cybersecurityTesting": false,
     "byteOptimization": false
+  },
+  "raw14FullVerifierReference": {
+    "id": "bn254-pr6-raw14-reference",
+    "affectedHistoricalSourcePr": 6,
+    "qualification": "artifacts/bn254-pr6-raw14-reference/qualification.json",
+    "qualificationSha256": "ef675c09237a7252ea2b948f15928674d77200ac87526108edaabefd23a25025",
+    "sourceRevision": "70b0f04150d0f19467df41c5b8d170f78aa1691a",
+    "sourceDirectory": "chunked/pairing/pr6-raw14-reference",
+    "sourceQualificationSha256": "6a25a08a9ff936c5bd179c8969cc445d2102ae02213d59d1196934dfa966ca8d",
+    "programCount": 14,
+    "existingProofPublicTuples": 1,
+    "standardPerInputAccepted": 14,
+    "consensusPerInputAccepted": 14,
+    "fullEquationProof": "conditional fixed-key, finite raw-B and normalization charts, exact graph, hash binding and valid designated NFT lineage",
+    "nativeAdmission": "EXISTING_PER_INPUT_CONTEXT_ACCEPTED_LINKED_LIVE_CHAIN_NOT_ESTABLISHED",
+    "genericGroupedAffineScope": "Separate finite-domain component only; this row makes no full704-byte generic-verifier claim.",
+    "newProofs": 0,
+    "deliberateNegativeCases": 0,
+    "cybersecurityTesting": false,
+    "byteOptimization": false
   }
 }
