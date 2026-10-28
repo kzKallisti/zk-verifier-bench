@@ -32,12 +32,12 @@
 // separate input-validation grade.
 //
 // The 24 pre-beta relations have cancellation degree at most 23, and the alpha
-// identity has degree at most 137. In the SHA-256 random-oracle model, the
-// degree contribution is 23*Nbeta/(2^256-1) + 137*Nalpha/2^256, with distinct
-// adversarial prequeries and fresh verifier queries counted. Add Adv_bind for
-// commitment/code hash binding; a challenge-only query count does not also bound
-// all Merkle/preprocessing hash work. See groth16_cashscript
-// chunked/bls12-381/README.md, "FS-PIT soundness argument", section 5.
+// identity has degree at most 137. In the SHA-256 random-oracle model the
+// bound is (23*q_beta + 160*q_alpha)/2^256 + 3*N(N-1)/2^257, where q counts
+// every SHA-256 query by the adversary and the verifier, q_beta/q_alpha are the
+// challenge queries among them, and N = q plus fewer than 2^22 + 2^7 setup
+// hashes (written argument: groth16_cashscript chunked/bls12-381/README.md,
+// "FS-PIT soundness argument", section 5).
 //
 // Qualified source: groth16_cashscript 1003775dc379e0232ca7302d3f0964066b88e8ce.
 // Owner SHA256: 3fac418a06ffc8a009d01ba400a76e0593d2d3b15fe4b2f185248cc62ccf88d6.
