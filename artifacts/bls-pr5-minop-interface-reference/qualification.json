@@ -23,7 +23,8 @@
     "replay.mjs": "9e9ff28a5c732fe80b5d9396e1685d13f59f9004677362ba2ce2f06e16cef66f",
     "theorem-summary.json": "8224b40ed729a5087150bb55b7b26a7ebf52344cde397a86100509b5de215205",
     "transport-51-to-45-review.json": "8a0bc76b4aaf00b20bba0b3d7b461775311c76009d403d0307a4ee7a4fc97c48",
-    "domain-range-summary.json": "56a1bcbfe2ea963a1ffec4aab0e626903da6e2db38f0aa0efa5ec84cee5a2916"
+    "domain-range-summary.json": "56a1bcbfe2ea963a1ffec4aab0e626903da6e2db38f0aa0efa5ec84cee5a2916",
+    "rebuild-receipt.json": "5b95ebcaf426c175a591e5b4797d4e7b0092026b534c58e5d20bb8d1a3ab178e"
   },
   "existingOriginalFixtureSha256": "6b10adf46643bde31c691c8b38d25120b622f6df8c1dd342dfb7107eaaff6b40",
   "existingPositiveProofs": 5,
@@ -58,5 +59,6 @@
     "cybersecurityTesting": false,
     "byteOptimization": false,
     "resourceOrRelayClaim": false
-  }
+  },
+  "fixedPolicyRebuildVerified": true
 }

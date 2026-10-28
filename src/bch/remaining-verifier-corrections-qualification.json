@@ -1,5 +1,5 @@
 {
-  "schema": "remaining-verifier-corrections-qualification/v4",
+  "schema": "remaining-verifier-corrections-qualification/v5",
   "sourceRevision": "c0b0a824fc9018b4ef344d2b68538f7159ffffdd",
   "benchmarkBase": "b140f64ca073c6d0466083fe14b5d9c83776d844",
   "status": "STANDALONE_CORRECTED_REFERENCES_DEFAULT_REGISTRY_AND_FEED_UNCHANGED",
@@ -367,7 +367,86 @@
     "slimRuntimeOwner": "The bare terminal HASH256/EQUALVERIFY authenticates its retained redeem before the unchanged equation guard. Under push-only/minimal-push VM rules this binds the canonical wire suffix. Five existing arithmetic graphs / 25 inputs accept; the 10990-byte native locking HOLD remains.",
     "exactFrameCatalog": "Current source-helper/compiler metadata was regenerated; all 454 positive locking/unlocking records are unchanged. The module seal matches the actual catalog. Earlier 52 runs / 908 VM observations apply to these exact same programs.",
     "bnLarge4Input2Owner": "After P2SH consumes the redeem and OP_DROP removes the 64548-byte table, the surviving state is checked at offset 1949. The 33 fixed 32-byte splits imply length >= 1056; the <65536 gate fixes its PUSHDATA2 header class under minimal-push rules. This is not exact-1088 length or content authentication; finite-domain/frame premises remain.",
-    "fsPitReview": "All 13 intratx root binders and program sets across 130 existing positive scenarios were statically decoded. Independent field/kernel and polynomial-support calculations reproduce degree 137 and 132 quotient coefficients. Two binders precede imports; 11 use the conditional call-frame argument with the genuine PIC shared-stack ABI. Notes count all relevant challenge queries and separate Adv_bind. No FS fixture execution, new rebuild or universal compiled arithmetic theorem is claimed.",
+    "fsPitReview": "All13intratx root binders and program sets across130existingpositive scenarios were statically decoded. Independent field/kernel and support calculations reproduce degree137 and132quotient coefficients. The revised source section5 supplies the full adaptive random-oracle game, COLL/LATE opening argument and (23*q_beta+160*q_alpha)/2^256 +3*N*(N-1)/2^257 bound, including verifier/setup queries and disjoint challenge counts. Two binders precede imports;11use the stated genuine-PIC shared-stack/call-frame argument. No new FS fixture execution, rebuild or universal compiled arithmetic theorem is claimed.",
     "frozenResults": "results.json is unchanged upstream measurement/review snapshot; live source review explanations carry clarified query counters."
+  },
+  "archivedFullVerifierReferences": {
+    "references": [
+      {
+        "id": "bn254-pr13-canonical-reference",
+        "affectedHistoricalPrs": {
+          "source": [
+            6
+          ],
+          "benchmark": [
+            13
+          ]
+        },
+        "qualification": "artifacts/bn254-pr13-canonical-reference/qualification.json",
+        "qualificationSha256": "e96934ebfb442ae77db737db718f87bbd25c28c7d043e035cf94aabb910c17d9",
+        "sourceRevision": "c21f750a7c448cd8b1fab5f5156c5a9a598f3167",
+        "sourceDirectory": "singleton/bn254/pr13-canonical-reference",
+        "sourceQualificationSha256": "03bf63742964d2e36b03bb75584f8e58745dfe10665abbcfe4c1e59531f70102",
+        "programSha256": "cbd27cf7a971d0fa1ad86dcf3bc8db9a21b717905b3440ba9ec598195e5f59b0",
+        "programBytes": 8922,
+        "existingPositiveArtifactCases": 5,
+        "arithmeticOracleAccepted": 5,
+        "nativeAdmission": "HOLD",
+        "scope": "Eight canonical Fp coordinates, two canonical Fr scalars; finite affine A/C on G1 and finite order-r B on the twist. Computed vk_x may be neutral. Exact fixed synthetic VK. External infinity encodings are not added.",
+        "profileCoverage": "Inherited BN254 singleton only. Source6 raw14 covenant and generic grouped-affine graph qualifications remain separate."
+      },
+      {
+        "id": "bn254-pr15-full-coordinate-reference",
+        "affectedHistoricalPrs": {
+          "source": [
+            15
+          ],
+          "benchmark": [
+            32
+          ]
+        },
+        "qualification": "artifacts/bn254-pr15-full-coordinate-reference/qualification.json",
+        "qualificationSha256": "dca9f2d0059548eb553b3c9f6df85b0a1abed10ff784a8e1c22e12dd5334b3a6",
+        "sourceRevision": "c21f750a7c448cd8b1fab5f5156c5a9a598f3167",
+        "sourceDirectory": "singleton/bn254/pr15-full-coordinate-reference",
+        "sourceQualificationSha256": "f4869ddac3b9a201798342876e08eaaf1b8925ccf4af117a59aa779d0c09daed",
+        "programSha256": "dc2b929c5645d3baaac4fb544ba7565bf54c34156532a715053432d4f9913782",
+        "programBytes": 4681,
+        "existingPositiveArtifactCases": 4,
+        "arithmeticOracleAccepted": 4,
+        "nativeAdmission": "HOLD",
+        "scope": "Canonical full-coordinate EIP197 point-value domain, finite or neutral A/B/C and reconstructed vk_x; two canonical Fr public scalars. This is the historical4681-byte codec, distinct from the merged4320-byte parity codec."
+      },
+      {
+        "id": "bls-pr5-minop-interface-reference",
+        "affectedHistoricalPrs": {
+          "source": [
+            5
+          ],
+          "benchmark": [
+            11
+          ]
+        },
+        "qualification": "artifacts/bls-pr5-minop-interface-reference/qualification.json",
+        "qualificationSha256": "5b8adfa756a2eecdb9400d88f3b015b5f3185211214f9cede9a7195e2934ed71",
+        "sourceRevision": "c21f750a7c448cd8b1fab5f5156c5a9a598f3167",
+        "sourceDirectory": "singleton/bls12-381/pr5-minop-interface-reference",
+        "sourceQualificationSha256": "7266a33870a3d17e7e12de7a742a7573d62067fef4a0f14cc5865a519c5a9e45",
+        "programSha256": "42ca73a63775c062898e97ecde2b9a3d57b5f292d11677341a9fe5d6063ae0d3",
+        "programBytes": 64396,
+        "existingPositiveArtifactCases": 5,
+        "arithmeticOracleAccepted": 5,
+        "nativeAdmission": "HOLD",
+        "scope": "Proof coordinates and GLV components are explicitly bounded; public scalar range follows the bounded-decomposition congruence. Modular inverse representatives for vkxZinv reduce to the same field point. Finite external point and finite reconstructed-vk_x qualifications remain."
+      }
+    ],
+    "existingPositiveArtifactCases": 14,
+    "arithmeticOracleAccepted": 14,
+    "nativeAdmission": "All three remain resource-held; these are scoped mathematical references outside the registry.",
+    "historicalWithdrawalsUnchanged": true,
+    "newProofCases": 0,
+    "negativeCases": 0,
+    "cybersecurityTesting": false,
+    "byteOptimization": false
   }
 }
