@@ -46,11 +46,11 @@
   "blsLarge": {
     "existingProofGraphs": 3,
     "inputEvaluations": 27,
-    "checkedVectorSha256": "9b0ca5517eacf50d52a7991b90a89ded64e10c907fce9f2273c735a5a18af5d1",
+    "checkedVectorSha256": "e5d352105aee57abdeac865c1125c2b66085f0112ccfeace275e13dc024dc90d",
     "repairManifestSha256": "48f4b0efa19935e1b09df630036e470e007fad79dd6f493e96ef746ead8fcffb",
-    "repairHelperSha256": "db44031eef5c85985dbf38f524f8774525ea8d4e1107a152083df676a011f071",
+    "repairHelperSha256": "2d99a6fc88010b305fb683ab44c1596ed7b9b05c04afac5a6e547cab2ee8f3f3",
     "positiveReplay": "artifacts/maintainer-review-followup/replay-large.json",
-    "positiveReplaySha256": "8bafb9bfdc3aeff30049d120a5d3ac1e53bc516565e1339eb1d91f23f49face1",
+    "positiveReplaySha256": "d95adf0dbb6ee414d27897d1cdcded3d58fef11064e893fae8a6d6902878f502",
     "modes": [
       "resource-loosened arithmetic oracle",
       "proposed-spec consensus",
@@ -80,7 +80,7 @@
     "limits": "Proposed-spec profile only; the 288-byte GLV, 768-byte input-validation, and 1632-byte terminal frames require the proposed per-script limits. Current BCH, whole-transaction and relay admission remain HOLD.",
     "graphPremises": "The three-input intra-transaction graph preserves the archived input order, exact OP_INPUTBYTECODE successor links, state-carrier ownership, and P2SH32 locking transport. The positive replay is an existing-fixture artifact check, not a live ancestry or deployment claim.",
     "replayTool": "artifacts/maintainer-review-followup/replay-large.mjs",
-    "replayToolSha256": "a16d4cfb4aa64568f888bb4f44399270a6ddb7647dc28c2c344f390bfffe1fc0"
+    "replayToolSha256": "ebcfc107785581e9c8896b2a65c299076e3353c05d6f09ffbef79bbf6ab79f00"
   },
   "blsVkx": {
     "scope": "public-input aggregation component only",
@@ -236,7 +236,7 @@
   "blsPlainSingletonFullProofDomain": {
     "artifactDirectory": "artifacts/bls-singleton-full-proof-domain",
     "qualification": "artifacts/bls-singleton-full-proof-domain/qualification.json",
-    "qualificationSha256": "90c01832de620b2fd68dde9a02c863f0c2df0718401ae276ad21774cbf3f7c2a",
+    "qualificationSha256": "d37cdfebe54768bc3e4e5192edd6681bbaecc122bc731634bff20568d32bc0f0",
     "sourceRevision": "c0b0a824fc9018b4ef344d2b68538f7159ffffdd",
     "sourceFile": "singleton/bls12-381/groth16_strict.cash",
     "sourceSha256": "4cd3efad1c050a11b2d13c189ffb9335d8ec130d76e3b1257e43b74ea83d610d",
@@ -515,5 +515,15 @@
     "originalNativeGroupedArchitectureAndPerformanceRemainWithdrawn": true,
     "existingPublicKeyAbiCheck": "PASS_PUBLIC_KEY_ABI_ANCHOR",
     "newVmExecution": false
+  },
+  "maintainerEmitterFollowup": {
+    "sourceRevision": "a9d20b5f2f88c6d9ff82004587e4a43f7e524556",
+    "registeredBlsHelper": "chunked/intratx/repair_registered_bls_large.mjs",
+    "registeredBlsHelperSha256": "2d99a6fc88010b305fb683ab44c1596ed7b9b05c04afac5a6e547cab2ee8f3f3",
+    "checkedVectorReproducesByteForByte": true,
+    "largeExistingPositiveInputsAccepted": 27,
+    "strictExistingPositiveProofsAccepted": 5,
+    "verifierProgramBytesChanged": false,
+    "existingProofPublicPayloadsChanged": false
   }
 }
