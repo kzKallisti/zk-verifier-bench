@@ -21,14 +21,16 @@
 // SHA-256 random-oracle model: the argument of groth16_cashscript
 // chunked/bls12-381/README.md section 5 (same 24 relations, beta degree <= 23,
 // alpha identity degree <= 137, one 132-coefficient quotient, same transcript
-// frames) with this singleton's query accounting:
+// frames; the PIC factors are flat affine 1+u*W, degree <= 5) with this
+// singleton's query accounting:
 //   eps_SZ + eps_binding = (23*q_beta + 160*q_alpha)/2^256 + 3*N(N-1)/2^257,
 // q = adversary + verifier SHA-256 queries (q_beta + q_alpha <= q), N = N0 + q.
 // Setup N0 < 2^22 (only the 32 GT window trees; the window roots are baked, so no
-// batch commitments, fixed-blob hash or P2SH32). Verifier q_V = 1,104 per spend
+// batch commitments or fixed-blob hash; locking is bare as benchmarked, a P2SH32
+// deployment would add 1 setup + 2 verifier hashes). Verifier q_V = 1,104 per spend
 // (48 transcript, 32 GT leaves, 1,024 GT path hashes: the compiled program evaluates
-// two SHA-256 per level, 32 x 16 x 2; counted by an instrumented VM on the committed
-// fixture), so with no adversary queries the bound is below 2^-211. A/C are on-curve
+// two SHA-256 per level, 32 x 16 x 2; counted by an instrumented VM; all loops and trees
+// are fixed-shape), so with no adversary queries the bound is below 2^-211. A/C are on-curve
 // with cofactor-equivalent encodings (no unique-G1-encoding grade); B receives the
 // exact psi G2 subgroup check.
 //
