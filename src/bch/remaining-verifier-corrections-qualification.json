@@ -499,5 +499,21 @@
     "domain": "Finite canonical fixed-key graphs; subgroup/regular-walk/normalization and rooted-ledger premises remain explicit. No neutral/infinity or arbitrary-key claim.",
     "exactCompilerRebuilds": 134,
     "successorLocks": 132
+  },
+  "authenticated42StatementTransfer": {
+    "qualification": "artifacts/bn254-auth42-statement-transfer/qualification.json",
+    "qualificationSha256": "cd08ef0d0df49230830cfffb3dcd7b3e896861c738cf7c92a13102c6768822c1",
+    "affectedHistoricalPrs": {
+      "source": [
+        5
+      ],
+      "benchmark": [
+        11
+      ]
+    },
+    "replacement": "Existing independently qualified public authenticated42 full verifier, with explicit same-key/proof/scalar/state anchor transfer.",
+    "originalNativeGroupedArchitectureAndPerformanceRemainWithdrawn": true,
+    "existingPublicKeyAbiCheck": "PASS_PUBLIC_KEY_ABI_ANCHOR",
+    "newVmExecution": false
   }
 }
