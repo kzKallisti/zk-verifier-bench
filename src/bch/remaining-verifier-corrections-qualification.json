@@ -525,5 +525,18 @@
     "strictExistingPositiveProofsAccepted": 5,
     "verifierProgramBytesChanged": false,
     "existingProofPublicPayloadsChanged": false
+  },
+  "withdrawnReplacementMap": {
+    "qualification": "artifacts/withdrawn-replacement-map/qualification.json",
+    "qualificationSha256": "938a4ce9b4ea1cd8723f571f622baf88c5b3bc740d4c9a70c1ec7169e4d96edc",
+    "counts": {
+      "historicalWithdrawals": 31,
+      "completeConditionalMathematicalReplacements": 31,
+      "partialRepairsWithinIdentifiedScope": 0,
+      "noReplacementWithinIdentifiedScope": 0,
+      "constructionFamilies": 16
+    },
+    "originalWithdrawalsUnchanged": true,
+    "unrestrictedOrUniversalCorrectnessEstablished": false
   }
 }
