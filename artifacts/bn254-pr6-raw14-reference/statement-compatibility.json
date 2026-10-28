@@ -39,9 +39,8 @@
       "repair": "Repaired raw14 genesis normalization and inverse/unit encoding; raw-A finite/identity predicate and the subsequent Miller graph are joined in the conditional 14-program theorem.",
       "replacement": "COMPLETE_CONDITIONAL_REPLACEMENT_FOR_RAW14_FIXED_GRAPH",
       "evidence": [
-        "portable-raw14-v1/README.md lines 27-37",
-        "portable-raw14-v1/public-artifact/conditional-graph-join-result-v1.json lines 3585-3607",
-        "portable-raw14-v1/public-artifact/native-positive-replay-receipt-v2.json"
+        "conditional-graph-join-result-v1.json",
+        "standalone-replay-receipt-v2.json"
       ],
       "limits": [
         "finite raw B only",
@@ -55,8 +54,14 @@
       "repair": "Both corrected two-window grouped affine CashScript programs include the required helper definitions and have exact compiled-byte bindings.",
       "replacement": "COMPLETE_COMPONENT_REPLACEMENT",
       "evidence": [
-        "pr34-pr51-pr6-followup-20261028-v1/source-repo/chunked/pairing/pr6-grouped-affine-reference/qualification.json lines 15-30 and 53-73",
-        "parallel-pr-reviews-v1/.../source-6/generic-glv-complete-affine-v2/final-assessment-v1.json lines 17-20,77-95"
+        {
+          "repository": "mr-zwets/groth16_cashscript",
+          "file": "chunked/pairing/pr6-grouped-affine-reference/qualification.json"
+        },
+        {
+          "repository": "mr-zwets/groth16_cashscript",
+          "file": "chunked/pairing/pr6-grouped-affine-reference/mathematical-scope.json"
+        }
       ],
       "limits": [
         "component ABI and ordered two-window graph only",
@@ -69,9 +74,15 @@
       "repair": "The corrected generic component branches on equality and doubles the original accumulator; the raw14 fixed stage-03 helper contains the same equality/doubling owner, and the raw14 theorem joins final IC0 addition with finite inverse and downstream state binding.",
       "replacement": "COMPLETE_CONDITIONAL_REPLACEMENT_FOR_RAW14_AND_COMPLETE_COMPONENT_REPLACEMENT_FOR_GENERIC_AFFINE",
       "evidence": [
-        "portable-raw14-v1/source/fixed-programs/stage-03.cash lines 16-39 and 62-67",
-        "portable-raw14-v1/public-artifact/conditional-graph-join-result-v1.json lines 3586-3607",
-        "pr34-pr51-pr6-followup-20261028-v1/source-repo/chunked/pairing/pr6-grouped-affine-reference/mathematical-scope.json lines 4-9"
+        {
+          "repository": "mr-zwets/groth16_cashscript",
+          "file": "chunked/pairing/pr6-raw14-reference/fixed-programs/stage-03.cash"
+        },
+        "conditional-graph-join-result-v1.json",
+        {
+          "repository": "mr-zwets/groth16_cashscript",
+          "file": "chunked/pairing/pr6-grouped-affine-reference/mathematical-scope.json"
+        }
       ],
       "limits": [
         "raw14 finite-domain theorem excludes raw-B identity",
@@ -95,24 +106,19 @@
   },
   "evidencePins": [
     {
-      "path": "portable-raw14-v1/source/fixed-programs/stage-03.cash",
+      "owner": "source",
+      "file": "chunked/pairing/pr6-raw14-reference/fixed-programs/stage-03.cash",
       "sha256": "8972a31e6792670f7480ce4dcd0ad8bb7ad84345191315ef1fb07cccd4784889"
     },
     {
-      "path": "portable-raw14-v1/public-artifact/conditional-graph-join-result-v1.json",
-      "sha256": "09d1497d490d208eaf2685ef14aa122eda183479b4649e9b5ca0de81484435a9"
+      "owner": "artifact",
+      "file": "conditional-graph-join-result-v1.json",
+      "sha256": "e87de8fbfeb3200320024d57a4930aa3613d52eb52afc00ab466d31c0a3a525b"
     },
     {
-      "path": "portable-raw14-v1/README.md",
-      "sha256": "d4b2b628103e0aa03349922e2f41e225a726baa8ec2bbf25a98bf5165b99bf2a"
-    },
-    {
-      "path": "publication-v1/source-repo/chunked/pairing/_millermath.mjs",
-      "sha256": "1a6dc161cacbcdd70782ac97456ffb57e7617ecf756ea02d53727c2ec06d49e3"
-    },
-    {
-      "path": "publication-v1/source-repo/chunked/pairing/gen_vkx_glv.mjs",
-      "sha256": "2f600f06f3e80d59648b068676893b8f272bb67fbcc3bd7b802982a6049affc2"
+      "owner": "source",
+      "file": "chunked/pairing/pr6-grouped-affine-reference/mathematical-scope.json",
+      "sha256": "48dfb8c4b4b5fc96b32bf9bf95ff3c377923e7aebc9dae897e9caa177a1b11ce"
     }
   ],
   "conclusion": "Yes: the raw14 successor can close the three identified source6 mathematical gaps for its fixed VK/public statement and declared finite/domain/graph/ledger premises, while remaining explicitly conditional and non-universal. The generic grouped-affine successor closes only its component scope. No withdrawal of the repaired raw14 construction is indicated; no full generic 704-byte verifier claim should be added."

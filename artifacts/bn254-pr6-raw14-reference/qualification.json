@@ -51,7 +51,11 @@
     "replay.mjs": "9cacb812ea1cfbad4053b17f03c1d2d7c9809b5c845ab21c18ceffaa7d9eb16a",
     "standalone-replay-receipt-v2.json": "81b27bd17e49619c20b690bea6beb788291d73ed50e6fd6a78decd946702548a",
     "state-handoff-result-v2.json": "657c52dd3f46804f2a6a281e9029aad9ef41b7f2fd193895305819168dcc5d09",
-    "statement-compatibility.json": "bf959b9f35fc927b10775d3d5a5ecd0fcf455e36d08294ed0ca7aa8b5f474940"
+    "statement-compatibility.json": "1850173e93a5074819f4d4fe07dd06e83fb0ba7cfc3ff1e57212b262009d31f4"
   },
-  "sourceRevision": "70b0f04150d0f19467df41c5b8d170f78aa1691a"
+  "sourceRevision": "70b0f04150d0f19467df41c5b8d170f78aa1691a",
+  "logicalRoots": {
+    "public-source": "sourceRepository/sourceDirectory",
+    "public-artifact": "this artifact directory"
+  }
 }
